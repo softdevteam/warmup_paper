@@ -1,0 +1,67 @@
+\documentclass[10pt,preprint]{sigplanconf}
+
+\usepackage[utf8]{inputenc}
+% the following standard packages may be helpful, but are not required
+%\usepackage{longtable}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{courier}
+\usepackage[scaled]{helvet}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,allcolors=blue,breaklinks,draft=false]{hyperref}
+% known bug: http://tex.stackexchange.com/questions/1522/pdfendlink-ended-up-in-different-nesting-level-than-pdfstartlink
+\newcommand{\doi}[1]{doi:~\href{http://dx.doi.org/#1}{\Hurl{#1}}}   % print a hyperlinked DOI
+
+\usepackage{graphicx}
+\usepackage{softdev}
+\usepackage{amsmath}
+\usepackage{mdwlist}
+\usepackage{pifont}
+
+\lstset{
+	basicstyle=\tt\scriptsize,
+	xleftmargin=2em,
+    framexleftmargin=1.5em,
+	numberstyle=\scriptsize\tt\color{gray},
+	captionpos=b,
+	escapeinside={{<!}{!>}},
+}
+
+\begin{document}
+
+\title{An Investigation into the Warmup Behaviour of Various Virtual Machines}
+\authorinfo{Edd Barrett}
+           {Software Development Team\\ Department of Informatics\\ King's College London}
+           {http://eddbarrett.co.uk/}
+\authorinfo{Carl Friedrich Bolz}
+           {Software Development Team\\ Department of Informatics\\ King's College London}
+           {http://cfbolz.de/}
+\authorinfo{Laurence Tratt}
+           {Software Development Team\\ Department of Informatics\\ King's College London}
+           {http://tratt.net/laurie/}
+
+\maketitle
+
+
+\begin{abstract}
+Warmup is magic.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Kalibera is dead~\cite{kalibera13rigorous}.
+
+\section{Conclusions}
+\label{sec:conclusion}
+
+\bibliographystyle{abbrvnat}
+\bibliography{bib}
+
+
+\end{document}
+

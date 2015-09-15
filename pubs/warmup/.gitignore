@@ -1,0 +1,11 @@
+**/*.swp
+bib.bib
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+warmup.pdf
+warmup.synctex.gz
+img/*.pdf
+

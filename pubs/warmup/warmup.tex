@@ -56,6 +56,42 @@ Warmup is magic.
 
 Kalibera is dead~\cite{kalibera13rigorous}.
 
+XXX what is the hypothesis we are checking? how about "the traditional notion
+of warmup is true", which we then reject?
+
+- regular notions of warmup
+  - describe what warmup is intuitively
+  - "a phase of slower execution time when using JITting VMs that is followed
+    by faster executions randomly distributed around a constant mean"
+
+- describe how we did the measurement
+  - all the precautions
+  - XXX Edd's job
+
+- analysis of the results
+  - found regular results
+  - anomalies
+  - outliers
+    - need a definition, n sigma events? outside of the 99\% confidence interval?
+  - slowdowns
+    - first few iterations are faster than eventual mean
+  - cyclic behaviour
+    - every n iterations show really regular behaviour
+  - late phase changes
+    - definition? "I know it when I see it"
+
+  - conclusion:
+    - need to give up naive definition of warmup
+    - unrealistic to get rid of these anomalies
+    - some of benchmarking wisdom is wrong in the presence of this stuff
+
+- safety checks
+  - are outliers deterministic across different processes? is the behaviour
+    generally the same looking?
+  - do some checks on other OS, machine architecture, frequency scaling independent
+
+- threats to validity
+
 \section{Conclusions}
 \label{sec:conclusion}
 

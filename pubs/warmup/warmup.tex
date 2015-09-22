@@ -53,36 +53,9 @@ Warmup is magic.
 
 \section{Rough Notes}
 
-Kalibera is dead~\cite{kalibera13rigorous}.
-
 XXX what is the hypothesis we are checking? how about "the traditional notion
 of warmup is true", which we then reject?
 
-- regular notions of warmup
-  - describe what warmup is intuitively
-  - "a phase of slower execution time when using JITting VMs that is followed
-    by faster executions randomly distributed around a constant mean"
-
-- describe how we did the measurement
-  - all the precautions
-  - XXX Edd's job
-
-- analysis of the results
-  - found regular results
-  - anomalies
-  - outliers
-    - need a definition, n sigma events? outside of the 99\% confidence interval?
-  - slowdowns
-    - first few iterations are faster than eventual mean
-  - cyclic behaviour
-    - every n iterations show really regular behaviour
-  - late phase changes
-    - definition? "I know it when I see it"
-
-  - conclusion:
-    - need to give up naive definition of warmup
-    - unrealistic to get rid of these anomalies
-    - some of benchmarking wisdom is wrong in the presence of this stuff
 
 - safety checks
   - are outliers deterministic across different processes? is the behaviour
@@ -132,7 +105,7 @@ thought in detail about how we should account for these effects when
 benchmarking. Commonly, a mean time for a benchmark derived by running a
 benchmark a few times (less than 100) in a single process, before ``chopping
 JIT warmup''. Although more intricate methodologies have recently
-emerged~\cite{XXX}, uptake has been slow, and it is not clear if they
+proposed~\cite{XXX}, uptake has been slow, and it is not clear if they
 properly account for JIT warmup either.
 
 In this paper we scrutinise benchmarking methodologies and question if we --
@@ -149,6 +122,48 @@ warmup behaviours of industry standard VMs.
 between the expected and actual warmup behaviours of modern VMs.
 \item \edd{We discuss what we need to do about this?}
 \end{itemize}
+
+
+\section{Conceptions of Warmup}
+\label{sec:Conceptions of Warmup}
+
+- regular notions of warmup
+  - describe what warmup is intuitively
+  - "a phase of slower execution time when using JITting VMs that is followed
+    by faster executions randomly distributed around a constant mean"
+
+
+\section{Benchmarking Methodology}
+\label{sec:Benchmarking Methodology}
+
+- describe how we did the measurement
+  - all the precautions
+  - XXX Edd's job
+
+
+\section{Results}
+\label{sec:Results}
+
+- analysis of the results
+  - found regular results
+  - anomalies
+  - outliers
+    - need a definition, n sigma events? outside of the 99\% confidence interval?
+  - slowdowns
+    - first few iterations are faster than eventual mean
+  - cyclic behaviour
+    - every n iterations show really regular behaviour
+  - late phase changes
+    - definition? "I know it when I see it"
+
+\section{Discussion}
+\label{sec:Discussion}
+
+  - discussion:
+    - need to give up naive definition of warmup
+    - unrealistic to get rid of these anomalies
+    - some of benchmarking wisdom is wrong in the presence of this stuff
+
 
 \section{Conclusions}
 \label{sec:conclusion}

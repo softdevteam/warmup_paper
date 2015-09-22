@@ -51,8 +51,7 @@
 Warmup is magic.
 \end{abstract}
 
-\section{Introduction}
-\label{sec:intro}
+\section{Rough Notes}
 
 Kalibera is dead~\cite{kalibera13rigorous}.
 
@@ -91,6 +90,65 @@ of warmup is true", which we then reject?
   - do some checks on other OS, machine architecture, frequency scaling independent
 
 - threats to validity
+
+\section{Introduction}
+\label{sec:intro}
+
+Recently there has been a boom in the number of emerging programming language
+implementations. Some of the new implementations target already existing
+languages (e.g. HHVM~\cite{XXX} and Truffle/JS ~\cite{XXX}), whereas others
+target new languages altogether (e.g. Go~\cite{XXX}, Nim~\cite{XXX},
+Rust~\cite{XXX} and Dart~\cite{XXX}). Regardless of the design goals of a new
+language implementation, there is a shared consensus among language
+implementers: that new language implementations must be performant.  This
+consensus stems from the fact that the clock speeds of new CPUs have remained
+fixed for the last few years. This means that poor program performance can no
+longer be overcome by simply using a faster CPU, and thus there is a great deal
+of pressure for language implementers to deliver high performance systems.
+
+With this new focus on building fast language implementations, VM and
+compiler engineers have started paying close attention to the performance of
+their systems. It is now not uncommon for projects to measure performance over
+the development life-cycle of their system;  using benchmarking to spot
+performance regressions and to take action should they arise. This is a step
+in the right direction; commendable perhaps, however benchmarking is not a
+trivial subject.
+
+The problem with benchmarking is that there are many different variables that
+must be considered. How many iterations should be run? Does running on
+different hardware affect the outcome? Does using a different compiler to build
+our VM impact performance? Is this benchmark representative of a real program?
+The list goes on. Benchmarking is further complicated by \emph{Just In Time}
+(JIT) compilation techniques that are often deployed in modern language
+implementations. Typically the initial iterations of a benchmark running on a
+JIT tend to be much slower than later iterations. This is due to the fact that
+the JIT must profile and compile at runtime in order to generate fast code.
+The term \emph{peak performance} is often used to describe the point at which
+the fast code has been generated, and it is common for experimenters to
+disregard data prior to this point when benchmarking.
+
+Although the concept of JIT warmup is widely known, few people have actually
+thought in detail about how we should account for these effects when
+benchmarking. Commonly, a mean time for a benchmark derived by running a
+benchmark a few times (less than 100) in a single process, before ``chopping
+JIT warmup''. Although more intricate methodologies have recently
+emerged~\cite{XXX}, uptake has been slow, and it is not clear if they
+properly account for JIT warmup either.
+
+In this paper we scrutinise benchmarking methodologies and question if we --
+as a field -- are correctly measuring the performance of our JIT compilers,
+or if we are fooling ourselves by publishing biased results due to a
+misunderstanding of warmup behaviours. Our contributions are as follows:
+
+\begin{itemize}
+\item We first discuss the traditional notion of warmup behaviours that we have
+come to expect from programming language VMs.
+\item We describe an experiment designed to measure faithfully the true
+warmup behaviours of industry standard VMs.
+\item We analyse the results of our experiment in depth, showing a disparity
+between the expected and actual warmup behaviours of modern VMs.
+\item \edd{We discuss what we need to do about this?}
+\end{itemize}
 
 \section{Conclusions}
 \label{sec:conclusion}

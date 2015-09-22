@@ -132,6 +132,24 @@ between the expected and actual warmup behaviours of modern VMs.
   - "a phase of slower execution time when using JITting VMs that is followed
     by faster executions randomly distributed around a constant mean"
 
+The term ``warmup'' refers to the way in which language runtimes tend to take
+time to reach a steady state of peak performance.~\footnote{Although simple
+interpreters and ahead of time compiled programs (that don't use a JIT) may
+have a small initial startup costs. e.g. when the runtime linker relocates the
+binary.} The term is mostly used when talking about JIT compilers. A typical VM
+with a JIT begins executing a program in a profiling interpreter. Information
+gathered through profiling is then used as a heuristic to decide which portions
+of the program are good candidates for compilation to fast native code. Once a
+candidate has been compiled, the VM uses the fast native code in the future
+(instead of the slow interpreter), thus improving performance.  Although
+interpretation, profiling and compilation all come with a performance hit,
+ideally there should be a point at which the VM has all of the binary code it
+needs to execute the whole program natively. At this point, interpretation,
+profiling and compilation should no longer occur, and thus peak performance is
+met. The graph in Figure~\ref{XXX} demonstrates this ideal scenario for a
+fictional benchmark run repeatedly within a single process.
+
+
 
 \section{Benchmarking Methodology}
 \label{sec:Benchmarking Methodology}

@@ -12,6 +12,7 @@
 \usepackage{url}
 \usepackage{listings}
 \usepackage{enumitem}
+\usepackage{mdwlist} % tighter description environment (starred)
 \usepackage[colorlinks=true,allcolors=blue,breaklinks,draft=false]{hyperref}
 % known bug: http://tex.stackexchange.com/questions/1522/pdfendlink-ended-up-in-different-nesting-level-than-pdfstartlink
 \newcommand{\doi}[1]{doi:~\href{http://dx.doi.org/#1}{\Hurl{#1}}}   % print a hyperlinked DOI
@@ -225,8 +226,26 @@ relating to system performance to the \texttt{dmesg(1)} buffer. Krun monitors
 this buffer, and in the event of a change, mails the experimenter a unified
 diff. It is up to the experimenter to decide if the message has impacted
 performance.
+\item[Heap Usage] The amount of heap memory available to a VM can impact
+performance. Krun therefore restricts the amount of heap memory available to
+the VM.
 \end{description}
 
+We ran the benchmarks on a collection of modern programming language VMs: PyPy
+(a meta-tracing VM for Python-2.7); Hotspot (Oracle's Java VM); Graal (Oracle's
+next-gen Java VM); LuaJIT (a tracing JIT for Lua); HHVM (Facebook's PHP JIT);
+JRuby/Truffle (a Ruby VM usinf Graal/Truffle); V8 (Google's JIT for
+Javascript); and CPython (the reference Python implementation). All bar one of
+these VMs include a JIT compiler. CPython is a simple interpreter written in C,
+that was included as a kind of sanity check (it should not exhibit JIT warmup
+characteristics). We ran each benchmark with 2000 in-process iterations,
+and repeated this twice for each benchmarking machine involved. We used two
+similar X86-64 machines: the first a quad-core i7-4790K running at 4GHz with
+an 8MB cache and 24GB of RAM; the second, an Intel i7-4790 running at 3.6GHz
+with 8MB of cache and 32GB of RAM. Both machines run Debian 8 and have Intel
+Turbo Boost disabled in the BIOS. All VMs were restricted to using at most
+2GB of heap. We did \emph{not} force garbage collection after each
+in-process iteration of a benchmark.
 
 \section{Results}
 \label{sec:Results}

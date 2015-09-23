@@ -177,9 +177,28 @@ characteristics of the VM. In practice however, this is very difficult.
 \section{Benchmarking Methodology}
 \label{sec:Benchmarking Methodology}
 
-- describe how we did the measurement
-  - all the precautions
-  - XXX Edd's job
+To decide whether expected impact of JIT warmup (as outlined in the previous
+section) tallies with reality, we devised an experiment.  The goal of the
+experiment is to measure the long-term effects of warmup upon benchmarks,
+whilst controlling as many sources of random variation as is practically
+possible.
+
+We began with a suite of benchmarks, most of which were collected from
+Laurence Tratt's VM experiment~\cite{XXX}. Each benchmark was modified so as
+to hook into our benchmark runner, \emph{Krun}. Krun was originally
+developed to run experiments under the Kalibera/Jones
+methodology~\cite{XXX}, but since then it has been extended with features to
+help measure JIT warmup on Linux. Specifically Krun attempts to address
+random variation introduced by:
+
+\begin{description}
+\item[CPU governors] xxx\\
+\item[Ambient temperature changes] xxx\\
+\item[Processes sharing the same CPU] xxx\\
+\item[The \emph{perf} subsystem] xxx\\
+\item[Intel p-states] xxx\\
+\item[Unexpected events] xxx\\
+\end{description}
 
 
 \section{Results}

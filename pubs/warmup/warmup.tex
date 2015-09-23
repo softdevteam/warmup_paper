@@ -187,11 +187,9 @@ possible.
 We began with a suite of benchmarks, most of which were collected from Laurence
 Tratt's VM experiment~\cite{XXX}. Each benchmark is implemented in multiple
 languages allowing us to run them on a range of different VMs. The benchmarks
-were modified so as to hook into our benchmark runner, \emph{Krun}. Krun was
-originally
-developed to run experiments under the Kalibera/Jones
-methodology~\cite{XXX}, but since then it has been extended with features to
-help measure JIT warmup on Linux. Specifically Krun attempts to address
+were modified so as to hook into our benchmark runner, \emph{Krun}. Krun has
+been designed to
+help measure JIT warmup on Linux systems. Specifically Krun attempts to address
 random variation introduced by:
 
 \begin{description}

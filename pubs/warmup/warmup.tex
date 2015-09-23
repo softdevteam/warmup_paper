@@ -126,7 +126,7 @@ between the expected and actual warmup behaviours of modern VMs.
 
 
 \section{Conceptions of Warmup}
-\label{sec:Conceptions of Warmup}
+\label{sec:warmup}
 
 The term ``warmup'' refers to the way in which language runtimes tend to take
 time to reach a steady state of peak performance. The term is mostly used when
@@ -176,7 +176,7 @@ characteristics of the VM. In practice however, this is very difficult.
 
 
 \section{Benchmarking Methodology}
-\label{sec:Benchmarking Methodology}
+\label{sec:methodology}
 
 To decide whether expected impact of JIT warmup (as outlined in the previous
 section) tallies with reality, we devised an experiment.  The goal of the
@@ -247,20 +247,55 @@ Turbo Boost disabled in the BIOS. All VMs were restricted to using at most
 2GB of heap. We did \emph{not} force garbage collection after each
 in-process iteration of a benchmark \cfbolz{we need to argue why we don't do anything special about GC}
 
+\cfbolz{we need a list of benchmarks}
+
 \section{Results}
 \label{sec:Results}
 
-- analysis of the results
-  - found regular results
-  - anomalies
-  - outliers
-    - need a definition, n sigma events? outside of the 99\% confidence interval?
-  - slowdowns
-    - first few iterations are faster than eventual mean
-  - cyclic behaviour
-    - every n iterations show really regular behaviour
-  - late phase changes
-    - definition? "I know it when I see it"
+After running all benchmarks as described we analysed the benchmarks in a
+two-step process. In the first step we visually inspected the run sequence
+graphs of all the benchmark executions, per benchmark and virtual machine. In
+doing so we noted whether the virtual machine followed the expected warmup
+behaviour for this benchmark as described in Section~\ref{sec:warmup}. This was
+the case of \cfbolz{add numbers} X out of Y benchmarks. In a second step we
+identified groups of ``anomalies'', i.e. repeating ways of how benchmark
+executions deviated from the expected warmup behaviour. In the following we will
+present the run-sequence diagrams of benchmarks that have expected warmup
+behaviour, as well descriptions and examples for all the anomalies.
+
+\cfbolz{need some examples of nice benchs}
+\cfbolz{we need a table which does all the categorizations, and examples}
+
+\subsection{Outliers}
+\label{sub:outliers}
+
+ - need a definition, n sigma events? outside of the 99\% confidence interval?
+
+\cfbolz{examples}
+
+
+\subsection{Slowdowns}
+\label{sub:slowdowns}
+
+ - first few iterations are faster than eventual mean
+
+\cfbolz{examples}
+
+
+\subsection{Cyclic Behaviour}
+\label{sub:cyclic}
+
+  - every n iterations show really regular behaviour
+
+\cfbolz{examples}
+
+
+\subsection{Late Phase Changes}
+\label{sub:phase}
+
+  - definition? "I know it when I see it"
+
+\cfbolz{examples}
 
 \section{Discussion}
 \label{sec:Discussion}

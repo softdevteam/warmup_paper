@@ -229,11 +229,13 @@ performance. Krun therefore restricts the amount of heap memory available to
 the VM.
 \end{description}
 
-We ran the benchmarks on a collection of modern programming language VMs: PyPy
-(a meta-tracing VM for Python-2.7); Hotspot (Oracle's Java VM); Graal (Oracle's
-next-gen Java VM); LuaJIT (a tracing JIT for Lua); HHVM (Facebook's PHP JIT);
-JRuby/Truffle (a Ruby VM usinf Graal/Truffle); V8 (Google's JIT for
-Javascript); and CPython (the reference Python implementation). All bar one of
+We ran the benchmarks on a collection of modern programming language VMs:
+PyPy-2.6.0 (a meta-tracing VM for Python-2.7); Java8-b132 (Oracle's Hotspot VM
+for Java); Graal-dev~\footnote{Graal version 9dafd1dc5ff9.} (Oracle's next-gen
+Java VM); LuaJIT-2.0.4 (a tracing JIT for Lua); HHVM (Facebook's PHP JIT);
+JRuby/Truffle-dev~\footnote{JRuby/Truffle version 7b4cee81891f.} (a Ruby VM
+usinf Graal/Truffle); V8-4.5.38 (Google's JIT for Javascript); and
+CPython-2.7.10 (the reference Python implementation). All bar one of
 these VMs include a JIT compiler. CPython is a simple interpreter written in C,
 that was included as a kind of sanity check (it should not exhibit JIT warmup
 characteristics). We ran each benchmark with 2000 in-process iterations,

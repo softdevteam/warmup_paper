@@ -183,21 +183,48 @@ experiment is to measure the long-term effects of warmup upon benchmarks,
 whilst controlling as many sources of random variation as is practically
 possible.
 
-We began with a suite of benchmarks, most of which were collected from
-Laurence Tratt's VM experiment~\cite{XXX}. Each benchmark was modified so as
-to hook into our benchmark runner, \emph{Krun}. Krun was originally
+We began with a suite of benchmarks, most of which were collected from Laurence
+Tratt's VM experiment~\cite{XXX}. Each benchmark is implemented in multiple
+languages allowing us to run them on a range of different VMs. The benchmarks
+were modified so as to hook into our benchmark runner, \emph{Krun}. Krun was
+originally
 developed to run experiments under the Kalibera/Jones
 methodology~\cite{XXX}, but since then it has been extended with features to
 help measure JIT warmup on Linux. Specifically Krun attempts to address
 random variation introduced by:
 
 \begin{description}
-\item[CPU governors] xxx\\
-\item[Ambient temperature changes] xxx\\
-\item[Processes sharing the same CPU] xxx\\
-\item[The \emph{perf} subsystem] xxx\\
-\item[Intel p-states] xxx\\
-\item[Unexpected events] xxx\\
+\item[Ambient temperature changes] Benchmarks can heat up the system hardware
+potentially impacting performance. Krun measures the temperature of the machine
+prior to benchmarking, then before starting each benchmark, it waits for the
+system temperature to return to within 10$\%$ hotter than the starting
+temperature. All temperature zones are checked, and if the system fails to cool
+within a resonable time, Krun terminates.\\
+\item[Processes sharing the same CPU] Other processes running on the same CPU
+as benchmarks can impact performance. Krun therefore insists that benchmarks
+are run on an isolated CPU core.~\footnote{We use the \texttt{isolcpus} feature
+of the Linux kernel to achieve this. This means that benchmarks share a CPU
+only with kernel threads. In theory a core can be fully isolated, however the
+Linux tool to enable this is currently broken
+(\url{https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=796893})}
+\item[The \emph{perf} subsystem] By default, Linux has a kernel profiler,
+\emph{perf}, running. This is a significant source of random variation,
+especially since it dynamically adjusts (lowers) its sample rate if it is found
+to spend too much CPU time. Perf cannot be disabled on X86-64, but Krun insists
+that the perf sample rate is set to the lowest possible value of one sample per
+second.
+\item[CPU governors] Krun attempts to fix the CPU frequency to the highest
+possible value (short of overclocking). This is achieved by disabling Intel
+p-states support in the kernel and setting CPU governor to \texttt{performance}
+mode.~\footnote{This is our best attempt at obtaining a constant CPU clock
+speed. The Linux kernel documentation states that ``the idea that frequency can
+be set to a single frequency is fiction for Intel Core
+processors''~\cite{XXX}.}
+\item[Unexpected events] Linux has a tendency to emit important information
+relating to system performance to the \texttt{dmesg(1)} buffer. Krun monitors
+this buffer, and in the event of a change, mails the experimenter a unified
+diff. It is up to the experimenter to decide if the message has impacted
+performance.
 \end{description}
 
 

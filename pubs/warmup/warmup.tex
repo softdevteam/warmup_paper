@@ -127,16 +127,9 @@ between the expected and actual warmup behaviours of modern VMs.
 \section{Conceptions of Warmup}
 \label{sec:Conceptions of Warmup}
 
-- regular notions of warmup
-  - describe what warmup is intuitively
-  - "a phase of slower execution time when using JITting VMs that is followed
-    by faster executions randomly distributed around a constant mean"
-
 The term ``warmup'' refers to the way in which language runtimes tend to take
-time to reach a steady state of peak performance.~\footnote{Although simple
-interpreters and ahead of time compiled programs (that don't use a JIT) may
-have a small initial startup costs. e.g. when the runtime linker relocates the
-binary.} The term is mostly used when talking about JIT compilers. A typical VM
+time to reach a steady state of peak performance. The term is mostly used when
+talking about JIT compilers. A typical VM
 with a JIT begins executing a program in a profiling interpreter. Information
 gathered through profiling is then used as a heuristic to decide which portions
 of the program are good candidates for compilation to fast native code. Once a
@@ -146,9 +139,39 @@ interpretation, profiling and compilation all come with a performance hit,
 ideally there should be a point at which the VM has all of the binary code it
 needs to execute the whole program natively. At this point, interpretation,
 profiling and compilation should no longer occur, and thus peak performance is
-met. The graph in Figure~\ref{XXX} demonstrates this ideal scenario for a
-fictional benchmark run repeatedly within a single process.
+met. Between the start of the VM's execution and the point at which peak
+performance is met, the JIT is said to be ``warming up''.
 
+\begin{figure}[h!]
+\centering
+\includegraphics[width=.4\textwidth]{img/trad}
+\caption{The traditional notion of JIT warmup impacting a fictional
+benchmark running on a fictional VM.}
+\label{fig:trad}
+\end{figure}
+
+The graph in Figure~\ref{fig:trad} demonstrates the impact that we might
+expect JIT warmup to have upon a benchmark running repeatedly within a
+single process. In the first iteration (iteration 0), the VM has no compiled
+code for the benchmark and therefore it runs slowly in a profiling
+interpreter. After two or three iterations the profiler has collected enough
+information for the JIT the begin compiling. For this fictional VM,
+compilation is more expensive than the profiling interpreter, thus it is
+characterised by the spike at iteration 2. \footnote{The cost of
+the profiling interpreter relative to that of compilation vary on a per-VM
+basis.}At iteration 3, the JIT has compiled all of the code necessary to
+efficiently run the benchmark. Subsequent iterations use the compiled code
+and therefore run with improved performance. In other words, peak
+performance is achieved at iteration 3. Note however that the measured times
+for iterations $\geq 3$ are not quite the same. This is because there are many
+sources of random variation that impact benchmark measurements. Random
+variation can be introduced by the underlying operating system (e.g. by
+context switches), or by the VM itself (e.g. garbage collection).  Generally
+speaking, we expect peak performance measurements to be fast and ``mostly
+constant'', with only small random variations distributed around a constant
+mean~\cite{XXX}.  Ideally it would be possible to identify and control the
+sources of random variation, allowing us to measure only the performance
+characteristics of the VM. In practice however, this is very difficult.
 
 
 \section{Benchmarking Methodology}

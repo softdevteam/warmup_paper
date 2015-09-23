@@ -5,9 +5,9 @@ PDFLATEX=pdflatex -synctex=1
 
 LATEX_SIGPLAN = warmup
 
-LATEX_COMMON = 
+LATEX_COMMON =
 
-DIAGRAMS = 
+DIAGRAMS = 	img/trad.png
 
 TABLES=
 

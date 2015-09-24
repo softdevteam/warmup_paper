@@ -285,7 +285,9 @@ behaviour, as well descriptions and examples for all the anomalies.
 \subsection{Outliers}
 \label{sub:outliers}
 
- - need a definition, n sigma events? outside of the 99\% confidence interval?
+Outliers are iterations of a benchmark that take significantly longer than the
+other iterations, even taking the randomness of the benchmark iterations into
+account.
 
 \cfbolz{examples}
 
@@ -293,7 +295,8 @@ behaviour, as well descriptions and examples for all the anomalies.
 \subsection{Slowdowns}
 \label{sub:slowdowns}
 
- - first few iterations are faster than eventual mean
+A few benchmarks exhibit slow downs, where the first few iterations of a
+benchmarks are faster than the eventual mean after ``warm up''.
 
 \cfbolz{examples}
 
@@ -301,7 +304,9 @@ behaviour, as well descriptions and examples for all the anomalies.
 \subsection{Cyclic Behaviour}
 \label{sub:cyclic}
 
-  - every n iterations show really regular behaviour
+Cyclic behaviour occurs in a number of benchmarks, which is a pattern of $n$
+iterations that have similar timing results and keeps repeating across the
+benchmark runs.
 
 \cfbolz{examples}
 
@@ -309,7 +314,9 @@ behaviour, as well descriptions and examples for all the anomalies.
 \subsection{Late Phase Changes}
 \label{sub:phase}
 
-  - definition? "I know it when I see it"
+Late phase changes occur in benchmarks where after many iterations the benchmark
+changes behaviour, either by getting slower or faster, or by producing a
+different pattern of randomness.
 
 \cfbolz{examples}
 

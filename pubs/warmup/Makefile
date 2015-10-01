@@ -25,7 +25,7 @@ clean: clean-sigplan
 
 .PHONY: clean-sigplan
 clean-sigplan:
-	rm -rf ${DIAGRAMS} ${DIAGRAMS:S/.pdf/.eps/}
+	rm -rf ${DIAGRAMS:S/.pdf/.eps/}
 	for i in ${BASE_CLEANFILES}; do rm -f ${LATEX_SIGPLAN}.$${i}; done
 	rm -f ${OTHER_CLEANFILES}
 

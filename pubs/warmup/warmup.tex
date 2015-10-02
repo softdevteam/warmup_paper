@@ -53,31 +53,6 @@
 Warmup is magic.
 \end{abstract}
 
-\section*{Rough Notes}
-
-XXX what is the hypothesis we are checking? how about "the traditional notion
-of warmup is true", which we then reject?
-
-
-- safety checks
-  - are outliers deterministic across different processes? is the behaviour
-    generally the same looking?
-  - do some checks on other OS, machine architecture, frequency scaling independent
-
-- threats to validity
-
-\sarah{threats to validity: there may be some confounding variables that have not been controlled in these experiments. There may be bugs in the JITs that are being measured.
-The benchmarks in the guest languages might be similar enough that some important classes of behaviour have been missed, because the benchmarks here do not trigger those behaviours.
-There may be some un-thought of explanation for weird JIT behaviour which has nothing to do with the JIT.}
-
-- observations 2x2
-  - widely varying performance on the same machine
-  - late phase change not always there
-  - another case: bimodality
-  - slowdowns are sometimes speedups
-  - different repeating shapes across machines
-\sarah{Warm-up takes longer than expected, by comparison with the idealised JIT described in Section 2.}
-
 \section{Introduction}
 \label{sec:intro}
 
@@ -309,6 +284,19 @@ behaviour, as well descriptions and examples for all the anomalies.
 \cfbolz{need some examples of nice benchs}
 \cfbolz{we need a table which does all the categorizations, and examples}
 
+\cfbolz{observations 2x2: widely varying performance on the same machine, late
+phase change not always there, another case: bimodality, slowdowns are
+sometimes speedups, different repeating shapes across machines}
+
+\cfbolz{safety checks: are outliers deterministic across different processes?
+is the behaviour generally the same looking? do some checks on other OS,
+machine architecture, frequency scaling independent}
+
+
+\sarah{Warm-up takes longer than expected, by comparison with the idealised JIT
+described in Section 2.}
+
+
 \subsection{Outliers}
 \label{sub:outliers}
 
@@ -350,6 +338,17 @@ changes behaviour, either by getting slower or faster, or by producing a
 different pattern of randomness.
 
 \cfbolz{examples}
+
+\section{Threats to Validity}
+\label{sec:threats}
+
+\sarah{threats to validity: there may be some confounding variables that have
+not been controlled in these experiments. There may be bugs in the JITs that
+are being measured.  The benchmarks in the guest languages might be similar
+enough that some important classes of behaviour have been missed, because the
+benchmarks here do not trigger those behaviours.  There may be some un-thought
+of explanation for weird JIT behaviour which has nothing to do with the JIT.}
+
 
 \section{Discussion}
 \label{sec:Discussion}

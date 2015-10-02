@@ -270,7 +270,19 @@ Ruby VM using Graal/Truffle.
 All bar one of
 these VMs include a JIT compiler. CPython is a simple interpreter written in C,
 that was included as a kind of sanity check (it should not exhibit JIT warmup
-characteristics). We ran each benchmark with 2000 in-process iterations,
+characteristics). We ran the following benchmarks:
+
+\begin{description*}
+\item[binarytrees] Allocates, walks and deallocates binary trees.
+\item[richards] Simulates an operating system's task scheduler.
+\item[spectralnorm] Computes the spectral norm of a matrix.
+\item[nbody] Models the orbits of planets.
+\item[fasta] Performs various computations on DNA sequences.
+\item[fannkuch] Mutates a sequence of integers until a fix-point.
+\end{description*}
+
+
+We ran each benchmark with 2000 in-process iterations,
 and repeated this twice for each benchmarking machine involved. We used two
 similar X86-64 machines: the first a quad-core i7-4790K running at 4GHz with
 an 8MB cache and 24GB of RAM; the second, an Intel i7-4790 running at 3.6GHz
@@ -278,8 +290,6 @@ with 8MB of cache and 32GB of RAM. Both machines run Debian 8 and have Intel
 Turbo Boost disabled in the BIOS. All VMs were restricted to using at most
 2GB of heap. We did \emph{not} force garbage collection after each
 in-process iteration of a benchmark \cfbolz{we need to argue why we don't do anything special about GC}
-
-\cfbolz{we need a list of benchmarks}
 
 \section{Results}
 \label{sec:Results}

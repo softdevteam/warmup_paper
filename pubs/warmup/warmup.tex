@@ -56,6 +56,9 @@ Warmup is magic.
 \section{Introduction}
 \label{sec:intro}
 
+\edd{CF and I thought that perhaps this intro was a bit OTT, but Sarah says
+she likes it. What does Laurie think?}
+
 Recently there has been a boom in the number of emerging programming language
 implementations. Some of the new implementations target already existing
 languages (e.g. HHVM~\cite{XXX} and Truffle/JS ~\cite{XXX}), whereas others
@@ -67,9 +70,13 @@ consensus stems from the fact that the clock speeds of new CPUs have remained
 fixed for the last few years. This means that poor program performance can no
 longer be overcome by simply using a faster CPU, and thus there is a great deal
 of pressure for language implementers to deliver high performance systems.
-\sarah{Performant in terms of latency?}
+\sarah{Performant in terms of latency?}\edd{Yep, latency (discussed with
+Sarah on irc)}.
 
-\sarah{Fast and performant not necessarily the same thing. e.g. for something like Micropython, performant might mean ``uses very little memory''.}
+\sarah{Fast and performant not necessarily the same thing. e.g. for something
+like Micropython, performant might mean ``uses very little memory''.}\edd{Well,
+here we are benchmarking on desktop systems with abundant memory. We put
+emphasis on performance in terms of latency}
 With this new focus on building fast language implementations, VM and
 compiler engineers have started paying close attention to the performance of
 their systems. It is now not uncommon for projects to measure performance over
@@ -99,7 +106,10 @@ benchmark a few times (less than 100) in a single process, before ``chopping
 JIT warmup''. Although more intricate methodologies have recently
 proposed~\cite{XXX}, uptake has been slow, and it is not clear if they
 properly account for JIT warmup either.
-\sarah{Why is it not clear?}
+\sarah{Why is it not clear?}\edd{Kalibera method isn't very good at dealing
+with benchmarks that don't converge upon the ``independent state''. He
+suggests you take a single data point per-execution, which is wrong IMHO. If
+a fixed cycle is achieved, then I think it is safe to take >1 sample...}
 
 In this paper we scrutinise benchmarking methodologies and question if we --
 as a field -- are correctly measuring the performance of our JIT compilers,

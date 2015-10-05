@@ -109,11 +109,10 @@ This paper's structure is as follows. \laurie{blah blah}
 \section{Conceptions of Warmup}
 \label{sec:warmup}
 
-\sarah{This is nice, because it defines the sort of thing that might be important in a model of idealised JIT behaviour.
-Steady state implies low latency AND low variance of latency?}
 The term ``warmup'' refers to the way in which language runtimes tend to take
-time to reach a steady state of peak performance. The term is mostly used when
-talking about JIT compilers. A typical VM
+time to reach a steady state of peak performance, in terms of the execution
+time of user code (we do not consider efficient use of memory in this paper).
+The term is mostly used when talking about JIT compilers. A typical VM
 with a JIT begins executing a program in a profiling interpreter. Information
 gathered through profiling is then used as a heuristic to decide which portions
 of the program are good candidates for compilation to fast native code. Once a
@@ -139,8 +138,6 @@ amount of variation due to the operating system and execution environment.}
 \label{fig:trad}
 \end{figure}
 
-\sarah{If context switches can introduce noise, presumably the measurement of latency here is wall-clock time.
-In which case this might be mentioned a little earlier in the paper, to clarify what ``performant'' means in the rest of the paper.}
 The graph in Figure~\ref{fig:trad} demonstrates the impact that we might
 expect JIT warmup to have upon a benchmark running repeatedly within a
 single process. In the first iteration (iteration 0), the VM has no compiled
@@ -303,7 +300,9 @@ Outliers are iterations of a benchmark that take significantly longer than the
 other iterations, even taking the randomness of the benchmark iterations into
 account.
 
-Figure~\ref{fig:examples:outliers1} shows one such example.
+Figure~\ref{fig:examples:outliers1} shows one such example, which includes an
+outlier around iteration $900$ that runs more than $0.5s$ slower than the
+measurements either side of it.
 
 \begin{figure}[h!]
 \centering
@@ -372,6 +371,7 @@ Figure~\ref{fig:examples:late1} shows one such example.
 
 \edd{Many of the effects we saw are consistently weird. Some are not. What
 do we think of this as a section?}
+\sarah{Sounds good, what about a section on unexpectedly long warmup?}
 
 Figure~\ref{fig:examples:consistent_weirdness1} shows a case where
 unexpected behaviours are consistent between machines and executions.

@@ -56,75 +56,54 @@ Warmup is magic.
 \section{Introduction}
 \label{sec:intro}
 
-\edd{CF and I thought that perhaps this intro was a bit OTT, but Sarah says
-she likes it. What does Laurie think?}
+\laurie{we need a really simple graph in the intro, along the lines of the one
+in the glowworm proposal. and not the current figure 1, whose caption is really
+confusing!}
 
-Recently there has been a boom in the number of emerging programming language
-implementations. Some of the new implementations target already existing
-languages (e.g. HHVM~\cite{XXX} and Truffle/JS ~\cite{XXX}), whereas others
-target new languages altogether (e.g. Go~\cite{XXX}, Nim~\cite{XXX},
-Rust~\cite{XXX} and Dart~\cite{XXX}). Regardless of the design goals of a new
-language implementation, there is a shared consensus among language
-implementers: that new language implementations must be performant.  This
-consensus stems from the fact that the clock speeds of new CPUs have remained
-fixed for the last few years. This means that poor program performance can no
-longer be overcome by simply using a faster CPU, and thus there is a great deal
-of pressure for language implementers to deliver high performance systems.
-\sarah{Performant in terms of latency?}\edd{Yep, latency (discussed with
-Sarah on irc)}.
+\laurie{since, at the moment, we don't say anything about how \emph{long} it
+takes to warmup, i've not tried saying at all about that.}
 
-\sarah{Fast and performant not necessarily the same thing. e.g. for something
-like Micropython, performant might mean ``uses very little memory''.}\edd{Well,
-here we are benchmarking on desktop systems with abundant memory. We put
-emphasis on performance in terms of latency}
-With this new focus on building fast language implementations, VM and
-compiler engineers have started paying close attention to the performance of
-their systems. It is now not uncommon for projects to measure performance over
-the development life-cycle of their system;  using benchmarking to spot
-performance regressions and to take action should they arise. This is a step
-in the right direction; commendable perhaps, however benchmarking is not a
-trivial subject.
+Many modern languages are implemented as Virtual Machines (VMs) which use a
+Just-In-Time (JIT) compiler to translate programs into machine code at run-time.
+Since this compilation is not immediate, programs which are JIT compiled are
+said to be subject to a \emph{warmup} phase. During the warmup phase, program
+execution is slow; after warmup, execution is fast. Although users new to JIT
+compiled VMs are surprised by the effects of warmup, it is a widely understood
+phenomenon and shared by all JIT compiled VMs. Typically, benchmarking programs
+on JIT compiled VMs involves running a benchmark a number of times, discarding
+the first $n$ iterations where the VM is in the warmup phase, and reporting the
+result of the remaining iterations.
 
-\sarah{s/many different variables/many potentially confounding variables that must be controlled/}
-The problem with benchmarking is that there are many different variables that
-must be considered. How many iterations should be run? Does running on
-different hardware affect the outcome? Does using a different compiler to build
-our VM impact performance? Is this benchmark representative of a real program?
-The list goes on. Benchmarking is further complicated by \emph{Just In Time}
-(JIT) compilation techniques that are often deployed in modern language
-implementations. Typically the initial iterations of a benchmark running on a
-JIT tend to be much slower than later iterations. This is due to the fact that
-the JIT must profile and compile at runtime in order to generate fast code.
-The term \emph{peak performance} is often used to describe the point at which
-the fast code has been generated, and it is common for experimenters to
-disregard data prior to this point when benchmarking.
+In this paper, we show that the traditional notion of warmup is not generally
+applicable to modern JIT compiled VMs. We present a carefully designed
+experiment that allows us to run a number of simple benchmarks on a variety of
+VMs for a large number of iterations. We expected this to represent an ideal
+situation that would allow us to easily compare warmup across VMs. However, the
+results are surprising: some benchmarks on some VMs run as per traditional
+expectations; some never warmup at all, staying at their initial performance
+levels indefinitely; and some `warmdown', getting slower over time. Even within
+those benchmarks that appear to warmup in a traditional fashion, there are
+various performance patterns that make presenting a simple performance number
+difficult. \laurie{is is true?} Of the \laurie{however many} VMs we looked at,
+none consistently warmsup in the traditional notion.
 
-Although the concept of JIT warmup is widely known, few people have actually
-thought in detail about how we should account for these effects when
-benchmarking. Commonly, a mean time for a benchmark is derived by running a
-benchmark a few times (less than 100) in a single process, before ``chopping
-JIT warmup''. Although more intricate methodologies have recently
-proposed~\cite{XXX}, uptake has been slow, and it is not clear if they
-properly account for JIT warmup either.
-\sarah{Why is it not clear?}\edd{Kalibera method isn't very good at dealing
-with benchmarks that don't converge upon the ``independent state''. He
-suggests you take a single data point per-execution, which is wrong IMHO. If
-a fixed cycle is achieved, then I think it is safe to take >1 sample...}
+Our results suggest that, as a field, we need to take a more nuanced view
+of warmup. In general, we suggest it is better to think of most benchmarks as
+generally converging on a \emph{steady state} of performance (be that faster or
+slower than initial execution). When a benchmark does not converge on a steady
+state, we suggest that it is impossible to give meaningful performance figures.
+We believe our results are of interest both to VM writers and users of those
+VMs. VM authors may not have previously considered the different possible types
+of warmup behaviour, or found small benchmarks which trigger such behaviour.
+Users of VMs may obtain greater understanding of why their particular program
+does not perform as well on a JIT compiled VM as they expected.
 
-In this paper we scrutinise benchmarking methodologies and question if we --
-as a field -- are correctly measuring the performance of our JIT compilers,
-or if we are fooling ourselves by publishing biased results due to a
-misunderstanding of warmup behaviours. Our contributions are as follows:
+This paper's contributions are as follows:
+\begin{enumerate*}
+  \item \laurie{blah blah}
+\end{enumerate*}
 
-\begin{itemize}
-\item We first discuss the traditional notion of warmup behaviours that we have
-come to expect from programming language VMs.
-\item We describe an experiment designed to measure faithfully the true
-warmup behaviours of industry standard VMs.
-\item We analyse the results of our experiment in depth, showing a disparity
-between the expected and actual warmup behaviours of modern VMs.
-\item \edd{We discuss what we need to do about this?}
-\end{itemize}
+This paper's structure is as follows. \laurie{blah blah}
 
 
 \section{Conceptions of Warmup}
@@ -181,6 +160,12 @@ constant'', with only small random variations distributed around a constant
 mean~\cite{XXX}.  Ideally it would be possible to identify and control the
 sources of random variation, allowing us to measure only the performance
 characteristics of the VM. In practice however, this is very difficult.
+
+A handful of methodologies -- most notably
+\cite{kalibera12quantifying,kalibera13rigorous} -- require experimenters to take
+warmup into account when benchmarking. We therefore set out to quantify how long
+it takes various JIT compiled VMs to warmup. However, it soon became apparent to
+us that our understanding of warmup is extremely naive: 
 
 
 \section{Benchmarking Methodology}

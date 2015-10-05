@@ -131,8 +131,11 @@ and I will re-do it}.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=.4\textwidth]{img/trad}
-\caption{The traditional notion of JIT warmup impacting a fictional
-benchmark running on a fictional VM.}
+\caption{This (fictional) chart illustrates the commonly accepted understanding
+of JIT performance. Early iterations of a benchmark perform poorly during the
+warmup phase of the JIT. Once the JIT begins emitting native code (around
+iteration 3) the latency of the benchmark is consistently small, with a small
+amount of variation due to the operating system and execution environment.}
 \label{fig:trad}
 \end{figure}
 
@@ -165,7 +168,7 @@ A handful of methodologies -- most notably
 \cite{kalibera12quantifying,kalibera13rigorous} -- require experimenters to take
 warmup into account when benchmarking. We therefore set out to quantify how long
 it takes various JIT compiled VMs to warmup. However, it soon became apparent to
-us that our understanding of warmup is extremely naive: 
+us that our understanding of warmup is extremely naive:
 
 
 \section{Benchmarking Methodology}

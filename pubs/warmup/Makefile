@@ -7,7 +7,7 @@ LATEX_SIGPLAN = warmup
 
 LATEX_COMMON =
 
-DIAGRAMS = 	img/trad.png
+DIAGRAMS =
 
 TABLES=
 
@@ -34,7 +34,7 @@ ${BIBDB}: ${PREBIB} ../softdev.bib
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
-		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES}
+		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES} img/trad.png
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex

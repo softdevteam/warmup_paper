@@ -80,13 +80,11 @@ takes to warmup, i've not tried saying at all about that.}
 Many modern languages are implemented as Virtual Machines (VMs) which use a
 Just-In-Time (JIT) compiler to translate programs into machine code at run-time.
 Since this compilation is not immediate, programs which are JIT compiled are
-said to be subject to a \emph{warmup} phase. During the warmup phase, program
-execution is slow; after warmup, execution is fast. Although users new to JIT
-compiled VMs are surprised by the effects of warmup, it is a widely understood
-phenomenon and shared by all JIT compiled VMs. Typically, benchmarking programs
-on JIT compiled VMs involves running a benchmark a number of times, discarding
-the first $n$ iterations where the VM is in the warmup phase, and reporting the
-result of the remaining iterations.
+said to be subject to a \emph{warmup} phase. The common conception is that
+during this phase, program execution is slow; then afterwards, execution is
+fast. It is this ``traditional'' view on warmup that forms the basis for
+benchmarking. Typically benchmarks are run repeatedly, and results collected
+prior to warmup are discarded.
 
 In this paper, we show that the following hypothesis does not hold:
 \begin{description}

@@ -90,6 +90,7 @@ In this paper, we show that the following hypothesis does not hold:
 \begin{description}
   \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
 \end{description}
+
 We present a carefully designed
 experiment that allows us to run a number of simple benchmarks on a variety of
 VMs for a large number of iterations. We expected this to validate the above
@@ -99,19 +100,20 @@ expectations; some never warmup at all, staying at their initial performance
 levels indefinitely; and some `warmdown', getting slower over time. Even within
 those benchmarks that appear to warmup in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
-difficult. \laurie{is this true?} Of the \laurie{however many} VMs we looked at,
-none consistently warmsup in the traditional notion.
+difficult. \laurie{is this true?} \edd{I'll agree} Of the eigth VMs we looked at,
+none consistently warmed under the traditional model \edd{check this is true
+when we have all the results}.
 
 Our results suggest that, as a field, we need to take a more nuanced view
 of warmup. In general, we suggest it is better to think of most benchmarks as
 generally converging on a \emph{steady state} of performance (be that faster or
 slower than initial execution). When a benchmark does not converge on a steady
 state, we suggest that it is impossible to give meaningful performance figures.
-We believe our results are of interest both to VM writers and users of those
-VMs. VM authors may not have previously considered the different possible types
-of warmup behaviour, or found small benchmarks which trigger such behaviour.
-Users of VMs may obtain greater understanding of why their particular program
-does not perform as well on a JIT compiled VM as they expected.
+We believe our results are of interest to VM writers, but also to users of
+those VMs. Authors may not have considered the different types of warmup
+behaviour (or found benchmarks which trigger such behaviour), whereas users may
+obtain a greater understanding of why their programs do not perform as well as
+they had expected.
 
 This paper's contributions are as follows:
 \begin{enumerate*}

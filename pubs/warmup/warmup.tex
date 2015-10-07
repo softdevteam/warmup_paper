@@ -127,9 +127,9 @@ This paper's structure is as follows. \laurie{blah blah}
 \label{sec:warmup}
 
 The term ``warmup'' refers to the way in which language runtimes tend to take
-time to reach a steady state of peak performance, in terms of the execution
-time of user code (we do not consider efficient use of memory in this paper).
-The term is mostly used when talking about JIT compilers. A typical VM
+time to reach a steady state of peak performance (in terms of latency. We do
+not consider efficient use of memory in this paper).  The term is mostly used
+in relation to JIT compilers. A typical VM
 with a JIT begins executing a program in a profiling interpreter. Information
 gathered through profiling is then used as a heuristic to decide which portions
 of the program are good candidates for compilation to fast native code. Once a

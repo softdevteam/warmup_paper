@@ -26,6 +26,7 @@
 
 \newcommand{\krun}{\texttt{krun}\xspace}
 \newcommand{\hypone}{H1\xspace}
+\newcommand{\hyptwo}{H2\xspace}
 \newcommand{\binarytrees}{\emph{binary trees}\xspace}
 \newcommand{\richards}{\emph{Richards}\xspace}
 \newcommand{\spectralnorm}{\emph{spectralnorm}\xspace}
@@ -55,6 +56,9 @@
 \authorinfo{Carl Friedrich Bolz}
            {Software Development Team\\ Department of Informatics\\ King's College London}
            {http://cfbolz.de/}
+\authorinfo{Sarah Mount}
+           {Software Development Team\\ Department of Informatics\\ King's College London}
+           {http://snim2.org/}
 \authorinfo{Laurence Tratt}
            {Software Development Team\\ Department of Informatics\\ King's College London}
            {http://tratt.net/laurie/}
@@ -92,7 +96,7 @@ In this paper, we show that the following hypothesis does not hold:
 \end{description}
 
 We present a carefully designed
-experiment that allows us to run a number of simple benchmarks on a variety of
+experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of iterations. We expected this to validate the above
 hypothesis, allowing us to easily compare warmup across VMs. However, the
 results are surprising: some benchmarks on some VMs run as per traditional
@@ -100,7 +104,7 @@ expectations; some never warmup at all, staying at their initial performance
 levels indefinitely; and some `warmdown', getting slower over time. Even within
 those benchmarks that appear to warmup in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
-difficult. \laurie{is this true?} \edd{I'll agree} Of the eigth VMs we looked at,
+difficult. Of the eight VMs we looked at,
 none consistently warmed under the traditional model \edd{check this is true
 when we have all the results}.
 
@@ -205,83 +209,108 @@ process; \emph{executions} create a new process to run a benchmark in.
 \subsection{The CLBG micro-benchmarks}
 
 We used the \binarytrees, \richards, \spectralnorm, \nbody, \fasta, and
-\fannkuch microkbenchmarks from the CLBG (taking the particular implementations
-from those used in \cite{bolz14impact}), with implementations in Java,
+\fannkuch microkbenchmarks from the CLBG, with implementations in C, Java,
 Javascript, Python, and Ruby. Readers can be forgiven for initial scepticism
-about this set of micro-benchmarks. They are small, deterministic, and widely
+about this set of micro-benchmarks. They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
 optimised by VMs than arbitrary programs; when used as a proxy for other types
 of programs (e.g.~large programs), they tend to overstate the effectiveness of
 VM optimisations. In our context, this weakness is in fact a strength: we need
 small, deterministic, and widely examined programs so that we can test
-hypothesis \hypone. Looked at another way, if we were to run arbitrary programs
-and find unusual warmup behaviour, a VM author might reasonably counter with
+hypothesis \hypone. Put another way, if we were to run arbitrary programs
+and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-Our first task was to ensure that our micro-benchmarks are deterministic at the
-user's level. We define this as benchmarks taking precisely the same path
-through the Control Flow Graph (CFG) on each execution and iteration. Note that
-this definition of determinism a) can be checked by the user b) does not
+The CLBG micro-benchmarks often have multiple variants for a single language. We
+used the variants from \cite{bolz14impact} as our starting point. We then
+performed two separate checks / modifications on the variants to ensure their
+suitability for our purposes.
+
+First, we checked for, and removed any, user-visible control flow
+non-determinism in the benchmarks. By this we mean that benchmarks should take
+precisely the same path through the Control Flow Graph (CFG) on each and every
+execution and iteration. Note that
+this definition of determinism a) can be checked by the user and b) does not
 preclude the VM having other types of non-determinism when executing a benchmark
 (e.g.~objects in memory may be collected in a non-deterministic fashion). We
 first instrumented each micro-benchmark with \texttt{print} statements at each
 control flow point and ran them for \laurie{XXX} iterations. This showed that
-the \fasta benchmark was non-deterministic, using a random seed which was
+the \fasta benchmark was non-deterministic in all language variants, using a random seed which was
 initialised only on the initial load of the program; thus each iteration of the
 program returned different random numbers, causing different paths to be taken
 through the CFG. We removed this non-determinism by putting the seed
 initialisation in the main loop of the benchmark. Bearing in mind surprising
 results such as the important of link order \cite{mytkowicz09surprising}, we
 then recompiled all the VMs and ran them on a different machine to see if any
-compile-time constants affected determinism. \laurie{this is still ongoing work}
+compile-time constants affected determinism. \laurie{CF: please check to see if
+the remainder of this paragraph is right} This showed that the Java class loader
+initialises classes in a non-deterministic order, which affected the order that
+some parts of Java benchmarks were executed in \laurie{as I wrote that, I became
+aware that I don't really understand why this source of non-determinism crept
+into our benchmarks. Was it inside the main loop? If so, how?}. 
 
-We run benchmarks for 2000 iterations. We explicitly do not force a garbage
-collection after each iteration, as a VMs GC is an important factor in warmup.
+\laurie{this para needs checking} Second, we removed the fairly frequent use of
+\texttt{print}s to force computation in benchmarks. Clever compilers -- often
+dynamically, but sometimes statically -- are able to reason that the results of
+a benchmark are not used, and are able to optimise away virtually the entire
+benchmark. To avoid this happening, benchmarks often output intermediate results
+to the console. However, this means that one then ends up measuring the complex
+interactions between a language's IO libraries, the base operating system's IO
+libraries, and the operating system kernel itself. We altered \laurie{all?
+some?} benchmarks so that instead of intermediate printing, a checksum is
+calculated during the benchmark, and printed out after the final iteration.
+Doing so means that we remove all IO from our measurements, while still
+guaranteeing that compilers cannot optimise the main body of the benchmark. As a
+side bonus, we obtain a simple sanity check that different language variants
+really are performing equivalent computations.
+
+We run benchmarks for 2000 iterations. For the avoidance of doubt, and in
+contrast to some other experiments we are aware of \laurie{can we cite?}, we did
+\emph{not} force a collection after each iteration, as a VMs GC is an important
+factor in warmup.
 \laurie{how many executions?}
 
 
 \subsection{VMs under investigation}
 
-\laurie{i thought we were also including C versions of the benchmarks?}
-
-We ran the benchmarks on a collection of modern programming language VMs:
+We ran the benchmarks on a collection of modern programming language VMs,
+as well as GCC as a baseline:
 \begin{description*}
-\item[PyPy-2.6.0] A meta-tracing VM for Python-2.7.
-\item[Java8-b132] Oracle's Hotspot VM for Java.
-\item[Graal-dev~\footnote{Graal version 9dafd1dc5ff9.}] Oracle's next-gen
-Java VM.
-\item[LuaJIT-2.0.4] A tracing JIT for Lua.
-\item[HHVM] Facebook's PHP JIT.
-\item[JRuby/Truffle-dev~\footnote{JRuby/Truffle version 7b4cee81891f.}] A
-Ruby VM using Graal/Truffle.
-\item[V8-4.5.38] Google's JIT for Javascript.
-\item[CPython-2.7.10] The reference Python implementation.
+\item[GCC 4.9.2 \laurie{bencher6 is running 4.9.3. should we upgrade the others?}]
+\item[CPython 2.7.10] The reference Python implementation.
+\item[Graal \#9dafd1dc5ff9] Oracle's next-gen Java VM. \laurie{do we actually run graal on its own, or simply as part of Truffle?}
+\item[HHVM 3.7.1] Facebook's PHP JIT.
+\item[JRuby/Truffle \#7b4cee81891f] A Ruby VM using Graal/Truffle.
+\item[Java 8b132 \laurie{will be 8u45b14}] Oracle's Hotspot VM for Java.
+\item[LuaJIT 2.0.4] A tracing JIT for Lua.
+\item[PyPy 2.6.0] A meta-tracing VM for Python-2.7.
+\item[V8 4.5.38 \laurie{will be 4.8.90 or later}] Google's JIT for Javascript.
 \end{description*}
-
-All bar one of
-these VMs include a JIT compiler. CPython is a simple interpreter written in C,
-that was included as a kind of sanity check (it should not exhibit JIT warmup
-characteristics).
+We ran benchmarks on Linux (the main source of results in this paper) and
+OpenBSD. All VMs were run on Linux; neither HHVM nor JRuby/Truffle has yet been
+ported to OpenBSD, and we thus have no data for those VMs on OpenBSD.
 
 
 \subsection{\krun}
 
 Running benchmarks is a conceptually easy task that has many fiddly details in
-practise: VMs need to be compiled; benchmarks need to be run in a consistent
-environment; and errors need to be detected and reported to the user. We created
-the \krun system to enable us to reliably run and rerun benchmarks on different
-machines. In essence, \krun takes in a configuration file which enables it to
-automate what are traditionally manual and error-prone tasks. Benchmarks are
-written to output iteration timings to \texttt{stdout} which \krun then collects
-into a single output.
+practise: VMs need to be built carefully; benchmarks need to be run in a consistent
+environment; and errors need to be detected and reported to the user. We first created
+a build script which automates the building of all the VMs in our experiment, allowing
+us to predictably build VMs on multiple machines. We
+then created the \krun system which automates the running of benchmarks. Users specify a configuration file of VMs, benchmarks, and various settings (e.g.~the desired number of executions and iterations) which \krun then performs. As this suggests, \krun is a generic tool with utility beyond this paper, though we do not explore that in further depth. Benchmarks run by \krun have to output timings of each iteration to \texttt{stdout}; we provided a wrapper for each language to make this process easier, though this is not required.
 
-Some of the factors that \krun controls are platform-specific, and we detail
-those in subsequent subsections. However some aspects are common to all
+\krun is more than just a simple runner: it actively sets up the environment the
+benchmarks run in, as well as running benchmarks itself. Some of the factors
+that \krun controls are platform-specific, and we detail
+those in subsequent subsections. However, several aspects are common to all
 platforms. Most notably, \krun does its best to prevent machines from
 overheating, which tends to lead to CPUs being throttled (and thus distorting
 performance results). Temperature readings are taken when \krun starts; after
 each execution, \krun waits for the CPU to cool to within 10\%{} of this initial
-reading. If the system fails to cool down, \krun terminates. \laurie{is there a minimum sleep period?}
+reading. If the system fails to cool down, \krun terminates. \laurie{is there a
+minimum sleep period?} \laurie{how does rebooting interact with temperature
+stuff?}
 
 Other useful common features include the following. \krun specifies a consistent maximum heap
 \texttt{ulimit} for each VM (2GiB). It also monitors \texttt{dmesg} output,
@@ -295,26 +324,35 @@ the CPU being throttled''?}
 
 \subsection{Machines used}
 
-We used four machines and two operating systems:
+We used three machines and two operating systems:
 \begin{description*}
-  \item[\bencherthree] A quad-core i7-4790K 4GHz machine running Debian 8. Turbo boost
-    and hyper-threading were disabled in the BIOS.
-  \item[\bencherfive] A quad-core i7-4790 3.6GHz machine running Debian 8. Turbo
-    boost and hyper-threading were disabled in the BIOS.
-  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.7. Turbo
-    boost and hyper-threading were disabled in the BIOS.
-  \item[\bencherseven] The ARM machine. \laurie{more details needed}
+  \item[\bencherthree] A quad-core i7-4790K 4GHz machine running Debian 8.
+  \item[\bencherfive] A quad-core i7-4790 3.6GHz machine running Debian 8.
+  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.7.
 \end{description*}
+These machines allow us to investigate the effects of moderately different
+hardware (\bencherthree and \bencherfive have identical operating system and
+package installation) as well as moderately different operating systems
+(\bencherfive and \benchersix have identical hardware, but different Unix
+variants). We started with the following hypothesis:
+\begin{description}
+  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
+\end{description}
+We deliberately use the word `moderately', since significant changes of hardware
+(e.g.~ARM) or operating system (e.g.~Windows) implies significantly different
+parts of the VMs will be used (e.g.~different machine code backends may be of
+differing levels of maturity).
 
-On Intel machines, we disable turbo boost and hyper-threading. Turbo boost is a
+On Intel machines, we disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
-mode; this eventually causes the CPU to exceed its safe thermal limit, and is
-thus a temporary effect. Turbo boost can thus cause long-running processes to
+mode; this eventually causes the CPU to exceed its safe thermal limit, and
+performance is then reduced to a lower limit. Turbo boost can thus cause long-running processes to
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
-physical core is in fact more than one core. Different programs running in
-hyper-threads can thus interfere with each other in complex ways.
-Hyper-threading is thus a source of noise, but has no benefit to our benchmarks,
-where we do not even make use all of the cores in such machines.
+physical core is in fact more than one core, allowing more programs to
+run semi-simultaneously. However, hyper-threading causes programs to interfere
+with each others in complex ways, introducing considerable noise. It is of
+no real benefit in our situation, where we do not even make use all of the
+physical cores in our benchmarking machines.
 
 
 \subsubsection{Linux}

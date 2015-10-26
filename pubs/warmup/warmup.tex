@@ -24,6 +24,7 @@
 \usepackage{pifont}
 \usepackage{xspace}
 
+\newcommand{\kalibera}{Kalibera \& Jones\xspace}
 \newcommand{\krun}{\texttt{krun}\xspace}
 \newcommand{\hypone}{H1\xspace}
 \newcommand{\hyptwo}{H2\xspace}
@@ -108,11 +109,7 @@ difficult. Of the eight VMs we looked at,
 none consistently warmed under the traditional model \edd{check this is true
 when we have all the results}.
 
-Anecdotally, VM authors and researchers have occasionally noted unusual warmup
-behaviour, but this has often been dismissed as either representing a `one-off'
-or being unrepresentative. We are only aware of a single study, which notices
-odd effects on 4 very small benchmarks on a single
-VM~\cite{gil11microbenchmark}. Our much wider ranging results suggest that, as a
+Our much wider ranging results suggest that, as a
 field, we need to take a more nuanced view
 of warmup. In general, we suggest it is better to think of most benchmarks as
 generally converging on a \emph{steady state} of performance (be that faster or
@@ -135,23 +132,20 @@ This paper's structure is as follows. \laurie{blah blah}
 \section{Background}
 \label{sec:warmup}
 
-The term ``warmup'' refers to the way in which language runtimes tend to take
-time to reach a steady state of peak performance (in terms of latency. We do
-not consider efficient use of memory in this paper).  The term is mostly used
-in relation to JIT compilers. A typical VM
-with a JIT begins executing a program in a profiling interpreter. Information
-gathered through profiling is then used as a heuristic to decide which portions
-of the program are good candidates for compilation to fast native code. Once a
-candidate has been compiled, the VM uses the fast native code in the future
-(instead of the slow interpreter), thus improving performance.  Although
-interpretation, profiling and compilation all come with a performance hit,
-ideally there should be a point at which the VM has all of the binary code it
-needs to execute the whole program natively. At this point, interpretation,
-profiling and compilation should no longer occur, and thus peak performance is
-met. Between the start of the VM's execution and the point at which peak
-performance is met, the JIT is said to be ``warming up''.\edd{graph is in a
-different style to the others. If we decide this is a good example, ping me
-and I will re-do it}.
+It has long been known that programs vary in performance from execution to
+execution---in other words, that a single number is not sufficient to capture a
+program's range of performance. The notion of confidence intervals is a good
+first step towards capturing this notion for statically compiled
+programs~\cite{fleming86notlying}. However, JIT compiled VMs offer an additional
+complication: the performance of a program changes during execution. When a
+program starts running on a JIT compiling VM, it is typically (slowly)
+interpreted; once `hot' (i.e.~frequently executed) loops or methods are
+identified, they are dynamically compiled into machine code; and subsequent
+execution of those loops or methods uses (fast) machine code rather than the
+(slow) interpreter. The period during which a JIT compiling VM hot portions of a
+program are identified and compiled is referred to as \emph{warmup}; once all
+such portions have been compiled, the program is said to be at \emph{peak
+performance}.
 
 \begin{figure}[h!]
 \centering
@@ -164,34 +158,25 @@ amount of variation due to the operating system and execution environment.}
 \label{fig:trad}
 \end{figure}
 
-The graph in Figure~\ref{fig:trad} demonstrates the impact that we might
-expect JIT warmup to have upon a benchmark running repeatedly within a
-single process. In the first iteration (iteration 0), the VM has no compiled
-code for the benchmark and therefore it runs slowly in a profiling
-interpreter. After two or three iterations the profiler has collected enough
-information for the JIT the begin compiling. For this fictional VM,
-compilation is more expensive than the profiling interpreter, thus it is
-characterised by the spike at iteration 2. \footnote{The cost of
-the profiling interpreter relative to that of compilation vary on a per-VM
-basis.}At iteration 3, the JIT has compiled all of the code necessary to
-efficiently run the benchmark. Subsequent iterations use the compiled code
-and therefore run with improved performance. In other words, peak
-performance is achieved at iteration 3. Note however that the measured times
-for iterations $\geq 3$ are not quite the same. This is because there are many
-sources of random variation that impact benchmark measurements. Random
-variation can be introduced by the underlying operating system (e.g. by
-context switches), or by the VM itself (e.g. garbage collection).  Generally
-speaking, we expect peak performance measurements to be fast and ``mostly
-constant'', with only small random variations distributed around a constant
-mean~\cite{XXX}.  Ideally it would be possible to identify and control the
-sources of random variation, allowing us to measure only the performance
-characteristics of the VM. In practice however, this is very difficult.
+Figure~\ref{fig:trad} shows the expected performance profile of an abstract
+program under this model. Exactly how long warmup takes is highly dependent on
+the program and the JIT compiler, but this basic assumption about the
+performance model is shared by every JIT compiling VM.
 
-A handful of methodologies -- most notably
-\cite{kalibera12quantifying,kalibera13rigorous} -- require experimenters to take
-warmup into account when benchmarking. We therefore set out to quantify how long
-it takes various JIT compiled VMs to warmup. However, it soon became apparent to
-us that our understanding of warmup is extremely naive:
+Designing a benchmarking methodology which deals with the unusual nature of JIT
+compiling VMs is hard. The most advanced VM benchmarking methodology we are
+aware of is that of \kalibera~\cite{kalibera12quantifying,kalibera13rigorous}.
+Benchmarks with multiple iterations must have their results inspected by a human
+to manually determine when warmup has completed; all iterations before warmup
+are removed, and the statistics proposed by \kalibera then applied (see
+e.g.~\cite{barrett15approaches,grimmer15dynamically} for this scheme in use).
+\kalibera note that some benchmarks have cyclical behaviour, for example where
+pairs of iterations have low/high performance; users are required to
+consistently pick an iteration and use that for statistical analysis. As we
+shall see, identifying when warmup has completed is too tricky for humans to
+reliably identify. It would also be far more satisfying to deal with cyclical
+behaviour in a way that represents all parts, rather than a solitary part, of a
+cycle.
 
 
 \section{Methodology}
@@ -549,6 +534,18 @@ are being measured.  The benchmarks in the guest languages might be similar
 enough that some important classes of behaviour have been missed, because the
 benchmarks here do not trigger those behaviours.  There may be some un-thought
 of explanation for weird JIT behaviour which has nothing to do with the JIT.}
+
+
+\section{Related work}
+
+There are two works we are aware of which explicitly note unusual warmup
+patterns. Gil et al.'s main focus is on non-determinism over execution runs on
+HotSpot, and the difficulties this raise in terms of providing reliable
+benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
+least one benchmark (listBubbleSort) which on some executions undergoes what we
+have termed warmdown \laurie{is that the term we're using?}. \kalibera note the
+existence of what we have called cyclical behaviour, but require the user to
+manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}.
 
 
 \section{Discussion}

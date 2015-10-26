@@ -39,12 +39,12 @@
 \newcommand{\bencherseven}{ARM\xspace}
 
 \lstset{
-	basicstyle=\tt\scriptsize,
-	xleftmargin=2em,
+    basicstyle=\tt\scriptsize,
+    xleftmargin=2em,
     framexleftmargin=1.5em,
-	numberstyle=\scriptsize\tt\color{gray},
-	captionpos=b,
-	escapeinside={{<!}{!>}},
+    numberstyle=\scriptsize\tt\color{gray},
+    captionpos=b,
+    escapeinside={{<!}{!>}},
 }
 
 \begin{document}
@@ -108,7 +108,12 @@ difficult. Of the eight VMs we looked at,
 none consistently warmed under the traditional model \edd{check this is true
 when we have all the results}.
 
-Our results suggest that, as a field, we need to take a more nuanced view
+Anecdotally, VM authors and researchers have occasionally noted unusual warmup
+behaviour, but this has often been dismissed as either representing a `one-off'
+or being unrepresentative. We are only aware of a single study, which notices
+odd effects on 4 very small benchmarks on a single
+VM~\cite{gil11microbenchmark}. Our much wider ranging results suggest that, as a
+field, we need to take a more nuanced view
 of warmup. In general, we suggest it is better to think of most benchmarks as
 generally converging on a \emph{steady state} of performance (be that faster or
 slower than initial execution). When a benchmark does not converge on a steady
@@ -247,7 +252,9 @@ the remainder of this paragraph is right} This showed that the Java class loader
 initialises classes in a non-deterministic order, which affected the order that
 some parts of Java benchmarks were executed in \laurie{as I wrote that, I became
 aware that I don't really understand why this source of non-determinism crept
-into our benchmarks. Was it inside the main loop? If so, how?}. 
+into our benchmarks. Was it inside the main loop? If so, how?} \laurie{i now
+think the problem is that classes are loaded lazily as they are used, though i
+admit i'm not sure how our nondeterminism checks spotted this}. 
 
 \laurie{this para needs checking} Second, we removed the fairly frequent use of
 \texttt{print}s to force computation in benchmarks. Clever compilers -- often

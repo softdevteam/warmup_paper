@@ -185,15 +185,16 @@ cycle.
 To compare the warmup behaviour of different VMs, we created a carefully
 designed experiment. The basic idea is simple: we take a number of
 micro-benchmarks derived from the Computer Language Benchmarks Game (CLBG) and
-run them in a loop of 2000 iterations against a number of VMs. We then analyse
-the resulting data for information about warmup. Our experiment is designed to
-control as many potentially confounding variables as is practical.
+run them in a loop of 2000 iterations on a number of VMs. We repeat this
+process 10 times before analysing the resulting time series data. Our
+experiment is designed to control as many potentially confounding variables as
+is practical.
 
 In this section we detail the set of benchmarks we use; the VMs under
-investigation; the \krun system we have developed to reliably run benchmarks;
+investigation; our benchmark harness;
 and the hardware we used. Readers may wish to note that we use two terms defined
-by \cite{kalibera13rigorous}: \emph{iterations} are in-process repetitions of a
-process; \emph{executions} create a new process to run a benchmark in.
+by \cite{kalibera13rigorous}. \emph{Iterations} are in-process repetitions of a
+benchmark, whereas \emph{executions} are repetitions using fresh processes.
 
 
 \subsection{The CLBG micro-benchmarks}

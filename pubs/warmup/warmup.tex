@@ -273,17 +273,23 @@ factor in warmup.
 We ran the benchmarks on a collection of modern programming language VMs,
 as well as GCC as a baseline:
 \begin{description*}
-\item[GCC 4.9.2 \laurie{bencher6 is running 4.9.3. should we upgrade the others?}]
+\item[GCC] On Linux systems, version 4.9.2 from Debian packages; on OpenBSD the base version 4.2.1.
 \item[CPython 2.7.10] The reference Python implementation.
-\item[Graal \#9dafd1dc5ff9] Oracle's next-gen Java VM. \laurie{do we actually run graal on its own, or simply as part of Truffle?}
+\item[Graal \#9dafd1dc5ff9] Oracle's next-gen VM targeting Java.
 \item[HHVM 3.7.1] Facebook's PHP JIT.
-\item[JRuby/Truffle \#7b4cee81891f] A Ruby VM using Graal/Truffle.
-\item[Java 8b132 \laurie{will be 8u45b14}] Oracle's Hotspot VM for Java.
+\item[JRuby/Truffle \#7f4cd59cdd1c8] A Ruby interpreter using Graal for dynamic compilation.
+\item[Oracle Java 8u45b14] Oracle's Hotspot VM for Java.
 \item[LuaJIT 2.0.4] A tracing JIT for Lua.
-\item[PyPy 2.6.0] A meta-tracing VM for Python-2.7.
-\item[V8 4.5.38 \laurie{will be 4.8.90 or later}] Google's JIT for Javascript.
+\item[PyPy 4.0.0] A meta-tracing VM for Python-2.7.
+\item[V8 4.8.271.9] Google's JIT for Javascript.
 \end{description*}
-We ran benchmarks on Linux (the main source of results in this paper) and
+
+All VMs were built with the same version of GCC/G++ as used for the baseline C
+benchmarks, apart from where OpenBSD's GCC-4.2.1 was too old (PyPy, Oracle Java
+and V8). In these cases, GCC-4.9.3 (from OpenBSD packages) was used.\footnote{In
+future versions of this paper, we plan to use the same C compiler version
+across the board.} We ran benchmarks on Debian Linux (the main source of
+results in this paper) and
 OpenBSD. All VMs were run on Linux; neither HHVM nor JRuby/Truffle has yet been
 ported to OpenBSD, and we thus have no data for those VMs on OpenBSD.
 

@@ -201,7 +201,7 @@ benchmark, whereas \emph{executions} are repetitions using fresh processes.
 
 We used the \binarytrees, \richards, \spectralnorm, \nbody, \fasta, and
 \fannkuch microkbenchmarks from the CLBG, with implementations in C, Java,
-Javascript, Python, and Ruby. Readers can be forgiven for initial scepticism
+Javascript, Python, Lua, PHP and Ruby. Readers can be forgiven for initial scepticism
 about this set of micro-benchmarks. They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
 optimised by VMs than arbitrary programs; when used as a proxy for other types
@@ -217,51 +217,55 @@ used the variants from \cite{bolz14impact} as our starting point. We then
 performed two separate checks / modifications on the variants to ensure their
 suitability for our purposes.
 
-First, we checked for, and removed any, user-visible control flow
-non-determinism in the benchmarks. By this we mean that benchmarks should take
-precisely the same path through the Control Flow Graph (CFG) on each and every
-execution and iteration. Note that
-this definition of determinism a) can be checked by the user and b) does not
-preclude the VM having other types of non-determinism when executing a benchmark
-(e.g.~objects in memory may be collected in a non-deterministic fashion). We
-first instrumented each micro-benchmark with \texttt{print} statements at each
-control flow point and ran them for \laurie{XXX} iterations. This showed that
-the \fasta benchmark was non-deterministic in all language variants, using a random seed which was
+The benchmarks were slightly modified for our purposes. Out of the box, the
+CLBG the benchmarks are designed to be run once per process. Firstly, we
+modified each benchmark so that our harness can run them repeatedly in-process.
+An important aspect of this step involves locating and removing control flow
+non-determinism. By this we mean that benchmarks should take precisely the same
+path through the Control Flow Graph (CFG) on each iteration. Although this
+should remove some sources of variation, note that it does not preclude the VM
+having other types of non-determinism (e.g.~objects in memory may be allocated
+or collected in a non-deterministic fashion). We identified CFG non-determinism
+by instrumenting CFG choice points with \texttt{print} statements and compared
+the output across multiple runs (\edd{how many}). This showed that the \fasta
+benchmark was non-deterministic in all language variants, as it used a random
+seed which was
 initialised only on the initial load of the program; thus each iteration of the
-program returned different random numbers, causing different paths to be taken
+program acquired different random numbers, causing different paths to be taken
 through the CFG. We removed this non-determinism by putting the seed
 initialisation in the main loop of the benchmark. Bearing in mind surprising
-results such as the important of link order \cite{mytkowicz09surprising}, we
+results such as the importance of link order \cite{mytkowicz09surprising}, we
 then recompiled all the VMs and ran them on a different machine to see if any
 compile-time constants affected determinism. \laurie{CF: please check to see if
 the remainder of this paragraph is right} This showed that the Java class loader
-initialises classes in a non-deterministic order, which affected the order that
+initialises classes in a non-deterministic order, which affected the way that
 some parts of Java benchmarks were executed in \laurie{as I wrote that, I became
 aware that I don't really understand why this source of non-determinism crept
 into our benchmarks. Was it inside the main loop? If so, how?} \laurie{i now
 think the problem is that classes are loaded lazily as they are used, though i
-admit i'm not sure how our nondeterminism checks spotted this}. 
+admit i'm not sure how our nondeterminism checks spotted this}.
 
-\laurie{this para needs checking} Second, we removed the fairly frequent use of
-\texttt{print}s to force computation in benchmarks. Clever compilers -- often
-dynamically, but sometimes statically -- are able to reason that the results of
-a benchmark are not used, and are able to optimise away virtually the entire
-benchmark. To avoid this happening, benchmarks often output intermediate results
-to the console. However, this means that one then ends up measuring the complex
-interactions between a language's IO libraries, the base operating system's IO
-libraries, and the operating system kernel itself. We altered \laurie{all?
-some?} benchmarks so that instead of intermediate printing, a checksum is
-calculated during the benchmark, and printed out after the final iteration.
-Doing so means that we remove all IO from our measurements, while still
-guaranteeing that compilers cannot optimise the main body of the benchmark. As a
-side bonus, we obtain a simple sanity check that different language variants
-really are performing equivalent computations.
+Second, to avoid measuring I/O, we removed all writing to standard output from
+the benchmarks. By doing so however, we may unintentionally cause computations
+to be removed. Advanced compilers and VMs, may be able to prove that the
+results of a benchmark are not used, and may therefore optimise away large
+parts of the benchmark. To avoid this, we introduced checksums into the
+benchmarks. The checksums are simply a value whose value is tightly coupled
+with the computational work of the benchmarks. After each iteration the value
+of the checksum is checked against an expected value. If the values don't
+match, an error is printed and the benchmark is terminated. For properly
+implemented benchmarks, checksum errors do not occur, but since the condition
+under which the error is printed is interwoven into benchmark computations,we
+make it very difficult for a compiler or VM to optimise away large chunks of
+the benchmark. As a bonus, the checksums serve to check that each of the
+different language implementation do roughly the same work, but also they do a
+limited form of CFG determinism checking.
 
-We run benchmarks for 2000 iterations. For the avoidance of doubt, and in
+We ran 10 executions of each benchmark, each execution comprising of 2000
+iterations. For the avoidance of doubt, and in
 contrast to some other experiments we are aware of \laurie{can we cite?}, we did
 \emph{not} force a collection after each iteration, as a VMs GC is an important
 factor in warmup.
-\laurie{how many executions?}
 
 
 \subsection{VMs under investigation}

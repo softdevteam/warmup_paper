@@ -25,7 +25,7 @@
 \usepackage{xspace}
 
 \newcommand{\kalibera}{Kalibera \& Jones\xspace}
-\newcommand{\krun}{\texttt{krun}\xspace}
+\newcommand{\krun}{Krun\xspace}
 \newcommand{\hypone}{H1\xspace}
 \newcommand{\hyptwo}{H2\xspace}
 \newcommand{\binarytrees}{\emph{binary trees}\xspace}
@@ -296,12 +296,32 @@ ported to OpenBSD, and we thus have no data for those VMs on OpenBSD.
 
 \subsection{\krun}
 
-Running benchmarks is a conceptually easy task that has many fiddly details in
-practise: VMs need to be built carefully; benchmarks need to be run in a consistent
+Although running benchmarks is a conceptually easy, in practise it is a fiddly task:
+VMs need to be built carefully; benchmarks need to be run in a consistent
 environment; and errors need to be detected and reported to the user. We first created
 a build script which automates the building of all the VMs in our experiment, allowing
-us to predictably build VMs on multiple machines. We
-then created the \krun system which automates the running of benchmarks. Users specify a configuration file of VMs, benchmarks, and various settings (e.g.~the desired number of executions and iterations) which \krun then performs. As this suggests, \krun is a generic tool with utility beyond this paper, though we do not explore that in further depth. Benchmarks run by \krun have to output timings of each iteration to \texttt{stdout}; we provided a wrapper for each language to make this process easier, though this is not required.
+us to predictably build VMs on multiple machines. We then created \krun: an
+benchmark harness which automates benchmarking. \krun aims to be a generic tool
+with utility beyond this paper, though we do not explore that further.
+
+The basic architecture of \krun is as follows. A top-level supervisor script
+\texttt{krun.py} is the starting point for an experiment. This reads in a
+configuration file which describes to \krun which benchmarks are to be run, and
+which VMs they will run under, as well as the number of in-process iterations
+and executions to run. \krun then builds a work queue and begins running
+executions of benchmarks. For each execution, \krun forks an \emph{iterations
+runner}, whose role is to collect a series of in-process iteration times. Since
+the timings must be collected in-process, there are many iterations runners:
+one implemented in each language involved in the experiment. \krun passes
+arguments to the iterations runner which specify which benchmark to run, a
+number of iterations, and a \emph{benchmark parameter} which is used to
+calibrate the length of an iteration. The iterations runner dynamically imports
+the correct benchmark and times calls to a benchmark function in a loop. Once
+the desired number of iterations have been collected, the iterations runner
+returns a list of iteration times (the times for one execution) back to \krun.
+The results are accumulated on-disk in a JSON file.
+
+\edd{below text needs reading/revision}
 
 \krun is more than just a simple runner: it actively sets up the environment the
 benchmarks run in, as well as running benchmarks itself. Some of the factors

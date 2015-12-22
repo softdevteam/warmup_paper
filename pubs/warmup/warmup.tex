@@ -359,29 +359,30 @@ not used for the proper experiment, and has since been decommissioned).
 \subsubsection{Linux-specific Controls}
 
 On Linux, \krun controls several additional factors.
-
 First, it attempts to fix the CPU frequency to the highest
-possible `recommended' value (i.e.~below the overclocking range). This is achieved by disabling Intel
+possible value (without over-clocking). This is achieved by disabling Intel
 p-states support in the kernel and setting the CPU governor to \texttt{performance}
 mode.~\footnote{This is our best attempt at obtaining a constant CPU clock
 speed. The Linux kernel documentation states that ``the idea that frequency can
 be set to a single frequency is fiction for Intel Core
-processors''~\cite{XXX}.}
+processors'':
+\url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}}
 
-Second, it runs benchmarks on a single CPU core, reducing the cost of processes
-being forcibly moved to different cores. This is achieved through Linux's
-\texttt{isolcpus} feature. \laurie{this sentence scares me. i thought it would
-mean that kernel threads wouldn't run on the core!} This means that benchmarks
-share a CPU only with kernel threads. In theory a core can be fully isolated,
-however the Linux tool to enable this is currently broken
-\url{https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=796893}.
+Second, it runs benchmarks on an isolated CPU core, to minimise the effect of
+context switching. We achieved through Linux's \texttt{isolcpus} kernel
+argument.
 
-Third, \krun minimises the effects of the Linux kernel profiler \laurie{can we
-be clearer about what this thing is actually doing?}. We found this to introduce
-substantial noise into benchmarks, since it dynamically adjusts (lowers
-\laurie{can it only ever lower? can it raise?}) its sample rate if it is found
-to spend too much CPU time. While this feature cannot be entirely disabled on
-x86-64, \krun reduces its frequency to once per second, minimising noise.
+Third, \krun minimises the effects of the \texttt{perf} subsystem.
+\texttt{perf} is a kernel profiler which can be used to inspect hardware and
+kernel performance. It works by sampling counters in the system hardware at
+regular intervals. We became aware of \texttt{perf} when \krun began emailing
+us \texttt{dmesg} changes indicating that the \texttt{perf} sample-rate was
+being dynamically lowered. The Linux kernel does this when it detects that it
+is spending too much time in a \texttt{perf} sampling routine. Whilst this may
+be useful in a general setting, for benchmarking it may adjust benchmark
+performance over time. Since \texttt{perf} cannot be disabled, or compiled out
+of the kernel, \krun fixes the sample-rate to the smallest allowable value of
+1.
 
 \edd{data layout (e.g. ASLR)}
 

@@ -368,9 +368,10 @@ be set to a single frequency is fiction for Intel Core
 processors'':
 \url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}}
 
-Second, it runs benchmarks on an isolated CPU core, to minimise the effect of
-context switching. We achieved through Linux's \texttt{isolcpus} kernel
-argument.
+Second, \krun forces benchmarks onto an isolated CPU core to minimise the
+effect of context switching. \krun requires that the system was booted using
+the \texttt{isolcpus} kernel argument to isolate a core. If the argument was
+not used, \krun terminates.
 
 Third, \krun minimises the effects of the \texttt{perf} subsystem.
 \texttt{perf} is a kernel profiler which can be used to inspect hardware and
@@ -384,11 +385,27 @@ performance over time. Since \texttt{perf} cannot be disabled, or compiled out
 of the kernel, \krun fixes the sample-rate to the smallest allowable value of
 1.
 
-\edd{data layout (e.g. ASLR)}
+Fourth, \krun disables address space layout randomisation. During process
+relocation, by default the runtime linker loads libraries in a random order and
+at random offsets. This is prudent for everyday Linux use, as it helps to
+mitigate memory layout attacks. ASLR is not, however, practical for
+benchmarking, as memory layout can wildly impact benchmark
+performance~\cite{xxx}\edd{someone knows which paper to cite?}. \krun disables
+ALSR by setting the \texttt{randomize\_va\_space} entry in \texttt{/proc} to 0.
+
+Finally, \krun checks the system is running a ``tickless'' kernel. By default
+the Linux kernel uses a hardware interrupt at regular intervals to perform
+process scheduling and other housekeeping. The interrupt occurs even if the
+current process will not be evicted from the CPU, thus potentially introducing
+noise into the benchmarks. By running a tickless kernel -- a kernel which only
+runs the routines when necessary -- we minimise the impact of unnecessary tick
+routines.
 
 \subsubsection{OpenBSD-specific Controls}
 
 \laurie{sysctl to 100 and \texttt{apm -H} but p-states...?}
+
+Note that we are unable to disable ASLR or run in tickless mode on OpenBSD.
 
 \subsection{Machines used}
 

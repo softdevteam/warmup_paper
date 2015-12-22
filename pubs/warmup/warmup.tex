@@ -319,7 +319,8 @@ calibrate the length of an iteration. The iterations runner dynamically imports
 the correct benchmark and times calls to a benchmark function in a loop. Once
 the desired number of iterations have been collected, the iterations runner
 returns a list of iteration times (the times for one execution) back to \krun.
-The results are accumulated on-disk in a JSON file.
+The results are accumulated on-disk in a JSON file. \krun can be configured to
+email the user should any benchmarks crash, or generate unexpected results.
 
 Aside from being a simple benchmarking harness, \krun also aims to control as
 many confounding variables as is practically possible. Some of the factors that
@@ -336,14 +337,23 @@ prior to the first benchmark execution, then prior to subsequent executions
 If the system fails to cool down within 10 minutes, \krun terminates with an
 error.
 
-Other useful common features include the following. \krun specifies a consistent maximum heap
-\texttt{ulimit} for each VM (2GiB). It also monitors \texttt{dmesg} output,
-emailing the user when possibly important output appears in it (filtering out
-some unimportant information on a platform-specific basis, to avoid overwhelming
-the user). \laurie{Is it fair to say something like ``This is surprisingly
-informative: we removed one benchmarking machine form our suite when
-\texttt{dmesg} output showed that it was occasionally overheating, leading to
-the CPU being throttled''?}
+Second, \krun has \emph{reboot mode}, which we use for our experiments. Before
+each benchmark execution (including the first), \krun reboots the system and
+re-invokes itself when the system comes back up. After a 3 minute wait (to
+allow the system to fully come up), \krun then resumes benchmarking. This means
+that the system is in a fresh "known" state prior to each execution,
+essentially ensuring that later benchmark executions do not have an unfair
+advantage due to, (for example) fewer cache misses. Note that this mode does
+not preclude the use of the temperature control feature, as the starting
+temperatures are stored to disk and read in prior to each execution.
+
+Other platform-independent controls include the following. \krun imposes a
+consistent heap and stack \texttt{ulimit} for each VM (we used a 2GiB heap and
+a 8MB stack).\footnote{Note that some systems, e.g. Linux, do not honour
+ulimits.} It also notifies the user should the system \texttt{dmesg} buffer
+change. This feature was implemented after we found performance critical
+messages in the \texttt{dmesg} buffer of one of our machines (this machine was
+not used for the proper experiment, and has since been decommissioned).
 
 \subsubsection{Platform Dependent Controls}
 

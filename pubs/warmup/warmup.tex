@@ -321,19 +321,20 @@ the desired number of iterations have been collected, the iterations runner
 returns a list of iteration times (the times for one execution) back to \krun.
 The results are accumulated on-disk in a JSON file.
 
-\edd{below text needs reading/revision}
+Aside from being a simple benchmarking harness, \krun also aims to control as
+many confounding variables as is practically possible. Some of the factors that
+\krun controls are generic, whereas others are platform-specific. In the
+following subsections we discuss these.
 
-\krun is more than just a simple runner: it actively sets up the environment the
-benchmarks run in, as well as running benchmarks itself. Some of the factors
-that \krun controls are platform-specific, and we detail
-those in subsequent subsections. However, several aspects are common to all
-platforms. Most notably, \krun does its best to prevent machines from
-overheating, which tends to lead to CPUs being throttled (and thus distorting
-performance results). Temperature readings are taken when \krun starts; after
-each execution, \krun waits for the CPU to cool to within 10\%{} of this initial
-reading. If the system fails to cool down, \krun terminates. \laurie{is there a
-minimum sleep period?} \laurie{how does rebooting interact with temperature
-stuff?}
+\subsubsection{Platform Independent Controls}
+
+First, \krun does its best to maintain a consistent system temperature and to
+prevent machines from overheating, which may lead to CPUs being throttled (and
+thus distorting performance results). Initial temperature readings are taken
+prior to the first benchmark execution, then prior to subsequent executions
+\krun waits for the CPU to cool to within 10\%{} of the starting temperatures.
+If the system fails to cool down within 10 minutes, \krun terminates with an
+error.
 
 Other useful common features include the following. \krun specifies a consistent maximum heap
 \texttt{ulimit} for each VM (2GiB). It also monitors \texttt{dmesg} output,
@@ -344,6 +345,9 @@ informative: we removed one benchmarking machine form our suite when
 \texttt{dmesg} output showed that it was occasionally overheating, leading to
 the CPU being throttled''?}
 
+\subsubsection{Platform Dependent Controls}
+
+\edd{xxx}
 
 \subsection{Machines used}
 

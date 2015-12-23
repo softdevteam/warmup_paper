@@ -601,10 +601,22 @@ While we have designed our experiment as carefully as possible, we do not
 pretend to have controlled every possibly confounding variable. For example,
 because of the large quantity of software we had to install, and because we used
 different operating systems, we can not guarantee that the VMs were compiled in
-the same way on each machine. \laurie{if we're lucky, our cross-machine results
+precisely the same way on each machine. \laurie{if we're lucky, our cross-machine results
 will be fairly stable, which will allow us to say something like ``despite the
 possible variation across our machines, we got fairly stable results, suggesting
 that this was not a significant issue in practise''.}
+
+We use multiple different language implementations of benchmarks. Although our
+checksums confirm that the different languages perform roughly the same work,
+it is possible that some implementations may have an unfair advantage. This
+could be due to the fact that some workloads are inherently easily optimised in
+one language but not another, or perhaps because the original authors of the
+benchmarks structured their code with optimisations in mind. An open question
+is: should a multi-language benchmark suite should use idiomatic
+implementations, implementations literally translated from a base version, or
+the most performant implementations. Further it is not clear how having a
+performance advantage impacts warmup characteristics.
+
 
 \sarah{threats to validity: there may be some confounding variables that have
 not been controlled in these experiments. There may be bugs in the JITs that

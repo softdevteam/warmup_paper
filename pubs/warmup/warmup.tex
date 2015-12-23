@@ -403,9 +403,29 @@ routines.
 
 \subsubsection{OpenBSD-specific Controls}
 
-\laurie{sysctl to 100 and \texttt{apm -H} but p-states...?}
+On OpenBSD there is much less scope for controlling confounding variables: we
+are unable to disable ASLR, run on an isolated core, or run in tickless mode.
+Nevertheless, there are a couple of OpenBSD-specific controls.
 
-Note that we are unable to disable ASLR or run in tickless mode on OpenBSD.
+First, \krun will always put the system into the ``high-performance'' power
+mode, which it does simply by invoking \texttt{apm -H} prior to running
+benchmarks. This is mostly equivalent to using the \texttt{performance} CPU
+scaler under Linux. Note however, that OpenBSD does not provide any controls
+over Intel P-states, so we are unable to change P-state settings from the
+defaults.
+
+Second, \krun controls OpenBSD's memory allocator settings. OpenBSD implements
+a secure memory allocator which includes many exploit mitigation techniques,
+such as guard pages and enforcing \texttt{realloc} to always
+re-allocate.\footnote{See
+\url{http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/malloc.conf.5}
+for more information.} These features are useful for system security, but not
+necessarily for benchmarking, since (e.g.) always reallocating at
+\texttt{realloc} sites could invalidate caches etc. \krun uses the
+\texttt{MALLOC\_OPTIONS} environment variable to force allocation to behave
+more like the Linux allocator, thus minimising the potential for noise to be
+introduced by the allocator. The exacts flag settings used are
+\texttt{sfghjpru}.
 
 \subsection{Machines used}
 

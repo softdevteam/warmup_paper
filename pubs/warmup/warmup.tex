@@ -427,19 +427,21 @@ more like the Linux allocator, thus minimising the potential for noise to be
 introduced by the allocator. The exacts flag settings used are
 \texttt{sfghjpru}.
 
-\subsection{Machines used}
+\subsection{Benchmarking Machines}
 
 We used three machines and two operating systems:
 \begin{description*}
-  \item[\bencherthree] A quad-core i7-4790K 4GHz machine running Debian 8.
-  \item[\bencherfive] A quad-core i7-4790 3.6GHz machine running Debian 8.
-  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.7.
+  \item[\bencherthree] A quad-core i7-4790K 4GHz machine with 24GB of RAM, running Debian 8.
+  \item[\bencherfive] A quad-core i7-4790 3.6GHz machine with 32GB of RAM, running Debian 8.
+  \item[\benchersix] Identical hardware to \bencherfive, but with 32GB of RAM and running OpenBSD 5.8.
 \end{description*}
 These machines allow us to investigate the effects of moderately different
-hardware (\bencherthree and \bencherfive have identical operating system and
-package installation) as well as moderately different operating systems
-(\bencherfive and \benchersix have identical hardware, but different Unix
-variants). We started with the following hypothesis:
+hardware (\bencherthree and \bencherfive run the same operating system with the
+same updates installed) as well as moderately different operating systems
+(\bencherfive and \benchersix have almost identical hardware, but run different
+Unix
+variants). With regards to hardware and operating systems, we started with the
+following hypothesis:
 \begin{description}
   \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
 \end{description}

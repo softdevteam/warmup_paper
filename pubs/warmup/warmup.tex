@@ -309,23 +309,26 @@ Although running benchmarks is a conceptually easy, in practise it is a fiddly t
 VMs need to be built carefully; benchmarks need to be run in a consistent
 environment; and errors need to be detected and reported to the user. We first created
 a build script which automates the building of all the VMs in our experiment, allowing
-us to predictably build VMs on multiple machines. We then created \krun: an
+us to predictably build VMs on multiple machines. We then created \krun: a
 benchmark harness which automates benchmarking. \krun aims to be a generic tool
-with utility beyond this paper, though we do not explore that further.
+with utility beyond this paper, though we do not explore that further here.
 
 The basic architecture of \krun is as follows. A top-level supervisor script
-\texttt{krun.py} is the starting point for an experiment. This reads in a
-configuration file which describes to \krun which benchmarks are to be run, and
+\texttt{krun.py} is the starting point for an experiment. This reads in the
+users' configuration file which describes to \krun which benchmarks are to be run, and
 which VMs they will run under, as well as the number of in-process iterations
 and executions to run. \krun then builds a work queue and begins running
 executions of benchmarks. For each execution, \krun forks an \emph{iterations
 runner}, whose role is to collect a series of in-process iteration times. Since
-the timings must be collected in-process, there are many iterations runners:
-one implemented in each language involved in the experiment. \krun passes
+the timings must be collected in-process, the iterations runner must be written
+in the same language as the benchmark. As such, there are many iterations
+runners: one for each language involved in the experiment. \krun passes
 arguments to the iterations runner which specify which benchmark to run, a
 number of iterations, and a \emph{benchmark parameter} which is used to
 calibrate the length of an iteration. The iterations runner dynamically imports
-the correct benchmark and times calls to a benchmark function in a loop. Once
+the correct benchmark and times -- using a monotonic clock\footnote{We had to
+patch some VMs in order to be able to access the monotonic clock.} -- calls to
+a benchmark function in a loop. Once
 the desired number of iterations have been collected, the iterations runner
 returns a list of iteration times (the times for one execution) back to \krun.
 The results are accumulated on-disk in a JSON file. \krun can be configured to
@@ -388,8 +391,8 @@ kernel performance. It works by sampling counters in the system hardware at
 regular intervals. We became aware of \texttt{perf} when \krun began emailing
 us \texttt{dmesg} changes indicating that the \texttt{perf} sample-rate was
 being dynamically lowered. The Linux kernel does this when it detects that it
-is spending too much time in a \texttt{perf} sampling routine. Whilst this may
-be useful in a general setting, for benchmarking it may adjust benchmark
+is spending too much time in a \texttt{perf} sampling routine. This may
+be useful in a general setting, but not for us, as it may adjust benchmark
 performance over time. Since \texttt{perf} cannot be disabled, or compiled out
 of the kernel, \krun fixes the sample-rate to the smallest allowable value of
 1.
@@ -397,8 +400,8 @@ of the kernel, \krun fixes the sample-rate to the smallest allowable value of
 Fourth, \krun disables address space layout randomisation. During process
 relocation, by default the runtime linker loads libraries in a random order and
 at random offsets. This is prudent for everyday Linux use, as it helps to
-mitigate memory layout attacks. ASLR is not, however, practical for
-benchmarking, as memory layout can wildly impact benchmark
+mitigate memory layout attacks. For our benchmarks however, this is not
+desirable, as memory layout can wildly impact benchmark
 performance~\cite{xxx}\edd{someone knows which paper to cite?}. \krun disables
 ALSR by setting the \texttt{randomize\_va\_space} entry in \texttt{/proc} to 0.
 
@@ -429,8 +432,9 @@ such as guard pages and enforcing \texttt{realloc} to always
 re-allocate.\footnote{See
 \url{http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/malloc.conf.5}
 for more information.} These features are useful for system security, but not
-necessarily for benchmarking, since (e.g.) always reallocating at
-\texttt{realloc} sites could invalidate caches etc. \krun uses the
+for our experiment, since (e.g.) always reallocating at
+\texttt{realloc} sites could fragment memory and impact performance in
+unexpected ways. \krun uses the
 \texttt{MALLOC\_OPTIONS} environment variable to force allocation to behave
 more like the Linux allocator, thus minimising the potential for noise to be
 introduced by the allocator. The exacts flag settings used are
@@ -466,8 +470,8 @@ performance is then reduced to a lower limit. Turbo boost can thus cause long-ru
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
 physical core is in fact more than one core, allowing more programs to
 run semi-simultaneously. However, hyper-threading causes programs to interfere
-with each others in complex ways, introducing considerable noise. It is of
-no real benefit in our situation, where we do not even make use all of the
+with each others in complex ways, introducing considerable noise\edd{cite?}. It
+is of no real benefit in our situation, where we do not make use all of the
 physical cores in our benchmarking machines.
 
 \section{Results}

@@ -98,7 +98,8 @@ In this paper, we show that the following hypothesis does not hold:
 
 We present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
-VMs for a large number of iterations. We expected this to validate the above
+VMs for a large number of in-process iterations and repeated using fresh
+processes. We expected this to validate the above
 hypothesis, allowing us to easily compare warmup across VMs. However, the
 results are surprising: some benchmarks on some VMs run as per traditional
 expectations; some never warmup at all, staying at their initial performance
@@ -132,25 +133,31 @@ This paper's structure is as follows. \laurie{blah blah}
 \section{Background}
 \label{sec:warmup}
 
-It has long been known that programs vary in performance from execution to
-execution---in other words, that a single number is not sufficient to capture a
-program's range of performance. The notion of confidence intervals is a good
-first step towards capturing this notion for statically compiled
-programs~\cite{fleming86notlying}. However, JIT compiled VMs offer an additional
-complication: the performance of a program changes during execution. When a
-program starts running on a JIT compiling VM, it is typically (slowly)
+It has long been known that program performance can vary between runs and that
+a single number fails to capture the range of a program's performance. The
+notion of confidence intervals is a good first step towards capturing
+performance variations\edd{I removed a citation about geometric means from
+here(\cite{fleming86notlying}). Did we mean to cite something else?}, however,
+JIT compiled VMs offer an additional complication: JITs affect program
+performance \emph{during} program execution. When a program begins running on a
+JIT enabled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are dynamically compiled into machine code; and subsequent
 execution of those loops or methods uses (fast) machine code rather than the
-(slow) interpreter. The period during which a JIT compiling VM hot portions of a
-program are identified and compiled is referred to as \emph{warmup}; once all
+(slow) interpreter. The period during which the JIT identifies and complies hot
+portions of a program is referred to as \emph{warmup}; once all
 such portions have been compiled, the program is said to be at \emph{peak
-performance}.
+performance}\edd{Maybe I know too much from seeing our graphs, but theres
+always the opportunity for future compilation due to a program taking an
+as-of-yet untrodden code-path. I don't like to think that there is a moment in
+time after which no compilation will ever occur, although we seem to imply
+this. Maybe we should delay the definition of warmup until after the graph and
+explain that this is how this mystical notion is said to work}.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=.4\textwidth]{img/trad}
-\caption{\laurie{the problem here is that we say `fictional', but the data looks vaguely real. we'd do better to make an obviously-not-real data figure, so that users can't misinterpret it. the glowworm proposal has something along these lines in it already} This (fictional) chart illustrates the commonly accepted understanding
+\caption{\laurie{the problem here is that we say `fictional', but the data looks vaguely real. we'd do better to make an obviously-not-real data figure, so that users can't misinterpret it. the glowworm proposal has something along these lines in it already}\edd{let's drop in a version of that in the new graph style} This (fictional) chart illustrates the commonly accepted understanding
 of JIT performance. Early iterations of a benchmark perform poorly during the
 warmup phase of the JIT. Once the JIT begins emitting native code (around
 iteration 3) the latency of the benchmark is consistently small, with a small
@@ -158,17 +165,19 @@ amount of variation due to the operating system and execution environment.}
 \label{fig:trad}
 \end{figure}
 
-Figure~\ref{fig:trad} shows the expected performance profile of an abstract
-program under this model. Exactly how long warmup takes is highly dependent on
+Figure~\ref{fig:trad} shows the expected performance profile of a
+program subject to the conventional model of warmup. Exactly how long warmup
+takes is highly dependent on
 the program and the JIT compiler, but this basic assumption about the
-performance model is shared by every JIT compiling VM.
+performance model is shared by every JIT compiling VM\edd{can we cite something
+or is this simply folklore?}.
 
 Designing a benchmarking methodology which deals with the unusual nature of JIT
 compiling VMs is hard. The most advanced VM benchmarking methodology we are
 aware of is that of \kalibera~\cite{kalibera12quantifying,kalibera13rigorous}.
 Benchmarks with multiple iterations must have their results inspected by a human
 to manually determine when warmup has completed; all iterations before warmup
-are removed, and the statistics proposed by \kalibera then applied (see
+are removed, and the statistics proposed by \kalibera are then applied (see
 e.g.~\cite{barrett15approaches,grimmer15dynamically} for this scheme in use).
 \kalibera note that some benchmarks have cyclical behaviour, for example where
 pairs of iterations have low/high performance; users are required to

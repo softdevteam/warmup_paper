@@ -221,12 +221,9 @@ hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-The CLBG micro-benchmarks often have multiple variants for a single language. We
-used the variants from \cite{bolz14impact} as our starting point. We then
-performed two separate checks / modifications on the variants to ensure their
-suitability for our purposes.
-
-The benchmarks were slightly modified for our purposes. Out of the box, the
+The CLBG micro-benchmarks often have multiple variants for a single language.
+We used the variants from \cite{bolz14impact} as our starting point. The
+benchmarks were slightly modified for our purposes. Out of the box, the
 CLBG the benchmarks are designed to be run once per process. Firstly, we
 modified each benchmark so that our harness can run them repeatedly in-process.
 An important aspect of this step involves locating and removing control flow
@@ -234,7 +231,7 @@ non-determinism. By this we mean that benchmarks should take precisely the same
 path through the Control Flow Graph (CFG) on each iteration. Although this
 should remove some sources of variation, note that it does not preclude the VM
 having other types of non-determinism (e.g.~objects in memory may be allocated
-or collected in a non-deterministic fashion). We identified CFG non-determinism
+or garbage collected non-deterministically). We identified CFG non-determinism
 by instrumenting CFG choice points with \texttt{print} statements and compared
 the output across multiple runs (\edd{how many}). This showed that the \fasta
 benchmark was non-deterministic in all language variants, as it used a random
@@ -252,23 +249,26 @@ some parts of Java benchmarks were executed in \laurie{as I wrote that, I became
 aware that I don't really understand why this source of non-determinism crept
 into our benchmarks. Was it inside the main loop? If so, how?} \laurie{i now
 think the problem is that classes are loaded lazily as they are used, though i
-admit i'm not sure how our nondeterminism checks spotted this}.
+admit i'm not sure how our nondeterminism checks spotted this}.\edd{As I
+understand it, that is not a compile-time effect, but a run-time effect? Maybe
+expand/reword}
 
-Second, to avoid measuring I/O, we removed all writing to standard output from
+Additionally, to avoid measuring I/O, we removed the use of standard output
+from
 the benchmarks. By doing so however, we may unintentionally cause computations
-to be removed. Advanced compilers and VMs, may be able to prove that the
+to be removed. Compilers and VMs, may be able to prove that the
 results of a benchmark are not used, and may therefore optimise away large
 parts of the benchmark. To avoid this, we introduced checksums into the
-benchmarks. The checksums are simply a value whose value is tightly coupled
-with the computational work of the benchmarks. After each iteration the value
+benchmarks. Into each benchmark we introduce a variable whose value is tightly
+coupled with the computational work of one iteration of the benchmark. After
+each iteration the value
 of the checksum is checked against an expected value. If the values don't
 match, an error is printed and the benchmark is terminated. For properly
 implemented benchmarks, checksum errors do not occur, but since the condition
 under which the error is printed is interwoven into benchmark computations,we
 make it very difficult for a compiler or VM to optimise away large chunks of
 the benchmark. As a bonus, the checksums serve to check that each of the
-different language implementation do roughly the same work, but also they do a
-limited form of CFG determinism checking.
+different language implementations do (roughly) the same work.
 
 We ran 10 executions of each benchmark, each execution comprising of 2000
 iterations. For the avoidance of doubt, and in

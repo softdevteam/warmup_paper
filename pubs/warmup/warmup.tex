@@ -83,15 +83,19 @@ confusing!}
 takes to warmup, i've not tried saying at all about that.}
 
 Many modern languages are implemented as Virtual Machines (VMs) which use a
-Just-In-Time (JIT) compiler to translate programs into machine code at run-time.
-Since this compilation is not immediate, programs which are JIT compiled are
-said to be subject to a \emph{warmup} phase. The common conception is that
-during this phase, program execution is slow; then afterwards, execution is
-fast. It is this ``traditional'' view on warmup that forms the basis for
-benchmarking. Typically benchmarks are run repeatedly, and results collected
-prior to warmup are discarded.
+Just-In-Time (JIT) compiler to translate `hot' parts of a program into efficient
+machine code at run-time. Since it takes time to determine which parts of the
+program are hot, and then compile them, programs which are JIT compiled are
+said to be subject to a \emph{warmup} phase. The traditional view of
+JIT compiled VMs is that program execution is slow during the warmup phase, and
+fast afterwards, when \emph{peak performance} is said to have been reached.
+This traditional view underlies most benchmarking of JIT compiled VMs, which
+generally aim to measure peak performance. Benchmarking methodologies usually
+require running benchmarks several times within a single VM process, and
+discarding any timing data collected before warmup is complete.
 
-In this paper, we show that the following hypothesis does not hold:
+In this paper, we test the following hypothesis, which captures a constrained
+notion of the traditional notion of warmup:
 \begin{description}
   \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
 \end{description}
@@ -99,20 +103,19 @@ In this paper, we show that the following hypothesis does not hold:
 We present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of in-process iterations and repeated using fresh
-processes. We expected this to validate the above
-hypothesis, allowing us to easily compare warmup across VMs. However, the
-results are surprising: some benchmarks on some VMs run as per traditional
-expectations; some never warmup at all, staying at their initial performance
-levels indefinitely; and some `warmdown', getting slower over time. Even within
+processes. We expected this to validate the above hypothesis, allowing us to
+easily compare warmup across VMs. While some benchmarks on some VMs run as per
+traditional expectations, we found a number of surprising cases. At
+the most extreme, some benchmarks never warmup, staying at their initial performance
+levels indefinitely and some `warmdown', getting slower over time. Even for
 those benchmarks that appear to warmup in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
 difficult. Of the eight VMs we looked at,
 none consistently warmed under the traditional model \edd{check this is true
 when we have all the results}.
 
-Our much wider ranging results suggest that, as a
-field, we need to take a more nuanced view
-of warmup. In general, we suggest it is better to think of most benchmarks as
+Our results thus suggest that the traditional view of warmup is badly out of date. 
+We suggest it is better to think of most benchmarks as
 generally converging on a \emph{steady state} of performance (be that faster or
 slower than initial execution). When a benchmark does not converge on a steady
 state, we suggest that it is impossible to give meaningful performance figures.

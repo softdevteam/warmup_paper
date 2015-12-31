@@ -94,16 +94,19 @@ generally aim to measure peak performance. Benchmarking methodologies usually
 require running benchmarks several times within a single VM process, and
 discarding any timing data collected before warmup is complete.
 
-In this paper, we test the following hypothesis, which captures a constrained
+Our fundamental aim in this paper is to test the following hypothesis, which captures a constrained
 notion of the traditional notion of warmup:
 \begin{description}
   \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
 \end{description}
-
-We present a carefully designed
+In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of in-process iterations and repeated using fresh
-processes. We expected this to validate the above hypothesis, allowing us to
+processes. From this we obtain \emph{time series} data, to which we apply a
+number of statistical techniques that have not previously been applied
+in the context of VM benchmarking.
+
+We expected our experiment to validate Hypothesis H1, allowing us to
 easily compare warmup across VMs. While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
 the most extreme, some benchmarks never warmup, staying at their initial performance
@@ -210,9 +213,8 @@ satisfying benchmarking statistics.
 \section{Methodology}
 \label{sec:methodology}
 
-To compare the warmup behaviour of different VMs, we created a carefully
-designed experiment. The basic idea is simple: we take a number of
-micro-benchmarks derived from the Computer Language Benchmarks Game (CLBG) and
+To test Hypothesis H1, we designed an experiment with a simple basic idea: to
+take a number of micro-benchmarks derived and
 run them in a loop of 2000 iterations on a number of VMs. We repeat this
 process 10 times before analysing the resulting time series data. Our
 experiment is designed to control as many potentially confounding variables as
@@ -225,18 +227,28 @@ by \cite{kalibera13rigorous}. \emph{Iterations} are in-process repetitions of a
 benchmark, whereas \emph{executions} are repetitions using fresh processes.
 
 
-\subsection{The CLBG micro-benchmarks}
+\subsection{The micro-benchmarks}
 
-We used the \binarytrees, \richards, \spectralnorm, \nbody, \fasta, and
-\fannkuch microkbenchmarks from the CLBG, with implementations in C, Java,
-Javascript, Python, Lua, PHP and Ruby. Readers can be forgiven for initial scepticism
-about this set of micro-benchmarks. They are small and widely
+The micro-benchmarks we use are as follows: \binarytrees, \spectralnorm, \nbody,
+\fasta, and \fannkuch from the Computer Language Benchmarks Game (CLBG); and
+\richards. For each benchmark, we provide C, Java, Javascript, Python, Lua, PHP,
+and Ruby versions.\footnote{Our need to have implementations in a wide variety
+of languages restricted the micro-benchmarks we could use.} Since most of these
+benchmarks have multiple implementations in any given language, we mostly picked
+the same versions used in~\cite{bolz14impact}, which represented the fastest
+performers at the point of that publication. In a few cases \laurie{can we say
+``X of Y'' i.e. something like ``about 3 of 40 benchmarks''?}, we noted that
+substantially faster implementations are now available, and substituted them
+accordingly.
+
+Readers can be forgiven for initial scepticism about this set of micro-benchmarks.
+They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
-optimised by VMs than arbitrary programs; when used as a proxy for other types
+optimised by VMs than average programs; when used as a proxy for other types
 of programs (e.g.~large programs), they tend to overstate the effectiveness of
 VM optimisations. In our context, this weakness is in fact a strength: we need
 small, deterministic, and widely examined programs so that we can test
-hypothesis \hypone. Put another way, if we were to run arbitrary programs
+Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 

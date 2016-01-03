@@ -227,7 +227,7 @@ by \cite{kalibera13rigorous}. \emph{Iterations} are in-process repetitions of a
 benchmark, whereas \emph{executions} are repetitions using fresh processes.
 
 
-\subsection{The micro-benchmarks}
+\subsection{The Micro-benchmarks}
 
 The micro-benchmarks we use are as follows: \binarytrees, \spectralnorm, \nbody,
 \fasta, and \fannkuch from the Computer Language Benchmarks Game (CLBG); and
@@ -252,28 +252,39 @@ Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-The CLBG micro-benchmarks often have multiple variants for a single language.
-We used the variants from \cite{bolz14impact} as our starting point. The
-benchmarks were slightly modified for our purposes. Out of the box, the
-CLBG the benchmarks are designed to be run once per process. Firstly, we
-modified each benchmark so that our harness can run them repeatedly in-process.
-An important aspect of this step involves locating and removing control flow
-non-determinism. By this we mean that benchmarks should take precisely the same
-path through the Control Flow Graph (CFG) on each iteration. Although this
-should remove some sources of variation, note that it does not preclude the VM
-having other types of non-determinism (e.g.~objects in memory may be allocated
-or garbage collected non-deterministically). We identified CFG non-determinism
-by instrumenting CFG choice points with \texttt{print} statements and compared
-the output across multiple runs (\edd{how many}). This showed that the \fasta
-benchmark was non-deterministic in all language variants, as it used a random
-seed which was
-initialised only on the initial load of the program; thus each iteration of the
-program acquired different random numbers, causing different paths to be taken
-through the CFG. We removed this non-determinism by putting the seed
-initialisation in the main loop of the benchmark. Bearing in mind surprising
-results such as the importance of link order \cite{mytkowicz09surprising}, we
-then recompiled all the VMs and ran them on a different machine to see if any
-compile-time constants affected determinism. \laurie{CF: please check to see if
+Each benchmark was run for \laurie{XXX} executions, each comprising 2000
+iterations. For the avoidance of doubt -- and in
+contrast to some other experiments we are aware of \laurie{can we cite?} -- we 
+did not interfere with any VMs Garbage Collection (GC) (e.g.~we did not
+force a collection after each iteration).
+
+
+\subsubsection{Ensuring Determinism}
+
+We wished to ensure, as far as possible, that the micro-benchmarks are
+deterministic from the user's perspective, by which we mean that they
+take precisely the same path through the Control Flow Graph (CFG) on each
+execution and iteration. Note that this definition deliberately focuses
+on non-determinism that is controllable by the user; other forms of
+non-determinism within the VM are deliberately excluded, as they are
+part of what we are trying to measure (e.g.~objects in memory may be allocated
+or garbage collected non-deterministically). To test this, we created variants
+of all benchmarks with \texttt{print} statements at all possible points of
+divergence (e.g.~\texttt{if} statements' true and false branches).\footnote{These
+variants are available in our experimental suite.}
+
+We first ran the benchmarks many \edd{how many?} times, and compared the outputs
+of different runs. This showed that the \fasta benchmark was non-deterministic
+in all language variants. \fasta generates random numbers using a simple
+algorithm. The random seed was initialised at the start of \fasta, but not after
+each iteration, so each iteration generated different random numbers. We thus
+moved the random seed initialisation to the benchmark's main loop, ensuring that
+each iteration uses the same sequence of random numbers.
+
+Bearing in mind surprising
+results such as the importance of link order~\cite{mytkowicz09surprising}, we
+then used two different machines to compile VMs and then ran the benchmarks
+on these machines. \laurie{CF: please check to see if
 the remainder of this paragraph is right} This showed that the Java class loader
 initialises classes in a non-deterministic order, which affected the way that
 some parts of Java benchmarks were executed in \laurie{as I wrote that, I became
@@ -284,54 +295,85 @@ admit i'm not sure how our nondeterminism checks spotted this}.\edd{As I
 understand it, that is not a compile-time effect, but a run-time effect? Maybe
 expand/reword}
 
-Additionally, to avoid measuring I/O, we removed the use of standard output
-from
-the benchmarks. By doing so however, we may unintentionally cause computations
-to be removed. Compilers and VMs, may be able to prove that the
-results of a benchmark are not used, and may therefore optimise away large
-parts of the benchmark. To avoid this, we introduced checksums into the
-benchmarks. Into each benchmark we introduce a variable whose value is tightly
-coupled with the computational work of one iteration of the benchmark. After
-each iteration the value
-of the checksum is checked against an expected value. If the values don't
-match, an error is printed and the benchmark is terminated. For properly
-implemented benchmarks, checksum errors do not occur, but since the condition
-under which the error is printed is interwoven into benchmark computations,we
-make it very difficult for a compiler or VM to optimise away large chunks of
-the benchmark. As a bonus, the checksums serve to check that each of the
-different language implementations do (roughly) the same work.
 
-We ran 10 executions of each benchmark, each execution comprising of 2000
-iterations. For the avoidance of doubt, and in
-contrast to some other experiments we are aware of \laurie{can we cite?}, we did
-\emph{not} force a collection after each iteration, as a VMs GC is an important
-factor in warmup.
+\subsubsection{Measuring Computation and Not File Performance}
+
+Micro-benchmarks perform computation which is not then used. Highly optimising
+compilers notice this, and can often optimise away part or all of a
+micro-benchmark's computation. To avoid this happening, most micro-benchmarks
+output intermediate and final results to \texttt{stdout} so that computation is
+not optimised away. However, one can quickly end up in a situation where one is
+unintentionally measuring, in part or whole, the performance of file routines in
+the OS libraries and the kernel.
+
+To lessen the possibility of optimising compilers removing benchmark computation,
+we modified all of the benchmarks to calculate a checksum on each iteration
+\laurie{i assume we output the final checksum to stdout, otherwise a clever
+compiler might manage to remove everything. or do we add all the checksums
+together so that we can guarantee the optimiser in fact runs every iteration?}.
+At the end of each iteration, the checksum is validated against an expected
+value. Note that each micro-benchmark has a single checksum value for all
+language variants, which provides some assurance that each language variant is
+performing the same work.
+
+
+\subsection{Benchmarking Machines}
+
+We used three machines and two operating systems:
+\begin{description*}
+  \item[\bencherthree] A quad-core i7-4790K 4GHz machine with 24GB of RAM, running Debian 8.
+  \item[\bencherfive] A quad-core i7-4790 3.6GHz machine with 32GB of RAM, running Debian 8.
+  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.8.
+\end{description*}
+These machines allow us to investigate the effects of moderately different
+hardware (\bencherthree and \bencherfive run the same operating system with the
+same updates installed) as well as moderately different operating systems
+(\bencherfive and \benchersix have almost identical hardware, but run different
+Unix
+variants). With regards to hardware and operating systems, we started with the
+following hypothesis:
+\begin{description}
+  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
+\end{description}
+We deliberately use the word `moderately', since significant changes of hardware
+(e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) implies that
+significantly different parts of the VMs will be used (e.g.~different machine
+code backends may be of differing levels of maturity).
+
+On Intel machines, we disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
+feature which allows CPUs to temporarily run in an extremely high-performance
+mode; this eventually causes the CPU to exceed its safe thermal limit, and
+performance is then reduced to a lower limit. Turbo boost can thus cause long-running processes to
+appear to suddenly slow down. Hyper-threading gives the illusion that a single
+physical core is in fact more than one core, allowing more programs to
+run semi-simultaneously. However, hyper-threading causes programs to interfere
+with each others in complex ways, introducing considerable noise\edd{cite?}. It
+is of no real benefit in our situation, where we do not make use all of the
+physical cores in our benchmarking machines.
 
 
 \subsection{VMs under investigation}
 
-We ran the benchmarks on a collection of modern programming language VMs,
-as well as GCC as a baseline:
+We ran the benchmarks on the following VMs:
 \begin{description*}
 \item[GCC] On Linux systems, version 4.9.2 from Debian packages; on OpenBSD the base version 4.2.1.
-\item[CPython 2.7.10] The reference Python implementation.
+\item[CPython 2.7.10] The reference Python implementation\laurie{not currently, right?}.
 \item[Graal \#9dafd1dc5ff9] Oracle's next-gen VM targeting Java.
 \item[HHVM 3.7.1] Facebook's PHP JIT.
 \item[JRuby/Truffle \#7f4cd59cdd1c8] A Ruby interpreter using Graal for dynamic compilation.
-\item[Oracle Java 8u45b14] Oracle's Hotspot VM for Java.
+\item[HotSpot 8u45b14] The most widely used Java VM.
 \item[LuaJIT 2.0.4] A tracing JIT for Lua.
 \item[PyPy 4.0.0] A meta-tracing VM for Python-2.7.
 \item[V8 4.8.271.9] Google's JIT for Javascript.
 \end{description*}
+Although not a VM, GCC serves as a baseline to compare the VMs against.
 
-All VMs were built with the same version of GCC/G++ as used for the baseline C
-benchmarks, apart from where OpenBSD's GCC-4.2.1 was too old (PyPy, Oracle Java
-and V8). In these cases, GCC-4.9.3 (from OpenBSD packages) was used.\footnote{In
-future versions of this paper, we plan to use the same C compiler version
-across the board.} We ran benchmarks on Debian Linux (the main source of
-results in this paper) and
-OpenBSD. All VMs were run on Linux; neither HHVM nor JRuby/Truffle has yet been
-ported to OpenBSD, and we thus have no data for those VMs on OpenBSD.
+On Debian all VMs were compiled with GCC/G++ \laurie{version number}. On OpenBSD,
+most VMs were compiled with GCC 4.2.1, except for PyPy, HotSpot, and V8 where
+GCC 4.9.3 was used.\footnote{For future versions of this paper, we will use a
+single C compiler for all operating systems and all VMs.} Neither HHVM nor
+JRuby/Truffle has currently been ported to OpenBSD, and thus we were unable to
+run those VMs on OpenBSD.
 
 
 \subsection{\krun}
@@ -471,39 +513,6 @@ more like the Linux allocator, thus minimising the potential for noise to be
 introduced by the allocator. The exacts flag settings used are
 \texttt{sfghjpru}.
 
-\subsection{Benchmarking Machines}
-
-We used three machines and two operating systems:
-\begin{description*}
-  \item[\bencherthree] A quad-core i7-4790K 4GHz machine with 24GB of RAM, running Debian 8.
-  \item[\bencherfive] A quad-core i7-4790 3.6GHz machine with 32GB of RAM, running Debian 8.
-  \item[\benchersix] Identical hardware to \bencherfive, but with 32GB of RAM and running OpenBSD 5.8.
-\end{description*}
-These machines allow us to investigate the effects of moderately different
-hardware (\bencherthree and \bencherfive run the same operating system with the
-same updates installed) as well as moderately different operating systems
-(\bencherfive and \benchersix have almost identical hardware, but run different
-Unix
-variants). With regards to hardware and operating systems, we started with the
-following hypothesis:
-\begin{description}
-  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
-\end{description}
-We deliberately use the word `moderately', since significant changes of hardware
-(e.g.~ARM) or operating system (e.g.~Windows) implies significantly different
-parts of the VMs will be used (e.g.~different machine code backends may be of
-differing levels of maturity).
-
-On Intel machines, we disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
-feature which allows CPUs to temporarily run in an extremely high-performance
-mode; this eventually causes the CPU to exceed its safe thermal limit, and
-performance is then reduced to a lower limit. Turbo boost can thus cause long-running processes to
-appear to suddenly slow down. Hyper-threading gives the illusion that a single
-physical core is in fact more than one core, allowing more programs to
-run semi-simultaneously. However, hyper-threading causes programs to interfere
-with each others in complex ways, introducing considerable noise\edd{cite?}. It
-is of no real benefit in our situation, where we do not make use all of the
-physical cores in our benchmarking machines.
 
 \section{Results}
 \label{sec:Results}

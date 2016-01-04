@@ -216,15 +216,14 @@ satisfying benchmarking statistics.
 To test Hypothesis H1, we designed an experiment with a simple basic idea: to
 take a number of micro-benchmarks derived and
 run them in a loop of 2000 iterations on a number of VMs. We repeat this
-process 10 times before analysing the resulting time series data. Our
-experiment is designed to control as many potentially confounding variables as
+process 10 times before analysing the resulting time series data. In order
+that we the data we obtain high-quality data, we have carefully designed our
+experiment to be repeatable and to control as many potentially confounding variables as
 is practical.
 
-In this section we detail the set of benchmarks we use; the VMs under
-investigation; our benchmark harness;
-and the hardware we used. Readers may wish to note that we use two terms defined
-by \cite{kalibera13rigorous}. \emph{Iterations} are in-process repetitions of a
-benchmark, whereas \emph{executions} are repetitions using fresh processes.
+In this section we detail our methodology: the benchmarks we use and the
+modifications we made to them; the machines we used for benchmarking; the VMs we
+benchmarked; and the \krun system we developed to run benchmarks.
 
 
 \subsection{The Micro-benchmarks}
@@ -368,9 +367,11 @@ We ran the benchmarks on the following VMs:
 \end{description*}
 Although not a VM, GCC serves as a baseline to compare the VMs against.
 
+We created a build script which downloads, configures, and builds all of the
+VMs, ensuring we can easily repeat builds.
 On Debian all VMs were compiled with GCC/G++ \laurie{version number}. On OpenBSD,
 most VMs were compiled with GCC 4.2.1, except for PyPy, HotSpot, and V8 where
-GCC 4.9.3 was used.\footnote{For future versions of this paper, we will use a
+GCC 4.9.3 was used.\footnote{In a future version of this paper, we will use a
 single C compiler for all operating systems and all VMs.} Neither HHVM nor
 JRuby/Truffle has currently been ported to OpenBSD, and thus we were unable to
 run those VMs on OpenBSD.
@@ -378,68 +379,51 @@ run those VMs on OpenBSD.
 
 \subsection{\krun}
 
-Although running benchmarks is a conceptually easy, in practise it is a fiddly task:
-VMs need to be built carefully; benchmarks need to be run in a consistent
-environment; and errors need to be detected and reported to the user. We first created
-a build script which automates the building of all the VMs in our experiment, allowing
-us to predictably build VMs on multiple machines. We then created \krun: a
-benchmark harness which automates benchmarking. \krun aims to be a generic tool
-with utility beyond this paper, though we do not explore that further here.
+We developed a tool, called \krun, to fully automate the running of benchmarks
+and control the environment that benchmarks are run in. \krun itself is a
+`supervisor' process which first configures a system before running VM-specific
+benchmarks, monitoring the system for any signs of errors during benchmarking,
+and writing results to a JSON file. \krun is invoked with a configuration file
+which describes the VMs, benchmarks, and number of executions and iterations to
+be executed. \krun is a generic tool, with utility beyond this paper, though
+here we discuss only the parts relevant to this paper's experiment. In the rest
+of this subsection, we describe: the variables which \krun controls, both
+platform neutrally and platform specific; and how it collects iterations data.
 
-The basic architecture of \krun is as follows. A top-level supervisor script
-\texttt{krun.py} is the starting point for an experiment. This reads in the
-users' configuration file which describes to \krun which benchmarks are to be run, and
-which VMs they will run under, as well as the number of in-process iterations
-and executions to run. \krun then builds a work queue and begins running
-executions of benchmarks. For each execution, \krun forks an \emph{iterations
-runner}, whose role is to collect a series of in-process iteration times. Since
-the timings must be collected in-process, the iterations runner must be written
-in the same language as the benchmark. As such, there are many iterations
-runners: one for each language involved in the experiment. \krun passes
-arguments to the iterations runner which specify which benchmark to run, a
-number of iterations, and a \emph{benchmark parameter} which is used to
-calibrate the length of an iteration. The iterations runner dynamically imports
-the correct benchmark and times -- using a monotonic clock\footnote{We had to
-patch some VMs in order to be able to access the monotonic clock.} -- calls to
-a benchmark function in a loop. Once
-the desired number of iterations have been collected, the iterations runner
-returns a list of iteration times (the times for one execution) back to \krun.
-The results are accumulated on-disk in a JSON file. \krun can be configured to
-email the user should any benchmarks crash, or generate unexpected results.
-
-Aside from being a simple benchmarking harness, \krun also aims to control as
-many confounding variables as is practically possible. Some of the factors that
-\krun controls are generic, whereas others are platform-specific. In the
-following subsections we discuss these.
 
 \subsubsection{Platform Independent Controls}
 
-First, \krun does its best to maintain a consistent system temperature and to
-prevent machines from overheating, which may lead to CPUs being throttled (and
-thus distorting performance results). Initial temperature readings are taken
-prior to the first benchmark execution, then prior to subsequent executions
-\krun waits for the CPU to cool to within 10\%{} of the starting temperatures.
-If the system fails to cool down within 10 minutes, \krun terminates with an
-error.
+Several of \krun's operations work on all supported platforms. \krun imposes a
+consistent heap (we set 2GiB) and stack (we set 8MiB) \texttt{ulimit} for each
+VM (we used a 2GiB heap and a 8MB stack).\footnote{Note that Linux allows users
+to inspect these values, but to allocate memory beyond them.} Benchmarks are run
+as a specific Unix user `\texttt{krun}' with a fresh environment. When run in
+`production' mode, \krun reboots the system before each benchmark (including
+before the first benchmark) to ensure that the system is in a known state
+(e.g.~if a benchmark caused a system to transfer memory to disk-based swap,
+rebooting ensures that later benchmarks are not affected). After reboot, \krun
+is run from \texttt{/etc/rc.local}; it pauses for 3 minutes to allow the system
+to fully initialise before running the next benchmark.
 
-Second, \krun has \emph{reboot mode}, which we use for our experiments. Before
-each benchmark execution (including the first), \krun reboots the system and
-re-invokes itself when the system comes back up. After a 3 minute wait (to
-allow the system to fully come up), \krun then resumes benchmarking. This means
-that the system is in a fresh "known" state prior to each execution,
-essentially ensuring that later benchmark executions do not have an unfair
-advantage due to, (for example) fewer cache misses. Note that this mode does
-not preclude the use of the temperature control feature, as the starting
-temperatures are stored to disk and read in prior to each execution.
+\krun performs two types of monitoring before and during benchmark execution.
 
-Other platform-independent controls include the following. \krun imposes a
-consistent heap and stack \texttt{ulimit} for each VM (we used a 2GiB heap and
-a 8MB stack).\footnote{Note that some systems, e.g. Linux, do not honour
-ulimits.} \krun runs benchmarks as a separate user with a fresh environment. It
-also notifies the user should the system \texttt{dmesg} buffer
-change. This feature was implemented after we found performance critical
-messages in the \texttt{dmesg} buffer of one of our machines (this machine was
-not used for the proper experiment, and has since been decommissioned).
+First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
+any changes \laurie{did we ever implement the `ignore unimportant changes'
+thing?}. We implemented this feature after noticing that one of the machines we
+earlier ear-marked for running benchmarks occasionally overheated, throttling
+performance, leaving only a single line in the \texttt{dmesg} to inform us; as
+readers will no doubt hope, we did not use this machine for our final
+benchmarking.
+
+Second, \krun monitors CPU temperature. Since modern CPUs change their behaviour
+if they get too hot -- sometimes gradually throttling performance -- \krun
+ensures that benchmarks start with the CPU at (approximately) the same target.
+When initially invoked, \krun reads the temperatures of all available CPU cores
+\laurie{or just one? does it pause before taking this reading?}. Before running
+further benchmarks, it then waits for the CPU to cool down to within 10\%{} of
+the starting CPU core temperatures. If the system fails to cool down to within
+this threshold in 10 minutes, \krun terminates the entire experiment.
+
 
 \subsubsection{Linux-specific Controls}
 
@@ -486,6 +470,7 @@ noise into the benchmarks. By running a tickless kernel -- a kernel which only
 runs the routines when necessary -- we minimise the impact of unnecessary tick
 routines.
 
+
 \subsubsection{OpenBSD-specific Controls}
 
 On OpenBSD there is much less scope for controlling confounding variables: we
@@ -512,6 +497,29 @@ unexpected ways. \krun uses the
 more like the Linux allocator, thus minimising the potential for noise to be
 introduced by the allocator. The exacts flag settings used are
 \texttt{sfghjpru}.
+
+
+\subsubsection{The Iterations Runner}
+
+Since
+the timings must be collected in-process, the iterations runner must be written
+in the same language as the benchmark. As such, there are many iterations
+runners: one for each language involved in the experiment. \krun passes
+arguments to the iterations runner which specify which benchmark to run, a
+number of iterations, and a \emph{benchmark parameter} which is used to
+calibrate the length of an iteration. The iterations runner dynamically imports
+the correct benchmark and times -- using a monotonic clock\footnote{We had to
+patch some VMs in order to be able to access the monotonic clock.} -- calls to
+a benchmark function in a loop. Once
+the desired number of iterations have been collected, the iterations runner
+returns a list of iteration times (the times for one execution) back to \krun.
+The results are accumulated on-disk in a JSON file. \krun can be configured to
+email the user should any benchmarks crash, or generate unexpected results.
+
+Aside from being a simple benchmarking harness, \krun also aims to control as
+many confounding variables as is practically possible. Some of the factors that
+\krun controls are generic, whereas others are platform-specific. In the
+following subsections we discuss these.
 
 
 \section{Results}

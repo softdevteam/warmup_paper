@@ -71,8 +71,6 @@
            {http://tratt.net/laurie/}
 \maketitle
 
-\noindent\textbf{Please note: this is a draft.}
-
 \begin{abstract}
 Warmup is magic.
 \end{abstract}
@@ -386,9 +384,13 @@ benchmarks, monitoring the system for any signs of errors during benchmarking,
 and writing results to a JSON file. \krun is invoked with a configuration file
 which describes the VMs, benchmarks, and number of executions and iterations to
 be executed. \krun is a generic tool, with utility beyond this paper, though
-here we discuss only the parts relevant to this paper's experiment. In the rest
+here we discuss only the parts relevant to this paper's experiment. 
+
+In the rest
 of this subsection, we describe: the variables which \krun controls, both
 platform neutrally and platform specific; and how it collects iterations data.
+Note that, although \krun has modes in which various checks are disabled, we
+describe only the `full run' mode in which such checks are enforced.
 
 
 \subsubsection{Platform Independent Controls}
@@ -415,111 +417,94 @@ performance, leaving only a single line in the \texttt{dmesg} to inform us; as
 readers will no doubt hope, we did not use this machine for our final
 benchmarking.
 
-Second, \krun monitors CPU temperature. Since modern CPUs change their behaviour
-if they get too hot -- sometimes gradually throttling performance -- \krun
+Second, \krun monitors CPU temperature. Since modern CPUs downgrade their
+performance when they get too hot, \krun
 ensures that benchmarks start with the CPU at (approximately) the same target.
 When initially invoked, \krun reads the temperatures of all available CPU cores
 \laurie{or just one? does it pause before taking this reading?}. Before running
 further benchmarks, it then waits for the CPU to cool down to within 10\%{} of
 the starting CPU core temperatures. If the system fails to cool down to within
-this threshold in 10 minutes, \krun terminates the entire experiment.
+this threshold in 10 minutes, \krun terminates the entire experiment. Note that
+since \krun has no way of knowing what a `cool' temperature is in advance, for
+this feature to be fully effective, \krun assumes that the machine is adequately
+cool when first invoked.
 
 
 \subsubsection{Linux-specific Controls}
 
-On Linux, \krun controls several additional factors.
-First, it attempts to fix the CPU frequency to the highest
-possible value (without over-clocking). This is achieved by disabling Intel
-p-states support in the kernel and setting the CPU governor to \texttt{performance}
-mode.~\footnote{This is our best attempt at obtaining a constant CPU clock
-speed. The Linux kernel documentation states that ``the idea that frequency can
-be set to a single frequency is fiction for Intel Core
-processors'':
-\url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}}
+On Linux, \krun enables several additional factors to be controlled.
 
-Second, \krun forces benchmarks onto an isolated CPU core to minimise the
-effect of context switching. \krun requires that the system was booted using
-the \texttt{isolcpus} kernel argument to isolate a core. If the argument was
-not used, \krun terminates.
+\krun sets the CPU frequency to the highest possible non-over-clocked value
+(without over-clocking). This is achieved by disabling Intel P-state support in
+the kernel \laurie{how?} and setting the CPU governor to \texttt{performance} mode.
 
-Third, \krun minimises the effects of the \texttt{perf} subsystem.
-\texttt{perf} is a kernel profiler which can be used to inspect hardware and
-kernel performance. It works by sampling counters in the system hardware at
-regular intervals. We became aware of \texttt{perf} when \krun began emailing
-us \texttt{dmesg} changes indicating that the \texttt{perf} sample-rate was
-being dynamically lowered. The Linux kernel does this when it detects that it
-is spending too much time in a \texttt{perf} sampling routine. This may
-be useful in a general setting, but not for us, as it may adjust benchmark
-performance over time. Since \texttt{perf} cannot be disabled, or compiled out
-of the kernel, \krun fixes the sample-rate to the smallest allowable value of
-1.
+\krun checks that Linux's boot-time \texttt{isolcpus} argument has been set to
+remove one or more CPU cores from having processes scheduled on them. If a CPU
+core has been isolated, \krun \laurie{automatically?} schedules benchmarks to be
+run on that core. This means that the benchmarks are not preemptively context
+switched, which can have unpredictable effects on performance. \krun also checks
+that it is running on a `tickless' kernel. By default, Linux's kernel queries
+each CPU 1000 times per second (the `ticks') to determine which processes are
+currently running \laurie{is this per core or per CPU?}. This repeated querying
+interferes with process execution, but is of little use in our setup where only
+a minimal number of non-benchmarking processes are running.
 
-Fourth, \krun disables address space layout randomisation. During process
-relocation, by default the runtime linker loads libraries in a random order and
-at random offsets. This is prudent for everyday Linux use, as it helps to
-mitigate memory layout attacks. For our benchmarks however, this is not
-desirable, as memory layout can wildly impact benchmark
-performance~\cite{xxx}\edd{someone knows which paper to cite?}. \krun disables
-ALSR by setting the \texttt{randomize\_va\_space} entry in \texttt{/proc} to 0.
+Linux's \texttt{perf} system dynamically profiles system performance by
+repeatedly sampling hardware counters. We became aware of \texttt{perf} when
+\krun's \texttt{dmesg} checks notified us that the kernel had decreased the
+sample-rate as it determined that it was sampling too often. Since \texttt{perf}
+can interrupt benchmarking, its existence is undesirable, particularly since its
+effects can vary over time. Although \texttt{perf} cannot be disable entirely,
+\krun sets the sample-rate to the smallest possible value of 1 \laurie{is this
+once per second or ...?}.
 
-Finally, \krun checks the system is running a ``tickless'' kernel. By default
-the Linux kernel uses a hardware interrupt at regular intervals to perform
-process scheduling and other housekeeping. The interrupt occurs even if the
-current process will not be evicted from the CPU, thus potentially introducing
-noise into the benchmarks. By running a tickless kernel -- a kernel which only
-runs the routines when necessary -- we minimise the impact of unnecessary tick
-routines.
+Finally, \krun disables Address Space Layout Randomisation (ASLR). While this is
+a sensible security precaution for everyday use, it makes it difficult to
+compare the performance of even a single binary.\footnote{The Stabilizer
+system~\cite{curtsinger} is an intriguing approach for obtaining reliable
+statistics in the face of features such as ASLR. Unfortunately we were not able
+to build it on a modern Linux system.} \krun sets the
+\texttt{randomize\_va\_space} entry in \texttt{/proc} to 0, disabling ASLR
+globally.
 
 
 \subsubsection{OpenBSD-specific Controls}
 
-On OpenBSD there is much less scope for controlling confounding variables: we
-are unable to disable ASLR, run on an isolated core, or run in tickless mode.
-Nevertheless, there are a couple of OpenBSD-specific controls.
+Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
+there are two OpenBSD specific features in \krun.
 
-First, \krun will always put the system into the ``high-performance'' power
-mode, which it does simply by invoking \texttt{apm -H} prior to running
-benchmarks. This is mostly equivalent to using the \texttt{performance} CPU
-scaler under Linux. Note however, that OpenBSD does not provide any controls
-over Intel P-states, so we are unable to change P-state settings from the
-defaults.
+First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
+to running benchmarks. This is equivalent to setting Linux's CPU governor to
+\texttt{performance} mode, but note that OpenBSD offers no means of changing
+Intel P-states.
 
-Second, \krun controls OpenBSD's memory allocator settings. OpenBSD implements
-a secure memory allocator which includes many exploit mitigation techniques,
-such as guard pages and enforcing \texttt{realloc} to always
-re-allocate.\footnote{See
-\url{http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man5/malloc.conf.5}
-for more information.} These features are useful for system security, but not
-for our experiment, since (e.g.) always reallocating at
-\texttt{realloc} sites could fragment memory and impact performance in
-unexpected ways. \krun uses the
-\texttt{MALLOC\_OPTIONS} environment variable to force allocation to behave
-more like the Linux allocator, thus minimising the potential for noise to be
-introduced by the allocator. The exacts flag settings used are
-\texttt{sfghjpru}.
+Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
+deterministic. By default, OpenBSD's \texttt{malloc} performs several operations
+for security purposes, including allocating guard pages and randomising layout.
+We set the \texttt{MALLOC\_OPTIONS} environment variable to \texttt{sfghjpru},
+turning it into a more traditional, and hopefully largely deterministic,
+\texttt{malloc}.
 
 
-\subsubsection{The Iterations Runner}
+\subsubsection{The Iterations Runners}
 
-Since
-the timings must be collected in-process, the iterations runner must be written
-in the same language as the benchmark. As such, there are many iterations
-runners: one for each language involved in the experiment. \krun passes
-arguments to the iterations runner which specify which benchmark to run, a
-number of iterations, and a \emph{benchmark parameter} which is used to
-calibrate the length of an iteration. The iterations runner dynamically imports
-the correct benchmark and times -- using a monotonic clock\footnote{We had to
-patch some VMs in order to be able to access the monotonic clock.} -- calls to
-a benchmark function in a loop. Once
-the desired number of iterations have been collected, the iterations runner
-returns a list of iteration times (the times for one execution) back to \krun.
-The results are accumulated on-disk in a JSON file. \krun can be configured to
-email the user should any benchmarks crash, or generate unexpected results.
+Since we run benchmarks in several different languages, we need a way to report
+timings from benchmarks to \krun. For each language, we created an
+\emph{iterations runner}. When \krun wants to run a benchmark, it executes the
+appropriate iterations runner for that language, passing it the name of the
+benchmark to be run, and the desired number of iterations. The iterations runner
+then dynamically loads the benchmark, and repeatedly executes the main body of
+the benchmark. The iterations runner calls a monotonic timer with
+sub-millisecond accuracy before and after each iteration, recording the result
+into a list; when the iterations are complete, it returns the results in one go
+to \krun.
 
-Aside from being a simple benchmarking harness, \krun also aims to control as
-many confounding variables as is practically possible. Some of the factors that
-\krun controls are generic, whereas others are platform-specific. In the
-following subsections we discuss these.
+Most VMs and languages expose access to the low-level monotonic timing
+\texttt{clock\_gettime} function as standard. We had to patch \laurie{V8 and
+HHVM? anything else?} to add this as a user-visible function. On OpenBSD, we use
+the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
+interference from the \texttt{adjtime} function, and we thus use the
+\texttt{CLOCK\_MONOTONIC\_RAW} timer.
 
 
 \section{Results}
@@ -657,6 +642,12 @@ effects differ between both machines and executions.
 
 \section{Threats to Validity}
 \label{sec:threats}
+
+\laurie{This is our best attempt at obtaining a constant CPU clock
+speed. The Linux kernel documentation states that ``the idea that frequency can
+be set to a single frequency is fiction for Intel Core
+processors'':
+\url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}}
 
 While we have designed our experiment as carefully as possible, we do not
 pretend to have controlled every possibly confounding variable. For example,

@@ -302,7 +302,14 @@ into our benchmarks. Was it inside the main loop? If so, how?} \laurie{i now
 think the problem is that classes are loaded lazily as they are used, though i
 admit i'm not sure how our nondeterminism checks spotted this}.\edd{As I
 understand it, that is not a compile-time effect, but a run-time effect? Maybe
-expand/reword}
+expand/reword}\cfbolz{the story of the java class loader had nothing at all to
+do with the need for different machines, imo. what happened originally was: the
+benchmark class was loaded in the first iteration, which meant that most of the
+time of the first iteration was spent doing class loading (file reads, security
+checks, etc). now I wrote code to make sure that the benchmark classes are
+loaded ahead of the first iteration, which solves the problem entirely. class
+loading is actually pretty deterministic, as long as there are no wildcards in
+the CLASSPATH env var.}
 
 
 \subsubsection{Measuring Computation and Not File Performance}

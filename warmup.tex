@@ -109,6 +109,16 @@ processes. From this we obtain \emph{time series} data, to which we apply a
 number of statistical techniques that have not previously been applied
 in the context of VM benchmarking.
 
+\begin{figure}[b!]
+\centering
+\includegraphics[width=.4\textwidth]{img/picturebook_warmup}
+\caption{The traditional notion of warmup: a program starts slowly executing in
+an interpreter; once hot parts of the program are identified, they are
+translated by the JIT compiler to machine code; at this point warmup
+is said to have completed, and peak performance reached.}
+\label{fig:trad}
+\end{figure}
+
 We expected our experiment to validate Hypothesis H1, allowing us to
 easily compare warmup across VMs. While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
@@ -153,17 +163,6 @@ that perform immediate compilation instead of using an interpreter, and to
 those VMs which have more than one layer of JIT compilation (later JIT
 compilation is used for `very hot' portions of a program, and tolerates slower
 compilation time for better machine code generation).}
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=.4\textwidth]{img/picturebook_warmup}
-\caption{\cfbolz{need a better description still} This (fictional) chart illustrates the commonly accepted understanding
-of JIT performance. Early iterations of a benchmark perform poorly during the
-warmup phase of the JIT. Once the JIT begins emitting native code the latency
-of the benchmark is consistently small, with a small
-amount of variation due to the operating system and execution environment.}
-\label{fig:trad}
-\end{figure}
 
 Figure~\ref{fig:trad} shows the expected performance profile of a
 program subject to the conventional model of warmup. Exactly how long warmup

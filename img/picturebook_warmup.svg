@@ -338,16 +338,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="234.72202"
+     inkscape:cx="170.82987"
      inkscape:cy="74.248259"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:snap-global="false"
-     inkscape:window-width="1366"
-     inkscape:window-height="744"
-     inkscape:window-x="0"
-     inkscape:window-y="24"
+     inkscape:window-width="1920"
+     inkscape:window-height="1145"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
      inkscape:window-maximized="1"
      inkscape:snap-midpoints="true"
      inkscape:snap-smooth-nodes="true"
@@ -374,7 +374,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -398,26 +398,26 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="244.90399"
+       x="230.15594"
        y="588.64392"
        id="text4770"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4772"
-         x="244.90399"
-         y="588.64392">time</tspan></text>
+         x="230.15594"
+         y="588.64392">Iterations</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-522.68469"
+       x="-537.36017"
        y="84.400734"
        id="text4770-0"
        sodipodi:linespacing="125%"
        transform="matrix(0,-1,1,0,0,0)"><tspan
          sodipodi:role="line"
          id="tspan4772-3"
-         x="-522.68469"
-         y="84.400734">time per iteration</tspan></text>
+         x="-537.36017"
+         y="84.400734">Time per iteration</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 120,562.3622 Z"
@@ -480,7 +480,7 @@
            id="tspan5105"
            y="413.74286"
            x="252.60283"
-           sodipodi:role="line">JIT runs</tspan></text>
+           sodipodi:role="line">JIT compilation</tspan></text>
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"

@@ -319,7 +319,10 @@ To lessen the possibility of optimising compilers removing benchmark computation
 we modified all of the benchmarks to calculate a checksum on each iteration
 \laurie{i assume we output the final checksum to stdout, otherwise a clever
 compiler might manage to remove everything. or do we add all the checksums
-together so that we can guarantee the optimiser in fact runs every iteration?}.
+together so that we can guarantee the optimiser in fact runs every
+iteration?}\cfbolz{we compared the checksum against the expected checksum and
+if that fails, we print. Imo that makes it very hard for the compiler to remove
+the checksum code.}.
 At the end of each iteration, the checksum is validated against an expected
 value. Note that each micro-benchmark has a single checksum value for all
 language variants, which provides some assurance that each language variant is

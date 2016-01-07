@@ -7,7 +7,7 @@ LATEX_SIGPLAN = warmup
 
 LATEX_COMMON =
 
-DIAGRAMS =
+DIAGRAMS = img/picturebook_warmup.pdf
 
 TABLES=
 
@@ -19,6 +19,9 @@ BASE_CLEANFILES =	aux bbl blg dvi log ps pdf toc out snm nav vrb
 OTHER_CLEANFILES =	${BIBDB} texput.log
 
 all: ${LATEX_SIGPLAN}.pdf
+
+.svg.pdf:
+	inkscape --export-pdf=$@ $<
 
 .PHONY: clean
 clean: clean-sigplan
@@ -34,7 +37,7 @@ ${BIBDB}: ${PREBIB} softdev.bib
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
-		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES} img/trad.png
+		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex

@@ -195,7 +195,17 @@ run, and the previously determined cut-off point applied to each process's
 iterations. The \kalibera methodology observes that some benchmarks do not
 obviously warmup \laurie{this is not reaching the `independent' state, right?
 what happens to such benchmarks? do \kalibera say ``you can't do anything with
-such benchmarks'' or ...?}; and that others follow cyclic patterns post-warmup
+such benchmarks'' or ...?}\cfbolz{there are two states according to Kalibera:
+"initialized" and "independent". Initialized means that the results start
+looking stable at some point, and the weird behaviour of the prefix is removed.
+Independent is always stronger than initialized, and means that the results
+start being statistically independent from each other. Kalibera seem to assume
+that every benchmark eventually initializes (and indeed I think one of our
+results should be that that is not obviously true). If a benchmark also becomes
+independent, their full methodology applies. If it does not, their suggestion
+is to always pick as a result a fixed iteration. So another of our results is
+that that is also not a good suggestion, because of cyclic behaviour.}; and
+that others follow cyclic patterns post-warmup
 (e.g.~iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
 the latter case, the \kalibera methodology requires a consistent iteration in
 the cycle to be picked, and that used for statistical analysis.

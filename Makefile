@@ -1,4 +1,4 @@
-PREBIB=../../bin/prebib
+PREBIB=prebib
 PDFLATEX=pdflatex -synctex=1
 
 .SUFFIXES: .tex .ps .dia .pdf .svg
@@ -29,8 +29,8 @@ clean-sigplan:
 	for i in ${BASE_CLEANFILES}; do rm -f ${LATEX_SIGPLAN}.$${i}; done
 	rm -f ${OTHER_CLEANFILES}
 
-${BIBDB}: ${PREBIB} ../softdev.bib
-	${PREBIB} ../softdev.bib > ${BIBDB}
+${BIBDB}: ${PREBIB} softdev.bib
+	${PREBIB} softdev.bib > ${BIBDB}
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \

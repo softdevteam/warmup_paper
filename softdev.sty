@@ -1,0 +1,37 @@
+% --------------------------------
+% Software Development Team Macros
+% --------------------------------
+
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{softdev}[2013/09/16 Softdev Macros]
+
+\newif\if@nocomments\@nocommentsfalse
+\DeclareOption{nocomments}{%
+  \@nocommentstrue
+}
+
+\ProcessOptions\relax
+
+%% macros and includes for the comments. Set boolean to enable/disable
+\RequirePackage{amssymb}
+\RequirePackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\newcommand{\mynote}[2]{%
+  \textcolor{red}{%
+    \fbox{\bfseries\sffamily\scriptsize#1}%
+    {\small$\blacktriangleright$\textsf{\emph{#2}}$\blacktriangleleft$}%
+  }%
+}
+
+\if@nocomments
+  \renewcommand{\mynote}[2]{}
+\fi
+
+\newcommand\laurie[1]{\mynote{Laurie}{#1}}
+\newcommand\cfbolz[1]{\mynote{Carl Friedrich}{#1}}
+\newcommand\edd[1]{\mynote{Edd}{#1}}
+\newcommand\lukas[1]{\mynote{Lukas}{#1}}
+\newcommand\krish[1]{\mynote{Krish}{#1}}
+\newcommand\darya[1]{\mynote{Darya}{#1}}
+\newcommand\sarah[1]{\mynote{Sarah}{#1}}
+%% end of comment macros

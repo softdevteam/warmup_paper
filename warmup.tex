@@ -533,6 +533,8 @@ interference from the \texttt{adjtime} function, and we thus use the
 
 \edd{Much of this Section will change. Drop in the new graphs and descriptions
 of our statistical methods and comment on our observations.}
+\cfbolz{I don't think the section will change much for the draft version of the
+paper, and it will change really radically once the stats people get involved}
 
 After running all benchmarks as described we analysed the benchmarks in a
 two-step process. In the first step we visually inspected the run sequence
@@ -541,20 +543,16 @@ doing so we noted whether the virtual machine followed the expected warmup
 behaviour for this benchmark as described in Section~\ref{sec:warmup}. This was
 the case of \cfbolz{add numbers} X out of Y benchmarks. In a second step we
 identified groups of ``anomalies'', i.e. repeating ways of how benchmark
-executions deviated from the expected warmup behaviour. In the following we will
+executions deviated from the expected warmup behaviour, which we describe in a
+qualitative way. In the following we will
 present the run-sequence diagrams of benchmarks that have expected warmup
 behaviour, as well descriptions and examples for all the anomalies.
 
 \cfbolz{need some examples of nice benchs}
-\cfbolz{we need a table which does all the categorizations, and examples}
 
 \cfbolz{observations 2x2: widely varying performance on the same machine, late
 phase change not always there, another case: bimodality, slowdowns are
 sometimes speedups, different repeating shapes across machines}
-
-\cfbolz{safety checks: are outliers deterministic across different processes?
-is the behaviour generally the same looking? do some checks on other OS,
-machine architecture, frequency scaling independent}
 
 
 \sarah{Warm-up takes longer than expected, by comparison with the idealised JIT
@@ -586,6 +584,7 @@ measurements either side of it.
 \sarah{This is one area were the sliding-window average might be useful (i.e. in detecting a slow-down).
 One possible way forward would be to find a technique for performing hypothesis testing on time-series data, then running tests to determine whether the sliding-mean in one part of the chart is significantly different to the sliding-mean in an earlier phase of the execution.
 This technique would also help to determine precisely when the warm-up phase is over and the JIT has kicked in.}
+\cfbolz{this is a post-draft task}
 
 A few benchmarks exhibit slow downs, where the first few iterations of a
 benchmarks are faster than the eventual mean after ``warm up''.
@@ -634,12 +633,26 @@ Figure~\ref{fig:examples:late1} shows one such example.
 \label{fig:examples:late1}
 \end{figure}
 
+
+\subsection{Unexpectedly Long Warmup}
+\label{sub:long}
+
+The common understanding of warmup behaviour usually assumes that for such
+small programs warmup is done after a few iterations. However, there are
+benchmarks where performance improves after many hundred iterations.
+
+\begin{figure}[h!]
+\centering
+\cfbolz{we need an example here}
+\caption{Example of a benchmark with unexpectedly long warmup.}
+\label{fig:examples:long}
+\end{figure}
+
 \subsection{Inconsistent Effects}
 \label{sub:inconsistent}
 
-\edd{Many of the effects we saw are consistently weird. Some are not. What
-do we think of this as a section?}
-\sarah{Sounds good, what about a section on unexpectedly long warmup?}
+A number of benchmarks have wildly different behaviour between different
+iterations on the same machine, or between iterations of different machines.
 
 Figure~\ref{fig:examples:consistent_weirdness1} shows a case where
 unexpected behaviours are consistent between machines and executions.

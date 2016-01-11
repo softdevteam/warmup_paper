@@ -448,8 +448,8 @@ repeatedly sampling hardware counters. We became aware of \texttt{perf} when
 sample-rate as it determined that it was sampling too often. Since \texttt{perf}
 can interrupt benchmarking, its existence is undesirable, particularly since its
 effects can vary over time. Although \texttt{perf} cannot be disable entirely,
-\krun sets the sample-rate to the smallest possible value of 1 \laurie{is this
-once per second or ...?}.
+\krun sets the sample-rate to the smallest possible value of 1 sample per
+second.
 
 Finally, \krun disables Address Space Layout Randomisation (ASLR). While this is
 a sensible security precaution for everyday use, it makes it difficult to
@@ -493,8 +493,9 @@ into a list; when the iterations are complete, it returns the results in one go
 to \krun.
 
 Most VMs and languages expose access to the low-level monotonic timing
-\texttt{clock\_gettime} function as standard. We had to patch \laurie{V8 and
-HHVM? anything else?} to add this as a user-visible function. On OpenBSD, we use
+\texttt{clock\_gettime} function as standard. V8, HHVM and JRuby/Truffle were
+patched so as to expose the monotonic clock via a user-visible function. On
+OpenBSD, we use
 the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
 interference from the \texttt{adjtime} function, and we thus use the
 \texttt{CLOCK\_MONOTONIC\_RAW} timer.
@@ -521,11 +522,6 @@ present the run-sequence diagrams of benchmarks that have expected warmup
 behaviour, as well descriptions and examples for all the anomalies.
 
 \cfbolz{need some examples of nice benchs}
-
-\cfbolz{observations 2x2: widely varying performance on the same machine, late
-phase change not always there, another case: bimodality, slowdowns are
-sometimes speedups, different repeating shapes across machines}
-
 
 \sarah{Warm-up takes longer than expected, by comparison with the idealised JIT
 described in Section 2.}
@@ -649,11 +645,6 @@ effects differ between both machines and executions.
 \section{Threats to Validity}
 \label{sec:threats}
 
-\laurie{This is our best attempt at obtaining a constant CPU clock
-speed. The Linux kernel documentation states that ``the idea that frequency can
-be set to a single frequency is fiction for Intel Core
-processors'':
-\url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}}
 
 While we have designed our experiment as carefully as possible, we do not
 pretend to have controlled every possibly confounding variable. For example,
@@ -674,6 +665,12 @@ is: should a multi-language benchmark suite should use idiomatic
 implementations, implementations literally translated from a base version, or
 the most performant implementations. Further it is not clear how having a
 performance advantage impacts warmup characteristics.
+
+\krun implements our best attempt at obtaining a constant CPU clock speed. The
+Linux kernel documentation states that ``the idea that frequency can be set to
+a single frequency is fiction for Intel Core processors'':
+\url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}. In
+other words, fine-grain control of the CPU clock speed is out of our hands.
 
 
 \sarah{threats to validity: there may be some confounding variables that have

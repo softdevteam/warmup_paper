@@ -48,6 +48,8 @@
     escapeinside={{<!}{!>}},
 }
 
+\SDShowCommentTags{default}  %final
+
 \begin{document}
 
 \title{Virtual Machine Warmup Blows Hot and Cold}
@@ -187,18 +189,7 @@ executing a small number of VM processes, and determine at which iteration the
 benchmark has definitively warmed up. A larger number of VM processes are then
 run, and the previously determined cut-off point applied to each process's
 iterations. The \kalibera methodology observes that some benchmarks do not
-obviously warmup \laurie{this is not reaching the `independent' state, right?
-what happens to such benchmarks? do \kalibera say ``you can't do anything with
-such benchmarks'' or ...?}\cfbolz{there are two states according to Kalibera:
-"initialized" and "independent". Initialized means that the results start
-looking stable at some point, and the weird behaviour of the prefix is removed.
-Independent is always stronger than initialized, and means that the results
-start being statistically independent from each other. Kalibera seem to assume
-that every benchmark eventually initializes (and indeed I think one of our
-results should be that that is not obviously true). If a benchmark also becomes
-independent, their full methodology applies. If it does not, their suggestion
-is to always pick as a result a fixed iteration. So another of our results is
-that that is also not a good suggestion, because of cyclic behaviour.}; and
+obviously warmup; and
 that others follow cyclic patterns post-warmup
 (e.g.~iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
 the latter case, the \kalibera methodology requires a consistent iteration in
@@ -256,9 +247,9 @@ Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-Each benchmark was run for \laurie{XXX} executions, each comprising 2000
+Each benchmark was run for 10 executions, each comprising 2000
 iterations. For the avoidance of doubt -- and in
-contrast to some other experiments we are aware of \laurie{can we cite?} -- we 
+contrast to some other experiments we are aware of \laurie{can we cite?} -- we
 did not interfere with any VMs Garbage Collection (GC) (e.g.~we did not
 force a collection after each iteration).
 
@@ -288,24 +279,7 @@ each iteration uses the same sequence of random numbers.
 Bearing in mind surprising
 results such as the importance of link order~\cite{mytkowicz09surprising}, we
 then used two different machines to compile VMs and then ran the benchmarks
-on these machines. \laurie{CF: please check to see if
-the remainder of this paragraph is right} This showed that the Java class loader
-initialises classes in a non-deterministic order, which affected the way that
-some parts of Java benchmarks were executed in \laurie{as I wrote that, I became
-aware that I don't really understand why this source of non-determinism crept
-into our benchmarks. Was it inside the main loop? If so, how?} \laurie{i now
-think the problem is that classes are loaded lazily as they are used, though i
-admit i'm not sure how our nondeterminism checks spotted this}.\edd{As I
-understand it, that is not a compile-time effect, but a run-time effect? Maybe
-expand/reword}\cfbolz{the story of the java class loader had nothing at all to
-do with the need for different machines, imo. what happened originally was: the
-benchmark class was loaded in the first iteration, which meant that most of the
-time of the first iteration was spent doing class loading (file reads, security
-checks, etc). now I wrote code to make sure that the benchmark classes are
-loaded ahead of the first iteration, which solves the problem entirely. class
-loading is actually pretty deterministic, as long as there are no wildcards in
-the CLASSPATH env var.}
-
+on these machines.
 
 \subsubsection{Measuring Computation and Not File Performance}
 
@@ -368,10 +342,9 @@ physical cores in our benchmarking machines.
 
 \subsection{VMs under investigation}
 
-We ran the benchmarks on the following VMs:
+We ran the benchmarks on the following language implementations:
 \begin{description*}
-\item[GCC] On Linux systems, version 4.9.2 from Debian packages; on OpenBSD the base version 4.2.1.
-\item[CPython 2.7.10] The reference Python implementation\laurie{not currently, right?}.
+\item[GCC] Version 4.9.2 from Debian packages
 \item[Graal \#9dafd1dc5ff9] Oracle's next-gen VM targeting Java.
 \item[HHVM 3.7.1] Facebook's PHP JIT.
 \item[JRuby/Truffle \#7f4cd59cdd1c8] A Ruby interpreter using Graal for dynamic compilation.
@@ -380,16 +353,14 @@ We ran the benchmarks on the following VMs:
 \item[PyPy 4.0.0] A meta-tracing VM for Python-2.7.
 \item[V8 4.8.271.9] Google's JIT for Javascript.
 \end{description*}
+\edd[final]{Add to list: CPython 2.7.10, The reference Python implementation}%
 Although not a VM, GCC serves as a baseline to compare the VMs against.
 
 We created a build script which downloads, configures, and builds all of the
 VMs, ensuring we can easily repeat builds.
-On Debian all VMs were compiled with GCC/G++ \laurie{version number}. On OpenBSD,
-most VMs were compiled with GCC 4.2.1, except for PyPy, HotSpot, and V8 where
-GCC 4.9.3 was used.\footnote{In a future version of this paper, we will use a
-single C compiler for all operating systems and all VMs.} Neither HHVM nor
+On Debian all VMs were compiled with GCC/G++ 4.9.2.\edd[final]{Neither HHVM nor
 JRuby/Truffle has currently been ported to OpenBSD, and thus we were unable to
-run those VMs on OpenBSD.
+run those VMs on OpenBSD.}
 
 
 \subsection{\krun}
@@ -427,20 +398,20 @@ to fully initialise before running the next benchmark.
 \krun performs two types of monitoring before and during benchmark execution.
 
 First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
-any changes \laurie{did we ever implement the `ignore unimportant changes'
-thing?}. We implemented this feature after noticing that one of the machines we
+any changes. We implemented this feature after noticing that one of the
+machines we
 earlier ear-marked for running benchmarks occasionally overheated, throttling
 performance, leaving only a single line in the \texttt{dmesg} to inform us; as
 readers will no doubt hope, we did not use this machine for our final
 benchmarking.
 
-Second, \krun monitors CPU temperature. Since modern CPUs downgrade their
-performance when they get too hot, \krun
-ensures that benchmarks start with the CPU at (approximately) the same target.
-When initially invoked, \krun reads the temperatures of all available CPU cores
-\laurie{or just one? does it pause before taking this reading?}. Before running
+Second, \krun monitors the system temperature. Since modern systems downgrade
+their performance when they get too hot, \krun ensures that all benchmarks
+start with the system temperature at (approximately) the same target. When
+initially invoked, \krun collects temperature readings from all available
+temperature sensors. Before running
 further benchmarks, it then waits for the CPU to cool down to within 10\%{} of
-the starting CPU core temperatures. If the system fails to cool down to within
+the starting temperatures. If the system fails to cool down to within
 this threshold in 10 minutes, \krun terminates the entire experiment. Note that
 since \krun has no way of knowing what a `cool' temperature is in advance, for
 this feature to be fully effective, \krun assumes that the machine is adequately
@@ -452,19 +423,24 @@ cool when first invoked.
 On Linux, \krun enables several additional factors to be controlled.
 
 \krun sets the CPU frequency to the highest possible non-over-clocked value
-(without over-clocking). This is achieved by disabling Intel P-state support in
-the kernel \laurie{how?} and setting the CPU governor to \texttt{performance} mode.
+(without over-clocking). The user must first disable Intel P-state support in
+the kernel (by passing the kernel argument \texttt{intel\_pstate=disable}).
+\krun verifies P-states are disabled and sets the CPU governor to
+\texttt{performance} mode (by using \texttt{cpufreq-set}). See
+Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\krun checks that Linux's boot-time \texttt{isolcpus} argument has been set to
-remove one or more CPU cores from having processes scheduled on them. If a CPU
-core has been isolated, \krun \laurie{automatically?} schedules benchmarks to be
-run on that core. This means that the benchmarks are not preemptively context
-switched, which can have unpredictable effects on performance. \krun also checks
-that it is running on a `tickless' kernel. By default, Linux's kernel queries
-each CPU 1000 times per second (the `ticks') to determine which processes are
-currently running \laurie{is this per core or per CPU?}. This repeated querying
-interferes with process execution, but is of little use in our setup where only
-a minimal number of non-benchmarking processes are running.
+\krun insists on having an isolated CPU core on which to run benchmarks. \krun
+checks that the system was booted with the \texttt{isolcpus=n}. This prevents
+the OS from scheduling processes on CPU core \texttt{n}. \krun then schedules
+benchmarks on the isolated core using the \texttt{taskset} utility. This
+minimises the effect of preemptive context switching on benchmarks. \krun also
+checks that it is running on a `tickless' kernel. By default, the Linux kernel
+frequently invokes scheduling routines to determine which processes are
+currently running. This happens on a per-CPU basis,thus the repeated querying
+diverts CPU time away from our benchmarks. A tickless kernel eliminates some of
+this effect.\edd{What happens when a VM forks. Does the child stay on the
+isolated core? I have a vague recollection that jrubytruffle uses multiple
+processes}
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when
@@ -706,6 +682,8 @@ are being measured.  The benchmarks in the guest languages might be similar
 enough that some important classes of behaviour have been missed, because the
 benchmarks here do not trigger those behaviours.  There may be some un-thought
 of explanation for weird JIT behaviour which has nothing to do with the JIT.}
+
+\edd{isolcpus maybe isn't enough}
 
 
 \section{Related work}

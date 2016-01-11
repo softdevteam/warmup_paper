@@ -5,32 +5,33 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \ProvidesPackage{softdev}[2013/09/16 Softdev Macros]
 
-\newif\if@nocomments\@nocommentsfalse
-\DeclareOption{nocomments}{%
-  \@nocommentstrue
-}
-
 \ProcessOptions\relax
 
 %% macros and includes for the comments. Set boolean to enable/disable
 \RequirePackage{amssymb}
 \RequirePackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\RequirePackage{xstring}  % for IfSubr
 
-\newcommand{\mynote}[2]{%
+% shown comment tags
+\def\@SDShowCommentTags{default}
+\def\SDShowCommentTags#1{\def\@SDShowCommentTags{#1}}
+
+\newcommand\ifSDCommentTagEnabled[2]{\IfSubStr{,#2,}{,#1,}}
+
+\newcommand\mynote[3][default]{%
   \textcolor{red}{%
-    \fbox{\bfseries\sffamily\scriptsize#1}%
-    {\small$\blacktriangleright$\textsf{\emph{#2}}$\blacktriangleleft$}%
+    \ifSDCommentTagEnabled{#1}{\@SDShowCommentTags}{%
+      \fbox{\bfseries\sffamily\scriptsize#2}%
+      {\small$\blacktriangleright$\textsf{\emph{#3}}$\blacktriangleleft$}%
+    }{}%
   }%
 }
 
-\if@nocomments
-  \renewcommand{\mynote}[2]{}
-\fi
 
-\newcommand\laurie[1]{\mynote{Laurie}{#1}}
-\newcommand\cfbolz[1]{\mynote{Carl Friedrich}{#1}}
-\newcommand\edd[1]{\mynote{Edd}{#1}}
-\newcommand\sarah[1]{\mynote{Sarah}{#1}}
-\newcommand\vince[1]{\mynote{Vince}{#1}}
-\newcommand\rebecca[1]{\mynote{Rebecca}{#1}}
+\newcommand\laurie[2][default]{\mynote[#1]{Laurie}{#2}}
+\newcommand\cfbolz[2][default]{\mynote[#1]{Carl Friedrich}{#2}}
+\newcommand\edd[2][default]{\mynote[#1]{Edd}{#2}}
+\newcommand\sarah[2][default]{\mynote[#1]{Sarah}{#2}}
+\newcommand\vince[2][default]{\mynote[#1]{Vince}{#2}}
+\newcommand\rebecca[2][default]{\mynote[#1]{Rebecca}{#2}}
 %% end of comment macros

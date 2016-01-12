@@ -1,4 +1,4 @@
-\documentclass[10pt,preprint]{sigplanconf}
+\documentclass[a4paper,UKenglish]{lipics}
 
 \usepackage[utf8]{inputenc}
 % the following standard packages may be helpful, but are not required
@@ -13,9 +13,6 @@
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{mdwlist} % tighter description environment (starred)
-\usepackage[colorlinks=true,allcolors=blue,breaklinks,draft=false]{hyperref}
-% known bug: http://tex.stackexchange.com/questions/1522/pdfendlink-ended-up-in-different-nesting-level-than-pdfstartlink
-\newcommand{\doi}[1]{doi:~\href{http://dx.doi.org/#1}{\Hurl{#1}}}   % print a hyperlinked DOI
 
 \usepackage{graphicx}
 \usepackage{softdev}
@@ -53,24 +50,22 @@
 \begin{document}
 
 \title{Virtual Machine Warmup Blows Hot and Cold}
-\authorinfo{Edd Barrett}
-           {Software Development Team\\ Department of Informatics\\ King's College London}
-           {http://eddbarrett.co.uk/}
-\authorinfo{Carl Friedrich Bolz}
-           {Software Development Team\\ Department of Informatics\\ King's College London}
-           {http://cfbolz.de/}
-\authorinfo{Rebecca Killick}
-           {Department of Mathematics and Statistics\\ University of Lancaster}
-           {http://www.lancs.ac.uk/\~{}killick/}
-\authorinfo{Vincent Knight}
-           {School of Mathematics\\ Cardiff University}
-           {http://vknight.org/}
-\authorinfo{Sarah Mount}
-           {Software Development Team\\ Department of Informatics\\ King's College London}
-           {http://snim2.org/}
-\authorinfo{Laurence Tratt}
-           {Software Development Team\\ Department of Informatics\\ King's College London}
-           {http://tratt.net/laurie/}
+\author[1]{Edd Barrett}
+\affil[1]{Software Development Team, Department of Informatics,\\King's College London, \texttt{http://eddbarrett.co.uk/}}
+\author[2]{Carl Friedrich Bolz}
+\affil[2]{Software Development Team, Department of Informatics,\\King's College London, \texttt{http://cfbolz.de/}}
+\author[3]{Rebecca Killick}
+\affil[3]{Department of Mathematics and Statistics, University of Lancaster, \texttt{http://www.lancs.ac.uk/\~{}killick/}}
+\author[4]{Vincent Knight}
+\affil[4]{School of Mathematics, Cardiff University, \texttt{http://vknight.org/}}
+\author[5]{Sarah Mount}
+\affil[5]{Software Development Team, Department of Informatics\\King's College London, \texttt{http://snim2.org/}}
+\author[6]{Laurence Tratt}
+\affil[6]{Software Development Team, Department of Informatics\\King's College London, \texttt{http://tratt.net/laurie/}}
+
+\Copyright{Edd Barrett, Carl Friedrich Bolz, Rebecca Killick, Vincent Knight, Sarah Mount and Laurence Tratt}
+\keywords{warmup, benchmarking, virtual machines, programming languages.}
+
 \maketitle
 
 \begin{abstract}
@@ -706,7 +701,7 @@ manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}.
 \section{Conclusions}
 \label{sec:conclusion}
 
-\bibliographystyle{abbrvnat}
+\bibliographystyle{plain}
 \bibliography{bib}
 
 

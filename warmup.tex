@@ -75,9 +75,6 @@ Warmup is magic.
 \section{Introduction}
 \label{sec:intro}
 
-\laurie{since, at the moment, we don't say anything about how \emph{long} it
-takes to warmup, i've not tried saying at all about that.}
-
 Many modern languages are implemented as Virtual Machines (VMs) which use a
 Just-In-Time (JIT) compiler to translate `hot' parts of a program into efficient
 machine code at run-time. Since it takes time to determine which parts of the
@@ -97,14 +94,14 @@ notion of the traditional notion of warmup:
 \end{description}
 In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
-VMs for a large number of in-process iterations and repeated using fresh
-processes. From this we obtain \emph{time series} data, to which we apply a
+VMs for a large number of \emph{in-process iterations} and repeated using fresh
+\emph{process executions}. From this we obtain \emph{time series} data, to which we apply a
 number of statistical techniques that have not previously been applied
 in the context of VM benchmarking.
 
-\begin{figure}[b!]
+\begin{figure}[t]
 \centering
-\includegraphics[width=.4\textwidth]{img/picturebook_warmup}
+\includegraphics[width=.5\textwidth]{img/picturebook_warmup}
 \caption{The traditional notion of warmup: a program starts slowly executing in
 an interpreter; once hot parts of the program are identified, they are
 translated by the JIT compiler to machine code; at this point warmup
@@ -123,8 +120,8 @@ difficult. Of the eight VMs we looked at,
 none consistently warmed under the traditional model \edd{check this is true
 when we have all the results}.
 
-Our results thus suggest that the traditional view of warmup is badly out of date. 
-We suggest it is better to think of most benchmarks as
+Our results thus suggest that the traditional view of warmup is badly out of
+date---if it ever held at all. We suggest it is better to think of most benchmarks as
 generally converging on a \emph{steady state} of performance (be that faster or
 slower than initial execution). When a benchmark does not converge on a steady
 state, we suggest that it is impossible to give meaningful performance figures.
@@ -134,12 +131,12 @@ behaviour (or found benchmarks which trigger such behaviour), whereas users may
 obtain a greater understanding of why their programs do not perform as well as
 they had expected.
 
-This paper's contributions are as follows:
-\begin{enumerate*}
-  \item \laurie{blah blah}
-\end{enumerate*}
-
-This paper's structure is as follows. \laurie{blah blah}
+%This paper's contributions are as follows:
+%\begin{enumerate*}
+%  \item \laurie{blah blah}
+%\end{enumerate*}
+%
+%This paper's structure is as follows. \laurie{blah blah}
 
 
 \section{Background}
@@ -168,30 +165,29 @@ Benchmarking of JIT compiled VMs typically focusses on peak
 performance.\footnote{There are various cultural and technical reasons for this,
 ranging from the difficulty of determining warmup, to the flattering effect that
 peak performance can imbue on programs that are JIT compiled.} The
-methodologies used are typically crude. Benchmarks are run for a number of
-iterations within a single VM process, with timing data for each iteration
-recorded. The first $n$ iterations are then discarded, on the basis that warmup
-will have completed before these $n$ iterations have finished. It is common for
-a hard-coded number to be used for $n$ (in our experience, it is often set at 5)
-to be used for all benchmarks.
+methodologies used are typically crude: benchmarks are run for a number
+of in-process iterations within a single VM process execution
+The first $n$ in-process iterations are then discarded, on the basis that warmup
+will have completed at some point before $n$. It is common for
+$n$ to be a hard-coded number -- in our experience, it is often set at 5 -- used
+for all benchmarks.
 
 One of the obvious flaws in this simple methodology is that one does not know if warmup
-has completed by iteration $n$. A more sophisticated VM benchmarking methodology
+has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
 was developed by \kalibera to solve a number of issues when benchmarking JIT
 compiling VMs~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
 that, for a given VM / benchmark combination, a human must inspect the data from
-executing a small number of VM processes, and determine at which iteration the
-benchmark has definitively warmed up. A larger number of VM processes are then
+executing a small number of VM process executions, and determine at which in-process iteration the
+benchmark has definitively warmed up. A larger number of VM process executions are then
 run, and the previously determined cut-off point applied to each process's
 iterations. The \kalibera methodology observes that some benchmarks do not
-obviously warmup; and
-that others follow cyclic patterns post-warmup
-(e.g.~iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
-the latter case, the \kalibera methodology requires a consistent iteration in
-the cycle to be picked, and that used for statistical analysis.
+obviously warmup; and that others follow cyclic patterns post-warmup
+(e.g.~in-process iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
+the latter case, the \kalibera methodology requires a consistent in-process iteration in
+the cycle to be picked for all process executions, and that used for statistical analysis.
 
 To the best of our knowledge, the \kalibera methodology is the most
-sophisticated currently available, and has been used by other authors (see
+sophisticated currently available (see its use in
 e.g.~\cite{barrett15approaches,grimmer15dynamically}). While the \kalibera
 methodology is a real improvement over crude benchmarking methodologies,
 our experience has been that there remain cases where it remains hard to produce
@@ -205,9 +201,8 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 \label{sec:methodology}
 
 To test Hypothesis H1, we designed an experiment with a simple basic idea: to
-take a number of micro-benchmarks derived and
-run them in a loop of 2000 iterations on a number of VMs. We repeat this
-process 10 times before analysing the resulting time series data. In order
+take a number of micro-benchmarks derived and run them for 2000 in-process
+iterations over \laurie{10? 30?} process executions. In order
 that we the data we obtain high-quality data, we have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical.
@@ -224,11 +219,9 @@ The micro-benchmarks we use are as follows: \binarytrees, \spectralnorm, \nbody,
 \richards. For each benchmark, we provide C, Java, Javascript, Python, Lua, PHP,
 and Ruby versions.\footnote{Our need to have implementations in a wide variety
 of languages restricted the micro-benchmarks we could use.} Since most of these
-benchmarks have multiple implementations in any given language, we mostly picked
+benchmarks have multiple implementations in any given language, we picked
 the same versions used in~\cite{bolz14impact}, which represented the fastest
-performers at the point of that publication. We noted that newer (and possibly
-faster) implementations of the CLBG benchmarks are now available, however we
-did not use them.
+performers at the point of that publication.
 
 Readers can be forgiven for initial scepticism about this set of micro-benchmarks.
 They are small and widely
@@ -241,16 +234,15 @@ Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-Each benchmark was run for 10 executions, each comprising 2000
-iterations. For the avoidance of doubt -- and in
+For the avoidance of doubt -- and in
 contrast to some other experiments we are aware of \laurie{can we cite?} -- we
-did not interfere with any VMs Garbage Collection (GC) (e.g.~we did not
+did not interfere with any VM's Garbage Collection (GC) (e.g.~we did not
 force a collection after each iteration).
 
 
 \subsubsection{Ensuring Determinism}
 
-We wished to ensure, as far as possible, that the micro-benchmarks are
+We wish to ensure, as far as possible, that the micro-benchmarks are
 deterministic from the user's perspective, by which we mean that they
 take precisely the same path through the Control Flow Graph (CFG) on each
 execution and iteration. Note that this definition deliberately focuses
@@ -264,18 +256,20 @@ variants are available in our experimental suite.}
 
 We first ran the benchmarks many \edd{how many?} times, and compared the outputs
 of different runs. This showed that the \fasta benchmark was non-deterministic
-in all language variants. \fasta generates random numbers using a simple
-algorithm. The random seed was initialised at the start of \fasta, but not after
-each iteration, so each iteration generated different random numbers. We thus
-moved the random seed initialisation to the benchmark's main loop, ensuring that
-each iteration uses the same sequence of random numbers.
+in all language variants. This is because \fasta generates random numbers with
+a seed that is initialised only at the very start of the benchmark, thus
+causing each in-process iteration to generate different random numbers. We
+fixed this simply by moving the random seed initialisation to the start
+of the in-process iteration main loop.
 
 Bearing in mind surprising
 results such as the importance of link order~\cite{mytkowicz09surprising}, we
 then used two different machines to compile VMs and then ran the benchmarks
-on these machines.
+on these machines. \laurie{this is where we need to talk about the java stuff
+that CF uncovered. somehow that text seems to have disappeared}
 
-\subsubsection{Measuring Computation and Not File Performance}
+
+\subsection{Measuring Computation and Not File Performance}
 
 Micro-benchmarks perform computation which is not then used. Highly optimising
 compilers notice this, and can often optimise away part or all of a
@@ -286,50 +280,48 @@ unintentionally measuring, in part or whole, the performance of file routines in
 the OS libraries and the kernel.
 
 To lessen the possibility of optimising compilers removing benchmark computation,
-we modified all of the benchmarks to calculate a checksum on each iteration
-\laurie{i assume we output the final checksum to stdout, otherwise a clever
-compiler might manage to remove everything. or do we add all the checksums
-together so that we can guarantee the optimiser in fact runs every
-iteration?}\cfbolz{we compared the checksum against the expected checksum and
-if that fails, we print. Imo that makes it very hard for the compiler to remove
-the checksum code.}.
+we modified all of the benchmarks to calculate a checksum on each in-process iteration.
 At the end of each iteration, the checksum is validated against an expected
-value. Note that each micro-benchmark has a single checksum value for all
-language variants, which provides some assurance that each language variant is
+value and the value printed out if the check fails. By writing benchmarks in
+this style, we make it difficult for optimising compilers to remove the
+main bulk of the benchmark. Note that each micro-benchmark has a single checksum value for all
+language variants, which also provides some assurance that each language variant is
 performing the same work.
 
 
 \subsection{Benchmarking Machines}
 
-We used three machines and two operating systems:
+%We used three machines and two operating systems:
+We used two machines:
 \begin{description*}
   \item[\bencherthree] A quad-core i7-4790K 4GHz machine with 24GB of RAM, running Debian 8.
   \item[\bencherfive] A quad-core i7-4790 3.6GHz machine with 32GB of RAM, running Debian 8.
-  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.8.
+%  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.8.
 \end{description*}
 These machines allow us to investigate the effects of moderately different
 hardware (\bencherthree and \bencherfive run the same operating system with the
-same updates installed) as well as moderately different operating systems
-(\bencherfive and \benchersix have almost identical hardware, but run different
-Unix
-variants). With regards to hardware and operating systems, we started with the
-following hypothesis:
-\begin{description}
-  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
-\end{description}
-We deliberately use the word `moderately', since significant changes of hardware
-(e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) implies that
-significantly different parts of the VMs will be used (e.g.~different machine
-code backends may be of differing levels of maturity).
+same updates installed)
+%as well as moderately different operating systems
+%(\bencherfive and \benchersix have almost identical hardware, but run different
+%Unix
+%variants). With regards to hardware and operating systems, we started with the
+%following hypothesis:
+%\begin{description}
+%  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
+%\end{description}
+%We deliberately use the word `moderately', since significant changes of hardware
+%(e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) implies that
+%significantly different parts of the VMs will be used (e.g.~different machine
+%code backends may be of differing levels of maturity).
 
-On Intel machines, we disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
+We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
 mode; this eventually causes the CPU to exceed its safe thermal limit, and
 performance is then reduced to a lower limit. Turbo boost can thus cause long-running processes to
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
 physical core is in fact more than one core, allowing more programs to
 run semi-simultaneously. However, hyper-threading causes programs to interfere
-with each others in complex ways, introducing considerable noise\edd{cite?}. It
+with each others in complex ways, introducing considerable noise. It
 is of no real benefit in our situation, where we do not make use all of the
 physical cores in our benchmarking machines.
 
@@ -393,9 +385,9 @@ to fully initialise before running the next benchmark.
 
 First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
 any changes. We implemented this feature after noticing that one of the
-machines we
-earlier ear-marked for running benchmarks occasionally overheated, throttling
-performance, leaving only a single line in the \texttt{dmesg} to inform us; as
+machines we had earlier ear-marked for running benchmarks occasionally
+overheated, leaving only a single line in the \texttt{dmesg} to inform us that
+performance was throttled; as
 readers will no doubt hope, we did not use this machine for our final
 benchmarking.
 
@@ -407,9 +399,8 @@ temperature sensors. Before running
 further benchmarks, it then waits for the CPU to cool down to within 10\%{} of
 the starting temperatures. If the system fails to cool down to within
 this threshold in 10 minutes, \krun terminates the entire experiment. Note that
-since \krun has no way of knowing what a `cool' temperature is in advance, for
-this feature to be fully effective, \krun assumes that the machine is adequately
-cool when first invoked.
+since \krun has no way of knowing what a `cool' temperature is in advance,
+\krun is forced to assume that the machine is adequately cool when first invoked.
 
 
 \subsubsection{Linux-specific Controls}
@@ -418,30 +409,31 @@ On Linux, \krun enables several additional factors to be controlled.
 
 \krun sets the CPU frequency to the highest possible non-over-clocked value
 (without over-clocking). The user must first disable Intel P-state support in
-the kernel (by passing the kernel argument \texttt{intel\_pstate=disable}).
-\krun verifies P-states are disabled and sets the CPU governor to
-\texttt{performance} mode (by using \texttt{cpufreq-set}). See
+the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
+\krun verifies P-states are disabled and uses \texttt{cpufreq-set} to set
+the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\krun insists on having an isolated CPU core on which to run benchmarks. \krun
+\laurie{possible rejoinder: what happens if a VM does something in another thread? e.g. gc}
+\krun requires a CPU core to be dedicated to running benchmarks. \krun
 checks that the system was booted with the \texttt{isolcpus=n}. This prevents
 the OS from scheduling processes on CPU core \texttt{n}. \krun then schedules
 benchmarks on the isolated core using the \texttt{taskset} utility. This
 minimises the effect of preemptive context switching on benchmarks. \krun also
 checks that it is running on a `tickless' kernel. By default, the Linux kernel
-frequently invokes scheduling routines to determine which processes are
-currently running. This happens on a per-CPU basis,thus the repeated querying
-diverts CPU time away from our benchmarks. A tickless kernel eliminates some of
-this effect.\edd{What happens when a VM forks. Does the child stay on the
+frequently \laurie{1000 times per sec by default I think?} queries each CPU to
+determine which processes are active; this querying interferes with running
+processes; a tickless kernel eliminates most \laurie{or `all'?} of this effect.
+\edd{What happens when a VM forks. Does the child stay on the
 isolated core? I have a vague recollection that jrubytruffle uses multiple
-processes}
+processes}\laurie{i am now worrying about the same thing...}
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when
 \krun's \texttt{dmesg} checks notified us that the kernel had decreased the
 sample-rate as it determined that it was sampling too often. Since \texttt{perf}
 can interrupt benchmarking, its existence is undesirable, particularly since its
-effects can vary over time. Although \texttt{perf} cannot be disable entirely,
+effects can vary over time. Although \texttt{perf} cannot be disabled entirely,
 \krun sets the sample-rate to the smallest possible value of 1 sample per
 second.
 
@@ -455,44 +447,44 @@ to build it on a modern Linux system.} \krun sets the
 globally.
 
 
-\subsubsection{OpenBSD-specific Controls}
-
-Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
-there are two OpenBSD specific features in \krun.
-
-First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
-to running benchmarks. This is equivalent to setting Linux's CPU governor to
-\texttt{performance} mode, but note that OpenBSD offers no means of changing
-Intel P-states.
-
-Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
-deterministic. By default, OpenBSD's \texttt{malloc} performs several operations
-for security purposes, including allocating guard pages and randomising layout.
-We set the \texttt{MALLOC\_OPTIONS} environment variable to \texttt{sfghjpru},
-turning it into a more traditional, and hopefully largely deterministic,
-\texttt{malloc}.
+%\subsubsection{OpenBSD-specific Controls}
+%
+%Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
+%there are two OpenBSD specific features in \krun.
+%
+%First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
+%to running benchmarks. This is equivalent to setting Linux's CPU governor to
+%\texttt{performance} mode, but note that OpenBSD offers no means of changing
+%Intel P-states.
+%
+%Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
+%deterministic. By default, OpenBSD's \texttt{malloc} performs several operations
+%for security purposes, including allocating guard pages and randomising layout.
+%We set the \texttt{MALLOC\_OPTIONS} environment variable to \texttt{sfghjpru},
+%turning it into a more traditional, and hopefully largely deterministic,
+%\texttt{malloc}.
 
 
 \subsubsection{The Iterations Runners}
 
 Since we run benchmarks in several different languages, we need a way to report
 timings from benchmarks to \krun. For each language, we created an
-\emph{iterations runner}. When \krun wants to run a benchmark, it executes the
-appropriate iterations runner for that language, passing it the name of the
-benchmark to be run, and the desired number of iterations. The iterations runner
+\emph{in-process iterations runner}. When \krun wants to run a benchmark, it executes the
+appropriate in-process iterations runner for that language, passing it the name of the
+benchmark to be run, and the desired number of in-process iterations. The in-process iterations runner
 then dynamically loads the benchmark, and repeatedly executes the main body of
-the benchmark. The iterations runner calls a monotonic timer with
+the benchmark. The in-process iterations runner calls a monotonic timer with
 sub-millisecond accuracy before and after each iteration, recording the result
 into a list; when the iterations are complete, it returns the results in one go
-to \krun.
+to \krun \laurie{by printing to stdout i guess?}.
 
 Most VMs and languages expose access to the low-level monotonic timing
-\texttt{clock\_gettime} function as standard. V8, HHVM and JRuby/Truffle were
-patched so as to expose the monotonic clock via a user-visible function. On
-OpenBSD, we use
-the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
-interference from the \texttt{adjtime} function, and we thus use the
-\texttt{CLOCK\_MONOTONIC\_RAW} timer.
+\texttt{clock\_gettime} function as standard. We extended V8, HHVM and JRuby/Truffle
+to expose this monotonic clock via a user-visible function.
+%On OpenBSD, we use
+%the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
+%interference from the \texttt{adjtime} function, and we thus use the
+%\texttt{CLOCK\_MONOTONIC\_RAW} timer.
 
 
 \section{Results}

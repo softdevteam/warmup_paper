@@ -631,42 +631,57 @@ effects differ between both machines and executions.
 \section{Threats to Validity}
 \label{sec:threats}
 
-
 While we have designed our experiment as carefully as possible, we do not
-pretend to have controlled every possibly confounding variable. For example,
-because of the large quantity of software we had to install, and because we used
+pretend to have controlled every possibly confounding variable. Indeed, our
+experience when designing the experiment has been one of gradually uncovering
+confounding variables whose existence we had not previously imagined. It
+is all but guaranteed that there are further confounding variables that we
+do not know about; some of these may be controllable, although many may not be.
+It is possible that currently unknown confounding variables have coloured all
+our results.
+
+We have tried to gain a partial understanding of the effects of different
+hardware on benchmarks by using benchmarking machines with different hardware
+(both of which run the same OS). However, while the hardware between the two is
+different, much more distinct hardware is available. Greater differences in
+hardware (e.g.~using a non-x86 architecture) may give different results.
+However, the greater the differences in hardware, the more likely the JIT
+compilers are to use different code paths (e.g.~different code generators and
+the like). Put another way, an apples-to-apples comparison across very different
+hardware is likely to be impossible, because the software being run will
+change its behaviour.
+
+Because of the large quantity of software we had to install, and because we used
 different operating systems, we can not guarantee that the VMs were compiled in
-precisely the same way on each machine. \laurie{if we're lucky, our cross-machine results
+precisely the same way on each of our benchmarking machine \laurie{obvious rejoinder: why don't we use the kalibera multi-level technique?}. \laurie{if we're lucky, our cross-machine results
 will be fairly stable, which will allow us to say something like ``despite the
 possible variation across our machines, we got fairly stable results, suggesting
 that this was not a significant issue in practise''.}
 
-We use multiple different language implementations of benchmarks. Although our
-checksums confirm that the different languages perform roughly the same work,
-it is possible that some implementations may have an unfair advantage. This
-could be due to the fact that some workloads are inherently easily optimised in
-one language but not another, or perhaps because the original authors of the
-benchmarks structured their code with optimisations in mind. An open question
-is: should a multi-language benchmark suite should use idiomatic
-implementations, implementations literally translated from a base version, or
-the most performant implementations. Further it is not clear how having a
-performance advantage impacts warmup characteristics.
+The checksums we added ensure that, at a user-visible level, each benchmark
+performs equivalent work in each language variant. However, it is impossible to
+say whether each performs equivalent work at the lowest level or not. For
+example, choosing to use a different datatype in a language's core library may
+substantially impact performance. There is also the perennial problem as to the
+degree to which an individual language benchmark should maintain the structure
+of other language's implementations: a benchmark for a given language could be
+rewritten in a way that betters either or both of its warmup and peak
+performance. From our perspective, this possibility is somewhat less important,
+since we are more interested in the warmup patterns of reasonable programs,
+whether they be the fastest possible or not.
 
-\krun implements our best attempt at obtaining a constant CPU clock speed. The
-Linux kernel documentation states that ``the idea that frequency can be set to
-a single frequency is fiction for Intel Core processors'':
-\url{https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}. In
-other words, fine-grain control of the CPU clock speed is out of our hands.
-
-
-\sarah{threats to validity: there may be some confounding variables that have
-not been controlled in these experiments. There may be bugs in the JITs that
-are being measured.  The benchmarks in the guest languages might be similar
-enough that some important classes of behaviour have been missed, because the
-benchmarks here do not trigger those behaviours.  There may be some un-thought
-of explanation for weird JIT behaviour which has nothing to do with the JIT.}
-
-\edd{isolcpus maybe isn't enough}
+Although \krun does as much to control CPU clock speed as possible, modern CPUs
+do not always respect operating system requests. Even on Linux, where we control
+the CPU's p-State, we can not guarantee that this fixes the CPU frequency: as
+the Linux kernel states, ``the idea that frequency can be set to a single
+frequency is fiction for Intel Core processors'' \laurie{turn this into a bib
+entry https://www.kernel.org/doc/Documentation/cpu-freq/intel-pstate.txt}. In
+some cases, changes the CPU makes to its performance are detected and reported
+by the operating system (e.g.~performance throttling due to potential
+overheating); in other cases, changes may go undetected and/or unreported.
+Despite this, our benchmarks show extremely predictable performance across
+different hardware, suggesting that the effect of CPU performance changes are
+not significant in our case.
 
 
 \section{Related work}

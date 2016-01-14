@@ -203,9 +203,9 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 \section{Methodology}
 \label{sec:methodology}
 
-To test Hypothesis H1, we designed an experiment with a simple basic idea: to
-take a number of micro-benchmarks derived and run them for 2000 in-process
-iterations over \laurie{10? 30?} process executions. In order
+To test Hypothesis H1, we designed an experiment which uses a suite of
+micro-benchmarks: each is run with 2000 in-process iterations and repeated
+using 10 process executions. In order
 that we the data we obtain high-quality data, we have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical.
@@ -343,25 +343,30 @@ We ran the benchmarks on the following language implementations:
 \item[V8 4.8.271.9] Google's JIT for Javascript.
 \end{description*}
 \edd[final]{Add to list: CPython 2.7.10, The reference Python implementation}%
-Although not a VM, GCC serves as a baseline to compare the VMs against.
+Although not a VM, GCC serves as a baseline to compare the VMs against: GCC
+should not exhibit little warmup behaviour since C code is ahead-of-time
+compiled.\edd[final]{Simiarly CPython does no ahead of time compilation}
 
-We created a build script which downloads, configures, and builds all of the
+We created a build script which downloads, configures, and builds fixed
+versions of the
 VMs, ensuring we can easily repeat builds.
-On Debian all VMs were compiled with GCC/G++ 4.9.2.\edd[final]{Neither HHVM nor
+All VMs were compiled with GCC/G++ 4.9.2.\edd[final]{Say something about a
+fixed GCC accross platforms}\edd[final]{Neither HHVM nor
 JRuby/Truffle has currently been ported to OpenBSD, and thus we were unable to
 run those VMs on OpenBSD.}
 
 
 \subsection{\krun}
 
-We developed a tool, called \krun, to fully automate the running of benchmarks
-and control the environment that benchmarks are run in. \krun itself is a
+We developed a tool called \krun to fully automate the running of benchmarks
+and to control the environment under which the benchmarks run. \krun itself is a
 `supervisor' process which first configures a system before running VM-specific
 benchmarks, monitoring the system for any signs of errors during benchmarking,
-and writing results to a JSON file. \krun is invoked with a configuration file
-which describes the VMs, benchmarks, and number of executions and iterations to
+and writing results to a compressed JSON file. \krun is invoked with a
+configuration file which describes the VMs, benchmarks, and number of process
+executions and in-process iterations to
 be executed. \krun is a generic tool, with utility beyond this paper, though
-here we discuss only the parts relevant to this paper's experiment. 
+here we discuss only the parts relevant to this paper's experiment.
 
 In the rest
 of this subsection, we describe: the variables which \krun controls, both
@@ -417,7 +422,7 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\laurie{possible rejoinder: what happens if a VM does something in another thread? e.g. gc}
+\edd{remove/replace since we don't pin anymore}
 \krun requires a CPU core to be dedicated to running benchmarks. \krun
 checks that the system was booted with the \texttt{isolcpus=n}. This prevents
 the OS from scheduling processes on CPU core \texttt{n}. \krun then schedules
@@ -426,10 +431,9 @@ minimises the effect of preemptive context switching on benchmarks. \krun also
 checks that it is running on a `tickless' kernel. By default, the Linux kernel
 frequently \laurie{1000 times per sec by default I think?} queries each CPU to
 determine which processes are active; this querying interferes with running
-processes; a tickless kernel eliminates most \laurie{or `all'?} of this effect.
-\edd{What happens when a VM forks. Does the child stay on the
-isolated core? I have a vague recollection that jrubytruffle uses multiple
-processes}\laurie{i am now worrying about the same thing...}
+processes; a tickless kernel eliminates most \laurie{or `all'?}\edd{I'm not
+sure. I'm not even sure how much impact ticks impose. We are using a tickless
+kernel as a precaution more than anything else.} of this effect.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when

@@ -343,9 +343,7 @@ We ran the benchmarks on the following language implementations:
 \item[V8 4.8.271.9] Google's JIT for Javascript.
 \end{description*}
 \edd[final]{Add to list: CPython 2.7.10, The reference Python implementation}%
-Although not a VM, GCC serves as a baseline to compare the VMs against: GCC
-should not exhibit little warmup behaviour since C code is ahead-of-time
-compiled.\edd[final]{Simiarly CPython does no ahead of time compilation}
+Although not a VM, GCC serves as a baseline to compare the VMs against.
 
 We created a build script which downloads, configures, and builds fixed
 versions of the
@@ -422,18 +420,12 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\edd{remove/replace since we don't pin anymore}
-\krun requires a CPU core to be dedicated to running benchmarks. \krun
-checks that the system was booted with the \texttt{isolcpus=n}. This prevents
-the OS from scheduling processes on CPU core \texttt{n}. \krun then schedules
-benchmarks on the isolated core using the \texttt{taskset} utility. This
-minimises the effect of preemptive context switching on benchmarks. \krun also
-checks that it is running on a `tickless' kernel. By default, the Linux kernel
-frequently \laurie{1000 times per sec by default I think?} queries each CPU to
+\krun checks that it is running on a `tickless' kernel. By default, the Linux kernel
+queries each CPU \laurie{1000 times per sec by default I think?} to
 determine which processes are active; this querying interferes with running
 processes; a tickless kernel eliminates most \laurie{or `all'?}\edd{I'm not
 sure. I'm not even sure how much impact ticks impose. We are using a tickless
-kernel as a precaution more than anything else.} of this effect.
+kernel as a precaution more than anything else.}\laurie{what we learnt from the isolcpus thing is that if we don't understand the effect of a setting, we shouldn't fiddle with it. so let's work out what the effect is. in this case, it shouldn't be hard to find documentation about what the difference is} of this effect.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when
@@ -696,6 +688,28 @@ We have identified a number of different styles of warmup (slowdown, cyclic,
 etc.). However, we do not claim to have uncovered all possible warmup styles. It
 is quite possible that other patterns exist that either do not show up in our
 data, or which we have not detected.
+
+
+\section{Discussion}
+
+Even though we had a reasonable amount of experience designing and implementing
+experiments, the experiment in this paper took more time and effort than we
+expected. In part this is because there is limited precedent for such detailed
+experiments. Investigating possible confounding variables, understanding how to
+control them, and implementing the necessary checks, all took time. In many
+cases, we had to implement small programs or systems to understand a variables
+effect (e.g.~that Linux allows a process to allocate memory beyond that
+specified in the soft \laurie{and hard?} ulimit).
+
+In some cases, we found that seemingly reasonable settings had undesireable
+effects. Most notably, we trialled running experiments on a fixed CPU core which
+no other processes were allowed to run on (using Linux's \texttt{isolcpus}
+feature). While this removed noise from some some VMs, it slowed others down by
+a factor of up to 3x. The reason for this is that pinning a process to a CPU
+core also pins that processes threads to the same core. Some VMs -- such as
+JRuby/Truffle -- create extra threads for compilation, GC, and the like. By
+running all these threads on a single core, we removed the considerable
+performance benefits of running such computation in parallel.
 
 
 \section{Related work}

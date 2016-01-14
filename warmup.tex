@@ -113,7 +113,7 @@ We expected our experiment to validate Hypothesis H1, allowing us to
 easily compare warmup across VMs. While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
 the most extreme, some benchmarks never warmup, staying at their initial performance
-levels indefinitely and some `warmdown', getting slower over time. Even for
+levels indefinitely and some slowdowns, getting slower over time. Even for
 those benchmarks that appear to warmup in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
 difficult. Of the eight VMs we looked at,
@@ -691,7 +691,7 @@ patterns. Gil et al.'s main focus is on non-determinism over execution runs on
 HotSpot, and the difficulties this raise in terms of providing reliable
 benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
 least one benchmark (listBubbleSort) which on some executions undergoes what we
-have termed warmdown \laurie{is that the term we're using?}. \kalibera note the
+have termed slowdowns. \kalibera note the
 existence of what we have called cyclical behaviour, but require the user to
 manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}.
 

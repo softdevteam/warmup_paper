@@ -668,7 +668,9 @@ of other language's implementations: a benchmark for a given language could be
 rewritten in a way that betters either or both of its warmup and peak
 performance. From our perspective, this possibility is somewhat less important,
 since we are more interested in the warmup patterns of reasonable programs,
-whether they be the fastest possible or not.
+whether they be the fastest possible or not. It is also possible that by
+inserting checksums we have created unrepresentative benchmarks, though
+this complaint could arguably be directed at the unmodified benchmarks too.
 
 Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. Even on Linux, where we control
@@ -682,6 +684,11 @@ overheating); in other cases, changes may go undetected and/or unreported.
 Despite this, our benchmarks show extremely predictable performance across
 different hardware, suggesting that the effect of CPU performance changes are
 not significant in our case.
+
+We have identified a number of different styles of warmup (slowdown, cyclic,
+etc.). However, we do not claim to have uncovered all possible warmup styles. It
+is quite possible that other patterns exist that either do not show up in our
+data, or which we have not detected.
 
 
 \section{Related work}

@@ -702,12 +702,14 @@ experiments. Investigating possible confounding variables, understanding how to
 control them, and implementing the necessary checks, all took time. In many
 cases, we had to implement small programs or systems to understand a variables
 effect (e.g.~that Linux allows a process to allocate memory beyond that
-specified in the soft \laurie{and hard?} ulimit).
+specified in the soft and hard ulimit).
 
 In some cases, we found that seemingly reasonable settings had undesireable
 effects. Most notably, we trialled running experiments on a fixed CPU core which
 no other processes were allowed to run on (using Linux's \texttt{isolcpus}
-feature). While this removed noise from some some VMs, it slowed others down by
+feature). While this removed noise from some some VMs\edd{did it actually
+remove noise? Looking at the graphs again, I don't think we can claim this.},
+it slowed others down by
 a factor of up to 3x. The reason for this is that pinning a process to a CPU
 core also pins that processes threads to the same core. Some VMs -- such as
 JRuby/Truffle -- create extra threads for compilation, GC, and the like. By

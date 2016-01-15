@@ -265,15 +265,15 @@ causing each in-process iteration to generate different random numbers. We
 fixed this simply by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
+For the Java benchmarks, we noticed that classes \laurie{just the benchmarking
+class, or others too?} were lazily loaded during the first iteration of
+benchmarks, distorting timings. We thus ensured that all classes needed in
+benchmarks are fully loaded before the first iteration \laurie{how?}.
+
 Bearing in mind surprising
 results such as the importance of link order~\cite{mytkowicz09surprising}, we
 then used two different machines to compile VMs and then ran the benchmarks
 on these machines.
-
-For the Java benchmarks we made sure that the benchmark classes are loaded
-before the first iteration of the benchmarks. Otherwise, the first iteration
-is often dominated by the time the class loading takes, which is not what we
-are interested in measuring.
 
 
 \subsection{Measuring Computation and Not File Performance}

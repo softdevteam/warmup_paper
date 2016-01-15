@@ -474,8 +474,8 @@ benchmark to be run, and the desired number of in-process iterations. The in-pro
 then dynamically loads the benchmark, and repeatedly executes the main body of
 the benchmark. The in-process iterations runner calls a monotonic timer with
 sub-millisecond accuracy before and after each iteration, recording the result
-into a list; when the iterations are complete, it returns the results in one go
-to \krun \laurie{by printing to stdout i guess?}.
+into a list; when the iterations are complete, it returns the results
+to \krun by printing a JSON list to stdout.
 
 Most VMs and languages expose access to the low-level monotonic timing
 \texttt{clock\_gettime} function as standard. We extended V8, HHVM and JRuby/Truffle
@@ -488,11 +488,6 @@ to expose this monotonic clock via a user-visible function.
 
 \section{Results}
 \label{sec:Results}
-
-\edd{Much of this Section will change. Drop in the new graphs and descriptions
-of our statistical methods and comment on our observations.}
-\cfbolz{I don't think the section will change much for the draft version of the
-paper, and it will change really radically once the stats people get involved}
 
 After running all benchmarks as described we analysed the benchmarks in a
 two-step process. In the first step we visually inspected the run sequence
@@ -534,10 +529,9 @@ measurements either side of it.
 \subsection{Slowdowns}
 \label{sub:slowdowns}
 
-\sarah{This is one area were the sliding-window average might be useful (i.e. in detecting a slow-down).
+\sarah[final]{This is one area were the sliding-window average might be useful (i.e. in detecting a slow-down).
 One possible way forward would be to find a technique for performing hypothesis testing on time-series data, then running tests to determine whether the sliding-mean in one part of the chart is significantly different to the sliding-mean in an earlier phase of the execution.
 This technique would also help to determine precisely when the warm-up phase is over and the JIT has kicked in.}
-\cfbolz{this is a post-draft task}
 
 A few benchmarks exhibit slow downs, where the first few iterations of a
 benchmarks are faster than the eventual mean after ``warm up''.

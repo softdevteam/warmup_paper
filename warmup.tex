@@ -645,21 +645,14 @@ the like). Put another way, an apples-to-apples comparison across very different
 hardware is likely to be impossible, because the software being run will
 change its behaviour.
 
-Because of the large quantity of software we had to install, and because we used
-different operating systems, we can not guarantee that the VMs were compiled in
-precisely the same way on each of our benchmarking machine. A possible solution
-to this problem would be to use a
-\kalibera\cite{kalibera12quantifying,kalibera13rigorous} style experiment in
-which one of the repetition levels varies the benchmarking machine. It is not
-clear however, whether the \kalibera method caters well for benchmarks which do
-not seem to warmup: in such cases the method suggests that a single in-process
-iteration sample should be taken consistently across all process executions.
-This strategy assumes that the chosen sample is drawn from similarly behaving
-process executions, which, as our results show, is not necessarily true.
-\laurie{if we're lucky, our cross-machine results
-will be fairly stable, which will allow us to say something like ``despite the
-possible variation across our machines, we got fairly stable results, suggesting
-that this was not a significant issue in practise''.}
+We have not yet systematically tested whether rebuilding VMs effects warmup, an
+effect noted by \kalibera. Our previous experience of JIT compilers suggests
+that there is little effect in rebuilding such VMs when measuring peak
+performance~\cite{barrett15approaches}. However, since measuring warm-up largely
+involves measuring code that was not created by a JIT compiler, it is possible
+that these effects may impact upon our experiment. To a very limited extent, the
+rebuilding of VMs that occurred on our different VMs gives some small evidence
+as to this effect, but this effect requires deeper investigation.
 
 The checksums we added ensure that, at a user-visible level, each benchmark
 performs equivalent work in each language variant. However, it is impossible to

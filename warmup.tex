@@ -64,7 +64,7 @@
 \affil[6]{Software Development Team, Department of Informatics\\King's College London, \texttt{http://tratt.net/laurie/}}
 
 \Copyright{Edd Barrett, Carl Friedrich Bolz, Rebecca Killick, Vincent Knight, Sarah Mount and Laurence Tratt}
-\keywords{warmup, benchmarking, virtual machines, programming languages.}
+%\keywords{warmup, benchmarking, virtual machines, programming languages.}
 
 % We need this to stop the running title from overflowing the margins.
 \authorrunning{E. Barrett, C. F. Bolz, R. Killick, V. Knight, S. Mount, and L. Tratt}
@@ -72,7 +72,16 @@
 \maketitle
 
 \begin{abstract}
-Warmup is magic.
+Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally seen
+to execute programs in two phases: the \emph{warmup} phase determines which
+parts of a program would most benefit from dynamic compilation; after
+compilation has occurred, the program is said to be at \emph{peak performance}.
+Performance numbers for JIT compiling VMs generally discard numbers from warmup,
+focussing on peak performance. In this paper we run a number of small,
+deterministic benchmarks on a variety of well known VMs, showing a large number
+of cases which fail to conform to the traditional notion of warmup. Indeed,
+every VM we tested fails to conform to the traditional notion of warmup in at
+least one benchmark.
 \end{abstract}
 
 \section{Introduction}

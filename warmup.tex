@@ -278,12 +278,11 @@ causing each in-process iteration to generate different random numbers. We
 fixed this simply by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
-For the Java benchmarks, we noticed that classes \laurie{just the benchmarking
-class, or others too?}\cfbolz{just the benchmarking class, which I guess could
-be a problem?} were lazily loaded during the first iteration of
-benchmarks, distorting timings. We thus ensured that the benchmarking class
+For the Java benchmarks, we noticed that the benchmarking class used to record
+timings was lazily loaded during the first iteration of
+benchmarks, distorting timings \laurie{how do we know that other classes in java benchmarks aren't lazily loaded}. We thus ensured that the benchmarking class
 is fully loaded before the first iteration by calling a static
-method on the benchmarking class, which forces it to be loaded.
+method \laurie{does each benchmark call this static method? from its main method, or from a static initializer or somethign?} on the benchmarking class, which forces it to be loaded.
 
 Bearing in mind surprising
 results such as the importance of link order~\cite{mytkowicz09surprising}, we

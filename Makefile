@@ -1,4 +1,4 @@
-PREBIB=prebib
+PREBIB=./prebib
 PDFLATEX=pdflatex -synctex=1
 
 .SUFFIXES: .tex .ps .dia .pdf .svg

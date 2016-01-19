@@ -269,8 +269,9 @@ of all benchmarks with \texttt{print} statements at all possible points of
 divergence (e.g.~\texttt{if} statements' true and false branches).\footnote{These
 variants are available in our experimental suite.}
 
-We first ran the benchmarks many \edd{how many?}\cfbolz{I ran two processes and 20 in-process iterations} times, and compared the outputs
-of different runs. This showed that the \fasta benchmark was non-deterministic
+We first ran the benchmarks with two processes and 20 in-process iterations,
+and compared the outputs of the two processes. This was enough to show that the
+\fasta benchmark was non-deterministic
 in all language variants. This is because \fasta generates random numbers with
 a seed that is initialised only at the very start of the benchmark, thus
 causing each in-process iteration to generate different random numbers. We

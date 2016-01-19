@@ -469,7 +469,7 @@ second.
 Finally, \krun disables Address Space Layout Randomisation (ASLR). While this is
 a sensible security precaution for everyday use, it makes it difficult to
 compare the performance of even a single binary.\footnote{The Stabilizer
-system~\cite{curtsinger} is an intriguing approach for obtaining reliable
+system~\cite{curtsinger13stabilizer} is an intriguing approach for obtaining reliable
 statistics in the face of features such as ASLR. Unfortunately we were not able
 to build it on a modern Linux system.} \krun sets the
 \texttt{randomize\_va\_space} entry in \texttt{/proc} to 0, disabling ASLR

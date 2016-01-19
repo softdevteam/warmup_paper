@@ -35,7 +35,6 @@
 \newcommand{\bencherfive}{4790/Linux\xspace}
 \newcommand{\benchersix}{4790/OpenBSD\xspace}
 \newcommand{\bencherseven}{ARM\xspace}
-\newcommand{\pstates}{P-states\xspace}
 
 \lstset{
     basicstyle=\tt\scriptsize,
@@ -437,11 +436,11 @@ since \krun has no way of knowing what a `cool' temperature is in advance,
 On Linux, \krun enables several additional factors to be controlled.
 
 \krun sets the CPU frequency to the highest possible non-over-clocked value
-(without over-clocking). The user must first disable Intel \pstates support in
+(without over-clocking). The user must first disable Intel P-state support in
 the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
-\krun verifies \pstates are disabled and uses \texttt{cpufreq-set} to set
+\krun verifies P-states are disabled and uses \texttt{cpufreq-set} to set
 the CPU governor to \texttt{performance} mode. See
-Section~\ref{sec:threats} for more discussion on Intel \pstates.
+Section~\ref{sec:threats} for more discussion on Intel P-states.
 
 \krun checks that it is running on a `tickless' kernel. By default, a modern
 Linux kernel interrupts each (active) CPU 250 times each second to run
@@ -484,7 +483,7 @@ globally.
 %First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
 %to running benchmarks. This is equivalent to setting Linux's CPU governor to
 %\texttt{performance} mode, but note that OpenBSD offers no means of changing
-%Intel \pstates.
+%Intel P-states.
 %
 %Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
 %deterministic. By default, OpenBSD's \texttt{malloc} performs several operations

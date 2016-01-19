@@ -443,12 +443,19 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel \pstates.
 
-\krun checks that it is running on a `tickless' kernel. By default, the Linux kernel
-queries each CPU \laurie{1000 times per sec by default I think?} to
-determine which processes are active; this querying interferes with running
-processes; a tickless kernel eliminates most \laurie{or `all'?}\edd{I'm not
-sure. I'm not even sure how much impact ticks impose. We are using a tickless
-kernel as a precaution more than anything else.}\laurie{what we learnt from the isolcpus thing is that if we don't understand the effect of a setting, we shouldn't fiddle with it. so let's work out what the effect is. in this case, it shouldn't be hard to find documentation about what the difference is} of this effect.
+\krun checks that it is running on a `tickless' kernel. By default, a modern
+Linux kernel interrupts each (active) CPU 250 times each second to run
+scheduling and read-copy-update (RCU) routines. These interruptions can
+introduce `jitter' into some workloads~\cite{tickless}, and thus may act as a
+source of variation for our benchmarks. In order to remove potential jitter,
+the Linux kernel provides a tickless mode (via the config switch
+\texttt{NO\_HZ\_FULL\_ALL}), under which unnecessary ticks are eliminated: only
+the boot CPU (typically CPU 0) and CPUs with more than a single runnable
+process are interrupted.~\footnote{The term `tickless' is actually
+misleading, as ticks must always be received by at least the boot processor.}
+We ran a subset of our benchmarks in the default and tickless modes, and
+although we were unable to identify significant jitter, we still opted for
+\krun to run on tickless mode.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when

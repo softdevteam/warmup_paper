@@ -292,18 +292,23 @@ on these machines.
 
 \subsection{Measuring Computation and Not File Performance}
 
-Micro-benchmarks perform computation which is not then used. Highly optimising
-compilers notice this, and can often optimise away part or all of a
-micro-benchmark's computation. To avoid this happening, most micro-benchmarks
-output intermediate and final results to \texttt{stdout} so that computation is
-not optimised away. However, one can quickly end up in a situation where one is
+Micro-benchmarks perform computations whose results are not really used. Highly
+optimising compilers can notice this, and may optimise away part or all of a
+micro-benchmark's computation. Although it could be argued that
+high-performance VMs are characterised by this ability to remove unnecessary
+computations~\cite{seaton15phd}, at the same time benchmarks which do not
+perform much computation are undesirable. In reponse to this, many extant
+benchmarks output intermediate and final results to \texttt{stdout}, thus
+preventing computations from being optimised away. However, one can quickly end
+up in a situation where benchmarks are
 unintentionally measuring, in part or whole, the performance of file routines in
 the OS libraries and the kernel.
 
-To lessen the possibility of optimising compilers removing benchmark computation,
-we modified all of the benchmarks to calculate a checksum on each in-process iteration.
+To lessen the possibility of optimising compilers removing benchmark
+computation without excessively printing to \texttt{stdout},
+we modified the benchmarks to calculate a checksum in each in-process iteration.
 At the end of each iteration, the checksum is validated against an expected
-value and the value printed out if the check fails. By writing benchmarks in
+value and an error is printed only if the check fails. By writing benchmarks in
 this style, we make it difficult for optimising compilers to remove the
 main bulk of the benchmark. Note that each micro-benchmark has a single checksum value for all
 language variants, which also provides some assurance that each language variant is

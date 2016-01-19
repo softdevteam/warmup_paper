@@ -76,14 +76,13 @@ Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thoug
 to execute programs in two phases: first the \emph{warmup} phase determines which
 parts of a program would most benefit from dynamic compilation; then after
 compilation has occurred, the program is said to be at \emph{peak performance}.
-When measuring the performance of JIT compiling VMs, typically data collected
-during the warmup phase is discarded, placing the focus instead on peak
+When measuring the performance of JIT compiling VMs, data collected
+during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we run a number of small,
 deterministic benchmarks on a variety of well known VMs, showing a large number
 of cases which fail to conform to the traditional notion of warmup. Indeed,
 every VM we tested fails to conform to the traditional notion of warmup in at
-least one benchmark.\edd{did you want to say anything about warmup being slow
-to set you up for the grant?}
+least one benchmark.
 \end{abstract}
 
 \section{Introduction}
@@ -291,23 +290,21 @@ on these machines.
 
 \subsection{Measuring Computation and Not File Performance}
 
-Micro-benchmarks perform computations whose results are not really used. Highly
-optimising compilers can notice this, and may optimise away part or all of a
-micro-benchmark's computation. Although it could be argued that
-high-performance VMs are characterised by this ability to remove unnecessary
-computations~\cite{seaton15phd}, at the same time benchmarks which do not
-perform much computation are undesirable. In reponse to this, many extant
-benchmarks output intermediate and final results to \texttt{stdout}, thus
-preventing computations from being optimised away. However, one can quickly end
-up in a situation where benchmarks are
+Micro-benchmarks often perform computations which are partly or wholly irrelevant. Highly
+optimising compilers are thus often able optimise away part or all of a
+micro-benchmark's computation. In one sense, this is a desirable part of
+optimising compilers~\cite{seaton15phd}, though benchmarks whose computations
+are entirely removed are rarely useful. To ensure that computation cannot
+be optimised away, many benchmarks write intermediate and final results
+to \texttt{stdout}. However, one can quickly end up in a situation where benchmarks are
 unintentionally measuring, in part or whole, the performance of file routines in
 the OS libraries and the kernel.
 
-To lessen the possibility of optimising compilers removing benchmark
-computation without excessively printing to \texttt{stdout},
-we modified the benchmarks to calculate a checksum in each in-process iteration.
-At the end of each iteration, the checksum is validated against an expected
-value and an error is printed only if the check fails. By writing benchmarks in
+To avoid both of these unfortunate cases,
+we modified the benchmarks to calculate a checksum during each in-process iteration.
+The checksum is validated at the end of each in-process iteration against an expected
+value; if the check fails, the incorrect checksum is written to \texttt{stdout}.
+By writing benchmarks in
 this style, we make it difficult for optimising compilers to remove the
 main bulk of the benchmark. Note that each micro-benchmark has a single checksum value for all
 language variants, which also provides some assurance that each language variant is
@@ -442,19 +439,18 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\krun checks that it is running on a `tickless' kernel. By default, a modern
-Linux kernel interrupts each (active) CPU 250 times each second to run
-scheduling and read-copy-update (RCU) routines. These interruptions can
-introduce `jitter' into some workloads~\cite{tickless}, and thus may act as a
-source of variation for our benchmarks. In order to remove potential jitter,
-the Linux kernel provides a tickless mode (via the config switch
-\texttt{NO\_HZ\_FULL\_ALL}), under which unnecessary ticks are eliminated: only
-the boot CPU (typically CPU 0) and CPUs with more than a single runnable
-process are interrupted.~\footnote{The term `tickless' is actually
-misleading, as ticks must always be received by at least the boot processor.}
-We ran a subset of our benchmarks in the default and tickless modes, and
+\krun checks that it is running on a `tickless' kernel. By default,
+the Linux kernel interrupts each active CPU \laurie{is it per cpu or per core?
+because we later say `boot cpu', which presumably is `boot core', otherwise our
+single-cpu (but multi-core) machines will be running in tickful mode!} 250 times
+(`ticks') each second to run
+scheduling and read-copy-update routines, interfering with running processes.
+For all but the boot CPU core, unnecessary \laurie{what does unnecessary mean?}
+ticks can be turned off by setting the \texttt{NO\_HZ\_FULL\_ALL}
+\laurie{boot-time?} option. We ran a subset of our benchmarks in the default and
+tickless modes, and
 although we were unable to identify significant jitter, we still opted for
-\krun to run on tickless mode.
+\krun to run on tickless mode \laurie{this sounds really weird. if it doesn't do anyhting, why do we have this option on? i thought that we'd spotted a small amount less jitter?}.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when
@@ -768,8 +764,10 @@ Warmup has always been an informally defined term~\cite{seaton15phd} and in this
 paper we have shown cases where that informal definition fails to hold. However,
 as every keen student of history discovers, it is easier to destroy than to
 create: we have not yet found an acceptable alternative definition of warmup.
-\edd{idea: perhaps say that it is hard to provide a single performance number
-in light of our findings?}
+Based on our experiences thus far, we think it unlikely that the different
+styles of warmup we have seen can be captured in a single metric. We suspect it
+is more likely that a number of different metrics will be needed to describe and
+compare warmup styles.
 
 \bibliographystyle{plain}
 \bibliography{bib}

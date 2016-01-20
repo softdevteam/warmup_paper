@@ -439,18 +439,20 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\krun checks that it is running on a `tickless' kernel. By default,
-the Linux kernel interrupts each active CPU \laurie{is it per cpu or per core?
-because we later say `boot cpu', which presumably is `boot core', otherwise our
-single-cpu (but multi-core) machines will be running in tickful mode!} 250 times
-(`ticks') each second to run
-scheduling and read-copy-update routines, interfering with running processes.
-For all but the boot CPU core, unnecessary \laurie{what does unnecessary mean?}
-ticks can be turned off by setting the \texttt{NO\_HZ\_FULL\_ALL}
-\laurie{boot-time?} option. We ran a subset of our benchmarks in the default and
-tickless modes, and
-although we were unable to identify significant jitter, we still opted for
-\krun to run on tickless mode \laurie{this sounds really weird. if it doesn't do anyhting, why do we have this option on? i thought that we'd spotted a small amount less jitter?}.
+\krun checks that it is running on a `tickless' kernel, which claims to reduce
+`jitter' (variation) in time-sensitive workloads~\cite{tickless}. The default
+Linux kernel interrupts each active logical CPU\footnote{Linux exposes
+hyper-threads and multiple cores as logical CPUs.} 250 times (`ticks') a second
+to decide whether to perform a context switch. On a tickless kernel, CPUs can
+be put into `adaptive-tick' mode, under which a CPU only receives ticks if it
+has more than one runnable process scheduled: if there is only one, context
+switches cannot occur, so ticking is unnecessary. We compiled a kernel with
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} set, which places all CPUs bar one into
+adaptive-tick mode.\footnote{It is not possible to have all CPUs in
+adaptive-tick mode.} We ran a subset of our benchmarks on a default and the
+tickless kernel. Although we observed small differences in variation, we were
+unable to conclusively pin these effects to adaptive-ticks. Since tickless mode
+does not appear have negative impact, we opted to leave it enabled.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when

@@ -439,20 +439,18 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-\krun checks that it is running on a `tickless' kernel, which claims to reduce
-`jitter' (variation) in time-sensitive workloads~\cite{tickless}. The default
-Linux kernel interrupts each active logical CPU\footnote{Linux exposes
-hyper-threads and multiple cores as logical CPUs.} 250 times (`ticks') a second
-to decide whether to perform a context switch. On a tickless kernel, CPUs can
-be put into `adaptive-tick' mode, under which a CPU only receives ticks if it
-has more than one runnable process scheduled: if there is only one, context
-switches cannot occur, so ticking is unnecessary. We compiled a kernel with
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} set, which places all CPUs bar one into
-adaptive-tick mode.\footnote{It is not possible to have all CPUs in
-adaptive-tick mode.} We ran a subset of our benchmarks on a default and the
-tickless kernel. Although we observed small differences in variation, we were
-unable to conclusively pin these effects to adaptive-ticks. Since tickless mode
-does not appear have negative impact, we opted to leave it enabled.
+\krun checks that it is running on a `tickless' kernel, which aims to reduce
+jitter in time-sensitive workloads~\cite{tickless}. The default
+Linux kernel interrupts each active logical CPU\footnote{Note that each core of
+a single physical processor chip counts as a CPU.} 250 times (`ticks') a second
+to decide whether to perform a context switch. Tickless kernels with the
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set run in adaptive-tick mode:
+only CPUs with more than one process scheduled on them are interrupted by
+ticks. When we compared a subset of benchmarks on a tickless vs.~a standard
+kernel, we noticed a small reduction in jitter, although not enough for us to
+conclusively conclude that the tickless kernel was the cause of this. However,
+since the tickless kernel, at worst, appears to have no negative effects, we ran
+our experiments in adaptive-tick mode.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when
@@ -703,11 +701,10 @@ Despite this, our benchmarks show extremely predictable performance across
 different hardware, suggesting that the effect of CPU performance changes are
 not significant in our case.
 
-In controlling confounding variables, our benchmarking environment deviates
-substantially from the defaults. It could be argued that the setting we have
-created is artificial as it is unlikely to match the user's environment.
-Indeed, users should trial VMs on their own individual setups, rather than
-relying solely on the findings presented in this paper.
+In controlling confounding variables, our benchmarking environment necessarily
+deviates from standard configurations. It is possible that in so doing, we have
+created a system that shows warmup effects that few people will ever see in
+practise.
 
 We have identified a number of different styles of warmup (slowdown, cyclic,
 etc.). However, we do not claim to have uncovered all possible warmup styles. It

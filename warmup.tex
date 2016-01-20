@@ -703,12 +703,11 @@ Despite this, our benchmarks show extremely predictable performance across
 different hardware, suggesting that the effect of CPU performance changes are
 not significant in our case.
 
-\edd{It could be argued that the environment we have created is artificial,
-since it is not likely the same environment that users will use the VMs under.
-Should we say a few words?}
-\cfbolz{yes, I think that's a good point. we could argue that the environments
-of typical users differ too much to be modelled in our benchmarking setup and
-that the benchmarking thus cannot replace real-life testing (duh)}
+In controlling confounding variables, our benchmarking environment deviates
+substantially from the defaults. It could be argued that the setting we have
+created is artificial as it is unlikely to match the user's environment.
+Indeed, users should trial VMs on their own individual setups, rather than
+relying solely on the findings presented in this paper.
 
 We have identified a number of different styles of warmup (slowdown, cyclic,
 etc.). However, we do not claim to have uncovered all possible warmup styles. It

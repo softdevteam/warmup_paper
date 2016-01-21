@@ -439,18 +439,23 @@ the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
+
 \krun checks that it is running on a `tickless' kernel, which aims to reduce
 jitter in time-sensitive workloads~\cite{tickless}. The default
 Linux kernel interrupts each active logical CPU\footnote{Note that each core of
-a single physical processor chip counts as a CPU.} 250 times (`ticks') a second
-to decide whether to perform a context switch. Tickless kernels with the
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set run in adaptive-tick mode:
-only CPUs with more than one process scheduled on them are interrupted by
-ticks. When we compared a subset of benchmarks on a tickless vs.~a standard
+each physical processor chip counts as a CPU.} 250 times (`ticks') a second to
+decide whether to perform a context switch. Using a tickless kernel, a
+configurable subset of CPUs can be put into `adaptive-tick' mode, where ticks
+are only delivered if there is more than one runnable process scheduled. We
+experimented with a tickless kernel compiled with the
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set: this places all CPUs apart from
+the first into adaptive-tick mode.\footnote{It is not possible to put all CPUs
+into adaptive-tick mode.} When we compared a subset of benchmarks on a tickless
+vs.~a standard
 kernel, we noticed a small reduction in jitter, although not enough for us to
-conclusively conclude that the tickless kernel was the cause of this. However,
-since the tickless kernel, at worst, appears to have no negative effects, we ran
-our experiments in adaptive-tick mode.
+conclusively say that the tickless kernel was the cause. However, since our
+tickless configuration does not appear to have negative effects, we opted to
+run the real experiment under this configuration.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when

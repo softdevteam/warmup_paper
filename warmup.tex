@@ -394,17 +394,17 @@ describe only the `full run' mode in which such checks are enforced.
 
 \subsubsection{Platform Independent Controls}
 
-Several of \krun's operations work on all supported platforms. \krun imposes a
-consistent heap (we set 2GiB) and stack (we set 8MiB) \texttt{ulimit} for each
-VM (we used a 2GiB heap and a 8MB stack).\footnote{Note that Linux allows users
+Several of \krun's controls work on all supported platforms. \krun imposes a
+consistent heap and stack \texttt{ulimit} for all
+VMs (we used a 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
 to inspect these values, but to allocate memory beyond them.} Benchmarks are run
-as a specific Unix user `\texttt{krun}' with a fresh environment. When run in
-`production' mode, \krun reboots the system before each benchmark (including
-before the first benchmark) to ensure that the system is in a known state
+as the Unix user `\texttt{krun}' with a fresh environment. When run in
+`production' mode, \krun reboots the system before each process execution (including
+before the first) to ensure that the system is in a somewhat known state
 (e.g.~if a benchmark caused a system to transfer memory to disk-based swap,
 rebooting ensures that later benchmarks are not affected). After reboot, \krun
-is run from \texttt{/etc/rc.local}; it pauses for 3 minutes to allow the system
-to fully initialise before running the next benchmark.
+is invoked automatically by the system's init subsystem; it pauses for 3 minutes to allow the system
+to fully initialise before running the next process execution.
 
 \krun performs two types of monitoring before and during benchmark execution.
 

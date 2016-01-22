@@ -540,13 +540,11 @@ behaviour, as well descriptions and examples for all the anomalies.
 \subsection{Outliers}
 \label{sub:outliers}
 
-Outliers are iterations of a benchmark that take significantly longer than the
+We loosely define outliers as iterations which take much longer (or shorter) than the
 other iterations, even taking the randomness of the benchmark iterations into
-account.
-
-Figure~\ref{fig:examples:outliers1} shows one such example, which includes an
-outlier around iteration $900$ that runs more than $0.5s$ slower than the
-measurements either side of it.
+account.~\footnote{In future versions of this paper we will use a formal definition.}
+Figure~\ref{fig:examples:outliers1} shows one such example, which includes a
+slow outlier around iteration $1650$.
 
 \begin{figure}[h!]
 \makebox[\textwidth][c]{
@@ -571,20 +569,20 @@ measurements either side of it.
 One possible way forward would be to find a technique for performing hypothesis testing on time-series data, then running tests to determine whether the sliding-mean in one part of the chart is significantly different to the sliding-mean in an earlier phase of the execution.
 This technique would also help to determine precisely when the warm-up phase is over and the JIT has kicked in.}
 
-A few benchmarks exhibit slow downs, where the first few iterations of a
-benchmarks are faster than the eventual mean after ``warm up''.
-
-Figure~\ref{fig:examples:slowdown1} shows one such example.
+A few benchmarks exhibit `slowdowns', where later iterations perform worse than
+earlier iterations. Figure~\ref{fig:examples:slowdown1} shows an example. The
+large `step' at around iteration 200 is a slowdown. Slowdown need not manifest
+as a `step': it could also manifest as a gradual drift towards slower
+iterations times.
 
 
 \subsection{Cyclic Behaviour}
 \label{sub:cyclic}
 
-Cyclic behaviour occurs in a number of benchmarks, which is a pattern of $n$
-iterations that have similar timing results and keeps repeating across the
-benchmark runs.
-
-Figure~\ref{fig:examples:cycles} shows one such example.
+Some benchmarks exhibit cyclic behaviour, where there is a repeating
+pattern in iteration times. We observed varying lengths of cycles in our
+results. For example, Figure~\ref{fig:examples:cycles} shows two different
+process executions with cycles of length roughly 7 and 400 respectively.
 
 \begin{figure}[h!]
 \makebox[\textwidth][c]{
@@ -595,8 +593,8 @@ Figure~\ref{fig:examples:cycles} shows one such example.
 \includegraphics[width=\textwidth]{examples/cycles2}
 \end{minipage}
 }
+\caption{Examples of a benchmarks with cycles.}
 \label{fig:examples:cycles}
-\caption{Example of a benchmark with cycles.}
 \end{figure}
 
 
@@ -605,16 +603,18 @@ Figure~\ref{fig:examples:cycles} shows one such example.
 
 Late phase changes occur in benchmarks where after many iterations the benchmark
 changes behaviour, either by getting slower or faster, or by producing a
-different pattern of randomness.
-
-Figure~\ref{fig:examples:late1} shows one such example.
+different pattern of randomness. Figure~\ref{fig:examples:late1} shows one such
+example where the mean appears to step up and down in intervals of a few
+hundred iterations.
 
 \subsection{Unexpectedly Long Warmup}
 \label{sub:long}
 
-The common understanding of warmup behaviour usually assumes that for such
-small programs warmup is done after a few iterations. However, there are
-benchmarks where performance improves after many hundred iterations.
+The common understanding of warmup behaviour usually assumes that for small
+programs, such as our microbenchmarks, warmup is complete after a handful of
+iterations. However, there are benchmarks where performance improves after many
+hundred iterations. Figure~\ref{fig:examples:long} show an extreme example,
+where warmup is not achieved until around iteration 1600.
 
 \begin{figure}[h!]
 \makebox[\textwidth][c]{
@@ -636,11 +636,9 @@ benchmarks where performance improves after many hundred iterations.
 
 A number of benchmarks have wildly different behaviour between different
 iterations on the same machine, or between iterations of different machines.
-
-Figure~\ref{fig:examples:consistent_weirdness1} shows a case where
-unexpected behaviours are consistent between machines and executions.
-Figure~\label{fig:examples:inconsistent_weirdness1} shows an example where
-effects differ between both machines and executions.
+Figure~\ref{fig:examples:inconsistent} shows two such cases: the top row shows
+inconsistencies on the same machine, whereas the bottom row shows
+inconsistencies between machines.
 
 \begin{figure*}[h!]
 \makebox[\textwidth][c]{
@@ -659,8 +657,8 @@ effects differ between both machines and executions.
 \includegraphics[width=\textwidth]{examples/inconsistent2b.pdf}
 \end{minipage}
 }
-\caption{Examples of benchmarks whose effects are inconsistent between executions.}
-\label{fig:examples:consistent_weirdness1}
+\caption{Examples of benchmarks with inconsistencies between executions and machines.}
+\label{fig:examples:inconsistent}
 \end{figure*}
 
 \section{Threats to Validity}

@@ -549,10 +549,18 @@ outlier around iteration $900$ that runs more than $0.5s$ slower than the
 measurements either side of it.
 
 \begin{figure}[h!]
-\centering
-\includegraphics[width=.46\textwidth]{examples/outliers1}
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/outliers1}
 \caption{Example of a benchmark with outliers.}
 \label{fig:examples:outliers1}
+\end{minipage}
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/slowdown1}
+\caption{Example of a benchmark with a slowdown.}
+\label{fig:examples:slowdown1}
+\end{minipage}
+}
 \end{figure}
 
 
@@ -568,14 +576,6 @@ benchmarks are faster than the eventual mean after ``warm up''.
 
 Figure~\ref{fig:examples:slowdown1} shows one such example.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=.46\textwidth]{examples/slowdown1}
-\caption{Example of a benchmark with a slowdown.}
-\label{fig:examples:slowdown1}
-\end{figure}
-
-
 
 \subsection{Cyclic Behaviour}
 \label{sub:cyclic}
@@ -584,13 +584,19 @@ Cyclic behaviour occurs in a number of benchmarks, which is a pattern of $n$
 iterations that have similar timing results and keeps repeating across the
 benchmark runs.
 
-Figure~\ref{fig:examples:cycles1} shows one such example.
+Figure~\ref{fig:examples:cycles} shows one such example.
 
 \begin{figure}[h!]
-\centering
-\includegraphics[width=.46\textwidth]{examples/cycles1}
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/cycles1}
+\end{minipage}
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/cycles2}
+\end{minipage}
+}
+\label{fig:examples:cycles}
 \caption{Example of a benchmark with cycles.}
-\label{fig:examples:cycles1}
 \end{figure}
 
 
@@ -603,14 +609,6 @@ different pattern of randomness.
 
 Figure~\ref{fig:examples:late1} shows one such example.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=.46\textwidth]{examples/late1}
-\caption{Example of a benchmark with late phase changes.}
-\label{fig:examples:late1}
-\end{figure}
-
-
 \subsection{Unexpectedly Long Warmup}
 \label{sub:long}
 
@@ -619,10 +617,18 @@ small programs warmup is done after a few iterations. However, there are
 benchmarks where performance improves after many hundred iterations.
 
 \begin{figure}[h!]
-\centering
-\cfbolz{we need an example here}
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/late1}
+\caption{Example of a benchmark with late phase changes.}
+\label{fig:examples:late1}
+\end{minipage}
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/slow_warmup1}
 \caption{Example of a benchmark with unexpectedly long warmup.}
 \label{fig:examples:long}
+\end{minipage}
+}
 \end{figure}
 
 \subsection{Inconsistent Effects}
@@ -637,19 +643,25 @@ Figure~\label{fig:examples:inconsistent_weirdness1} shows an example where
 effects differ between both machines and executions.
 
 \begin{figure*}[h!]
-\centering
-\includegraphics[width=\textwidth]{examples/consistent_weirdness1}
-\caption{Example of a benchmark whose effects are consistent between machines and executions.}
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/inconsistent1a.pdf}
+\end{minipage}
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/inconsistent1b.pdf}
+\end{minipage}
+}
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/inconsistent2a.pdf}
+\end{minipage}
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/inconsistent2b.pdf}
+\end{minipage}
+}
+\caption{Examples of benchmarks whose effects are inconsistent between executions.}
 \label{fig:examples:consistent_weirdness1}
 \end{figure*}
-
-\begin{figure*}[h!]
-\centering
-\includegraphics[width=\textwidth]{examples/inconsistent_weirdness1}
-\caption{Example of a benchmark whose effects are inconsistent between machines and executions.}
-\label{fig:examples:inconsistent_weirdness1}
-\end{figure*}
-
 
 \section{Threats to Validity}
 \label{sec:threats}

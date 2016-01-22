@@ -398,8 +398,8 @@ Several of \krun's controls work on all supported platforms. \krun imposes a
 consistent heap and stack \texttt{ulimit} for all
 VMs (we used a 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
 to inspect these values, but to allocate memory beyond them.} Benchmarks are run
-as the Unix user `\texttt{krun}' with a fresh environment. When run in
-`production' mode, \krun reboots the system before each process execution (including
+as the Unix user `\texttt{krun}', which performs no environment configuration.
+\krun reboots the system before each process execution (including
 before the first) to ensure that the system is in a somewhat known state
 (e.g.~if a benchmark caused a system to transfer memory to disk-based swap,
 rebooting ensures that later benchmarks are not affected). After reboot, \krun
@@ -432,30 +432,27 @@ since \krun has no way of knowing what a `cool' temperature is in advance,
 
 On Linux, \krun enables several additional factors to be controlled.
 
-\krun sets the CPU frequency to the highest value possible
-(without over-clocking). The user must first disable Intel P-state support in
+\krun sets the CPU frequency to the highest non-over-clocked value possible.
+The user must first disable Intel P-state support in
 the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 \krun verifies P-states are disabled and uses \texttt{cpufreq-set} to set
 the CPU governor to \texttt{performance} mode. See
 Section~\ref{sec:threats} for more discussion on Intel P-states.
 
-
 \krun checks that it is running on a `tickless' kernel, which aims to reduce
 jitter in time-sensitive workloads~\cite{tickless}. The default
 Linux kernel interrupts each active logical CPU\footnote{Note that each core of
-each physical processor chip counts as a CPU.} 250 times (`ticks') a second to
-decide whether to perform a context switch. Using a tickless kernel, a
-configurable subset of CPUs can be put into `adaptive-tick' mode, where ticks
-are only delivered if there is more than one runnable process scheduled. We
-experimented with a tickless kernel compiled with the
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set: this places all CPUs apart from
-the first into adaptive-tick mode.\footnote{It is not possible to put all CPUs
-into adaptive-tick mode.} When we compared a subset of benchmarks on a tickless
-vs.~a standard
+each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
+decide whether to perform a context switch. We compiled a kernel with the
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time options, enabling adaptive-tick
+mode: only logical CPUs with more than one process scheduled on them are
+interrupted by ticks (with the exception of the boot CPU, which always remains
+in normal tick mode).
+When we compared a subset of benchmarks on a tickless vs.~a standard
 kernel, we noticed a small reduction in jitter, although not enough for us to
-conclusively say that the tickless kernel was the cause. However, since our
-tickless configuration does not appear to have negative effects, we opted to
-run the real experiment under this configuration.
+conclusively say that the tickless kernel was the cause. However,
+since the tickless kernel appears to have no negative effects, we ran all
+our experiments in adaptive-tick mode.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when

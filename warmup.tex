@@ -139,11 +139,16 @@ date---if it ever held at all. We suggest it is better to think of most benchmar
 generally converging on a \emph{steady state} of performance (be that faster or
 slower than initial execution). When a benchmark does not converge on a steady
 state, we suggest that it is impossible to give meaningful performance figures.
-We believe our results are of interest to VM writers, but also to users of
-those VMs. Authors may not have considered the different types of warmup
-behaviour (or found benchmarks which trigger such behaviour), whereas users may
-obtain a greater understanding of why their programs do not perform as well as
-they had expected.
+
+Our results are of interest to both VM authors and many end users. When
+implementing optimisations, VM authors need to know if their optimisations have
+had the intended effect: since many optimisations, in isolation, have only a
+small effect, accurate benchmarking is vital. Our results show that different
+benchmarking techniques may be necessary to measure the effect of an
+optimisation, rather than noise. Many end users have workloads that are more
+sensitive to latency than throughput. For example, users running games (or other
+real-time systems) require predictable performance. Our results show that some
+VMs JIT compile programs that have unpredictable long-term performance.
 
 %This paper's contributions are as follows:
 %\begin{enumerate*}

@@ -534,8 +534,6 @@ qualitative way. In the following we will
 present the run-sequence diagrams of benchmarks that have expected warmup
 behaviour, as well descriptions and examples for all the anomalies.
 
-\cfbolz{need some examples of nice benchs}
-
 
 \subsection{Outliers}
 \label{sub:outliers}
@@ -553,6 +551,21 @@ slow outlier around iteration $1650$.\edd{speak about consistent outliers}
 \caption{Example of a benchmark with outliers.}
 \label{fig:examples:outliers1}
 \end{minipage}
+}
+\end{figure}
+
+
+\subsection{Traditional Warmup}
+
+\cfbolz{need some examples of nice benchs}\laurie{yes, including `warms up in 1
+iteration' and `warms up after quite a few more than 1 iteration'}
+
+
+\subsection{Slowdown}
+\label{sub:slowdowns}
+
+\begin{figure}[h!]
+\makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slowdown1}
 \caption{Example of a benchmark with a slowdown.}
@@ -560,14 +573,6 @@ slow outlier around iteration $1650$.\edd{speak about consistent outliers}
 \end{minipage}
 }
 \end{figure}
-
-
-\subsection{Slowdowns}
-\label{sub:slowdowns}
-
-\sarah[final]{This is one area were the sliding-window average might be useful (i.e. in detecting a slow-down).
-One possible way forward would be to find a technique for performing hypothesis testing on time-series data, then running tests to determine whether the sliding-mean in one part of the chart is significantly different to the sliding-mean in an earlier phase of the execution.
-This technique would also help to determine precisely when the warm-up phase is over and the JIT has kicked in.}
 
 A few benchmarks exhibit `slowdowns', where later iterations perform worse than
 earlier iterations. Figure~\ref{fig:examples:slowdown1} shows an example. The
@@ -588,12 +593,9 @@ process executions with cycles of length roughly 7 and 400 respectively.
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/cycles1}
-\end{minipage}
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/cycles2}
+\caption{Example of a benchmark with cycles.}
 \end{minipage}
 }
-\caption{Examples of a benchmarks with cycles.\laurie{let's not show gcc stuff in the draft paper. it raises more questions than we can/want to answer.}\edd{I think we should keep it as it's probably the most interesting/insightful graph we have. Questions are fine: we don't plan to explain any of the behaviours we are seeing.}}
 \label{fig:examples:cycles}
 \end{figure}
 
@@ -601,42 +603,41 @@ process executions with cycles of length roughly 7 and 400 respectively.
 \subsection{Late Phase Changes}
 \label{sub:phase}
 
-Late phase changes occur in benchmarks where after many iterations the benchmark
-changes behaviour, either by getting slower or faster, or by producing a
-different pattern of randomness. Figure~\ref{fig:examples:late1} shows one such
-example where the mean appears to step up and down in intervals of a few
-hundred iterations.
+\begin{figure}[h!]
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/slow_warmup1}
+\caption{Example of a benchmark with a late phase change (in this case entering slowdown).}
+\label{fig:examples:long}
+\end{minipage}
+}
+\end{figure}
 
-\subsection{Unexpectedly Long Warmup}
+Late phase changes are one of the surprising results from our experiment: it is
+clear that some benchmarks change phase after a much larger number of iterations
+than previous experiments have considered (see Figure~\ref{fig:examples:late1}).
+Late phase changes should be considered with our classifiers: after a late phase
+change, a benchmark may run faster, slower, or become cyclic etc.
+
+
+\subsection{Never-ending Phase Changes}
 \label{sub:long}
 
-The common understanding of warmup behaviour usually assumes that for small
-programs, such as our microbenchmarks, warmup is complete after a handful of
-iterations. However, there are benchmarks where performance improves after many
-hundred iterations. Figure~\ref{fig:examples:long} show an extreme example,
-where warmup is not achieved until around iteration 1600.
+Some benchmarks keep changing phase without appearing to finally settle on a
+single phase. Note that sometimes this can involve cycling between a small
+number of phases, or moving between a seemingly arbitrary number of different
+phases (as shown in Figure~\ref{fig:examples:neverending}).
 
 \begin{figure}[h!]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/late1}
-\caption{Example of a benchmark with late phase changes.\laurie{this isn't
-really a `late' phase change, as much as many phase changes (which, probably,
-continue on changing for infinity)}\edd{Correct, but late phases changes none
-the less. This was the best example I could find that couldn't be classified
-as late warmup or late slow down. In a sense those two classifiers themselves
-are late phase changes. I wonder if we should discard the `late phase change'
-classifier altogether and re-file this graph under `variable mean` or
-something.}}
-\label{fig:examples:late1}
-\end{minipage}
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/slow_warmup1}
-\caption{Example of a benchmark with unexpectedly long warmup.}
-\label{fig:examples:long}
+\caption{Example of a benchmark with never-ending phase changes.}
+\label{fig:examples:neverending}
 \end{minipage}
 }
 \end{figure}
+
 
 \subsection{Inconsistent Effects}
 \label{sub:inconsistent}
@@ -668,6 +669,7 @@ executions on the same machine. The bottom row shows inconsistencies between
 machines.}
 \label{fig:examples:inconsistent}
 \end{figure*}
+
 
 \section{Threats to Validity}
 \label{sec:threats}

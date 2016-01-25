@@ -593,7 +593,7 @@ process executions with cycles of length roughly 7 and 400 respectively.
 \includegraphics[width=\textwidth]{examples/cycles2}
 \end{minipage}
 }
-\caption{Examples of a benchmarks with cycles.\laurie{let's not show gcc stuff in the draft paper. it raises more questions than we can/want to answer.}}
+\caption{Examples of a benchmarks with cycles.\laurie{let's not show gcc stuff in the draft paper. it raises more questions than we can/want to answer.}\edd{I think we should keep it as it's probably the most interesting/insightful graph we have. Questions are fine: we don't plan to explain any of the behaviours we are seeing.}}
 \label{fig:examples:cycles}
 \end{figure}
 
@@ -620,7 +620,14 @@ where warmup is not achieved until around iteration 1600.
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/late1}
-\caption{Example of a benchmark with late phase changes.\laurie{this isn't really a `late' phase change, as much as many phase changes (which, probably, continue on changing for infinity)}}
+\caption{Example of a benchmark with late phase changes.\laurie{this isn't
+really a `late' phase change, as much as many phase changes (which, probably,
+continue on changing for infinity)}\edd{Correct, but late phases changes none
+the less. This was the best example I could find that couldn't be classified
+as late warmup or late slow down. In a sense those two classifiers themselves
+are late phase changes. I wonder if we should discard the `late phase change'
+classifier altogether and re-file this graph under `variable mean` or
+something.}}
 \label{fig:examples:late1}
 \end{minipage}
 \begin{minipage}{.65\textwidth}

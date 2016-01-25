@@ -558,8 +558,24 @@ slow outlier around iteration $1650$.\edd{speak about consistent outliers}
 
 \subsection{Traditional Warmup}
 
-\cfbolz{need some examples of nice benchs}\laurie{yes, including `warms up in 1
-iteration' and `warms up after quite a few more than 1 iteration'}
+Many benchmarks do indeed warmup as expected, although the length of the warmup
+phase is quite variable. Figure~\ref{fig:examples:trad} shows two process
+executions which conform to the traditional warmup model: one warms up after
+one iteration, the other in roughly 120.\edd{I hope to find a better example
+than the second: one with more obvious compilation steps}
+
+\begin{figure*}[h!]
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/good1.pdf}
+\end{minipage}
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/good2.pdf}
+\end{minipage}
+}
+\caption{Two examples of well-behaved, traditional, warmup behaviour.}
+\label{fig:examples:trad}
+\end{figure*}
 
 
 \subsection{Slowdown}

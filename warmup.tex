@@ -540,7 +540,7 @@ behaviour, as well descriptions and examples for all the anomalies.
 
 We loosely define outliers as iterations which take much longer (or shorter) than the
 other iterations, even taking the randomness of the benchmark iterations into
-account.~\footnote{In future versions of this paper we will use a formal definition.}
+account.\footnote{In future versions of this paper we will use a formal definition.}
 Figure~\ref{fig:examples:outliers1} shows one such example, which includes a
 slow outlier around iteration $1650$.\edd{speak about consistent outliers}
 
@@ -587,16 +587,17 @@ iterations times.
 Some benchmarks exhibit cyclic behaviour, where there is a repeating
 pattern in iteration times. We observed varying lengths of cycles in our
 results. For example, Figure~\ref{fig:examples:cycles} shows two different
-process executions with cycles of length roughly 7 and 400 respectively.
+process executions with cycles of length roughly 7 and 400
+respectively.\cfbolz{the second figure is missing}
 
 \begin{figure}[h!]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/cycles1}
 \caption{Example of a benchmark with cycles.}
+\label{fig:examples:cycles}
 \end{minipage}
 }
-\label{fig:examples:cycles}
 \end{figure}
 
 
@@ -608,7 +609,7 @@ process executions with cycles of length roughly 7 and 400 respectively.
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slow_warmup1}
 \caption{Example of a benchmark with a late phase change (in this case entering slowdown).}
-\label{fig:examples:long}
+\label{fig:examples:late1}
 \end{minipage}
 }
 \end{figure}
@@ -666,7 +667,7 @@ Figure~\ref{fig:examples:inconsistent} shows some such cases.
 \caption{Examples of benchmarks with inconsistencies between process executions
 and machines. The top row shows inconsistencies between different process
 executions on the same machine. The bottom row shows inconsistencies between
-machines.}
+machines.\cfbolz{I know that it would be slightly annoying to do, but can we have the same axes for the same benchmarks here?}}
 \label{fig:examples:inconsistent}
 \end{figure*}
 

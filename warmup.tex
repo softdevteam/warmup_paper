@@ -519,32 +519,39 @@ to expose this monotonic clock via a user-visible function.
 %\texttt{CLOCK\_MONOTONIC\_RAW} timer.
 
 
-\section{Results}
+\section{Classifying Results}
 \label{sec:Results}
 
-After running the benchmarks as described, we analysed the results in two
-phases. First, for each process execution, we visually inspected a run-sequence
-plot (iteration  number vs. time). For each execution we noted whether the
-pattern of iteration times matched the expected warmup behaviour (as described
-in Section~\ref{sec:warmup}). This was the case of \cfbolz{add numbers} X out
-of Y benchmarks. Next we identified groups of ``anomalies'', i.e. common
-deviations from the expected warmup behaviour. Since we don't yet have formal
-definitions for these classifications, we define them
-qualitatively.\footnote{In the future, we hope to develop formal definitions so
-that this process can be automated.} In the
-following subsections, we first show some example where our benchmarks did
-perform as expected. We then discuss our anomaly classifications and give
-examples.
+After running our experiment, we have \laurie{how many?} data-points to examine,
+which we present as graphs. For each graph, we show: the benchmark name, the
+name of the machine on which it was executed, and its process execution number;
+in-process executions, in order, on the $x$-axis; and the time per in-process
+execution on the $y$-axis. These graphs, though simple, highlight a number of
+interesting features, which we informally classify.
 
-\subsection{Traditional Warmup}
+One common feature in our results are \emph{outliers}: informally, these are
+in-process iterations which take much longer (or, much more rarely, much
+shorter) than neighbouring in-process iterations. In general, we ignore outliers
+when classifying data. Figure~\ref{fig:examples:outliers1} shows a typical
+example, where in amongst largely consistent timings, a single in-process
+iteration is substantially slower than its neighbours.
 
-Many benchmarks do indeed warmup as expected, although the length of the warmup
-phase is quite variable. Figure~\ref{fig:examples:trad} shows two process
-executions which conform to the traditional warmup model: one warms up after
-one iteration, the other in roughly 120.\edd{I hope to find a better example
-than the second: one with more obvious compilation steps}
+\begin{figure}[tbp]
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/outliers1}
+\caption{A benchmark with an outlier (at iteration \laurie{be precise about which iteration number the outlier is})..}
+\label{fig:examples:outliers1}
+\end{minipage}
+}
+\end{figure}
 
-\begin{figure*}[h!]
+
+\subsection{Classifications}
+
+Our classifications are as follows.
+
+\begin{figure*}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/good1.pdf}
@@ -553,100 +560,78 @@ than the second: one with more obvious compilation steps}
 \includegraphics[width=\textwidth]{examples/good2.pdf}
 \end{minipage}
 }
-\caption{Two examples of well-behaved, traditional, warmup behaviour.}
+\caption{Two examples of well-behaved, traditional, warmup behaviour.\laurie{for this version of the paper, let's not mess with the x-axis scale---it's just something else to confuse people.}}
 \label{fig:examples:trad}
 \end{figure*}
 
+\textbf{Traditional Warmup}
+Of the \laurie{XXX} benchmark / VM pairs, \laurie{YYY} consistently warmed-up as
+per traditional expectations. Figure~\ref{fig:examples:trad} shows examples of
+such graphs.
 
 
-\subsection{Outliers}
-\label{sub:outliers}
-
-We loosely define outliers as iterations which take much longer (or shorter) than the
-other iterations, even taking the randomness of the benchmark iterations into
-account.
-Figure~\ref{fig:examples:outliers1} shows one such example, which includes a
-slow outlier around iteration $1650$.\edd{speak about consistent outliers}
-
-\begin{figure}[h!]
-\makebox[\textwidth][c]{
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/outliers1}
-\caption{Example of a benchmark with outliers.}
-\label{fig:examples:outliers1}
-\end{minipage}
-}
-\end{figure}
-
-
-\subsection{Slowdown}
-\label{sub:slowdowns}
-
-\begin{figure}[h!]
+\begin{figure}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slowdown1}
-\caption{Example of a benchmark with a slowdown.}
+\caption{Example of a benchmark with a slowdown occurring at in-process
+iteration \laurie{be precise about the number}.}
 \label{fig:examples:slowdown1}
 \end{minipage}
 }
 \end{figure}
 
-A few benchmarks exhibit `slowdowns', where later iterations perform worse than
-earlier iterations. Figure~\ref{fig:examples:slowdown1} shows an example. The
-large `step' at around iteration 200 is a slowdown. Slowdown need not manifest
-as a `step': it could also manifest as a gradual drift towards slower
-iterations times.
+\textbf{Slowdown} \label{sub:slowdowns}
+In stark contrast to the traditional expectation of `warmup', some benchmarks
+\laurie{roughly how many?} exhibit `slowdown', where the performance of
+in-process iterations drops over time. Figure~\ref{fig:examples:slowdown1} shows
+an example where a sharp slowdown occurs; slowdown also occurs as a gradual
+drift over many in-process executions \laurie{let's put a graph like that in!}.
 
 
-\subsection{Cyclic Behaviour}
-\label{sub:cyclic}
-
-Some benchmarks exhibit cyclic behaviour, where there is a repeating
-pattern in iteration times. We observed varying lengths of cycles in our
-results. For example, Figure~\ref{fig:examples:cycles} shows an example
-with cycles of length roughly 7.
-
-\begin{figure}[h!]
+\begin{figure}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/cycles1}
-\caption{Example of a benchmark with cycles.}
+\caption{A benchmark with cycles \laurie{``of length XXX'' and maybe ``starting at in-process iteration YYY''?}}
 \label{fig:examples:cycles}
 \end{minipage}
 }
 \end{figure}
 
+\textbf{Cyclic Behaviour} \label{sub:cyclic}
+Some benchmarks exhibit cyclic behaviour, where in-process iteration times
+repeat in a predictable pattern. We observed varying cycle lengths \laurie{can
+we say `from XXX to YYY', to give people an idea of the scale?}: the example in
+Figure~\ref{fig:examples:cycles} shows an example with a cycle of 7 \laurie{this
+is clearly wrong: if it was 7, there would be 285 spikes in that figure}
+in-process iterations.
 
-\subsection{Late Phase Changes}
-\label{sub:phase}
 
-\begin{figure}[h!]
+\begin{figure}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slow_warmup1}
-\caption{Example of a benchmark with a late phase change (in this case entering slowdown).}
+\caption{A benchmark with a late phase change (in this case entering slowdown
+at in-process iteration \laurie{XXX}).}
 \label{fig:examples:late1}
 \end{minipage}
 }
 \end{figure}
 
+\textbf{Late Phase Change} \label{sub:phase}
 Late phase changes are one of the surprising results from our experiment: it is
-clear that some benchmarks change phase after a much larger number of iterations
-than previous experiments have considered (see Figure~\ref{fig:examples:late1}).
-Late phase changes should be considered with our classifiers: after a late phase
-change, a benchmark may run faster, slower, or become cyclic etc.
+clear that some benchmarks change phase after a much larger number of in-process iterations
+than previous experiments have considered, as shown in Figure~\ref{fig:examples:late1}.
+It is important to note that `late' is relative only to the number of in-process
+iterations we ran in our experiment: it is probable that some benchmarks would
+undergo further phase changes if we were to run a greater number of in-process
+iterations. Note that late phase changes are orthogonal to most of our other
+classifiers: after a late phase change, a benchmark may run faster, slower, or
+become cyclic etc.
 
 
-\subsection{Never-ending Phase Changes}
-\label{sub:long}
-
-Some benchmarks keep changing phase without appearing to finally settle on a
-single phase. Note that sometimes this can involve cycling between a small
-number of phases, or moving between a seemingly arbitrary number of different
-phases (as shown in Figure~\ref{fig:examples:neverending}).
-
-\begin{figure}[h!]
+\begin{figure}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/late1}
@@ -656,15 +641,14 @@ phases (as shown in Figure~\ref{fig:examples:neverending}).
 }
 \end{figure}
 
+\textbf{Never-ending Phase Changes} \label{sub:long}
+Some benchmarks keep changing phase without appearing to finally settle on a
+single phase. Note that sometimes this can involve cycling between a small
+number of phases, or moving between a seemingly arbitrary number of different
+phases (as shown in Figure~\ref{fig:examples:neverending}).
 
-\subsection{Inconsistent Effects}
-\label{sub:inconsistent}
 
-A number of benchmarks have wildly different behaviour between different
-iterations on the same machine, or between iterations of different machines.
-Figure~\ref{fig:examples:inconsistent} shows some such cases.
-
-\begin{figure*}[h!]
+\begin{figure*}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/inconsistent1a.pdf}
@@ -681,12 +665,17 @@ Figure~\ref{fig:examples:inconsistent} shows some such cases.
 \includegraphics[width=\textwidth]{examples/inconsistent2b.pdf}
 \end{minipage}
 }
-\caption{Examples of benchmarks with inconsistencies between process executions
-and machines. The top row shows inconsistencies between different process
+\caption{Examples of inconsistent benchmarks.
+The top row shows inconsistencies between different process
 executions on the same machine. The bottom row shows inconsistencies between
-machines.\cfbolz{I know that it would be slightly annoying to do, but can we have the same axes for the same benchmarks here?}}
+machines.\cfbolz{I know that it would be slightly annoying to do, but can we have the same axes for the same benchmarks here?}\laurie{agreed: we really need to do that}}
 \label{fig:examples:inconsistent}
 \end{figure*}
+
+\textbf{Inconsistent} \label{sub:inconsistent}
+A number of benchmarks behave inconsistently. Sometimes this occurs on
+in-process executions within a single machine; sometimes only across machines.
+Figure~\ref{fig:examples:inconsistent} shows examples of both cases.
 
 
 \section{Threats to Validity}

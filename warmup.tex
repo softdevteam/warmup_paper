@@ -532,29 +532,9 @@ deviations from the expected warmup behaviour. Since we don't yet have formal
 definitions for these classifications, we define them
 qualitatively.\footnote{In the future, we hope to develop formal definitions so
 that this process can be automated.} In the
-following subsections, we discuss our classifications and show example process
-executions for each.
-
-
-\subsection{Outliers}
-\label{sub:outliers}
-
-We loosely define outliers as iterations which take much longer (or shorter) than the
-other iterations, even taking the randomness of the benchmark iterations into
-account.
-Figure~\ref{fig:examples:outliers1} shows one such example, which includes a
-slow outlier around iteration $1650$.\edd{speak about consistent outliers}
-
-\begin{figure}[h!]
-\makebox[\textwidth][c]{
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/outliers1}
-\caption{Example of a benchmark with outliers.}
-\label{fig:examples:outliers1}
-\end{minipage}
-}
-\end{figure}
-
+following subsections, we first show some example where our benchmarks did
+perform as expected. We then discuss our anomaly classifications and give
+examples.
 
 \subsection{Traditional Warmup}
 
@@ -576,6 +556,27 @@ than the second: one with more obvious compilation steps}
 \caption{Two examples of well-behaved, traditional, warmup behaviour.}
 \label{fig:examples:trad}
 \end{figure*}
+
+
+
+\subsection{Outliers}
+\label{sub:outliers}
+
+We loosely define outliers as iterations which take much longer (or shorter) than the
+other iterations, even taking the randomness of the benchmark iterations into
+account.
+Figure~\ref{fig:examples:outliers1} shows one such example, which includes a
+slow outlier around iteration $1650$.\edd{speak about consistent outliers}
+
+\begin{figure}[h!]
+\makebox[\textwidth][c]{
+\begin{minipage}{.65\textwidth}
+\includegraphics[width=\textwidth]{examples/outliers1}
+\caption{Example of a benchmark with outliers.}
+\label{fig:examples:outliers1}
+\end{minipage}
+}
+\end{figure}
 
 
 \subsection{Slowdown}

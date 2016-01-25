@@ -529,7 +529,9 @@ pattern of iteration times matched the expected warmup behaviour (as described
 in Section~\ref{sec:warmup}). This was the case of \cfbolz{add numbers} X out
 of Y benchmarks. Next we identified groups of ``anomalies'', i.e. common
 deviations from the expected warmup behaviour. Since we don't yet have formal
-definitions for these classifications, we define them qualitatively. In the
+definitions for these classifications, we define them
+qualitatively.\footnote{In the future, we hope to develop formal definitions so
+that this process can be automated.} In the
 following subsections, we discuss our classifications and show example process
 executions for each.
 
@@ -539,7 +541,7 @@ executions for each.
 
 We loosely define outliers as iterations which take much longer (or shorter) than the
 other iterations, even taking the randomness of the benchmark iterations into
-account.\footnote{In future versions of this paper we will use a formal definition.}
+account.
 Figure~\ref{fig:examples:outliers1} shows one such example, which includes a
 slow outlier around iteration $1650$.\edd{speak about consistent outliers}
 

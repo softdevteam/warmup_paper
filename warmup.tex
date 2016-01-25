@@ -685,17 +685,18 @@ While we have designed our experiment as carefully as possible, we do not
 pretend to have controlled every possibly confounding variable. Indeed, our
 experience when designing the experiment has been one of gradually uncovering
 confounding variables whose existence we had not previously imagined. It
-is all but guaranteed that there are further confounding variables that we
+is inevitable that there are further confounding variables that we
 do not know about; some of these may be controllable, although many may not be.
-It is possible that currently unknown confounding variables have coloured all
-our results.
+It is possible that currently confounding variables we are not aware of have
+coloured all our results.
 
 We have tried to gain a partial understanding of the effects of different
-hardware on benchmarks by using benchmarking machines with different hardware
-(both of which run the same OS). However, while the hardware between the two is
-different, much more distinct hardware is available. Greater differences in
-hardware (e.g.~using a non-x86 architecture) may give different results.
-However, the greater the differences in hardware, the more likely the JIT
+hardware on benchmarks by using benchmarking machines with the same OS but
+different hardware. However, while the hardware between the two is
+different, much more distinct hardware (e.g.~using a non-x86 architecture) is
+available, and is more likely to uncover hardware-related differences.
+However, hardware cannot always be controlled in isolation from software:
+the greater the differences in hardware, the more likely the JIT
 compilers are to use different code paths (e.g.~different code generators and
 the like). Put another way, an apples-to-apples comparison across very different
 hardware is likely to be impossible, because the software being run will
@@ -713,7 +714,7 @@ as to this effect, but this effect requires deeper investigation.
 The checksums we added ensure that, at a user-visible level, each benchmark
 performs equivalent work in each language variant. However, it is impossible to
 say whether each performs equivalent work at the lowest level or not. For
-example, choosing to use a different datatype in a language's core library may
+example, choosing to use a different data type in a language's core library may
 substantially impact performance. There is also the perennial problem as to the
 degree to which an individual language benchmark should maintain the structure
 of other language's implementations: a benchmark for a given language could be
@@ -726,12 +727,12 @@ this complaint could arguably be directed at the unmodified benchmarks too.
 
 Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. Even on Linux, where we control
-the CPU's p-State, we can not guarantee that this fixes the CPU frequency: as
+the CPU's p-State, we cannot guarantee that this fixes the CPU frequency: as
 the Linux kernel states, ``the idea that frequency can be set to a single
 frequency is fiction for Intel Core processors''~\cite{pstate}. In
 some cases, changes the CPU makes to its performance are detected and reported
 by the operating system (e.g.~performance throttling due to potential
-overheating); in other cases, changes may go undetected and/or unreported.
+overheating); in other cases, changes may go undetected or unreported.
 Despite this, our benchmarks show extremely predictable performance across
 different hardware, suggesting that the effect of CPU performance changes are
 not significant in our case.
@@ -755,9 +756,9 @@ experiments, the experiment in this paper took more time and effort than we
 expected. In part this is because there is limited precedent for such detailed
 experiments. Investigating possible confounding variables, understanding how to
 control them, and implementing the necessary checks, all took time. In many
-cases, we had to implement small programs or systems to understand a variables
+cases, we had to implement small programs or systems to understand a variable's
 effect (e.g.~that Linux allows a process to allocate memory beyond that
-specified in the soft and hard ulimit).
+specified in the soft and hard \texttt{ulimit}).
 
 In some cases, we found that seemingly reasonable settings had undesirable
 effects. Most notably, we trialled running experiments on a fixed CPU core which
@@ -778,9 +779,10 @@ patterns. Gil et al.'s main focus is on non-determinism over execution runs on
 HotSpot, and the difficulties this raise in terms of providing reliable
 benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
 least one benchmark (listBubbleSort) which on some executions undergoes what we
-have termed slowdowns. \kalibera note the
-existence of what we have called cyclical behaviour, but require the user to
-manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}.
+would classify a slowdown. \kalibera note the
+existence of what we have called cyclic behaviour (in the context of benchmarking,
+they then require the user to
+manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
 
 
 \section{Conclusions}
@@ -789,7 +791,7 @@ manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}.
 Warmup has always been an informally defined term~\cite{seaton15phd} and in this
 paper we have shown cases where that informal definition fails to hold.
 To the best of our knowledge, this paper is the first to classify different
-`warmup' styles and note the relatively high frequency of `unexpected'
+`warmup' styles and note the relatively high frequency of non-traditional
 classifications such as slowdown and never-ending phase changes.
 However, as every keen student of history discovers, it is easier to destroy than to
 create: we have not yet found an acceptable alternative definition of warmup.

@@ -522,17 +522,16 @@ to expose this monotonic clock via a user-visible function.
 \section{Results}
 \label{sec:Results}
 
-After running all benchmarks as described we analysed the benchmarks in a
-two-step process. In the first step we visually inspected the run sequence
-graphs of all the benchmark executions, per benchmark and virtual machine. In
-doing so we noted whether the virtual machine followed the expected warmup
-behaviour for this benchmark as described in Section~\ref{sec:warmup}. This was
-the case of \cfbolz{add numbers} X out of Y benchmarks. In a second step we
-identified groups of ``anomalies'', i.e. repeating ways of how benchmark
-executions deviated from the expected warmup behaviour, which we describe in a
-qualitative way. In the following we will
-present the run-sequence diagrams of benchmarks that have expected warmup
-behaviour, as well descriptions and examples for all the anomalies.
+After running the benchmarks as described, we analysed the results in two
+phases. First, for each process execution, we visually inspected a run-sequence
+plot (iteration  number vs. time). For each execution we noted whether the
+pattern of iteration times matched the expected warmup behaviour (as described
+in Section~\ref{sec:warmup}). This was the case of \cfbolz{add numbers} X out
+of Y benchmarks. Next we identified groups of ``anomalies'', i.e. common
+deviations from the expected warmup behaviour. Since we don't yet have formal
+definitions for these classifications, we define them qualitatively. In the
+following subsections, we discuss our classifications and show example process
+executions for each.
 
 
 \subsection{Outliers}

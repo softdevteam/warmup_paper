@@ -283,10 +283,14 @@ fixed this simply by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
 For the Java benchmarks, we noticed that the benchmarking class used to record
-timings was lazily loaded during the first iteration of
-benchmarks, distorting timings \laurie{how do we know that other classes in java benchmarks aren't lazily loaded}. We thus ensured that the benchmarking class
+timings was lazily loaded during the first iteration of benchmarks, distorting
+timings by running each benchmark once in a mode where the JVM prints each
+class that it loads and observing at which point the classes were loaded. We
+then ensured that the benchmarking class
 is fully loaded before the first iteration by calling a static
-method \laurie{does each benchmark call this static method? from its main method, or from a static initializer or somethign?} on the benchmarking class, which forces it to be loaded.
+method from the benchmark runner. We decided that we wouldn't take it further
+than forcing the loading of the toplevel benchmark class because that would be
+impractical for larger benchmarks because of the many classes involved.
 
 Bearing in mind surprising
 results such as the importance of link order~\cite{mytkowicz09surprising}, we

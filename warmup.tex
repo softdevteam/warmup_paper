@@ -240,7 +240,11 @@ and Ruby versions.\footnote{Our need to have implementations in a wide variety
 of languages restricted the micro-benchmarks we could use.} Since most of these
 benchmarks have multiple implementations in any given language, we picked
 the same versions used in~\cite{bolz14impact}, which represented the fastest
-performers at the point of that publication.
+performers at the point of that publication. We were forced to skip some
+benchmark and VM pairings which either ran prohibitively slowly
+(Fasta/JRubyTruffle and Richards/HHVM), or crashed the VM
+(SpectralNorm/JRubyTruffle).\footnote{For the final version of this paper, we
+will update to the latest VM versions, possibly fixing these cases.}
 
 Readers can be forgiven for initial scepticism about this set of micro-benchmarks.
 They are small and widely

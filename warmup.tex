@@ -533,11 +533,10 @@ to expose this monotonic clock via a user-visible function.
 \section{Classifying Results}
 \label{sec:Results}
 
-After running our experiment, we have \laurie{how many?} data-points to examine,
-which we present as graphs. For each graph, we show: the benchmark name, the
-name of the machine on which it was executed, and its process execution number;
-in-process executions, in order, on the $x$-axis; and the time per in-process
-execution on the $y$-axis. These graphs, though simple, highlight a number of
+Our experiment runs 450 unique process executions, giving a total of 900000
+in-process iteration readings. For each process execution  we generate a
+run-sequence graph (showing in-process iteration number vs. time in seconds).
+These graphs, though simple, highlight a number of
 interesting features, which we informally classify.
 
 One common feature in our results are \emph{outliers}: informally, these are

@@ -282,15 +282,18 @@ causing each in-process iteration to generate different random numbers. We
 fixed this simply by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
-For the Java benchmarks, we noticed that the benchmarking class used to record
-timings was lazily loaded during the first iteration of benchmarks, distorting
-timings by running each benchmark once in a mode where the JVM prints each
-class that it loads and observing at which point the classes were loaded. We
-then ensured that the benchmarking class
-is fully loaded before the first iteration by calling a static
-method from the benchmark runner. We decided that we wouldn't take it further
-than forcing the loading of the toplevel benchmark class because that would be
-impractical for larger benchmarks because of the many classes involved.
+Using this technique we noticed occasional non-determinism in Java benchmarks.
+This turned out to be due to HotSpot lazily loading \krun's benchmarking class
+during the execution of the first in-process iteration. As well as causing
+occasional non-determinism, this is likely to have had an (admittedly small)
+effect on benchmark timings. We thus altered all the Java benchmarks, calling a
+static method from the benchmark runner \laurie{did we alter every benchmark or
+the benchmark runner or ...?} which forces the benchmarking class to be loaded
+before the first in-process iteration. Note that Java benchmarks -- as well as
+Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
+lazy loading, which is an inherent part of the JVM specification: forcing all
+classes to be eagerly loaded is impractical, and is thus part of the warmup we
+wish to measure.
 
 Bearing in mind surprising
 results such as the importance of link order~\cite{mytkowicz09surprising}, we

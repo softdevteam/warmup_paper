@@ -542,9 +542,13 @@ interesting features, which we informally classify.
 One common feature in our results are \emph{outliers}: informally, these are
 in-process iterations which take much longer (or, much more rarely, much
 shorter) than neighbouring in-process iterations. In general, we ignore outliers
-when classifying data. Figure~\ref{fig:examples:outliers1} shows a typical
+when classifying data\edd{might readers intepret `ignore' as `erase from
+dataset'' as is common in some fields?}. Figure~\ref{fig:examples:outliers1}
+shows a typical
 example, where in amongst largely consistent timings, a single in-process
-iteration is substantially slower than its neighbours.
+iteration is substantially slower than its neighbours.\edd{I think we should
+still consider outliers as a classifier in it's own right. Especially since it
+is the one classifier we are close to having a formal definition of.}
 
 \begin{figure}[tbp]
 \makebox[\textwidth][c]{
@@ -575,7 +579,7 @@ Our classifications are as follows.
 \end{figure*}
 
 \textbf{Traditional Warmup}
-Of the \laurie{XXX} benchmark / VM pairs, \laurie{YYY} consistently warmed-up as
+Of the 30  benchmark/VM pairs, \laurie{YYY} consistently warmed-up as
 per traditional expectations. Figure~\ref{fig:examples:trad} shows examples of
 such graphs.
 

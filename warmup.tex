@@ -288,7 +288,7 @@ during the execution of the first in-process iteration. As well as causing
 occasional non-determinism, this is likely to have had an (admittedly small)
 effect on benchmark timings. We thus altered all the Java benchmarks, calling a
 static method from the benchmark runner \laurie{did we alter every benchmark or
-the benchmark runner or ...?} which forces the benchmarking class to be loaded
+the benchmark runner or ...?}\cfbolz{we altered every benchmark} which forces the benchmarking class to be loaded
 before the first in-process iteration. Note that Java benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all

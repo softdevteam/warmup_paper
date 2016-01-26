@@ -554,10 +554,10 @@ is the one classifier we are close to having a formal definition of.}
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/outliers1}
-\caption{A benchmark with an outlier (at iteration \laurie{be precise about which iteration number the outlier is})..}
-\label{fig:examples:outliers1}
 \end{minipage}
 }
+\caption{A process execution with an outlier at in-process iteration \#1646.}
+\label{fig:examples:outliers1}
 \end{figure}
 
 
@@ -588,11 +588,11 @@ such graphs.
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slowdown1}
-\caption{Example of a benchmark with a slowdown occurring at in-process
-iteration \laurie{be precise about the number}.}
-\label{fig:examples:slowdown1}
 \end{minipage}
 }
+\caption{A process execution with a slowdown occurring at in-process iteration
+\#199.}
+\label{fig:examples:slowdown1}
 \end{figure}
 
 \textbf{Slowdown} \label{sub:slowdowns}
@@ -607,30 +607,30 @@ drift over many in-process executions \laurie{let's put a graph like that in!}.
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/cycles1}
-\caption{A benchmark with cycles \laurie{``of length XXX'' and maybe ``starting at in-process iteration YYY''?}}
-\label{fig:examples:cycles}
 \end{minipage}
 }
+\caption{A process execution with cycles of 6 in-process iterations.}
+\label{fig:examples:cycles}
 \end{figure}
 
 \textbf{Cyclic Behaviour} \label{sub:cyclic}
 Some benchmarks exhibit cyclic behaviour, where in-process iteration times
 repeat in a predictable pattern. We observed varying cycle lengths \laurie{can
-we say `from XXX to YYY', to give people an idea of the scale?}: the example in
-Figure~\ref{fig:examples:cycles} shows an example with a cycle of 7 \laurie{this
-is clearly wrong: if it was 7, there would be 285 spikes in that figure}
-in-process iterations.
+we say `from XXX to YYY', to give people an idea of the scale?}\edd{Yes, once I
+have the full result set}: the example in
+Figure~\ref{fig:examples:cycles} shows an example with a cycle of 6 in-process
+iterations.
 
 
 \begin{figure}[tbp]
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slow_warmup1}
-\caption{A benchmark with a late phase change (in this case entering slowdown
-at in-process iteration \laurie{XXX}).}
-\label{fig:examples:late1}
 \end{minipage}
 }
+\caption{A process execution with a late phase change, in this case a sudden
+speed-up at in-process iteration \#1387.}
+\label{fig:examples:late1}
 \end{figure}
 
 \textbf{Late Phase Change} \label{sub:phase}

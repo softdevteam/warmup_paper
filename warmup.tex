@@ -292,7 +292,7 @@ during the execution of the first in-process iteration. As well as causing
 occasional non-determinism, this is likely to have had an (admittedly small)
 effect on benchmark timings. We thus altered all the Java benchmarks, calling a
 static method from the benchmark runner \laurie{did we alter every benchmark or
-the benchmark runner or ...?}\cfbolz{we altered every benchmark} which forces the benchmarking class to be loaded
+the benchmark runner or ...?}\cfbolz{we altered every benchmark}\laurie{ok, so should `benchmark runner' be ``the benchmark's main class''?} which forces the benchmarking class to be loaded
 before the first in-process iteration. Note that Java benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
@@ -541,14 +541,12 @@ interesting features, which we informally classify.
 
 One common feature in our results are \emph{outliers}: informally, these are
 in-process iterations which take much longer (or, much more rarely, much
-shorter) than neighbouring in-process iterations. In general, we ignore outliers
-when classifying data\edd{might readers intepret `ignore' as `erase from
-dataset'' as is common in some fields?}. Figure~\ref{fig:examples:outliers1}
+shorter) than neighbouring in-process iterations. In general, we disregard outliers
+when classifying data (i.e.~we pretend the outliers do not exist). Figure~\ref{fig:examples:outliers1}
 shows a typical
 example, where in amongst largely consistent timings, a single in-process
-iteration is substantially slower than its neighbours.\edd{I think we should
-still consider outliers as a classifier in it's own right. Especially since it
-is the one classifier we are close to having a formal definition of.}
+iteration is substantially slower than its neighbours.
+
 
 \begin{figure}[tbp]
 \makebox[\textwidth][c]{
@@ -575,7 +573,7 @@ Our classifications are as follows.
 \end{minipage}
 }
 \caption{Two examples of well-behaved, traditional, warmup behaviour.\edd{Can't
-see much at this zoom-level}}
+see much at this zoom-level}\laurie{ok, we could try having the `zoomed in' graphs underneath the first two, maybe?}}
 \label{fig:examples:trad}
 \end{figure*}
 
@@ -612,7 +610,7 @@ in!}\edd{we don't have any good examples of that (yet). Wait for final data.}.
 \end{minipage}
 }
 \caption{A process execution with cycles of 6 in-process iterations.\edd{Can't
-see cycles. Indistinguishable from random noise at this zoom level}}
+see cycles. Indistinguishable from random noise at this zoom level}\laurie{then we should pick a better example}}
 \label{fig:examples:cycles}
 \end{figure}
 

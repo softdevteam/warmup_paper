@@ -222,13 +222,13 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 To test Hypothesis H1, we designed an experiment which uses a suite of
 micro-benchmarks: each is run with 2000 in-process iterations and repeated
 using 10 process executions. In order
-that we the data we obtain high-quality data, we have carefully designed our
+that we the data we obtain high-quality data \jasper{that sentence doesn't make sense}, we have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical.
 
 In this section we detail our methodology: the benchmarks we use and the
 modifications we made to them; the machines we used for benchmarking; the VMs we
-benchmarked; and the \krun system we developed to run benchmarks.
+benchmarked; and the \krun system we developed to run benchmarks.\jasper{use , instead of ; ?}
 
 
 \subsection{The Micro-benchmarks}
@@ -262,6 +262,8 @@ contrast to some other experiments we are aware of -- we
 did not interfere with any VM's Garbage Collection (GC) (e.g.~we did not
 force a collection after each iteration).
 
+\jasper{Maybe turn the order around. First describe what kind of benchmarks where chosen and why.
+Discuss ``weak points'' and then list the benchmarks.}
 
 \subsubsection{Ensuring Determinism}
 

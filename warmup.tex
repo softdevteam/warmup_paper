@@ -287,27 +287,16 @@ fixed this simply by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
 Using this technique we noticed occasional non-determinism in Java benchmarks.
-This turned out to be due to HotSpot lazily loading \krun's benchmarking class
-during the execution of the first in-process iteration. As well as causing
-occasional non-determinism, this is likely to have had an (admittedly small)
-effect on benchmark timings. We thus altered all the Java benchmarks, calling a
-static method from the benchmark runner \laurie{did we alter every benchmark or
-the benchmark runner or ...?}\cfbolz{we altered every benchmark}\laurie{ok, so
-should `benchmark runner' be ``the benchmark's main class''?}\cfbolz{ok, some
-detail:\\
-\\
-(1) java krun benchmark runner (shared by all benchmarks) -> (2)
-KrunEntry (exposes a simple interface of the benchmarks to the runner, one per
-benchmark) -> (3) actual benchmark code (at least one benchmark class).\\
-\\
-The krun benchmark runner (1) loads the KrunEntry of the benchmark, then calls
-a method on that and measures the time. the class that is loaded lazily is (3).
-We changed all KrunEntrys (2) to call a newly added a (empty) static method on
-the corresponding main class (3). What I don't know is in how much detail to go
-here...}
-we which
-forces the benchmarking class to be loaded before the first in-process
-iteration. Note that Java benchmarks -- as well as
+This ultimately turned out to be caused by lazy class loading. In order
+to make our benchmarks run well with \krun (see Section~\ref{krun}), we
+altered them such that each has an additional \texttt{KrunEntry} class,
+which, in essence, provides an interface between \krun and the main benchmark
+class. Because of this, the main benchmark class was lazily loaded after
+benchmark timing had started (sometimes in a way that we could observe). We
+solved this by adding to each benchmark an empty static method, which each
+\texttt{KrunEntry} then calls via a static initialiser. In so doing, we
+guarantee that the main benchmark class is not lazily loaded. Note that Java
+benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
 classes to be eagerly loaded is impractical, and is thus part of the warmup we
@@ -405,6 +394,7 @@ run those VMs on OpenBSD.}
 
 
 \subsection{\krun}
+\label{krun}
 
 We developed a tool called \krun to fully automate the running of benchmarks
 and to control the environment under which the benchmarks run. \krun itself is a

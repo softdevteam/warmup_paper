@@ -292,8 +292,22 @@ during the execution of the first in-process iteration. As well as causing
 occasional non-determinism, this is likely to have had an (admittedly small)
 effect on benchmark timings. We thus altered all the Java benchmarks, calling a
 static method from the benchmark runner \laurie{did we alter every benchmark or
-the benchmark runner or ...?}\cfbolz{we altered every benchmark}\laurie{ok, so should `benchmark runner' be ``the benchmark's main class''?} which forces the benchmarking class to be loaded
-before the first in-process iteration. Note that Java benchmarks -- as well as
+the benchmark runner or ...?}\cfbolz{we altered every benchmark}\laurie{ok, so
+should `benchmark runner' be ``the benchmark's main class''?}\cfbolz{ok, some
+detail:\\
+\\
+(1) java krun benchmark runner (shared by all benchmarks) -> (2)
+KrunEntry (exposes a simple interface of the benchmarks to the runner, one per
+benchmark) -> (3) actual benchmark code (at least one benchmark class).\\
+\\
+The krun benchmark runner (1) loads the KrunEntry of the benchmark, then calls
+a method on that and measures the time. the class that is loaded lazily is (3).
+We changed all KrunEntrys (2) to call a newly added a (empty) static method on
+the corresponding main class (3). What I don't know is in how much detail to go
+here...}
+we which
+forces the benchmarking class to be loaded before the first in-process
+iteration. Note that Java benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
 classes to be eagerly loaded is impractical, and is thus part of the warmup we

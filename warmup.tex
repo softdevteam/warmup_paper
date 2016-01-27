@@ -360,11 +360,13 @@ same updates installed)
 
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
-mode; this eventually causes the CPU to exceed its safe thermal limit, and
-performance is then reduced to a lower limit. Turbo boost can thus cause long-running processes to
+mode \jasper{isn't it just overclocking?};
+this eventually causes the CPU to exceed its safe thermal limit, and
+performance is then reduced to a lower \jasper{normal/specified} limit.
+Turbo boost can thus cause long-running processes to
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
-physical core is in fact more than one core, allowing more programs to
-run semi-simultaneously. However, hyper-threading causes programs to interfere
+physical core is in fact more than one core \jasper{I think this is oversimplified, even for our purposes},
+allowing more programs to run semi-simultaneously. However, hyper-threading causes programs to interfere
 with each others in complex ways, introducing considerable noise. It
 is of no real benefit in our situation, where we do not make use all of the
 physical cores in our benchmarking machines.
@@ -407,10 +409,11 @@ configuration file which describes the VMs, benchmarks, and number of process
 executions and in-process iterations to
 be executed. \krun is a generic tool, with utility beyond this paper, though
 here we discuss only the parts relevant to this paper's experiment.
+\jasper{What is the purpose of this sentence? To show what awesome tools we can write?}
 
-In the rest
+In the rest \jasper{remaining?}
 of this subsection, we describe: the variables which \krun controls, both
-platform neutrally and platform specific; and how it collects iterations data.
+platform neutrally \jasper{just neutral?} and platform specific; and how it collects iterations data.
 Note that, although \krun has modes in which various checks are disabled, we
 describe only the `full run' mode in which such checks are enforced.
 
@@ -437,7 +440,7 @@ machines we had earlier ear-marked for running benchmarks occasionally
 overheated, leaving only a single line in the \texttt{dmesg} to inform us that
 performance was throttled; as
 readers will no doubt hope, we did not use this machine for our final
-benchmarking.
+benchmarking. \jasper{Too casual?}
 
 Second, \krun monitors the system temperature. Since modern systems downgrade
 their performance when they get too hot, \krun ensures that all benchmarks

@@ -696,7 +696,11 @@ phases (as shown in Figure~\ref{fig:examples:neverending}).
 }
 \caption{Examples of inconsistent benchmarks.
 The top row shows inconsistencies between different process
-executions on the same machine. The bottom row shows inconsistencies between
+executions on the same machine. In this case the Fannkuch Redux benchmark
+seems to follow two distinct patterns on different process executions,
+sometimes going through a second `warm up' around in-process iteration 375, and
+other times not doing so (based on our data, these two patterns seem to occur
+equally often). The bottom row shows inconsistencies between
 machines.\cfbolz{I know that it would be slightly annoying to do, but can we
 have the same axes for the same benchmarks here?}\laurie{agreed: we really need
 to do that}\edd{Sarah is working on this.}}

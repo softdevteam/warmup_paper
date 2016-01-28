@@ -74,15 +74,15 @@
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines which
-parts of a program would most benefit from dynamic compilation; then after
-compilation has occurred, the program is said to be at \emph{peak performance}.
+parts of a program would most benefit from dynamic compilation; after that
+compilation has occurred the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we run a number of small,
 deterministic benchmarks on a variety of well known VMs, showing a large number
 of cases which fail to conform to the traditional notion of warmup. Indeed,
 every VM we tested fails to conform to the traditional notion of warmup in at
-least one benchmark.
+least one benchmark, raising questions about how VMs should be benchmarked
 \end{abstract}
 
 \section{Introduction}
@@ -108,7 +108,12 @@ notion of the traditional notion of warmup:
 In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of \emph{in-process iterations} and repeated using fresh
-\emph{process executions}.
+\emph{process executions}. Note that we deliberately treat VMs as black
+boxes: we simply run benchmarks and record timing data. It is not our intention
+to understand the effects we see in the resulting timing data, for the simple
+reason that we are not experts in most of the VMs under investigation. Even were
+we experts, understanding some of the resulting data could take many person
+months of effort per VM.
 %From this we obtain \emph{time series} data, to which we apply a
 %number of statistical techniques that have not previously been applied
 %in the context of VM benchmarking.
@@ -127,25 +132,28 @@ We expected our experiment to validate Hypothesis H1, allowing us to
 easily compare warmup across VMs. While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
 the most extreme, some benchmarks never warmup, staying at their initial performance
-levels indefinitely and some slowdowns, getting slower over time. Even for
+levels indefinitely and some even slowdown. Even for
 those benchmarks that appear to warmup in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
 difficult. Of the eight VMs we looked at,
 none consistently warmed under the traditional model \edd{check this is true
 when we have all the results}.
 
-Our results thus suggest that the traditional view of warmup is badly out of
-date---if it ever held at all.
-%We suggest it is better to think of most benchmarks as
-%generally converging on a \emph{steady state} of performance (be that faster or
-%slower than initial execution). When a benchmark does not converge on a steady
-%state, we suggest that it is impossible to give meaningful performance figures.
-Our results are of interest to both VM authors and many end users. When
+Our results show that the traditional view of warmup is badly out of date---if
+it ever held at all. We are not aware that anyone has systematically noted this
+problem before, let alone take it into account when benchmarking. This suggests
+that many published VM benchmarks (including our own) will have presented
+results which are misleading in some situations.
+
+A reasonable question is whether inaccuracies in VM benchmarking are of anything
+other than academic interest. We believe that accurate VM benchmarking is needed
+by both VM authors and many end users. When
 implementing optimisations, VM authors need to know if their optimisations have
-had the intended effect: since many optimisations, in isolation, have only a
-small effect, accurate benchmarking is vital. Our results show that different
-benchmarking techniques may be necessary to measure the effect of an
-optimisation, rather than noise. Many end users have workloads that are more
+had the intended effect or not: since many optimisations, in isolation, have only a
+small effect, accurate benchmarking is vital. Our results suggest that decisions
+about the effectiveness of an optimisation may sometimes be made based on
+unreliable data; it is likely that this has caused some ineffective, and perhaps even some deleterious,
+optimisations to included in VMs. Many end users have workloads that are more
 sensitive to latency than throughput. For example, users running games (or other
 real-time systems) require predictable performance. Our results show that some
 VMs JIT compile programs that have unpredictable long-term performance.

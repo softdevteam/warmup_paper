@@ -463,16 +463,17 @@ Section~\ref{sec:threats} for more discussion on Intel P-states.
 jitter in time-sensitive workloads~\cite{tickless}. The default
 Linux kernel interrupts each active logical CPU\footnote{Note that each core of
 each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
-decide whether to perform a context switch. We compiled a kernel with the
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time options, enabling adaptive-tick
-mode: only logical CPUs with more than one process scheduled on them are
-interrupted by ticks (with the exception of the boot CPU, which always remains
-in normal tick mode).
+decide whether to perform a context switch. We used a kernel with the
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time option set, thus enabling
+`adaptive-tick mode' for as many logical CPUs as possible.\footnote{Not all
+CPUs can run in adaptive-tick mode. At-least one must operate in `normal-tick'
+mode.} CPUs in adaptive-tick mode are only interrupted if there is more than
+one \emph{runnable} process scheduled.
 When we compared a subset of benchmarks on a tickless vs.~a standard
 kernel, we noticed a small reduction in jitter, although not enough for us to
-conclusively say that the tickless kernel was the cause. However,
-since the tickless kernel appears to have no negative effects, we ran all
-our experiments in adaptive-tick mode.
+conclusively say that the tickless kernel was the cause. However, 
+since adaptive-ticks appear to have no negative effects, we ran our experiments
+using the tickless kernel.
 
 Linux's \texttt{perf} system dynamically profiles system performance by
 repeatedly sampling hardware counters. We became aware of \texttt{perf} when

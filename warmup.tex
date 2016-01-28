@@ -94,7 +94,8 @@ machine code at run-time. Since it takes time to determine which parts of the
 program are hot, and then compile them, programs which are JIT compiled are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
-fast afterwards, when \emph{peak performance} is said to have been reached.
+fast afterwards, when \emph{peak performance} is said to have been reached
+(see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
 generally aim to measure peak performance. Benchmarking methodologies usually
 require running benchmarks several times within a single VM process, and
@@ -172,7 +173,7 @@ VMs JIT compile programs that have unpredictable long-term performance.
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are dynamically compiled into machine code; and subsequent
-execution of those loops or methods uses (fast) machine code rather than the
+executions of those loops or methods use (fast) machine code rather than the
 (slow) interpreter. Once machine code generation has completed, the VM is
 traditionally said to have finished warming up, and the program to be executing
 at peak performance.\footnote{This traditional notion applies equally to VMs
@@ -196,8 +197,8 @@ methodologies used are typically crude: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warmup
 will have completed at some point before $n$. It is common for
-$n$ to be a hard-coded number -- in our experience, it is often set at 5 -- used
-for all benchmarks.
+$n$ to be a hard-coded number -- in our experience it is often set at 5 -- 
+that is used for all benchmarks.
 
 One of the obvious flaws in this simple methodology is that one does not know if warmup
 has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
@@ -261,9 +262,9 @@ benchmarks have multiple implementations in any given language, we picked
 the same versions used in~\cite{bolz14impact}, which represented the fastest
 performers at the point of that publication. We were forced to skip some
 benchmark and VM pairings which either ran prohibitively slowly
-(Fasta/JRubyTruffle and Richards/HHVM), or crashed the VM
-(SpectralNorm/JRubyTruffle).\footnote{For the final version of this paper, we
-will update to the latest VM versions, possibly fixing these cases.} 
+(Fasta/JRubyTruffle and Richards/HHVM), or caused the VM to crash
+(SpectralNorm/JRubyTruffle).\footnote{Later versions of this paper
+will use newer VM versions, which we hope may fix these problems.}
 For the avoidance of doubt we
 did not interfere with any VM's Garbage Collection (GC) (e.g.~we did not
 force a collection after each iteration).
@@ -280,8 +281,8 @@ non-determinism within the VM are deliberately excluded, as they are
 part of what we are trying to measure (e.g.~objects in memory may be allocated
 or garbage collected non-deterministically). To test this, we created variants
 of all benchmarks with \texttt{print} statements at all possible points of
-divergence (e.g.~\texttt{if} statements' true and false branches).\footnote{These
-variants are available in our experimental suite.}
+divergence (e.g.~\texttt{if} statements' true and false branches). These
+variants are available in our experimental suite.
 
 We first ran the benchmarks with 2 process executions and 20 in-process iterations,
 and compared the outputs of the two processes. This was enough to show that the
@@ -289,9 +290,13 @@ and compared the outputs of the two processes. This was enough to show that the
 in all language variants. This is because \fasta generates random numbers with
 a seed that is initialised only at the very start of the benchmark, thus
 causing each in-process iteration to generate different random numbers. We
-fixed this simply by moving the random seed initialisation to the start
+fixed this by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
+Bearing in mind surprising
+results such as the importance of link order~\cite{mytkowicz09surprising}, we
+then used two different machines to compile VMs and then ran the benchmarks
+on these machines.
 Using this technique we noticed occasional non-determinism in Java benchmarks.
 This ultimately turned out to be caused by lazy class loading. In order
 to make our benchmarks run well with \krun (see Section~\ref{krun}), we
@@ -307,11 +312,6 @@ Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
 classes to be eagerly loaded is impractical, and is thus part of the warmup we
 wish to measure.
-
-Bearing in mind surprising
-results such as the importance of link order~\cite{mytkowicz09surprising}, we
-then used two different machines to compile VMs and then ran the benchmarks
-on these machines.
 
 
 \subsection{Measuring Computation and Not File Performance}
@@ -337,16 +337,18 @@ language variants, which also provides some assurance that each language variant
 performing the same work.
 
 
-\subsection{Benchmarking Machines}
+\subsection{Benchmarking Hardware}
 
 %We used three machines and two operating systems:
-We used two machines:
-\begin{description*}
-  \item[\bencherthree] Quad-core i7-4790K 4GHz machine, 24GB of RAM, running Debian 8.
-  \item[\bencherfive] Quad-core i7-4790 3.6GHz machine, 32GB of RAM, running Debian 8.
+We used two benchmarking machines:
+
+\begin{tabular}{ll}
+  \bencherthree & Quad-core i7-4790K 4GHz, 24GB of RAM, running Debian 8. \\
+  \bencherfive  & Quad-core i7-4790 3.6GHz, 32GB of RAM, running Debian 8.
 %  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.8.
-\end{description*}
-These machines allow us to investigate the effects of moderately different
+\end{tabular}
+
+\noindent These machines allow us to investigate the effects of moderately different
 hardware (\bencherthree and \bencherfive run the same operating system with the
 same updates installed)
 %as well as moderately different operating systems
@@ -364,12 +366,13 @@ same updates installed)
 
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
-mode; this eventually causes the CPU to exceed its safe thermal limit, and
-performance is then reduced to a lower limit until the CPU cools down sufficiently.
+mode; this eventually causes the CPU to exceed its safe thermal limit,
+at which point it reduces performance it has cooled down sufficiently.
 Turbo boost can thus cause long-running processes to
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
-physical core is in fact more than one core, inter-leaving programs on
-a single core. However, hyper-threading causes programs to interfere
+physical core is in fact more than one logical core, inter-leaving the
+execution of two or more programs or threads on a single physical core.
+Hyper-threading causes programs to interfere
 with each others in complex ways, introducing considerable noise. It
 is of no real benefit in our situation, where we do not make use all of the
 physical cores in our benchmarking machines.
@@ -378,18 +381,20 @@ physical cores in our benchmarking machines.
 \subsection{VMs under investigation}
 
 We ran the benchmarks on the following language implementations:
-\begin{description*}
-\item[GCC] Version 4.9.2 from Debian packages
-\item[Graal \#9dafd1dc5ff9] Oracle's next-gen VM targeting Java.
-\item[HHVM 3.7.1] Facebook's PHP JIT.
-\item[JRuby/Truffle \#7f4cd59cdd1c8] A Ruby interpreter using Graal for dynamic compilation.
-\item[HotSpot 8u45b14] The most widely used Java VM.
-\item[LuaJIT 2.0.4] A tracing JIT for Lua.
-\item[PyPy 4.0.0] A meta-tracing VM for Python-2.7.
-\item[V8 4.8.271.9] Google's JIT for Javascript.
-\end{description*}
+
+\begin{tabular}{ll}
+GCC & Version 4.9.2 (from Debian packages). \\
+Graal \#9dafd1dc5ff9 & HotSpot using a next-gen compiler. \\
+HHVM 3.7.1 & A PHP JIT compiled VM. \\
+JRuby/Truffle \#7f4cd59cdd1c8 & A Ruby interpreter using Graal for compilation. \\
+HotSpot 8u45b14 & The most widely used Java VM. \\
+LuaJIT 2.0.4 & A tracing JIT compiler for Lua. \\
+PyPy 4.0.0 & A meta-tracing VM for Python 2.7. \\
+V8 4.8.271.9 & A JIT compiler for Javascript.
+\end{tabular}
 \edd[final]{Add to list: CPython 2.7.10, The reference Python implementation}%
-Although not a VM, GCC serves as a baseline to compare the VMs against.
+
+\noindent Although not a VM, GCC serves as a baseline to compare the VMs against.
 
 We created a build script which downloads, configures, and builds fixed
 versions of the
@@ -427,8 +432,8 @@ to inspect these values, but to allocate memory beyond them.} Benchmarks are run
 as the Unix user `\texttt{krun}', which performs no environment configuration.
 \krun reboots the system before each process execution (including
 before the first) to ensure that the system is in a somewhat known state
-(e.g.~if a benchmark caused a system to transfer memory to disk-based swap,
-rebooting ensures that later benchmarks are not affected). After reboot, \krun
+(e.g.~if a benchmark caused a system to transfer memory from RAM to disk-based swap,
+rebooting ensures that later benchmarks are not affected). After each reboot, \krun
 is invoked automatically by the system's init subsystem; it pauses for 3 minutes to allow the system
 to fully initialise before running the next process execution.
 
@@ -438,14 +443,13 @@ any changes. We implemented this feature after noticing that one of the
 machines we had earlier ear-marked for running benchmarks occasionally
 overheated, with the only clue to this being a message left in the \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
-
 Second, \krun monitors temperature sensors. Since modern systems may limit
 performance when they get too hot, \krun ensures that all process executions
 start at approximately the same temperature. When benchmarking commences,
 \krun waits for a fixed period of time (60s) in the hope that the machine
 cools down.; after this point, it collects temperature
-readings from all available temperature sensors. These are then used as
-the base temperature readings. Before each process execution, \krun
+readings from all available temperature sensors, which are then used as
+the base temperature readings. Before each subsequent process execution, \krun
 waits until the temperature sensors are within 10\%{} of the base temperatures
 before continuing. If any sensor fails to meet this threshold
 within 10 minutes, \krun terminates the entire experiment.
@@ -453,14 +457,15 @@ within 10 minutes, \krun terminates the entire experiment.
 
 \subsubsection{Linux-specific Controls}
 
-On Linux, \krun enables several additional factors to be controlled.
+On Linux, \krun controls several additional factors.
 
 \krun sets the CPU frequency to the highest non-over-clocked value possible.
 The user must first disable Intel P-state support in
 the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
 \krun verifies P-states are disabled and uses \texttt{cpufreq-set} to set
-the CPU governor to \texttt{performance} mode. See
-Section~\ref{sec:threats} for more discussion on Intel P-states.
+the CPU governor to \texttt{performance} mode. Note that even with these
+options set, we cannot fully guarantee that the CPU does as requested
+(see Section~\ref{sec:threats} for details).
 
 \krun checks that it is running on a `tickless' kernel, which aims to reduce
 jitter in time-sensitive workloads~\cite{tickless}. The default
@@ -539,9 +544,10 @@ to expose this monotonic clock via a user-visible function.
 \section{Classifying Results}
 \label{sec:Results}
 
-Our experiment runs 450 unique process executions, giving a total of 900000
-in-process iteration readings. For each process execution  we generate a
-run-sequence graph (showing in-process iteration number vs. time in seconds).
+Our experiment runs 450 unique process executions, giving a total of 900\,000
+in-process iteration readings. For each process execution we generate a
+run-sequence graph, with in-process iterations on the $x$ axis, and the time
+per in-process iteration on the $y$ axis.
 These graphs, though simple, highlight a number of
 interesting features, which we informally classify.
 
@@ -711,7 +717,7 @@ different hardware. However, while the hardware between the two is
 different, much more distinct hardware (e.g.~using a non-x86 architecture) is
 available, and is more likely to uncover hardware-related differences.
 However, hardware cannot always be controlled in isolation from software:
-the greater the differences in hardware, the more likely the JIT
+the greater the differences in hardware, the more likely that JIT compilers
 compilers are to use different code paths (e.g.~different code generators and
 the like). Put another way, an apples-to-apples comparison across very different
 hardware is likely to be impossible, because the software being run will
@@ -724,7 +730,8 @@ performance~\cite{barrett15approaches}. However, since measuring warm-up largely
 involves measuring code that was not created by a JIT compiler, it is possible
 that these effects may impact upon our experiment. To a very limited extent, the
 rebuilding of VMs that occurred on our different VMs gives some small evidence
-as to this effect, but this effect requires deeper investigation.
+as to this effect, or lack thereof, but we will perform a deeper investigation
+in the future.
 
 The checksums we added ensure that, at a user-visible level, each benchmark
 performs equivalent work in each language variant. However, it is impossible to
@@ -748,9 +755,9 @@ frequency is fiction for Intel Core processors''~\cite{pstate}. In
 some cases, changes the CPU makes to its performance are detected and reported
 by the operating system (e.g.~performance throttling due to potential
 overheating); in other cases, changes may go undetected or unreported.
-Despite this, our benchmarks show extremely predictable performance across
-different hardware, suggesting that the effect of CPU performance changes are
-not significant in our case.
+Despite this, our benchmarks show \laurie{extremely?} predictable performance across
+different hardware, suggesting that the effect of CPU performance changes may
+not be significant in our case.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have

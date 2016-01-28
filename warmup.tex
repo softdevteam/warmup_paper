@@ -235,18 +235,7 @@ applied; the machines we used for benchmarking; the VMs we benchmarked; and the
 
 The micro-benchmarks we use are as follows: \binarytrees, \spectralnorm, \nbody,
 \fasta, and \fannkuch from the Computer Language Benchmarks Game (CLBG); and
-\richards. For each benchmark, we provide C, Java, Javascript, Python, Lua, PHP,
-and Ruby versions.\footnote{Our need to have implementations in a wide variety
-of languages restricted the micro-benchmarks we could use.} Since most of these
-benchmarks have multiple implementations in any given language, we picked
-the same versions used in~\cite{bolz14impact}, which represented the fastest
-performers at the point of that publication. We were forced to skip some
-benchmark and VM pairings which either ran prohibitively slowly
-(Fasta/JRubyTruffle and Richards/HHVM), or crashed the VM
-(SpectralNorm/JRubyTruffle).\footnote{For the final version of this paper, we
-will update to the latest VM versions, possibly fixing these cases.}
-
-Readers can be forgiven for initial scepticism about this set of micro-benchmarks.
+\richards. Readers can be forgiven for initial scepticism about this set of micro-benchmarks.
 They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
 optimised by VMs than average programs; when used as a proxy for other types
@@ -257,13 +246,20 @@ Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-For the avoidance of doubt -- and in
-contrast to some other experiments we are aware of -- we
+For each benchmark, we provide C, Java, Javascript, Python, Lua, PHP,
+and Ruby versions.\footnote{Our need to have implementations in a wide variety
+of languages restricted the micro-benchmarks we could use.} Since most of these
+benchmarks have multiple implementations in any given language, we picked
+the same versions used in~\cite{bolz14impact}, which represented the fastest
+performers at the point of that publication. We were forced to skip some
+benchmark and VM pairings which either ran prohibitively slowly
+(Fasta/JRubyTruffle and Richards/HHVM), or crashed the VM
+(SpectralNorm/JRubyTruffle).\footnote{For the final version of this paper, we
+will update to the latest VM versions, possibly fixing these cases.} 
+For the avoidance of doubt we
 did not interfere with any VM's Garbage Collection (GC) (e.g.~we did not
 force a collection after each iteration).
 
-\jasper{Maybe turn the order around. First describe what kind of benchmarks where chosen and why.
-Discuss ``weak points'' and then list the benchmarks.}
 
 \subsubsection{Ensuring Determinism}
 
@@ -360,13 +356,12 @@ same updates installed)
 
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
-mode \jasper{isn't it just overclocking?};
-this eventually causes the CPU to exceed its safe thermal limit, and
-performance is then reduced to a lower \jasper{normal/specified} limit.
+mode; this eventually causes the CPU to exceed its safe thermal limit, and
+performance is then reduced to a lower limit until the CPU cools down sufficiently.
 Turbo boost can thus cause long-running processes to
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
-physical core is in fact more than one core \jasper{I think this is oversimplified, even for our purposes},
-allowing more programs to run semi-simultaneously. However, hyper-threading causes programs to interfere
+physical core is in fact more than one core, inter-leaving programs on
+a single core. However, hyper-threading causes programs to interfere
 with each others in complex ways, introducing considerable noise. It
 is of no real benefit in our situation, where we do not make use all of the
 physical cores in our benchmarking machines.
@@ -433,17 +428,20 @@ to fully initialise before running the next process execution.
 First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
 any changes. We implemented this feature after noticing that one of the
 machines we had earlier ear-marked for running benchmarks occasionally
-overheated; the only indication the system gave was via \texttt{dmesg}.
+overheated, with the only clue to this being a message left in the \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
 
 Second, \krun monitors temperature sensors. Since modern systems may limit
 performance when they get too hot, \krun ensures that all process executions
-start at (approximately) the same temperature. When initially invoked, after a
-configurable `cool down pause' (we used 60 seconds), \krun collects temperature
-readings from all available temperature sensors. Prior to running further
-process executions, it then waits for each sensor to  cool to within 10\%{} of
-its starting temperature. If any sensor fails to cool to within this threshold
+start at approximately the same temperature. When benchmarking commences,
+\krun waits for a fixed period of time (60s) in the hope that the machine
+cools down.; after this point, it collects temperature
+readings from all available temperature sensors. These are then used as
+the base temperature readings. Before each process execution, \krun
+waits until the temperature sensors are within 10\%{} of the base temperatures
+before continuing. If any sensor fails to meet this threshold
 within 10 minutes, \krun terminates the entire experiment.
+
 
 \subsubsection{Linux-specific Controls}
 
@@ -462,7 +460,7 @@ Linux kernel interrupts each active logical CPU\footnote{Note that each core of
 each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
 decide whether to perform a context switch. We used a kernel with the
 \texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time option set, thus enabling
-`adaptive-tick mode' for as many logical CPUs as possible.\footnote{Not all
+`adaptive-tick mode' for as \laurie{this is really vague. doesn't it enable adaptive for all non-boot CPUs? or do you mean that adaptive can be turned on/off on some cores at run-time?} many logical CPUs as possible.\footnote{Not all
 CPUs can run in adaptive-tick mode. At-least one must operate in `normal-tick'
 mode.} CPUs in adaptive-tick mode are only interrupted if there is more than
 one \emph{runnable} process scheduled.

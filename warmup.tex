@@ -221,14 +221,14 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 
 To test Hypothesis H1, we designed an experiment which uses a suite of
 micro-benchmarks: each is run with 2000 in-process iterations and repeated
-using 10 process executions. In order
-that we the data we obtain high-quality data \jasper{that sentence doesn't make sense}, we have carefully designed our
+using 10 process executions. So as
+to collect high-quality data, we have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical.
 
-In this section we detail our methodology: the benchmarks we use and the
-modifications we made to them; the machines we used for benchmarking; the VMs we
-benchmarked; and the \krun system we developed to run benchmarks.\jasper{use , instead of ; ?}
+In this section we detail: the benchmarks we used and the modifications we
+applied; the machines we used for benchmarking; the VMs we benchmarked; and the
+\krun system we developed to run benchmarks.
 
 
 \subsection{The Micro-benchmarks}
@@ -407,15 +407,12 @@ benchmarks, monitoring the system for any signs of errors during benchmarking,
 and writing results to a compressed JSON file. \krun is invoked with a
 configuration file which describes the VMs, benchmarks, and number of process
 executions and in-process iterations to
-be executed. \krun is a generic tool, with utility beyond this paper, though
-here we discuss only the parts relevant to this paper's experiment.
-\jasper{What is the purpose of this sentence? To show what awesome tools we can write?}
+be executed.
 
-In the rest \jasper{remaining?}
-of this subsection, we describe: the variables which \krun controls, both
-platform neutrally \jasper{just neutral?} and platform specific; and how it collects iterations data.
-Note that, although \krun has modes in which various checks are disabled, we
-describe only the `full run' mode in which such checks are enforced.
+In the remainder of this subsection, we describe: the variables which \krun
+controls (both generic and platform dependent); and how \krun collects data.
+Note that, although \krun has `developer' modes which disable various checks,
+we describe only the `production' mode, which has all checks enabled.
 
 
 \subsubsection{Platform Independent Controls}

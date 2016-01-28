@@ -459,28 +459,14 @@ jitter in time-sensitive workloads~\cite{tickless}. The default
 Linux kernel interrupts each active logical CPU\footnote{Note that each core of
 each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
 decide whether to perform a context switch. We used a kernel with the
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time option set, thus enabling
-`adaptive-tick mode' for as \laurie{this is really vague. does't it enable
-adaptive for all non-boot CPUs? or do you mean that adaptive can be turned
-on/off on some cores at run-time?}\edd{Adaptive tick can be enabled on a
-per-logical-CPU basis. The option I compiled in to the kernel turns on
-adaptive-tick mode for all CPUs bar the boot processor. There is only one boot
-processor: the first logical core. There is nothing special about the boot cpu,
-other than it it the CPU where code first runs. We could just as easily have
-built a tickless kernel which puts all CPUS but the second into adaptive ticks.
-Generally speaking, CPUs chosen for adaptive ticks are allocated at compile
-time, but are overridable via the kernel command line (i.e. at the bootloader).
-Krun checks we have \texttt{CONFIG\_NO\_HZ\_FULL\_ALL} set and that there is no
-override set. The \texttt{ALL} part of that config variable is suppose to imply
-"put all \emph{possible} CPUs in adaptive-ticks"} many logical CPUs as
-possible.\footnote{Not all
-CPUs can run in adaptive-tick mode. At-least one must operate in `normal-tick'
-mode.} CPUs in adaptive-tick mode are only interrupted if there is more than
-one \emph{runnable} process scheduled.
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time option set, which puts
+all CPUs except one (the boot CPU) into adaptive-tick mode. 
+CPUs in adaptive-tick mode are only interrupted by the kernel if more than
+one runnable process is scheduled.
 When we compared a subset of benchmarks on a tickless vs.~a standard
 kernel, we noticed a small reduction in jitter, although not enough for us to
 conclusively say that the tickless kernel was the cause. However, 
-since adaptive-ticks appear to have no negative effects, we ran our experiments
+since, at worst, it appears to have no negative effects, we ran our experiments
 using the tickless kernel.
 
 Linux's \texttt{perf} system dynamically profiles system performance by

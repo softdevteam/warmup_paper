@@ -433,26 +433,20 @@ is invoked automatically by the system's init subsystem; it pauses for 3 minutes
 to fully initialise before running the next process execution.
 
 \krun performs two types of monitoring before and during benchmark execution.
-
 First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
 any changes. We implemented this feature after noticing that one of the
 machines we had earlier ear-marked for running benchmarks occasionally
-overheated, leaving only a single line in the \texttt{dmesg} to inform us that
-performance was throttled; as
-readers will no doubt hope, we did not use this machine for our final
-benchmarking. \jasper{Too casual?}
+overheated; the only indication the system gave was via \texttt{dmesg}.
+We did not use this machine for our final benchmarking.
 
-Second, \krun monitors the system temperature. Since modern systems downgrade
-their performance when they get too hot, \krun ensures that all benchmarks
-start with the system temperature at (approximately) the same target. When
-initially invoked, \krun collects temperature readings from all available
-temperature sensors. Before running
-further benchmarks, it then waits for the CPU to cool down to within 10\%{} of
-the starting temperatures. If the system fails to cool down to within
-this threshold in 10 minutes, \krun terminates the entire experiment. Note that
-since \krun has no way of knowing what a `cool' temperature is in advance,
-\krun is forced to assume that the machine is adequately cool when first invoked.
-\jasper{Raises the question whether we haven't done proper cooling.}
+Second, \krun monitors temperature sensors. Since modern systems may limit
+performance when they get too hot, \krun ensures that all process executions
+start at (approximately) the same temperature. When initially invoked, after a
+configurable `cool down pause' (we used 60 seconds), \krun collects temperature
+readings from all available temperature sensors. Prior to running further
+process executions, it then waits for each sensor to  cool to within 10\%{} of
+its starting temperature. If any sensor fails to cool to within this threshold
+within 10 minutes, \krun terminates the entire experiment.
 
 \subsubsection{Linux-specific Controls}
 

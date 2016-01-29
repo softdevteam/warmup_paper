@@ -97,8 +97,7 @@ JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when \emph{peak performance} is said to have been reached
 (see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
-generally aim to measure peak performance. \sarah{this might be a good time to
-say how peak performance is stated in the literature.}
+generally aim to measure peak performance.
 Benchmarking methodologies usually
 require running benchmarks several times within a single VM process, and
 discarding any timing data collected before warmup is complete.
@@ -111,8 +110,8 @@ notion of the traditional notion of warmup:
 In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of \emph{in-process iterations} and repeated using fresh
-\emph{process executions}. \sarah{Maybe define these in more detail?}
-Note that we deliberately treat VMs as black
+\emph{process executions} (i.e.~each process execution runs multiple in-process
+iterations). Note that we deliberately treat VMs as black
 boxes: we simply run benchmarks and record timing data. It is not our intention
 to understand the effects we see in the resulting timing data, for the simple
 reason that we are not experts in most of the VMs under investigation. Even were
@@ -156,9 +155,7 @@ implementing optimisations, VM authors need to know if their optimisations have
 had the intended effect or not: since many optimisations, in isolation, have only a
 small effect, accurate benchmarking is vital. Our results suggest that decisions
 about the effectiveness of an optimisation may sometimes be made based on
-unreliable data; \sarah{is it really that the data is unreliable or that the
-summary statistic us unreliable or that people aren't looking at the whole
-picture?}
+incomplete, and thus unreliable, data; 
 it is likely that this has caused some ineffective, and perhaps even some deleterious,
 optimisations to included in VMs. Many end users have workloads that are more
 sensitive to latency than throughput. For example, users running games (or other

@@ -97,7 +97,9 @@ JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when \emph{peak performance} is said to have been reached
 (see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
-generally aim to measure peak performance. Benchmarking methodologies usually
+generally aim to measure peak performance. \sarah{this might be a good time to
+say how peak performance is stated in the literature.}
+Benchmarking methodologies usually
 require running benchmarks several times within a single VM process, and
 discarding any timing data collected before warmup is complete.
 
@@ -109,7 +111,8 @@ notion of the traditional notion of warmup:
 In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of \emph{in-process iterations} and repeated using fresh
-\emph{process executions}. Note that we deliberately treat VMs as black
+\emph{process executions}. \sarah{Maybe define these in more detail?}
+Note that we deliberately treat VMs as black
 boxes: we simply run benchmarks and record timing data. It is not our intention
 to understand the effects we see in the resulting timing data, for the simple
 reason that we are not experts in most of the VMs under investigation. Even were
@@ -153,7 +156,10 @@ implementing optimisations, VM authors need to know if their optimisations have
 had the intended effect or not: since many optimisations, in isolation, have only a
 small effect, accurate benchmarking is vital. Our results suggest that decisions
 about the effectiveness of an optimisation may sometimes be made based on
-unreliable data; it is likely that this has caused some ineffective, and perhaps even some deleterious,
+unreliable data; \sarah{is it really that the data is unreliable or that the
+summary statistic us unreliable or that people aren't looking at the whole
+picture?}
+it is likely that this has caused some ineffective, and perhaps even some deleterious,
 optimisations to included in VMs. Many end users have workloads that are more
 sensitive to latency than throughput. For example, users running games (or other
 soft real-time systems) require predictable performance. Our results show that some
@@ -197,7 +203,7 @@ methodologies used are typically crude: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warmup
 will have completed at some point before $n$. It is common for
-$n$ to be a hard-coded number -- in our experience it is often set at 5 -- 
+$n$ to be a hard-coded number -- in our experience it is often set at 5 --
 that is used for all benchmarks.
 
 One of the obvious flaws in this simple methodology is that one does not know if warmup
@@ -473,12 +479,12 @@ Linux kernel interrupts each active logical CPU\footnote{Note that each core of
 each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
 decide whether to perform a context switch. We used a kernel with the
 \texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time option set, which puts
-all CPUs except one (the boot CPU) into adaptive-tick mode. 
+all CPUs except one (the boot CPU) into adaptive-tick mode.
 CPUs in adaptive-tick mode are only interrupted by the kernel if more than
 one runnable process is scheduled.
 When we compared a subset of benchmarks on a tickless vs.~a standard
 kernel, we noticed a small reduction in jitter, although not enough for us to
-conclusively say that the tickless kernel was the cause. However, 
+conclusively say that the tickless kernel was the cause. However,
 since, at worst, it appears to have no negative effects, we ran our experiments
 using the tickless kernel.
 

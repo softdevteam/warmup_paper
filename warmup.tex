@@ -195,8 +195,8 @@ VM~\cite{kalibera13rigorous}.
 Benchmarking of JIT compiled VMs typically focusses on peak
 performance.\footnote{There are various cultural and technical reasons for this,
 ranging from the difficulty of determining warmup, to the flattering effect that
-peak performance can imbue on programs that are JIT compiled.} The
-methodologies used are typically crude: benchmarks are run for a number
+peak performance can imbue on programs that are JIT compiled.\cfbolz{that footnote just comes across as mean-spirited to me, I don't think it adds much.}} The
+methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warmup
 will have completed at some point before $n$. It is common for
@@ -220,7 +220,7 @@ the cycle to be picked for all process executions, and that used for statistical
 To the best of our knowledge, the \kalibera methodology is the most
 sophisticated currently available (see its use in
 e.g.~\cite{barrett15approaches,grimmer15dynamically}). While the \kalibera
-methodology is a real improvement over crude benchmarking methodologies,
+methodology is a real improvement over straightforward benchmarking methodologies,
 our experience has been that there remain cases where it remains hard to produce
 satisfying benchmarking statistics. Crucially, the methodology does not
 provide a firm way of determining when warmup has completed. Because of this
@@ -697,7 +697,7 @@ machines. \laurie{it's not clear that the bottom row is really showing inconsist
 \end{figure*}
 
 \textbf{Inconsistent} \label{sub:inconsistent}
-A number of benchmarks behave inconsistently. Sometimes this occurs on
+A number of benchmarks behave inconsistently when comparing different process executions. Sometimes this occurs on
 in-process executions within a single machine; sometimes only across machines.
 Figure~\ref{fig:examples:inconsistent} shows examples of both cases.
 
@@ -753,7 +753,7 @@ this complaint could arguably be directed at the unmodified benchmarks too.
 Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. Even on Linux, where we control
 the CPU's P-state, we cannot guarantee that this fixes the CPU frequency: as
-the Linux kernel states, ``the idea that frequency can be set to a single
+the Linux kernel documentation states, ``the idea that frequency can be set to a single
 frequency is fiction for Intel Core processors''~\cite{pstate}. In
 some cases, changes the CPU makes to its performance are detected and reported
 by the operating system (e.g.~performance throttling due to potential

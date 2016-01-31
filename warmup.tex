@@ -139,8 +139,7 @@ levels indefinitely and some even slowdown. Even for
 those benchmarks that appear to warm up in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
 difficult. Of the eight VMs we looked at,
-none consistently warmed under the traditional model \edd{check this is true
-when we have all the results}.
+none consistently warmed under the traditional model.
 
 Our results clearly show that the traditional view of warmup is no longer valid (and, perhaps,
 that it may not have held in the past). We are not aware that anyone has systematically noted this
@@ -193,9 +192,7 @@ performance model is shared by every JIT compiling
 VM~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on peak
-performance.\footnote{There are various cultural and technical reasons for this,
-ranging from the difficulty of determining warmup, to the flattering effect that
-peak performance can imbue on programs that are JIT compiled.\cfbolz{that footnote just comes across as mean-spirited to me, I don't think it adds much.}} The
+performance. The
 methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warmup
@@ -753,7 +750,7 @@ frequency is fiction for Intel Core processors''~\cite{pstate}. In
 some cases, changes the CPU makes to its performance are detected and reported
 by the operating system (e.g.~performance throttling due to potential
 overheating); in other cases, changes may go undetected or unreported.
-Despite this, our benchmarks show \laurie{extremely?} predictable performance across
+Despite this, our benchmarks show fairly predictable performance across
 different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
 

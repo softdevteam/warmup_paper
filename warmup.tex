@@ -584,7 +584,9 @@ Our classifications are as follows.
 \includegraphics[width=\textwidth]{examples/good2.pdf}
 \end{minipage}
 }
-\caption{Two examples of traditional, warmup behaviour. On the left-hand side, warmup is complete by in-process iteration 1; on the right-hand side by iteration \laurie{XXX}.}
+\caption{Two examples of traditional, warmup behaviour. On the left-hand side,
+warmup is complete by in-process iteration 1; on the right-hand side by around
+iteration \#120.}
 \label{fig:examples:trad}
 \end{figure*}
 
@@ -624,9 +626,8 @@ an example where a sharp slowdown occurs.
 
 \textbf{Cyclic Behaviour} \label{sub:cyclic}
 Some benchmarks exhibit cyclic behaviour, where in-process iteration times
-repeat in a predictable pattern. We observed varying cycle lengths \laurie{can
-we say `from XXX to YYY', to give people an idea of the scale?}\edd{Yes, once I
-have the full result set}: the example in
+repeat in a predictable pattern. We observed varying cycle lengths (the
+shortest of length 2, ranging up to several hundred): the example in
 Figure~\ref{fig:examples:cycles} shows an example with a cycle of 6 in-process
 iterations.
 

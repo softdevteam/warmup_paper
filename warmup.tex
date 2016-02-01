@@ -74,15 +74,15 @@
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines which
-parts of a program would most benefit from dynamic compilation; after that
+parts of a program would most benefit from dynamic compilation; after
 compilation has occurred the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we run a number of small,
-deterministic benchmarks on a variety of well known VMs, showing a large number
-of cases which fail to conform to the traditional notion of warmup. Indeed,
+deterministic benchmarks on a variety of well known VMs, showing that a large number
+of cases fail to conform to the traditional notion of warmup. Indeed,
 every VM we tested fails to conform to the traditional notion of warmup in at
-least one benchmark, raising questions about how VMs should be benchmarked
+least one benchmark, raising questions about how VMs should be benchmarked.
 \end{abstract}
 
 \section{Introduction}

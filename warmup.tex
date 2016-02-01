@@ -573,12 +573,12 @@ longer than the softdev site(?)}
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/outliers1}
-\caption{An outlier at in-process iteration \#1646.}
+\caption{An example of an outlier, at in-process iteration \#1646.}
 \label{fig:examples:outliers1}
 \end{minipage}
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slowdown1}
-\caption{A slowdown at in-process iteration \#199.}
+\caption{An example of slowdown, at in-process iteration \#199.}
 \label{fig:examples:slowdown1}
 \end{minipage}
 }
@@ -598,7 +598,10 @@ Our classifications are as follows.
 \includegraphics[width=\textwidth]{examples/good2.pdf}
 \end{minipage}
 }
-\caption{Two examples of traditional, warmup behaviour. On the left-hand side,
+\caption{Examples of traditional warmup behaviour. Since such warmup often completes
+relatively quickly, the $x$-axis scale can make it hard to see when such warmup
+completes. The inner graph zooms in on the relevant initial iterations to allow
+close examination of the warmup in-process iterations. On the left-hand side,
 warmup is complete by in-process iteration 1; on the right-hand side by around
 iteration \#120.}
 \label{fig:examples:trad}
@@ -622,12 +625,14 @@ an example where a sharp slowdown occurs.
 \makebox[\textwidth][c]{
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/cycles1}
-\caption{A process execution with cycles of 6 in-process iterations.}
+\caption{An example of cyclic behaviour. In this case, the cycles span 6 in-process iterations,
+and can be seen clearly in the inner graph (which zooms in on a sub-set of the in in-process
+iterations).}
 \label{fig:examples:cycles}
 \end{minipage}
 \begin{minipage}{.65\textwidth}
 \includegraphics[width=\textwidth]{examples/slow_warmup1}
-\caption{An example of a late phase change, in a definite speed-up occurring
+\caption{An example of a late phase change, with a significant speed-up occurring
 at in-process iteration \#1387.}
 \label{fig:examples:late1}
 \end{minipage}
@@ -672,7 +677,7 @@ number of phases, or moving between a seemingly arbitrary number of different
 phases (as shown in Figure~\ref{fig:examples:neverending}).
 
 
-\begin{figure*}[h!]
+\begin{figure*}[t!]
 \makebox[\textwidth][c]{
 \includegraphics[width=1.3\textwidth]{examples/inconsistent1.pdf}\\
 }

@@ -280,6 +280,7 @@ part of what we are trying to measure (e.g.~objects in memory may be allocated
 or garbage collected non-deterministically). To test this, we created
 versions of all benchmarks with \texttt{print} statements at all possible points of
 divergence (e.g.~\texttt{if} statements' true and false branches).
+These variants are available in our experimental suite.
 
 We first ran the benchmarks with 2 process executions and 20 in-process iterations,
 and compared the outputs of the two processes. This was enough to show that the

@@ -192,7 +192,8 @@ performance model is shared by every JIT compiling
 VM~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on peak
-performance. The
+performance, in large part because the widespread assumption has been that
+warmup is both fast and inconsequential to users. With that assumption in mind, the
 methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warmup
@@ -607,11 +608,9 @@ iteration \#120.}
 \label{fig:examples:trad}
 \end{figure*}
 
-\textbf{Traditional Warmup} Of the 39 benchmark/VM pairs we ran, less than 10
-could be said to \emph{consistently} warm-up as per traditional
-expectations.\footnote{Giving a precise number is tricky, as without a formal
-definitions, our classifications are largely open to interpretation.}
-Figure~\ref{fig:examples:trad} shows examples of process executions that
+\textbf{Traditional Warmup} Of the 39 benchmark/VM pairs we ran, less than 10 \laurie{9 or 1 or ...? }
+can be said to consistently warm-up as per traditional
+expectations. Figure~\ref{fig:examples:trad} shows examples of process executions that
 warm-up as expected.
 
 
@@ -642,10 +641,9 @@ at in-process iteration \#1387.}
 
 \textbf{Cyclic Behaviour} \label{sub:cyclic}
 Some benchmarks exhibit cyclic behaviour, where in-process iteration times
-repeat in a predictable pattern. We observed varying cycle lengths (the
-shortest of length 2, ranging up to several hundred): the example in
-Figure~\ref{fig:examples:cycles} shows an example with a cycle of 6 in-process
-iterations.
+repeat in a predictable pattern. We observed cycle lengths ranging from
+2 to several hundred in-process iterations. Figure~\ref{fig:examples:cycles} shows
+an example with a cycle of 6 in-process iterations.
 
 
 \textbf{Late Phase Change} \label{sub:phase}

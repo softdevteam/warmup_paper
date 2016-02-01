@@ -79,13 +79,9 @@ compilation has occurred the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we run a number of small,
-deterministic benchmarks on a variety of well known VMs. Our results
-shown that less than one quarter of cases \edd{careful. That statistic applies
-to a quarter of VM/benchmark pairings, not individual process executions, which
-the reader could mistake this for. Since we haven't described our method (and
-what such a pairing is) yet, I would use softer terminology like "few"?}
-conform to
-the traditional notion of warmup, and that none of the
+deterministic benchmarks on a variety of well known VMs. In our experiment,
+less than one quarter of the benchmark/VM pairs conform to
+the traditional notion of warmup, and none of the
 VMs we tested consistently warms up in the traditional notion. This raises
 a number of questions about VM benchmarking, which are of interest to
 both VM authors and end users.
@@ -531,10 +527,8 @@ appropriate in-process iterations runner for that language, passing it the name 
 benchmark to be run, and the desired number of in-process iterations. The in-process iterations runner
 then dynamically loads the benchmark, and repeatedly executes the main body of
 the benchmark. The in-process iterations runner calls a monotonic timer with
-sub-millisecond accuracy before and after each iteration, recording the result
-into a list\edd{It prints the result immediately to avoid in-process memory
-consumption of the iterations runner from increasing over time. Not sure how to
-word this though.}; when all iterations are complete, it returns the results
+sub-millisecond accuracy before and after each in-process iteration, printing timing
+data to \texttt{stderr}; when all iterations are complete, it returns the results
 to \krun by printing a JSON list to stdout.
 
 Most VMs and languages expose access to the low-level monotonic timing

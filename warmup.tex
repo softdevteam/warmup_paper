@@ -202,8 +202,8 @@ One of the obvious flaws in this simple methodology is that one does not know if
 has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
 was developed by \kalibera to solve a number of issues when benchmarking JIT
 compiling VMs~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
-that, for a given VM / benchmark combination, a human must inspect the data from
-executing a small number of VM process executions, and determine at which in-process iteration the
+that, for a given VM / benchmark combination, a human must inspect data obtained by
+executing a small number of process executions, and determine at which in-process iteration the
 benchmark has definitively warmed up. A larger number of VM process executions are then
 run, and the previously determined cut-off point applied to each process's
 iterations. The \kalibera methodology observes that some benchmarks do not

@@ -298,9 +298,9 @@ results such as the importance of link order~\cite{mytkowicz09surprising}, we
 then used two different machines to compile VMs and then ran the benchmarks
 on these machines.
 Using this technique we noticed occasional non-determinism in Java benchmarks.
-This ultimately turned out to be caused by lazy class loading. In order
-to make our benchmarks run well with \krun (see Section~\ref{krun}), we
-altered them such that each has an additional \texttt{KrunEntry} class,
+This ultimately turned out to be caused by lazy class loading. To integrate
+the Java benchmarks with \krun (see Section~\ref{krun}), each
+benchmark was given an additional \texttt{KrunEntry} class,
 which, in essence, provides an interface between \krun and the main benchmark
 class. Because of this, the main benchmark class was lazily loaded after
 benchmark timing had started (sometimes in a way that we could observe). We
@@ -311,17 +311,15 @@ benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
 classes to be eagerly loaded is impractical, and is thus part of the warmup we
-wish to measure.\edd{We state that we occasionally saw non-determinism on Java,
-but it's not explained where that came from. Te text explains that classes are
-lazily loaded inside timed code, and that the cost of loading is observable,
-but not where the non-determinism is sourced from.}
-
+wish to measure.
 
 \subsection{Measuring Computation and Not File Performance}
 
-Micro-benchmarks often perform computations which are partly or wholly irrelevant. Highly
+Micro-benchmarks often perform computations which are partly or wholly
+irrelevant, i.e. the results of computations are not externally visible. Highly
 optimising compilers are thus often able optimise away part or all of a
-micro-benchmark's computation. In one sense, this is a desirable part of
+micro-benchmark's computation. From a performance standpoint, this is a
+desirable characteristic for
 optimising compilers~\cite{seaton15phd}, though benchmarks whose computations
 are entirely removed are rarely useful. To ensure that computation cannot
 be optimised away, many benchmarks write intermediate and final results
@@ -370,7 +368,7 @@ same updates installed)
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
 mode; this eventually causes the CPU to exceed its safe thermal limit,
-at which point it reduces performance it has cooled down sufficiently.
+at which point it reduces performance until it has cooled down sufficiently.
 Turbo boost can thus cause long-running processes to
 appear to suddenly slow down. Hyper-threading gives the illusion that a single
 physical core is in fact more than one logical core, inter-leaving the
@@ -386,7 +384,7 @@ We ran the benchmarks on the following language implementations:
 \begin{tabular}{ll}
 GCC & Version 4.9.2 (from Debian packages). \\
 Graal \#9dafd1dc5ff9 & HotSpot using a next-gen compiler. \\
-HHVM 3.7.1 & A PHP JIT compiled VM. \\
+HHVM 3.7.1 & A JIT compiled VM for PHP. \\
 JRuby/Truffle \#7f4cd59cdd1c8 & A Ruby interpreter using Graal for compilation. \\
 HotSpot 8u45b14 & The most widely used Java VM. \\
 LuaJIT 2.0.4 & A tracing JIT compiler for Lua. \\
@@ -446,12 +444,12 @@ overheated, with the only clue to this being a message left in the \texttt{dmesg
 We did not use this machine for our final benchmarking.
 Second, \krun monitors temperature sensors. Since modern systems may limit
 performance when they get too hot, \krun ensures that all process executions
-start at approximately the same temperature. When benchmarking commences,
+start at approximately the same temperature. Before the first process execution,
 \krun waits for a fixed period of time (60s) in the hope that the machine
-cools down.; after this point, it collects temperature
+cools down; after this point, it collects temperature
 readings from all available temperature sensors, which are then used as
-the base temperature readings. Before each subsequent process execution, \krun
-waits until the temperature sensors are within 10\%{} of the base temperatures
+base temperature readings. Before each subsequent process execution, \krun
+waits until each temperature sensor is within 10\%{} of its base temperature
 before continuing. If any sensor fails to meet this threshold
 within 10 minutes, \krun terminates the entire experiment.
 

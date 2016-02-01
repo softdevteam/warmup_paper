@@ -138,7 +138,9 @@ the most extreme, some benchmarks never warm up, staying at their initial perfor
 levels indefinitely and some even slowdown. Even for
 those benchmarks that appear to warm up in a traditional fashion, there are
 various performance patterns that make presenting a simple performance number
-difficult. Of the eight VMs we looked at,
+difficult\edd{I don't understand the previous sentence. Presumably if an exec
+warms up OK, then it didn't exhibit the other classifications?}. Of the eight
+VMs we looked at,
 none consistently warmed under the traditional model.
 
 Our results clearly show that the traditional view of warmup is no longer valid (and, perhaps,
@@ -280,7 +282,12 @@ execution and iteration. Note that this definition deliberately focuses
 on non-determinism that is controllable by the user; other forms of
 non-determinism within the VM are deliberately excluded, as they are
 part of what we are trying to measure (e.g.~objects in memory may be allocated
-or garbage collected non-deterministically). To test this, we created variants
+or garbage collected non-deterministically). To test this, we created
+variants\edd{krun already has the notion of a "benchmark variant" used for
+composed benchmarks (Python->PHP, PHP->Python etc), but these are not used in
+this paper. I wonder if the loose use of "variant" throughout will confuse
+readers who read our future papers and see this word used differently. Very
+minor perhaps. Could replace with versions/implementations?}
 of all benchmarks with \texttt{print} statements at all possible points of
 divergence (e.g.~\texttt{if} statements' true and false branches). These
 variants are available in our experimental suite.
@@ -312,7 +319,10 @@ benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
 classes to be eagerly loaded is impractical, and is thus part of the warmup we
-wish to measure.
+wish to measure.\edd{We state that we occasionally saw non-determinism on Java,
+but it's not explained where that came from. Te text explains that classes are
+lazily loaded inside timed code, and that the cost of loading is observable,
+but not where the non-determinism is sourced from.}
 
 
 \subsection{Measuring Computation and Not File Performance}
@@ -376,7 +386,8 @@ execution of two or more programs or threads on a single physical core.
 Hyper-threading causes programs to interfere
 with each others in complex ways, introducing considerable noise. It
 is of no real benefit in our situation, where we do not make use all of the
-physical cores in our benchmarking machines.
+physical cores in our benchmarking machines\edd{I think we delete this now,
+since we don't pin and have VMs with threads?}.
 
 
 \subsection{VMs under investigation}

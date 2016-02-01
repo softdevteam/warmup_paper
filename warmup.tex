@@ -79,10 +79,12 @@ compilation has occurred the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we run a number of small,
-deterministic benchmarks on a variety of well known VMs, showing that a large number
-of cases fail to conform to the traditional notion of warmup. Indeed,
-every VM we tested fails to conform to the traditional notion of warmup in at
-least one benchmark, raising questions about how VMs should be benchmarked.
+deterministic benchmarks on a variety of well known VMs. Our results
+shown that less than one quarter of cases conform to
+the traditional notion of warmup, and that none of the
+VMs we tested consistently warms up in the traditional notion. This raises
+a number of questions about VM benchmarking, which are of interest to
+both VM authors and end users.
 \end{abstract}
 
 \section{Introduction}
@@ -144,15 +146,15 @@ problem before, let alone take it into account when benchmarking. This suggests
 that many published VM benchmarks (including our own) may have presented
 results which are misleading in some situations.
 
-A reasonable question, therefore,  is whether inaccuracies in VM benchmarking are of anything
+A reasonable question, therefore, is whether inaccuracies in VM benchmarking are of anything
 other than academic interest. We believe that accurate VM benchmarking is needed
 by both VM authors and many end users. When
 implementing optimisations, VM authors need to know if their optimisations have
 had the intended effect or not: since many optimisations, in isolation, have only a
 small effect, accurate benchmarking is vital. Our results suggest that decisions
 about the effectiveness of an optimisation may sometimes be made based on
-incomplete\edd{I'm not sure what `complete data'' would be. Remove?}, and thus unreliable, data;
-it is likely that this has caused some ineffective, and perhaps even some deleterious,
+unreliable data.
+It is likely that this has caused some ineffective, and perhaps even some deleterious,
 optimisations to be included in VMs. Many end users have workloads that are more
 sensitive to latency than throughput. For example, users running games (or other
 soft real-time systems) require predictable performance. Our results show that some

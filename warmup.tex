@@ -528,8 +528,8 @@ benchmark to be run, and the desired number of in-process iterations. The in-pro
 then dynamically loads the benchmark, and repeatedly executes the main body of
 the benchmark. The in-process iterations runner calls a monotonic timer with
 sub-millisecond accuracy before and after each in-process iteration, printing timing
-data to \texttt{stderr}; when all iterations are complete, it returns the results
-to \krun by printing a JSON list to stdout.
+data to \texttt{stdout}; when all iterations are complete, \krun consumes
+the timing data and stores it into a compressed JSON file.
 
 Most VMs expose the low-level monotonic timing function \texttt{clock\_gettime}
 (which our iterations runners use) to the target language as standard. We

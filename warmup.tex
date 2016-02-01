@@ -531,8 +531,9 @@ sub-millisecond accuracy before and after each in-process iteration, printing ti
 data to \texttt{stderr}; when all iterations are complete, it returns the results
 to \krun by printing a JSON list to stdout.
 
-Most VMs and languages expose access to the low-level monotonic timing
-\texttt{clock\_gettime} function as standard. We extended V8, HHVM and JRuby/Truffle
+Most VMs expose the low-level monotonic timing function \texttt{clock\_gettime}
+(which our iterations runners use) to the target language as standard. We
+extended V8, HHVM and JRuby/Truffle
 to expose this monotonic clock via a user-visible function.
 %On OpenBSD, we use
 %the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
@@ -545,8 +546,8 @@ to expose this monotonic clock via a user-visible function.
 
 Our experiment runs 450 unique process executions, giving a total of 900\,000
 in-process iteration readings. For each process execution we generate a
-run-sequence graph, with in-process iterations on the $x$ axis, and the time
-per in-process iteration on the $y$ axis.
+run-sequence graph, with the in-process iteration number on the $x$ axis, and the
+in-process iteration time (in seconds) on the $y$ axis.
 These graphs, though simple, highlight a number of
 interesting features, which we informally classify.
 
@@ -693,7 +694,7 @@ machines.}
 \label{fig:examples:inconsistent}
 \end{figure*}
 
-\textbf{Inconsistent} \label{sub:inconsistent}
+\textbf{Inconsistent Process Executions} \label{sub:inconsistent}
 A number of benchmarks behave inconsistently when comparing different process executions. Sometimes this occurs on
 in-process executions within a single machine; sometimes only across machines.
 Figure~\ref{fig:examples:inconsistent} shows examples of both cases.
@@ -708,8 +709,8 @@ experience when designing the experiment has been one of gradually uncovering
 confounding variables whose existence we had not previously imagined. It
 is inevitable that there are further confounding variables that we
 do not know about; some of these may be controllable, although many may not be.
-It is possible that currently confounding variables we are not aware of have
-coloured all our results.
+It is possible that confounding variables that we are not aware of have
+coloured our results.
 
 We have tried to gain a partial understanding of the effects of different
 hardware on benchmarks by using benchmarking machines with the same OS but
@@ -773,7 +774,7 @@ data, or which we have not detected.
 \section{Discussion}
 \label{sec:Discussion}
 
-Even though we had a reasonable amount of experience designing and implementing
+Although we are fairly experienced in designing and implementing
 experiments, the experiment in this paper took more time and effort than we
 expected. In part this is because there is limited precedent for such detailed
 experiments. Investigating possible confounding variables, understanding how to
@@ -788,7 +789,7 @@ no other processes were allowed to run on (using Linux's \texttt{isolcpus}
 feature). While this may have removed noise from some some VMs,
 it slowed others down by
 a factor of up to 3x. The reason for this is that pinning a process to a CPU
-core also pins that processes threads to the same core. Some VMs -- such as
+core also pins its threads to the same core. Some VMs -- such as
 JRuby/Truffle -- create extra threads for compilation, GC, and the like. By
 running all these threads on a single core, we removed the considerable
 performance benefits of running such computation in parallel.
@@ -797,8 +798,8 @@ performance benefits of running such computation in parallel.
 \section{Related work}
 
 There are two works we are aware of which explicitly note unusual warmup
-patterns. Gil et al.'s main focus is on non-determinism over execution runs on
-HotSpot, and the difficulties this raise in terms of providing reliable
+patterns. Gil et al.'s main focus is on non-determinism over \edd{process execution? Is it the same meaning as in our paper?} execution runs on
+HotSpot, and the difficulties this raises in terms of providing reliable
 benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
 least one benchmark (listBubbleSort) which on some executions undergoes what we
 would classify a slowdown. \kalibera note the
@@ -811,7 +812,7 @@ manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
 \label{sec:conclusion}
 
 Warmup has always been an informally defined term~\cite{seaton15phd} and in this
-paper we have shown cases where that informal definition fails to hold.
+paper we have shown cases where the definition fails to hold.
 To the best of our knowledge, this paper is the first to classify different
 `warmup' styles and note the relatively high frequency of non-traditional
 classifications such as slowdown and never-ending phase changes.

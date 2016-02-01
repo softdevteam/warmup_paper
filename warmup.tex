@@ -102,7 +102,7 @@ Benchmarking methodologies usually
 require running benchmarks several times within a single VM process, and
 discarding any timing data collected before warmup is complete.
 
-Our fundamental aim in this paper is to test the following hypothesis, which captures a constrained
+The fundamental aim of this paper is to test the following hypothesis, which captures a constrained
 notion of the traditional notion of warmup:
 \begin{description}
   \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
@@ -144,16 +144,16 @@ problem before, let alone take it into account when benchmarking. This suggests
 that many published VM benchmarks (including our own) may have presented
 results which are misleading in some situations.
 
-A reasonable question is whether inaccuracies in VM benchmarking are of anything
+A reasonable question, therefore,  is whether inaccuracies in VM benchmarking are of anything
 other than academic interest. We believe that accurate VM benchmarking is needed
 by both VM authors and many end users. When
 implementing optimisations, VM authors need to know if their optimisations have
 had the intended effect or not: since many optimisations, in isolation, have only a
 small effect, accurate benchmarking is vital. Our results suggest that decisions
 about the effectiveness of an optimisation may sometimes be made based on
-incomplete, and thus unreliable, data; 
+incomplete\edd{I'm not sure what `complete data'' would be. Remove?}, and thus unreliable, data;
 it is likely that this has caused some ineffective, and perhaps even some deleterious,
-optimisations to included in VMs. Many end users have workloads that are more
+optimisations to be included in VMs. Many end users have workloads that are more
 sensitive to latency than throughput. For example, users running games (or other
 soft real-time systems) require predictable performance. Our results show that some
 VMs JIT compile programs that have unpredictable long-term performance.

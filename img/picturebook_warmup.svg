@@ -10,15 +10,45 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="102.89905mm"
-   height="58.603554mm"
-   viewBox="0 0 364.60296 207.65039"
+   width="102.88634mm"
+   height="59.429054mm"
+   viewBox="0 0 364.55795 210.57539"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="picturebook_warmup.svg">
   <defs
      id="defs4">
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker4481"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mstart">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.6,0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path4483" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker4387"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mstart">
+      <path
+         inkscape:connector-curvature="0"
+         transform="scale(0.6,0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
+         id="path4389" />
+    </marker>
     <marker
        inkscape:isstock="true"
        style="overflow:visible"
@@ -338,8 +368,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="106.93772"
-     inkscape:cy="74.248259"
+     inkscape:cx="44.981011"
+     inkscape:cy="77.173258"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -364,8 +394,8 @@
     <inkscape:grid
        type="xygrid"
        id="grid3336"
-       originx="-73.420737"
-       originy="-463.37328" />
+       originx="-73.465744"
+       originy="-460.44827" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -383,15 +413,15 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-73.420733,-381.33853)">
+     transform="translate(-73.465733,-381.33853)">
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow2Mstart);marker-end:url(#Arrow2Mend)"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4481);marker-end:url(#Arrow2Mend)"
        d="m 435,572.3622 -345,0 0,-188"
        id="path3340"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000021;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 90.484772,460.8622 84.999988,0 0,-50 115,0 0,145 145,0"
        id="path4542"
        inkscape:connector-curvature="0"
@@ -419,11 +449,6 @@
          id="tspan4772-3"
          x="-537.36017"
          y="84.400734">Time per iteration</tspan></text>
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 120,562.3622 Z"
-       id="path5049"
-       inkscape:connector-curvature="0" />
     <g
        id="g6952"
        transform="matrix(1,0,-0.46630766,1,330.3861,-29.999978)">

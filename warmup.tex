@@ -535,10 +535,44 @@ Most VMs expose the low-level monotonic timing function \texttt{clock\_gettime}
 (which our iterations runners use) to the target language as standard. We
 extended V8, HHVM and JRuby/Truffle
 to expose this monotonic clock via a user-visible function.
-%On OpenBSD, we use
-%the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
-%interference from the \texttt{adjtime} function, and we thus use the
-%\texttt{CLOCK\_MONOTONIC\_RAW} timer.
+On OpenBSD, we use the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
+interference from the \texttt{adjtime} function, and we thus use the
+\texttt{CLOCK\_MONOTONIC\_RAW} timer.
+
+\begin{figure}[t]
+\begin{lstlisting}
+iter_times = [-1.0] * iters
+for i in xrange(iters):
+  start_time = clock_gettime_monotonic()
+  call_iteration()
+  stop_time = clock_gettime_monotonic()
+  iter_times[i] = stop_time - start_time
+
+sys.stdout.write("[%s]" % ",".join([str(x) for x in iter_times]))
+\end{lstlisting}
+\caption{An elided example of the in-process iteration runner for Python. As
+this shows, the core loop is extremely minimal to minimise the introduction of
+timing noise and distortion. Note that the \texttt{iter\_times} array is
+pre-allocated to a fixed size, so no array reallocation happens in the core
+loop; and that the timing data is only written once all in-process iterations
+are complete.}
+\label{fig:pythonitsrunner}
+\end{figure}
+
+A deliberate design goal of the in-process iterations runners is to minimise the
+introduction of timing noise and distortion. First, we do not make any system
+calls other than to \texttt{clock\_gettime}. System calls impose a context
+switch from the user process to the OS kernel that evicts part of the cache; on
+Linux, calling \texttt{write} can evict as much as two thirds of the vital L1
+cache~\cite{soares10flexsc}. Second, we allocate the minimum possible memory in
+the core loop (in some languages, we allocate no memory; in others, we are
+unable to remove the memory needed for basic items such as integers). In
+conjunction, these two design goals mean that we pre-allocate an array of floats
+with one entry per in-process iteration before the core loop. After each
+in-process iteration, the relevant entry is updated in the array. After
+in-process iterations are complete, the total array is printed to
+\texttt{stdout}. Figure~\ref{fig:pythonitsrunner} shows an elided version
+of the Python in-process iterations runner, embodying these design goals.
 
 
 \section{Classifying Results}
@@ -759,6 +793,21 @@ overheating); in other cases, changes may go undetected or unreported.
 Despite this, our benchmarks show fairly predictable performance across
 different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
+
+Although we have minimised the amount of system calls that our in-process
+iterations runner makes to the OS, two calls to \texttt{clock\_gettime} remain.
+On OpenBSD \laurie{someone should check this on linux}, this can take an
+unbounded amount of time as, indirectly, it enters a loop which only terminates
+when a particular data-structure ceases to be modified, akin to a spin-lock. In
+practise, \texttt{clock\_gettime} returns sufficiently quickly that this seems a
+minor worry at most. Nevertheless, we investigated other timing mechanisms, most
+notably the Time Stamp Counter (TSC) built into Intel processors. In essence,
+the TSC is a built-in processor instruction which returns a monotonically
+increasing count of clock ticks. While modern Intel processors synchronise the
+TSC across multiple cores, older Intel processors and some (perhaps all)
+non-Intel processors make no such guarantees. Thus while reading the TSC would
+probably slightly lessen the amount of noise in our timings, it is likely that
+some machines would silently produce incorrect results.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have

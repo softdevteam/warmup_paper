@@ -245,6 +245,7 @@ adaptive-tick mode CPU cores~\cite{tickless}.
 \section{Preliminary Results}
 \label{sec:Results}
 
+
 Our experiment runs 450 unique process executions, giving a total of 900\,000
 in-process iteration readings. For each process execution we generate a
 run-sequence graph, with the in-process iteration number on the $x$ axis, and the
@@ -257,9 +258,9 @@ data, can be downloaded from:
 }
 \end{center}
 
-Although some of the graphs do show classical warmup behaviour
-(Figures~\ref{fig:good1,fig:good2}, others highlight a number of interesting
-features:
+Although some of the graphs do show classical warmup behaviour (e.g.
+Figure~\ref{fig:good1}), others highlight a number of interesting (and
+unexpected) behaviours:
 
 \begin{description}
 %\item[Outliers] In-process iterations which are slower (or, less commonly, much
@@ -312,9 +313,12 @@ There are several items of potential future work which would likely lead to a
 better understanding of the warmup behaviours: automated classification of
 warmup behaviours would help guide us through the vast amount of data we have
 collected.\footnote{We have already started this task.}; VM instrumentation may
-help us pair VM events (compilation, GC, \ldots). Similarly we should look at
-hardware performance counters in-case steps and spikes are due to hardware
-events (context switches, CPU migrations, \ldots).
+help us to associate VM events, such as compilation and garbage collection, to
+artefacts in our graphs. Similarly we may find that hardware performance
+counters could offer insight: perhaps hardware events such as context
+switches and CPU migrations are a source of some of our findings. Finally, we
+collect more data by adding further hardware platforms, operating systems,
+benchmarks and VMs into the experiment.
 
 \textbf{Acknowledgements:} This research was funded by the EPSRC Cooler
 (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
@@ -323,51 +327,46 @@ events (context switches, CPU migrations, \ldots).
 \bibliography{bib}
 
 
-\begin{figure*}[ch]
-%\makebox[\textwidth][c]{
-\includegraphics[width=\textwidth]{examples_v2_results/bad_inconsistent.pdf}
-%}
-\caption{Inconsistent process executions on the same machine.}
-\label{fig:inconsistent}
+\begin{figure*}
+\includegraphics[width=.5\textwidth]{examples_v2_results/good_fast.pdf}
+\includegraphics[width=.5\textwidth]{examples_v2_results/good_tiers.pdf}
+\caption{Process executions warming up under the classical model.}
+\label{fig:good1}
 \end{figure*}
 
-\begin{figure}[ch]
-\includegraphics[width=.5\textwidth]{examples_v2_results/good_fast.pdf}
-\caption{A process execution showing fast classical warmup.}
-\label{fig:good1}
-\end{figure}
-
-\begin{figure}[ch]
-\includegraphics[width=.5\textwidth]{examples_v2_results/good_tiers.pdf}
-\caption{A process execution showing (long, but) classical warmup.}
-\label{fig:good2}
-\end{figure}
-
 % Not sure if I want this yet.
-%\begin{figure}[c]
+%\begin{figure}
 %\includegraphics[width=.5\textwidth]{examples_v2_results/good_gc.pdf}
 %\caption{A process execution with outliers.}
 %\label{fig:outliers}
 %\end{figure}
 
-\begin{figure}[ch]
+\begin{figure}
 \includegraphics[width=.5\textwidth]{examples_v2_results/bad_cycles.pdf}
 \caption{A process execution with cycles.}
 \label{fig:cycles}
 \end{figure}
 
 
-\begin{figure}[ch]
+\begin{figure}
 \includegraphics[width=.5\textwidth]{examples_v2_results/bad_slowdown.pdf}
 \caption{A process execution with slowdown.}
 \label{fig:slowdown}
 \end{figure}
 
-\begin{figure}[ch]
+\begin{figure}
 \includegraphics[width=.5\textwidth]{examples_v2_results/bad_phases.pdf}
 \caption{A process execution with changing phases.}
 \label{fig:phases}
 \end{figure}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{examples_v2_results/bad_inconsistent.pdf}
+\caption{Inconsistent process executions on the same machine.}
+\label{fig:inconsistent}
+\end{figure*}
+
+
 
 \end{document}
 

@@ -85,12 +85,10 @@ fast afterwards, when \emph{peak performance} is said to have been reached
 (see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
 generally aim to measure peak performance.
-Benchmarking methodologies usually
-require running benchmarks several times within a single VM process, and
-discarding any timing data collected before warmup is complete.
+Typically, benchmarks are run repeatedly in a single process, then data prior
+to peak performance is discarded.
 
-The fundamental aim of this paper is to test the following hypothesis, which captures a constrained
-notion of the traditional notion of warmup:
+The aim of this paper is to test the following hypothesis:
 \begin{description}
   \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
 \end{description}
@@ -98,15 +96,8 @@ In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of \emph{in-process iterations} and repeated using fresh
 \emph{process executions} (i.e.~each process execution runs multiple in-process
-iterations). Note that we deliberately treat VMs as black
-boxes: we simply run benchmarks and record timing data. It is not our intention
-to understand the effects we see in the resulting timing data, for the simple
-reason that we are not experts in most of the VMs under investigation. Even were
-we experts, understanding some of the resulting data could take many person
-months of effort per VM.
-%From this we obtain \emph{time series} data, to which we apply a
-%number of statistical techniques that have not previously been applied
-%in the context of VM benchmarking.
+iterations). We deliberately treat VMs as black boxes: we simply run benchmarks
+and record timing data.
 
 \begin{figure}[t]
 \centering
@@ -118,32 +109,25 @@ is said to have completed, and peak performance reached.}
 \label{fig:trad}
 \end{figure}
 
-We expected our experiment to validate Hypothesis H1, allowing us to
-easily compare warmup across VMs. While some benchmarks on some VMs run as per
+While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
 the most extreme, some benchmarks never warm up, staying at their initial performance
 levels indefinitely and some even slowdown. Of the eight
 VMs we looked at, none consistently warmed under the traditional model.
 
-Our results clearly show that the traditional view of warmup is no longer valid (and, perhaps,
-that it may not have held in the past). We are not aware that anyone has systematically noted this
+Our results clearly invalidate H1: the traditional view of warmup is no longer
+valid. We are not aware that anyone has systematically noted this
 problem before, let alone take it into account when benchmarking. This suggests
 that many published VM benchmarks (including our own) may have presented
 results which are misleading in some situations.
 
-A reasonable question, therefore, is whether inaccuracies in VM benchmarking are of anything
-other than academic interest. We believe that accurate VM benchmarking is needed
-by both VM authors and many end users. When
-implementing optimisations, VM authors need to know if their optimisations have
-had the intended effect or not: since many optimisations, in isolation, have only a
-small effect, accurate benchmarking is vital. Our results suggest that decisions
-about the effectiveness of an optimisation may sometimes be made based on
-unreliable data.
-It is likely that this has caused some ineffective, and perhaps even some deleterious,
-optimisations to be included in VMs. Many end users have workloads that are more
-sensitive to latency than throughput. For example, users running games (or other
-soft real-time systems) require predictable performance. Our results show that some
-VMs JIT compile programs that have unpredictable long-term performance.
+We believe that accurate VM benchmarking is paramount, for both VM authors, and
+for many end users. VM authors need to know if optimisations have an effect
+distinguishable from noise (and many optimisations have only a small effect).
+Similarly, end-users with latency sensitive workloads (e.g. games or other soft
+real-time systems) rely upon accurate benchmarking during their evaluation
+phase. Our results suggest that current benchmarking methodology is leading
+these parties astray.
 
 % XXX needs at-least one
 \cite{test123}

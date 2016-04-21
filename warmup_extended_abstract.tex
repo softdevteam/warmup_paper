@@ -288,9 +288,8 @@ that benchmarking methodologies need to be rethought.
 There are two works we are aware of which explicitly note unusual warmup
 patterns. Gil et al.'s main focus is on non-determinism of process executions on
 HotSpot, and the difficulties this raises in terms of providing reliable
-benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
-least one benchmark (listBubbleSort) which on some process executions undergoes what we
-would classify a slowdown. \kalibera note the
+benchmarking numbers~\cite{gil11microbenchmark}. The authors report
+process executions which we would classify as a slowdowns. \kalibera note the
 existence of what we have called cyclic behaviour (in the context of benchmarking,
 they then require the user to
 manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
@@ -310,15 +309,12 @@ is more likely that a number of different metrics will be needed to describe and
 compare warmup styles.
 
 There are several items of potential future work which would likely lead to a
-better understanding of the warmup behaviours we have observed. First,
-automated classification of warmup behaviours would help guide us through the
-vast amount of data we have collected.\footnote{We have already started this
-task.} Second, VM instrumentation may help us understand the reason for an
-unexpected such as a step or spike in a graph. Ideally we could pin VM events
-such as compilation and GC to such artefacts. Third, using hardware debugging
-facilities, such as performance counters, may help us to pin hardware events to
-artefacts. Once these tasks have been completed, we may be in a position to
-propose new benchmarking methodologies.
+better understanding of the warmup behaviours: automated classification of
+warmup behaviours would help guide us through the vast amount of data we have
+collected.\footnote{We have already started this task.}; VM instrumentation may
+help us pair VM events (compilation, GC, \ldots). Similarly we should look at
+hardware performance counters in-case steps and spikes are due to hardware
+events (context switches, CPU migrations, \ldots).
 
 \textbf{Acknowledgements:} This research was funded by the EPSRC Cooler
 (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.

@@ -129,10 +129,64 @@ real-time systems) rely upon accurate benchmarking during their evaluation
 phase. Our results suggest that current benchmarking methodology is leading
 these parties astray.
 
-% XXX needs at-least one
-\cite{test123}
+\section{Background}
+\label{sec:warmup}
 
-\bibliographystyle{plain}
+When a program begins running on a JIT compiled VM, it is typically (slowly)
+interpreted; once `hot' (i.e.~frequently executed) loops or methods are
+identified, they are dynamically compiled into machine code; and subsequent
+executions of those loops or methods use (fast) machine code rather than the
+(slow) interpreter. Once machine code generation has completed, the VM is
+traditionally said to have finished warming up, and the program to be executing
+at peak performance.\footnote{This traditional notion applies equally to VMs
+that perform immediate compilation instead of using an interpreter, and to
+those VMs which have more than one layer of JIT compilation (later JIT
+compilation is used for `very hot' portions of a program, and tolerates slower
+compilation time for better machine code generation).}
+
+Figure~\ref{fig:trad} shows the expected performance profile of a
+program subject to the conventional model of warmup. Exactly how long warmup
+takes is highly dependent on
+the program and the JIT compiler, but this basic assumption about the
+performance model is shared by every JIT compiling
+VM~\cite{kalibera13rigorous}.
+
+Benchmarking of JIT compiled VMs typically focusses on peak
+performance, in large part because the widespread assumption has been that
+warmup is both fast and inconsequential to users. With that assumption in mind, the
+methodologies used are typically straightforward: benchmarks are run for a number
+of in-process iterations within a single VM process execution.
+The first $n$ in-process iterations are then discarded, on the basis that warmup
+will have completed at some point before $n$. It is common for
+$n$ to be a hard-coded number -- in our experience it is often set at 5 --
+that is used for all benchmarks.
+
+One of the obvious flaws in this simple methodology is that one does not know if warmup
+has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
+was developed by \kalibera to solve a number of issues when benchmarking JIT
+compiling VMs~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
+that, for a given VM / benchmark combination, a human must inspect data obtained by
+executing a small number of process executions, and determine at which in-process iteration the
+benchmark has definitively warmed up. A larger number of VM process executions are then
+run, and the previously determined cut-off point applied to each process's
+iterations. The \kalibera methodology observes that some benchmarks do not
+obviously warm up; and that others follow cyclic patterns post-warmup
+(e.g.~in-process iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
+the latter case, the \kalibera methodology requires a consistent in-process iteration in
+the cycle to be picked for all process executions, and that used for statistical analysis.
+
+To the best of our knowledge, the \kalibera methodology is the most
+sophisticated currently available (see its use in
+e.g.~\cite{barrett15approaches,grimmer15dynamically}). While the \kalibera
+methodology is a real improvement over straightforward benchmarking methodologies,
+our experience has been that there remain cases where it remains hard to produce
+satisfying benchmarking statistics. Crucially, the methodology does not
+provide a firm way of determining when warmup has completed. Because of this
+``determining when a system has warmed up, or even providing a
+rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
+
+
+\bibliographystyle{plainnat}
 \bibliography{bib}
 
 \end{document}

@@ -4,12 +4,12 @@
 % the following standard packages may be helpful, but are not required
 \usepackage{longtable}
 %\usepackage{mathtools}
-%\usepackage{multicol}
+\usepackage{multicol}
 %\usepackage{multirow}
 \usepackage{booktabs}
 %\usepackage{courier}
 %\usepackage[scaled]{helvet}
-%\usepackage{url}
+\usepackage{url}
 \usepackage{listings}
 %\usepackage{enumitem}
 %\usepackage{mdwlist} % tighter description environment (starred)
@@ -242,8 +242,136 @@ with the same system temperatures; runs benchmarks as an otherwise unused user
 account; and (on Linux, where this is possible) runs the kernel with
 adaptive-tick mode CPU cores~\cite{tickless}.
 
+\section{Preliminary Results}
+\label{sec:Results}
+
+Our experiment runs 450 unique process executions, giving a total of 900\,000
+in-process iteration readings. For each process execution we generate a
+run-sequence graph, with the in-process iteration number on the $x$ axis, and the
+time (in seconds) on the $y$ axis. A full set of graphs, as well as our raw
+data, can be downloaded from:
+\vspace{-1em}
+\begin{center}
+{\small%
+\url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.2/}
+}
+\end{center}
+
+Although some of the graphs do show classical warmup behaviour
+(Figures~\ref{fig:good1,fig:good2}, others highlight a number of interesting
+features:
+
+\begin{description}
+%\item[Outliers] In-process iterations which are slower (or, less commonly, much
+%faster) than neighbouring in-process iterations. E.g. Figure~\ref{fig:outliers}.
+\item[Cycles] In-process iteration times repeat in a predictable pattern. E.g.
+Figure~\ref{fig:cycles}.
+\item[Slowdown] Performance of in-process iterations drops over time. E.g.
+Figure~\ref{fig:slowdown}.
+\item[Changing phases] The mean of in-process iteration times abruptly changes
+over time. E.g. Figure~\ref{fig:phases}.
+\item[Inconsistent process executions] Process executions for the same
+benchmark / VM pair behave differently. Sometimes this occurs on in-process
+executions on the same machine; sometimes only across machines. E.g.
+Figure~\ref{fig:inconsistent}.
+\end{description}
+
+The preliminary results are troubling. Process executions which do not warmup
+under the classical model cannot have traditional benchmarking methodologies
+applied. In other words, if the end of the warmup phase cannot be identified,
+then in turn the peak performance phase cannot be identified. This suggests
+that benchmarking methodologies need to be rethought.
+
+
+\section{Related work}
+
+There are two works we are aware of which explicitly note unusual warmup
+patterns. Gil et al.'s main focus is on non-determinism of process executions on
+HotSpot, and the difficulties this raises in terms of providing reliable
+benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
+least one benchmark (listBubbleSort) which on some process executions undergoes what we
+would classify a slowdown. \kalibera note the
+existence of what we have called cyclic behaviour (in the context of benchmarking,
+they then require the user to
+manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
+
+\section{Conclusions and Future Work}
+\label{sec:conclusion}
+
+Warmup has always been an informally defined term~\cite{seaton15phd} this
+preliminary work has shown cases where the definition fails to hold.
+To the best of our knowledge, we are the first to (informally) classify different
+`warmup' styles and note the relatively high frequency of non-traditional
+classifications such as slowdown and phase changes.
+However, we have not yet found an acceptable alternative definition of warmup.
+Based on our experiences thus far, we think it unlikely that the different
+styles of warmup we have seen can be captured in a single metric. We suspect it
+is more likely that a number of different metrics will be needed to describe and
+compare warmup styles.
+
+There are several items of potential future work which would likely lead to a
+better understanding of the warmup behaviours we have observed. First,
+automated classification of warmup behaviours would help guide us through the
+vast amount of data we have collected.\footnote{We have already started this
+task.} Second, VM instrumentation may help us understand the reason for an
+unexpected such as a step or spike in a graph. Ideally we could pin VM events
+such as compilation and GC to such artefacts. Third, using hardware debugging
+facilities, such as performance counters, may help us to pin hardware events to
+artefacts. Once these tasks have been completed, we may be in a position to
+propose new benchmarking methodologies.
+
+\textbf{Acknowledgements:} This research was funded by the EPSRC Cooler
+(EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
+
 \bibliographystyle{plainnat}
 \bibliography{bib}
+
+
+\begin{figure*}[ch]
+%\makebox[\textwidth][c]{
+\includegraphics[width=\textwidth]{examples_v2_results/bad_inconsistent.pdf}
+%}
+\caption{Inconsistent process executions on the same machine.}
+\label{fig:inconsistent}
+\end{figure*}
+
+\begin{figure}[ch]
+\includegraphics[width=.5\textwidth]{examples_v2_results/good_fast.pdf}
+\caption{A process execution showing fast classical warmup.}
+\label{fig:good1}
+\end{figure}
+
+\begin{figure}[ch]
+\includegraphics[width=.5\textwidth]{examples_v2_results/good_tiers.pdf}
+\caption{A process execution showing (long, but) classical warmup.}
+\label{fig:good2}
+\end{figure}
+
+% Not sure if I want this yet.
+%\begin{figure}[c]
+%\includegraphics[width=.5\textwidth]{examples_v2_results/good_gc.pdf}
+%\caption{A process execution with outliers.}
+%\label{fig:outliers}
+%\end{figure}
+
+\begin{figure}[ch]
+\includegraphics[width=.5\textwidth]{examples_v2_results/bad_cycles.pdf}
+\caption{A process execution with cycles.}
+\label{fig:cycles}
+\end{figure}
+
+
+\begin{figure}[ch]
+\includegraphics[width=.5\textwidth]{examples_v2_results/bad_slowdown.pdf}
+\caption{A process execution with slowdown.}
+\label{fig:slowdown}
+\end{figure}
+
+\begin{figure}[ch]
+\includegraphics[width=.5\textwidth]{examples_v2_results/bad_phases.pdf}
+\caption{A process execution with changing phases.}
+\label{fig:phases}
+\end{figure}
 
 \end{document}
 

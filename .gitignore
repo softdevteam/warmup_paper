@@ -6,6 +6,8 @@ bib.bib
 *.log
 *.out
 warmup.pdf
-warmup.synctex.gz
+warmup_extended_abstract.pdf
+*.synctex.gz
 img/*.pdf
-warmup.vtc
+*.vtc
+__pycache__

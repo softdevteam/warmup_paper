@@ -130,10 +130,16 @@ real-time systems) rely upon accurate benchmarking during their evaluation
 phase. Our results suggest that current benchmarking methods are leading
 these parties astray.
 
+This extended abstract was based upon a draft version of a full-length paper.
+The draft is available at:
+\begin{center}
+\url{http://arxiv.org/abs/1602.00602/}
+\end{center}
+
 \section{Background}
 \label{sec:warmup}
 
-\sarah{This first paragraph is rather repetitive, maybe it can be omitted?}
+\sarah{This first paragraph is rather repetitive, maybe it can be omitted?}\edd{yes, although we also have enough space to keep it. What do you think cf?}
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are compiled into machine code; and subsequent
@@ -160,8 +166,7 @@ methods used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warm-up
 will have completed at some point before $n+1$. It is common for
-$n$ to be a hard-coded number, e.g.~5. \sarah{Can we cite an example of someone picking a low n?}
-The more sophisticated \kalibera
+$n$ to be a hard-coded number, e.g.~5. The more sophisticated \kalibera
 benchmarking method~\cite{kalibera12quantifying,kalibera13rigorous}
 (recently used in~\cite{barrett15approaches,grimmer15dynamically}) improves
 upon this by having the user manually inspect run-sequence plots (or trace
@@ -223,7 +228,8 @@ Our benchmarking hardware consisted of three machines:
 
 \noindent We disabled any hardware features (where possible) that could
 possibly induce variation into our results. For example turbo boost and
-hyper-threading were disabled.
+hyper-threading were disabled. The two Linux machines have exactly the same
+packages and package versions installed.
 
 The benchmarks were then run on the following VMs: GCC 4.9.3; Graal 0.13;
 HHVM 3.12.0; a recent GIT version of JRuby/Truffle\footnote{GIT
@@ -235,7 +241,6 @@ We use a script to downloads, configures, and build the above
 versions of the VMs, ensuring we can easily repeat builds. All VMs were
 compiled with a manually built GCC/G++ 4.9.3 (the same used for C benchmarks),
 thus eliminating the GCC versions themselves as a source of variation.
-\sarah{What about glibc versions?}
 
 The benchmarks were run under a specially developed tool called
 \krun\footnote{\url{github.com/softdevteam/krun}}, which
@@ -243,8 +248,8 @@ measures in-process iteration times (using a monotonic clock) in a
 fashion which minimises the effect of external sources of variation. For example,
 \krun: reboots the system prior to the first process execution
 and after each process execution; ensures that each process execution starts
-with the same system temperatures;\sarah{Same temp or within a tolerance of X per cent?}
-runs benchmarks as an otherwise unused user
+with the same system temperatures ($\pm 3^\circ$C); runs benchmarks
+as an otherwise unused user
 account; and (on Linux, where this is possible) runs the kernel with
 adaptive-tick mode CPU cores~\cite{tickless}.
 

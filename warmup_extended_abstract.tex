@@ -113,7 +113,7 @@ While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
 the most extreme, some benchmarks never warm up, staying at their initial performance
 levels indefinitely and some even slow down. Of the eight
-VMs we looked at, every single one had at least one benchmark where the VM did
+VMs we looked at, each had at least one benchmark where the VM did
 not follow the traditional model.
 
 Our results clearly invalidate \hypone: the traditional view of warm-up is not
@@ -139,7 +139,6 @@ The draft is available at:
 \section{Background}
 \label{sec:warmup}
 
-\sarah{This first paragraph is rather repetitive, maybe it can be omitted?}\edd{yes, although we also have enough space to keep it. What do you think cf?}\cfbolz{imo it's fine}
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are compiled into machine code; and subsequent

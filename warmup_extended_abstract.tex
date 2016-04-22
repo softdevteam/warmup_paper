@@ -49,7 +49,7 @@
 
 \begin{document}
 
-\title{Virtual Machine Warmup Blows Hot and Cold}
+\title{Virtual Machine Warm-up Blows Hot and Cold}
 
 \authorinfo{Edd Barrett}
 {Software Development Team, Department of Informatics, King's College London}{\texttt{http://eddbarrett.co.uk/}}
@@ -79,8 +79,8 @@ Many modern languages are implemented as Virtual Machines (VMs) which use a
 Just-In-Time (JIT) compiler to translate `hot' parts of a program into efficient
 machine code at run-time. Since it takes time to determine which parts of the
 program are hot, and then compile them, programs which are JIT compiled are
-said to be subject to a \emph{warmup} phase. The traditional view of
-JIT compiled VMs is that program execution is slow during the warmup phase, and
+said to be subject to a \emph{warm-up} phase. The traditional view of
+JIT compiled VMs is that program execution is slow during the warm-up phase, and
 fast afterwards, when \emph{peak performance} is said to have been reached
 (see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
@@ -90,7 +90,7 @@ to peak performance is discarded.
 
 The aim of this paper is to test the following hypothesis:
 \begin{description}
-  \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
+  \item[\hypone] Small, deterministic programs exhibit traditional warm-up behaviour.
 \end{description}
 In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
@@ -102,9 +102,9 @@ and record timing data.
 \begin{figure}[t]
 \centering
 \includegraphics[width=.5\textwidth]{img/picturebook_warmup}
-\caption{The traditional notion of warmup: a program starts slowly executing in
+\caption{The traditional notion of warm-up: a program starts slowly executing in
 an interpreter; once hot parts of the program are identified, they are
-translated by the JIT compiler to machine code; at this point warmup
+translated by the JIT compiler to machine code; at this point warm-up
 is said to have completed, and peak performance reached.}
 \label{fig:trad}
 \end{figure}
@@ -113,9 +113,10 @@ While some benchmarks on some VMs run as per
 traditional expectations, we found a number of surprising cases. At
 the most extreme, some benchmarks never warm up, staying at their initial performance
 levels indefinitely and some even slowdown. Of the eight
-VMs we looked at, none consistently warmed under the traditional model.
+VMs we looked at, none consistently warmed under the traditional model, for
+all benchmarks.
 
-Our results clearly invalidate H1: the traditional view of warmup is no longer
+Our results clearly invalidate \hypone: the traditional view of warm-up is no longer
 valid. We are not aware that anyone has systematically noted this
 problem before, let alone take it into account when benchmarking. This suggests
 that many published VM benchmarks (including our own) may have presented
@@ -124,14 +125,15 @@ results which are misleading in some situations.
 We believe that accurate VM benchmarking is paramount, for both VM authors, and
 for many end users. VM authors need to know if optimisations have an effect
 distinguishable from noise (and many optimisations have only a small effect).
-Similarly, end-users with latency sensitive workloads (e.g. games or other soft
+Similarly, end-users with latency sensitive workloads (e.g.~games or other soft
 real-time systems) rely upon accurate benchmarking during their evaluation
-phase. Our results suggest that current benchmarking methodology is leading
+phase. Our results suggest that current benchmarking methods are leading
 these parties astray.
 
 \section{Background}
 \label{sec:warmup}
 
+\sarah{This first paragraph is rather repetitive, maybe it can be omitted?}
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are compiled into machine code; and subsequent
@@ -145,37 +147,38 @@ compilation is used for `very hot' portions of a program, and tolerates slower
 compilation time for better machine code generation).}
 
 Figure~\ref{fig:trad} illustrates a
-program subject to the conventional model of warmup. Exactly how long warmup
+program subject to the conventional model of warm-up. Exactly how long warm-up
 takes is highly dependent on
 the program and the JIT compiler, but this basic assumption about the
 performance model is shared by every JIT compiling
 VM~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on peak
-performance. in large part because the widespread assumption has been that
-warmup is both fast and inconsequential to users. With that assumption in mind, the
-methodologies used are typically straightforward: benchmarks are run for a number
+performance. In large part because the widespread assumption has been that
+warm-up is both fast and inconsequential to users. With that assumption in mind, the
+methods used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
-The first $n$ in-process iterations are then discarded, on the basis that warmup
-will have completed at some point before $n$. It is common for
-$n$ to be a hard-coded number, e.g. 5. The more sophisticated \kalibera
-benchmarking methodology~\cite{kalibera12quantifying,kalibera13rigorous}
+The first $n$ in-process iterations are then discarded, on the basis that warm-up
+will have completed at some point before $n+1$. It is common for
+$n$ to be a hard-coded number, e.g.~5. \sarah{Can we cite an example of someone picking a low n?}
+The more sophisticated \kalibera
+benchmarking method~\cite{kalibera12quantifying,kalibera13rigorous}
 (recently used in~\cite{barrett15approaches,grimmer15dynamically}) improves
 upon this by having the user manually inspect run-sequence plots (or trace
 plots) for each process execution. The method also suggests a method for
-dealing with benchmarks which are cyclic in nature (e.g. that produce a
-saw-tooth wave when plotted).
+dealing with benchmarks which are cyclic in nature (e.g.~that produce a
+sawtooth wave when plotted).
 
-While the \kalibera methodology is certainly an improvement over
-straightforward benchmarking methodologies,
+While the \kalibera method is certainly an improvement over
+straightforward benchmarking methods,
 our experience has been that there remain cases where it is hard to produce
-satisfying benchmarking statistics. Crucially, the methodology does not
-provide a firm way of determining when warmup has completed. Because of this
+satisfying benchmarking statistics. Crucially, the method does not
+provide a firm way of determining when warm-up has completed. Because of this
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 
-\section{Methodology}
-\label{sec:methodology}
+\section{Method}
+\label{sec:method}
 
 To test Hypothesis \hypone, we designed an experiment which uses a suite of
 micro-benchmarks: each is run with 2000 in-process iterations and repeated
@@ -191,9 +194,9 @@ They are small and widely
 used by VM authors as optimisation targets.
 In our context, this weakness is in fact a strength: we need
 small, deterministic, and widely examined programs so that we can test
-Hypothesis \hypone. If we were to find unusual warmup behaviours from arbitrary programs,
+Hypothesis \hypone. If we were to find unusual warm-up behaviours from arbitrary programs,
 VM authors might reasonably counter that
-``you have found the one program that exhibits unusual warmup behaviour''.
+``you have found the one program that exhibits unusual warm-up behaviour''.
 
 We used C, Java, Javascript, Python, Lua, PHP,
 and Ruby versions of each benchmark.\footnote{Our need to have implementations in a wide variety
@@ -207,7 +210,7 @@ benchmark and VM pairings which either ran prohibitively slowly
 determinism'', meaning that no two in-process iterations take different paths
 through the control flow graph of the benchmark. We also checked that the
 different language versions of the benchmarks all computed the same result.
-For the avoidance of doubt we did not interfere with any VM's Garbage
+We did not interfere with any VM's Garbage
 Collection (GC) (e.g.~we did not force a collection after each iteration).
 
 Our benchmarking hardware consisted of three machines:
@@ -232,13 +235,16 @@ We use a script to downloads, configures, and build the above
 versions of the VMs, ensuring we can easily repeat builds. All VMs were
 compiled with a manually built GCC/G++ 4.9.3 (the same used for C benchmarks),
 thus eliminating the GCC versions themselves as a source of variation.
+\sarah{What about glibc versions?}
 
-The benchmarks were run under a specially developed tool called \krun, which
-measures in-process iteration times (using a monotonic clock) whilst in a
-fashion which minimises the effect of external sources of variation. To name a
-few features, \krun: reboots the system prior to the first process execution
+The benchmarks were run under a specially developed tool called
+\krun\footnote{\url{github.com/softdevteam/krun}}, which
+measures in-process iteration times (using a monotonic clock) in a
+fashion which minimises the effect of external sources of variation. For example,
+\krun: reboots the system prior to the first process execution
 and after each process execution; ensures that each process execution starts
-with the same system temperatures; runs benchmarks as an otherwise unused user
+with the same system temperatures;\sarah{Same temp or within a tolerance of X per cent?}
+runs benchmarks as an otherwise unused user
 account; and (on Linux, where this is possible) runs the kernel with
 adaptive-tick mode CPU cores~\cite{tickless}.
 
@@ -258,7 +264,7 @@ data, can be downloaded from:
 }
 \end{center}
 
-Although some of the graphs do show classical warmup behaviour (e.g.
+Although some of the graphs do show classical warm-up behaviour (e.g.
 Figure~\ref{fig:good1}), others highlight a number of interesting (and
 unexpected) behaviours:
 
@@ -277,16 +283,16 @@ executions on the same machine; sometimes only across machines. E.g.
 Figure~\ref{fig:inconsistent}.
 \end{description}
 
-The preliminary results are troubling. Process executions which do not warmup
-under the classical model cannot have traditional benchmarking methodologies
-applied. In other words, if the end of the warmup phase cannot be identified,
+The preliminary results are troubling. Process executions which do not warm up
+under the classical model cannot have traditional benchmarking methods
+applied. In other words, if the end of the warm-up phase cannot be identified,
 then in turn the peak performance phase cannot be identified. This suggests
-that benchmarking methodologies need to be rethought.
+that benchmarking methods need to be rethought.
 
 
 \section{Related work}
 
-There are two works we are aware of which explicitly note unusual warmup
+There are two pieces of prior art we are aware of which explicitly note unusual warm-up
 patterns. Gil et al.'s main focus is on non-determinism of process executions on
 HotSpot, and the difficulties this raises in terms of providing reliable
 benchmarking numbers~\cite{gil11microbenchmark}. The authors report
@@ -298,20 +304,20 @@ manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
 \section{Conclusions and Future Work}
 \label{sec:conclusion}
 
-Warmup has always been an informally defined term~\cite{seaton15phd} this
-preliminary work has shown cases where the definition fails to hold.
+Warm-up has always been an informally defined term~\cite{seaton15phd}. Our
+preliminary work has shown cases where generally accepted definitions fail to hold.
 To the best of our knowledge, we are the first to (informally) classify different
-`warmup' styles and note the relatively high frequency of non-traditional
+`warm-up' styles and note the relatively high frequency of non-traditional
 classifications such as slowdown and phase changes.
-However, we have not yet found an acceptable alternative definition of warmup.
+However, we have not yet found an acceptable alternative definition of warm-up.
 Based on our experiences thus far, we think it unlikely that the different
-styles of warmup we have seen can be captured in a single metric. We suspect it
+styles of warm-up we have seen can be captured in a single metric. We suspect it
 is more likely that a number of different metrics will be needed to describe and
-compare warmup styles.
+compare warm-up styles.
 
 There are several items of potential future work which would likely lead to a
-better understanding of the warmup behaviours: automated classification of
-warmup behaviours would help guide us through the vast amount of data we have
+better understanding of the warm-up behaviours: automated classification of
+warm-up behaviours would help guide us through the vast amount of data we have
 collected.\footnote{We have already started this task.}; VM instrumentation may
 help us to associate VM events, such as compilation and garbage collection, to
 artefacts in our graphs. Similarly we may find that hardware performance
@@ -367,6 +373,4 @@ benchmarks and VMs into the experiment.
 \end{figure*}
 
 
-
 \end{document}
-

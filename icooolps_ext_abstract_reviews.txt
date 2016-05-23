@@ -1,0 +1,200 @@
+===========================================================================
+                          ICOOOLPS'16 Review #12A
+---------------------------------------------------------------------------
+           Paper #12: Virtual Machine Warm-up Blows Hot and Cold
+---------------------------------------------------------------------------
+
+                      Overall merit: 4. Accept
+                 Reviewer expertise: 4. Expert
+
+                         ===== Paper summary =====
+
+Theoretically, most code run on top of a virtual machine is interpreted slowly
+several times, then compiled to efficient machine code which is run from then
+on. We could expect benchmarks on popular virtual machines to have performance
+results matching this behavior: a slow start-up, an even slower follow-up for
+runtime compilation, and lastly the peak performance. However, according to the
+experiments discussed in this paper, it seems that several benchmarks on
+different mainstream VMs do not have the expected behavior.
+
+                      ===== Comments for author =====
+
+Virtual machine start-up time and energy consumption can be problematic in
+specific use-cases and it is really interesting to see research and results on
+this topic.
+
+It feels a bit strange that the paper does not discuss at all why the results
+are not according to the hypothesis. The paper is very clear at the beginning:
+"We deliberately treat VMs as black boxes: we simply run benchmarks and record
+timing data.". However, profilers are available for the VMs used, they do not
+require to look deeply into the VM internals and can help understanding where
+the time is spent. For example, some benchmarks have cycles as shown on figures
+3. Is it because the VM is deoptimizing and reoptimizing code, of processor
+cache misses, of OS noise, or something else ?
+
+I understand deterministic programs are required to get deterministic benchmark
+results, but why did you limit the hypothesis and evaluation to small programs
+? Is it because small programs are convenient to benchmark across multiple
+programming languages and VMs or is it because larger programs are not expected
+to exhibit the traditional warm-up behavior ?
+
+===========================================================================
+                          ICOOOLPS'16 Review #12B
+---------------------------------------------------------------------------
+           Paper #12: Virtual Machine Warm-up Blows Hot and Cold
+---------------------------------------------------------------------------
+
+                      Overall merit: 5. Strong accept
+                 Reviewer expertise: 4. Expert
+
+                         ===== Paper summary =====
+
+Most VM researchers "know" that JIT-compiled languages take time to warm up
+before they execute at a steady peak performance. This extended abstract
+explores this assumption by executing a number of micro-benchmark / language /
+VM combinations a very large number of times. Several of their experiments
+exhibit behaviour contrary to expectations.
+
+                      ===== Comments for author =====
+
+This work is interesting and I would expect it to lead to interesting discussion
+at ICOOOLPS.
+
+It's largely novel, though the Kalibera and Jones 2013 paper they cite also
+noted the problem of benchmarks that did not reach stability on some JVMs
+(especially Jikes RVM).  However, the present work runs many more iterations
+(thousands) than Kalibera and Jones (a few hundred).
+
+The depressing part of / open question raised by (take your pick) this work is
+why do these benchmarks / languages / VMs not reach stability. This the authors
+don't answer, but hopefully it will spark discussion at ICOOOLPS.
+
+Equally, I missed any discussion of what approach researchers should take. It's
+clearly problematic to run hundreds of iterations.
+
+Have you done any spectral analysis of your data to reveal underlying
+behaviour?
+
+For a benchmark with "non-classical" behaviour, have you compared its behaviour
+under each language / VM combination?
+
+The scales of the y-axes of some of your graphs are odd. For example,
+- Figs 2, 3, 6: the sequence of labels is not uniform, making it hard to read
+  and quantify the variation. 
+- Figs 4 and 5: the labels 0.566 and 0.354 respectively are repeated!!
+
+The cyclic behaviour e.g. in Fig 3 is curious. It would be interesting to see
+some indication of the state of the processor on the graph in case the processor
+is frequency scaling because of thermal issues. Might a timescale on the x2-axis
+show whether the changes in execution time match the way the processor frequency
+scales? Or plot a second curve with CPU temperature.  This might allow insights 
+from those with expert knowledge of the i7-4790K processor. E.g. see the third
+and fourth figures in
+https://www.pugetsystems.com/labs/articles/Impact-of-Temperature-on-Intel-CPU-Performance-606/
+which show both a similar square wave (temperatures when running Linpack) and
+improvement in performance when better cooling kept the processor's temperature
+below Intel's 100C thermal limit. Have you tried restricting the processor's
+frequency to ensure the processor stays below the thermal limit and hence the
+frequency is fixed?
+
+Typo: 
+
+page 2, column 2: We use a script to download, configure, and...
+
+Grimmer reference: where is this published?
+
+===========================================================================
+                          ICOOOLPS'16 Review #12C
+---------------------------------------------------------------------------
+           Paper #12: Virtual Machine Warm-up Blows Hot and Cold
+---------------------------------------------------------------------------
+
+                      Overall merit: 4. Accept
+                 Reviewer expertise: 4. Expert
+
+                         ===== Paper summary =====
+
+This paper explores the warm-up behavior of language virtual machines.  Because
+benchmarking methodology assumes a warm-up phase where JIT compilation is
+occurring, the best practices recommend only measuring performance in later
+iterations of a workload.  This paper performs many experiments on different
+VMs, different languages, and different machines to show that warm-up behavior
+is not always consistent, and it is indeed hard to define.
+
+                      ===== Comments for author =====
+
+I like this paper, and how it is very systematic about designing experiments to
+test one hypothesis, which is widely accepted to be true in the community.  The
+experiments seem thoroughly done and the conclusions are interesting.  The
+writing is also good.  
+
+While I agree with the premise that it is very difficult to determine the end
+of the actual warm-up phase, I don't necessarily agree that current
+benchmarking practices are wrong.  For the majority of experiments with modern
+applications, you really want to see a time difference in the application's
+execution time, and you don't want the overhead of the compiler to distort the
+results.  That is why you don't want to time the warm-up period (unless you are
+actually trying to show that the compiler runs faster).  But indeed, it is
+difficult to concretely say when the "steady-state" has actually started.  
+
+While it is good that you do experiments over such a large variety of languages
+and VMs, I still would like to see these same patterns that this paper
+discovers also identified in "real-world" applications as well instead of just
+micro-benchmarks.  
+
+I don't really see the "slowdown" pattern in Figure 4, just a lot of variation.  
+
+Otherwise, good solid performance study.  I look forward to more classification
+of different kinds of warm-up.
+
+Minor wording issues:
+ - In Section 2, "every almost all benchmarks" is incorrect.
+ - In Section 3, "We use a script to downloads, configures" is incorrect.
+
+===========================================================================
+                          ICOOOLPS'16 Review #12D
+---------------------------------------------------------------------------
+           Paper #12: Virtual Machine Warm-up Blows Hot and Cold
+---------------------------------------------------------------------------
+
+                      Overall merit: 3. Weak accept
+                 Reviewer expertise: 3. Knowledgeable
+
+                         ===== Paper summary =====
+
+The paper addresses the question of measuring warm-up time in language virtual
+machines that are implemented with JIT compilers. A common assumption in JIT
+VMs is that the first execution of a program will cause the JIT compiler to be
+invoked which will cause the first invocation(s) to be artifically. Therefore a
+common strategy is to execute a program multiple times within a single VM
+invocation. The authors investigate whether this behavior is actually seen in
+several mircrobenchmarks in several different programming languages and on
+different JIT-based VMs. They find that for many combinations of
+benchmark/language/VM the measured execution times do not follow this pattern.
+
+                      ===== Comments for author =====
+
+Measuring computer performance is often problematic. Even in the absence of a
+VM, execution times for compiled programs often varies from run to run and
+researchers have found that even very slight changes in the setup can result in
+significant differences in performance results. When we consider processor with
+dynamic frequency scaling, complex memory systems, and OS events, getting
+consistent measurements of performance over multiple executions requires a
+great deal of attention to detail.
+
+When the programming language is implemented by a VM rather than compiled to
+native code there is another level of possible disturbances in execution time.
+The authors mention JIT compilation time, which is definitely an important
+source of variation in execution time. But there are also others such as
+initialization of classes and garbage collection.
+
+The authors have done a really nice job of measuring across multiple languages,
+VMs and microbenchmarks, but a real weakness of the paper is just how few of
+the measured results are actually presented in the paper. Among the many
+measured results there must be common patterns and trends of some sort that the
+authors could comment on. Unfortunately, only a small subset of the results are
+presented, and there is not much discussion beyond noting that the measured
+patterns of performance do not match the pattern that might be predicted from
+purely considering the JIT compiler.
+
+

@@ -156,7 +156,7 @@ Figure~\ref{fig:trad} illustrates a
 program subject to the conventional model of warm-up. Exactly how long warm-up
 takes is highly dependent on
 the program and the JIT compiler, but this basic assumption about the
-performance model is shared by every almost all benchmarks of JIT compiling
+performance model is shared by almost all benchmarks of JIT compiling
 VMs~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on peak
@@ -240,7 +240,7 @@ hash: \texttt{f82ac77137da265d2447d723ce5973a04459a609}}; HotSpot 8u72b15;
 LuaJIT 2.0.4; PyPy 4.0.1; and V8 4.9.385.21. Although not a VM, GCC serves as a
 baseline to compare the VMs against. HHVM and JRuby/Truffle do not yet run on
 OpenBSD, and were thus skipped on the OpenBSD benchmarking machine.
-We use a script to downloads, configures, and build the above
+We use a script to download, configure, and build the above
 versions of the VMs, ensuring we can easily repeat builds. All VMs were
 compiled with a manually built GCC/G++ 4.9.3 (the same used for C benchmarks),
 thus eliminating the GCC versions themselves as a source of variation.

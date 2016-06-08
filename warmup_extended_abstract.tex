@@ -362,13 +362,15 @@ compare warm-up styles.
 There are several items of potential future work which would likely lead to a
 better understanding of the warm-up behaviours: automated classification of
 warm-up behaviours would help guide us through the vast amount of data we have
-collected.\footnote{We have already started this task.}; VM instrumentation may
+collected; VM instrumentation may
 help us to associate VM events, such as compilation and garbage collection, to
 artefacts in our graphs. Similarly we may find that hardware performance
 counters could offer insight: perhaps hardware events such as context
 switches and CPU migrations are a source of some of our findings. Finally, we
 collect more data by adding further hardware platforms, operating systems,
-benchmarks and VMs into the experiment.
+benchmarks and VMs into the experiment.~\footnote{We have already started
+instrumenting the VMs and we are also in the process of designing automated
+analyses for classifying warmup behaviours.}
 
 \textbf{Acknowledgements:} This research was funded by the EPSRC Cooler
 (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.

@@ -20,6 +20,7 @@
 %\usepackage{mdwlist}
 %\usepackage{pifont}
 \usepackage{xspace}
+\usepackage{hyperref}
 
 \newcommand{\kalibera}{Kalibera \& Jones\xspace}
 \newcommand{\krun}{Krun\xspace}
@@ -255,6 +256,42 @@ adaptive-tick mode CPU cores~\cite{tickless}.
 \section{Preliminary Results}
 \label{sec:Results}
 
+\begin{figure*}
+\includegraphics[width=.5\textwidth]{examples_v2_results/good_fast.pdf}
+\includegraphics[width=.5\textwidth]{examples_v2_results/good_tiers.pdf}
+\caption{Process executions warming up under the classical model.}
+\label{fig:good1}
+\end{figure*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{examples_v2_results/bad_inconsistent.pdf}
+\caption{Inconsistent process executions on the same machine.}
+\label{fig:inconsistent}
+\end{figure*}
+
+
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{examples_v2_results/bad_cycles.pdf}
+\caption{A process execution with cycles.}
+\label{fig:cycles}
+\end{figure}
+
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{examples_v2_results/bad_slowdown.pdf}
+\caption{A process execution with slowdown.}
+\label{fig:slowdown}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=.5\textwidth]{examples_v2_results/bad_phases.pdf}
+\caption{A process execution with changing phases.}
+\label{fig:phases}
+\end{figure}
+
+
+
 
 Our experiment runs 450 unique process executions, giving a total of 900\,000
 in-process iteration readings. For each process execution we generate a
@@ -275,16 +312,16 @@ unexpected) behaviours:
 \begin{description}
 %\item[Outliers] In-process iterations which are slower (or, less commonly, much
 %faster) than neighbouring in-process iterations. E.g. Figure~\ref{fig:outliers}.
+\item[Inconsistent process executions] Process executions for the same
+benchmark / VM pair behave differently. Sometimes this occurs on in-process
+executions on the same machine; sometimes only across machines. E.g.
+Figure~\ref{fig:inconsistent}.
 \item[Cycles] In-process iteration times repeat in a predictable pattern. E.g.
 Figure~\ref{fig:cycles}.
 \item[Slowdown] Performance of in-process iterations drops over time. E.g.
 Figure~\ref{fig:slowdown}.
 \item[Changing phases] The mean of in-process iteration times abruptly changes
 over time. E.g. Figure~\ref{fig:phases}.
-\item[Inconsistent process executions] Process executions for the same
-benchmark / VM pair behave differently. Sometimes this occurs on in-process
-executions on the same machine; sometimes only across machines. E.g.
-Figure~\ref{fig:inconsistent}.
 \end{description}
 
 The preliminary results are troubling. Process executions which do not warm up
@@ -335,39 +372,5 @@ benchmarks and VMs into the experiment.
 
 \bibliographystyle{plainnat}
 \bibliography{bib}
-
-
-\begin{figure*}
-\includegraphics[width=.5\textwidth]{examples_v2_results/good_fast.pdf}
-\includegraphics[width=.5\textwidth]{examples_v2_results/good_tiers.pdf}
-\caption{Process executions warming up under the classical model.}
-\label{fig:good1}
-\end{figure*}
-
-\begin{figure}
-\includegraphics[width=.5\textwidth]{examples_v2_results/bad_cycles.pdf}
-\caption{A process execution with cycles.}
-\label{fig:cycles}
-\end{figure}
-
-
-\begin{figure}
-\includegraphics[width=.5\textwidth]{examples_v2_results/bad_slowdown.pdf}
-\caption{A process execution with slowdown.}
-\label{fig:slowdown}
-\end{figure}
-
-\begin{figure}
-\includegraphics[width=.5\textwidth]{examples_v2_results/bad_phases.pdf}
-\caption{A process execution with changing phases.}
-\label{fig:phases}
-\end{figure}
-
-\begin{figure*}
-\includegraphics[width=\textwidth]{examples_v2_results/bad_inconsistent.pdf}
-\caption{Inconsistent process executions on the same machine.}
-\label{fig:inconsistent}
-\end{figure*}
-
 
 \end{document}

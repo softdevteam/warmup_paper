@@ -71,6 +71,15 @@
 
 \maketitle
 
+\edd{When talking about TSR into doubles: "It's cycle count since the last
+reboot. A double has 52 bits of mantissa, so 2 ** 52 can still be represented
+precisely in a double. The cycle count is around 3e9 per second. 2**52 / 3e9 is
+about 416 hours. Since we reboot regularly, we should be fine."}
+
+\edd{Intel benchmarking doc with the asm snippets:
+\url{http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf}
+-- see page 16}
+
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines which

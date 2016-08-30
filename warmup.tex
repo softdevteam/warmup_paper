@@ -376,10 +376,12 @@ same updates installed)
 
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
-mode; this eventually causes the CPU to exceed its safe thermal limit,
-at which point it reduces performance until it has cooled down sufficiently.
-Turbo boost can thus cause long-running processes to
-appear to suddenly slow down. Hyper-threading gives the illusion that a single
+mode; when the CPU's safe limits (e.g.~power draw, or temperature) are exceeded,
+performance is partly or wholly reduced. For example, we observed on a 4 core
+nominally-3.4GHz machine that when 3 or fewer cores were in use turbo boost
+raised performance to 3.8GHz, but that using all 4 cores immediately reduced
+performance to 3.6GHz. Turbo boost can thus substantially change one's
+perception of performance. Hyper-threading gives the illusion that a single
 physical core is in fact more than one logical core, inter-leaving the
 execution of two or more programs or threads on a single physical core.
 Hyper-threading causes programs to interfere

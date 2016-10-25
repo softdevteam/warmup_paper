@@ -1,4 +1,4 @@
-\documentclass[a4paper,UKenglish]{lipics}
+\documentclass[preprint,numbers,10pt]{sigplanconf}
 
 \usepackage[utf8]{inputenc}
 % the following standard packages may be helpful, but are not required
@@ -50,24 +50,15 @@
 \begin{document}
 
 \title{Virtual Machine Warmup Blows Hot and Cold}
-\author[1]{Edd Barrett}
-\affil[1]{Software Development Team, Department of Informatics,\\King's College London, \texttt{http://eddbarrett.co.uk/}}
-\author[2]{Carl Friedrich Bolz}
-\affil[2]{Software Development Team, Department of Informatics,\\King's College London, \texttt{http://cfbolz.de/}}
-\author[3]{Rebecca Killick}
-\affil[3]{Department of Mathematics and Statistics, University of Lancaster, \texttt{http://www.lancs.ac.uk/\~{}killick/}}
-\author[4]{Vincent Knight}
-\affil[4]{School of Mathematics, Cardiff University, \texttt{http://vknight.org/}}
-\author[5]{Sarah Mount}
-\affil[5]{Software Development Team, Department of Informatics\\King's College London, \texttt{http://snim2.org/}}
-\author[6]{Laurence Tratt}
-\affil[6]{Software Development Team, Department of Informatics\\King's College London, \texttt{http://tratt.net/laurie/}}
 
-\Copyright{Edd Barrett, Carl Friedrich Bolz, Rebecca Killick, Vincent Knight, Sarah Mount and Laurence Tratt}
+\authorinfo{Edd Barrett}{King's College London}{\texttt{http://eddbarrett.co.uk/}}
+\authorinfo{Carl Friedrich Bolz}{King's College London}{\texttt{http://cfbolz.de/}}
+\authorinfo{Rebecca Killick}{University of Lancaster}{\texttt{http://www.lancs.ac.uk/\~{}killick/}}
+\authorinfo{Sarah Mount}{King's College London}{\texttt{http://snim2.org/}}
+\authorinfo{Laurence Tratt}{King's College London}{\texttt{http://tratt.net/laurie/}}
 %\keywords{warmup, benchmarking, virtual machines, programming languages.}
 
-% We need this to stop the running title from overflowing the margins.
-\authorrunning{E. Barrett, C. F. Bolz, R. Killick, V. Knight, S. Mount, and L. Tratt}
+%\authorrunning{E. Barrett, C. F. Bolz, R. Killick, V. Knight, S. Mount, and L. Tratt}
 
 \maketitle
 
@@ -135,7 +126,7 @@ months of effort per VM.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=.5\textwidth]{img/picturebook_warmup}
+\includegraphics[width=.475\textwidth]{img/picturebook_warmup}
 \caption{The traditional notion of warmup: a program starts slowly executing in
 an interpreter; once hot parts of the program are identified, they are
 translated by the JIT compiler to machine code; at this point warmup
@@ -351,17 +342,13 @@ performing the same work.
 \subsection{Benchmarking Hardware}
 
 %We used three machines and two operating systems:
-We used two benchmarking machines:
-
-\begin{tabular}{ll}
-  \bencherthree & Quad-core i7-4790K 4GHz, 24GB of RAM, running Debian 8. \\
-  \bencherfive  & Quad-core i7-4790 3.6GHz, 32GB of RAM, running Debian 8.
-%  \item[\benchersix] Identical hardware to \bencherfive, but running OpenBSD 5.8.
-\end{tabular}
-
-\noindent These machines allow us to investigate the effects of moderately different
-hardware (\bencherthree and \bencherfive run the same operating system with the
-same updates installed)
+We used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
+4GHz, 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
+3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, with identical
+hardware to \bencherfive, but running OpenBSD 5.8. These machines allow us to
+investigate the effects of moderately different hardware (\bencherthree and
+\bencherfive run the same OS with the same updates installed; \benchersix runs a
+different OS).
 %as well as moderately different operating systems
 %(\bencherfive and \benchersix have almost identical hardware, but run different
 %Unix
@@ -391,29 +378,17 @@ with each others in complex ways, introducing considerable noise.
 
 \subsection{VMs under investigation}
 
-We ran the benchmarks on the following language implementations:
-
-\begin{tabular}{ll}
-GCC & Version 4.9.2 (from Debian packages). \\
-Graal \#9dafd1dc5ff9 & HotSpot using a next-gen compiler. \\
-HHVM 3.7.1 & A JIT compiled VM for PHP. \\
-JRuby/Truffle \#7f4cd59cdd1c8 & A Ruby interpreter using Graal for compilation. \\
-HotSpot 8u45b14 & The most widely used Java VM. \\
-LuaJIT 2.0.4 & A tracing JIT compiler for Lua. \\
-PyPy 4.0.0 & A meta-tracing VM for Python 2.7. \\
-V8 4.8.271.9 & A JIT compiler for Javascript.
-\end{tabular}
-\edd[final]{Add to list: CPython 2.7.10, The reference Python implementation}%
-
-\noindent Although not a VM, GCC serves as a baseline to compare the VMs against.
-
-We created a build script which downloads, configures, and builds fixed
-versions of the
-VMs, ensuring we can easily repeat builds.
-All VMs were compiled with GCC/G++ 4.9.2.\edd[final]{Say something about a
-fixed GCC across platforms}\edd[final]{Neither HHVM nor
-JRuby/Truffle has currently been ported to OpenBSD, and thus we were unable to
-run those VMs on OpenBSD.}
+We ran the benchmarks on the following language implementations: GCC 4.9.3;
+Graal \#9405be47 (an alternative JIT compiler for HotSpot); HHVM 3.14.0 (a JIT
+compiling VM for PHP); JRuby/Truffle \laurie{version
+`graal-vm-0.12-build-pack-compat'?}; HotSpot 8u72b15 (the most widely used Java
+VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
+meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
+compiling VM for JavaScript). We created a build script which downloads,
+configures, and builds fixed versions of the VMs, ensuring that we can easily
+repeat builds. All VMs were compiled with GCC/G++ 4.9.3. Since none of Graal,
+HHVM, and JRuby/Truffle have been ported to OpenBSD, those VMs are only
+available to us under Linux.
 
 
 \subsection{\krun}
@@ -620,18 +595,15 @@ A full set of run-sequence graphs, as well as our raw data, can be downloaded fr
 \end{center}
 
 \begin{figure}[tbp]
-\makebox[\textwidth][c]{
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/outliers1}
+\includegraphics[width=.475\textwidth]{examples/outliers1}
 \caption{An example of an outlier, at in-process iteration \#1646.}
 \label{fig:examples:outliers1}
-\end{minipage}
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/slowdown1}
+\end{figure}
+
+\begin{figure}[tbp]
+\includegraphics[width=.475\textwidth]{examples/slowdown1}
 \caption{An example of slowdown, at in-process iteration \#199.}
 \label{fig:examples:slowdown1}
-\end{minipage}
-}
 \end{figure}
 
 
@@ -641,10 +613,10 @@ Our classifications are as follows.
 
 \begin{figure*}[tbp]
 \makebox[\textwidth][c]{
-\begin{minipage}{.65\textwidth}
+\begin{minipage}{.475\textwidth}
 \includegraphics[width=\textwidth]{examples/good1.pdf}
 \end{minipage}
-\begin{minipage}{.65\textwidth}
+\begin{minipage}{.475\textwidth}
 \includegraphics[width=\textwidth]{examples/good2.pdf}
 \end{minipage}
 }
@@ -672,22 +644,19 @@ exhibit `slowdown', where the performance of
 in-process iterations drops over time. Figure~\ref{fig:examples:slowdown1} shows
 an example where a sharp slowdown occurs.
 
-\begin{figure}[t]
-\makebox[\textwidth][c]{
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/cycles1}
+\begin{figure}[tbp]
+\includegraphics[width=.475\textwidth]{examples/cycles1}
 \caption{An example of cyclic behaviour. In this case, the cycles span 6 in-process iterations,
 and can be seen clearly in the inner graph (which zooms in on a sub-set of the in in-process
 iterations).}
 \label{fig:examples:cycles}
-\end{minipage}
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/slow_warmup1}
+\end{figure}
+
+\begin{figure}[tbp]
+\includegraphics[width=.475\textwidth]{examples/slow_warmup1}
 \caption{An example of a late phase change, with a significant speed-up occurring
 at in-process iteration \#1387.}
 \label{fig:examples:late1}
-\end{minipage}
-}
 \end{figure}
 
 
@@ -711,11 +680,7 @@ become cyclic etc.
 
 
 \begin{figure}[t]
-\makebox[\textwidth][c]{
-\begin{minipage}{.65\textwidth}
-\includegraphics[width=\textwidth]{examples/many_phases}
-\end{minipage}
-}
+\includegraphics[width=.475\textwidth]{examples/many_phases}
 \caption{An example of never-ending phase changes.}
 \label{fig:examples:neverending}
 \end{figure}
@@ -729,11 +694,11 @@ phases (as shown in Figure~\ref{fig:examples:neverending}).
 
 \begin{figure*}[t!]
 \makebox[\textwidth][c]{
-\includegraphics[width=1.3\textwidth]{examples/inconsistent1.pdf}\\
+\includegraphics[width=\textwidth]{examples/inconsistent1.pdf}\\
 }
 \makebox[\textwidth][c]{~}  % only way I could add vertical space
 \makebox[\textwidth][c]{
-\includegraphics[width=1.3\textwidth]{examples/inconsistent2.pdf}
+\includegraphics[width=\textwidth]{examples/inconsistent2.pdf}
 }
 \caption{Examples of inconsistent benchmarks.
 The top row shows inconsistencies between different process
@@ -769,7 +734,7 @@ failed during our first `full' run on HotSpot with the failure of an internal
 verification: although we have not subsequently observed this failure, we assume
 it could reoccur, and have thus disabled it.
 
-We ran Octane on SpiderMonkey and V8, making two changes to the benchmark suite.
+We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8, making two changes to the benchmark suite.
 First, we had to lightly edit its benchmark runner to run 2000 in-process
 iterations, and output the timings to \texttt{stdout}. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'

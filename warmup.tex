@@ -415,17 +415,20 @@ Several of \krun's controls work on all supported platforms. \krun imposes a
 consistent heap and stack \texttt{ulimit} for all
 VMs (we used a 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
 to inspect these values, but to allocate memory beyond them.} Benchmarks are run
-as the Unix user `\texttt{krun}', which performs no environment configuration.
+as the UNIX user `\texttt{krun}', which is created afresh (including a fresh
+home directory) for each process execution. The performs no environment
+configuration.
 \krun reboots the system before each process execution (including
 before the first) to ensure that the system is in a somewhat known state
 (e.g.~if a benchmark caused a system to transfer memory from RAM to disk-based swap,
 rebooting ensures that later benchmarks are not affected). After each reboot, \krun
-is invoked automatically by the system's init subsystem; it pauses for 3 minutes to allow the system
-to fully initialise before running the next process execution.
+is invoked automatically by the system's init subsystem; \krun then pauses for
+3 minutes to allow the system to fully initialise, then calls \texttt{sync}
+with a 30 second wait, before finally running the next process execution.
 
 \krun performs two types of monitoring before and during benchmark execution.
 First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
-any changes. We implemented this feature after noticing that one of the
+any relevant changes. We implemented this feature after noticing that one of the
 machines we had earlier ear-marked for running benchmarks occasionally
 overheated, with the only clue to this being a message left in the \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
@@ -434,12 +437,22 @@ performance when they get too hot, \krun ensures that all process executions
 start at approximately the same temperature. Before the first process execution,
 \krun waits for a fixed period of time (60s) in the hope that the machine
 cools down; after this point, it collects temperature
-readings from all available temperature sensors, which are then used as
-base temperature readings. Before each subsequent process execution, \krun
-waits until each temperature sensor is within 10\%{} of its base temperature
+readings from all available temperature sensors and uses these as
+base temperature readings. Before each process execution, \krun
+waits until each temperature sensor is within 10\%{} \edd{check that -- i think it changed?}of its base temperature
 before continuing. If any sensor fails to meet this threshold
 within 10 minutes, \krun terminates the entire experiment.
 
+\krun also allows arbitrary shell commands to be run before and after each
+process execution. We use this feature to stop irrelevant daemons -- such as
+the system SMTP server and \texttt{cron} -- during benchmarking. We also insert
+shell commands to turn off the network during benchmarking, thus preventing
+interrupts caused by the network from stealing CPU time from our benchmarks.
+
+\edd{citation} suggests that the size of the environment can affect
+performance, so \krun also logs the environment under which each process
+execution is invoked. We check the environments are the same size for all 10
+process executions of each benchmark and VM pairing.
 
 \subsubsection{Linux-specific Controls}
 
@@ -453,7 +466,7 @@ the CPU governor to \texttt{performance} mode. Note that even with these
 options set, we cannot fully guarantee that the CPU does as requested
 (see Section~\ref{sec:threats} for details).
 
-\krun checks that it is running on a `tickless' kernel, which aims to reduce
+\krun checks that it is running on a `full tickless' kernel, which aims to reduce
 jitter in time-sensitive workloads~\cite{tickless}. The default
 Linux kernel interrupts each active logical CPU\footnote{Note that each core of
 each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
@@ -487,22 +500,22 @@ to build it on a modern Linux system.} \krun sets the
 globally.
 
 
-%\subsubsection{OpenBSD-specific Controls}
-%
-%Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
-%there are two OpenBSD specific features in \krun.
-%
-%First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
-%to running benchmarks. This is equivalent to setting Linux's CPU governor to
-%\texttt{performance} mode, but note that OpenBSD offers no means of changing
-%Intel P-states.
-%
-%Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
-%deterministic. By default, OpenBSD's \texttt{malloc} performs several operations
-%for security purposes, including allocating guard pages and randomising layout.
-%We set the \texttt{MALLOC\_OPTIONS} environment variable to \texttt{sfghjpru},
-%turning it into a more traditional, and hopefully largely deterministic,
-%\texttt{malloc}.
+\subsubsection{OpenBSD-specific Controls}
+
+Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
+there are two OpenBSD specific features in \krun.
+
+First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
+to running benchmarks. This is equivalent to setting Linux's CPU governor to
+\texttt{performance} mode, but note that OpenBSD offers no means of influencing
+Intel P-states.
+
+Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
+deterministic. By default, OpenBSD's \texttt{malloc} performs several operations
+for security purposes, including allocating guard pages and randomising layout.
+We set the \texttt{MALLOC\_OPTIONS} environment variable to \texttt{sfghjpru},
+turning it into a more traditional, and hopefully largely deterministic,
+\texttt{malloc}.
 
 
 \subsubsection{The Iterations Runners}
@@ -510,10 +523,10 @@ globally.
 Since we run benchmarks in several different languages, we need a way to report
 timings from benchmarks to \krun. For each language, we created an
 \emph{in-process iterations runner}. When \krun wants to run a benchmark, it executes the
-appropriate in-process iterations runner for that language, passing it the name of the
+appropriate in-process iterations runner, passing it the name of the
 benchmark to be run, and the desired number of in-process iterations. The in-process iterations runner
 then dynamically loads the benchmark, and repeatedly executes the main body of
-the benchmark. The in-process iterations runner calls a monotonic timer with
+the benchmark. \edd{XXX revise -- krun\_measure, performance counters}. The in-process iterations runner calls a monotonic timer with
 sub-millisecond accuracy before and after each in-process iteration, printing timing
 data to \texttt{stdout}; when all iterations are complete, \krun consumes
 the timing data and stores it into a compressed JSON file.
@@ -554,7 +567,7 @@ of code; on Linux, calling complex functions as \texttt{write} can evict as much
 as two thirds of an x86's vital L1 cache~\cite{soares10flexsc}, as well as
 increasing the chances of a full process context switch (which is significantly
 slower than a mere mode switch). Second, we allocate the minimum possible memory in
-the core loop (in some languages, we allocate no memory; in others, we are
+the core loop (in some languages, we allocate no memory\edd{???}; in others, we are
 unable to remove the memory needed for basic items such as integers). In
 conjunction, these two design goals mean that we pre-allocate an array of floats
 with one entry per in-process iteration before the core loop. After each

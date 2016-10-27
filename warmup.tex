@@ -522,60 +522,113 @@ turning it into a more traditional, and hopefully largely deterministic,
 
 Since we run benchmarks in several different languages, we need a way to report
 timings from benchmarks to \krun. For each language, we created an
-\emph{in-process iterations runner}. When \krun wants to run a benchmark, it executes the
+\emph{in-process iterations runner}. When \krun wants to run a benchmark, it opens a pipe to the
 appropriate in-process iterations runner, passing it the name of the
-benchmark to be run, and the desired number of in-process iterations. The in-process iterations runner
-then dynamically loads the benchmark, and repeatedly executes the main body of
-the benchmark. \edd{XXX revise -- krun\_measure, performance counters}. The in-process iterations runner calls a monotonic timer with
-sub-millisecond accuracy before and after each in-process iteration, printing timing
-data to \texttt{stdout}; when all iterations are complete, \krun consumes
-the timing data and stores it into a compressed JSON file.
+benchmark to be run, and the desired number of in-process iterations. The
+in-process iterations runner is responsible for: loading the specified
+benchmark, invoking the benchmark in a loop, and for collecting measurements.
+For each in-process iteration, we measure:
 
-Most VMs expose the low-level monotonic timing function \texttt{clock\_gettime}
-(which our iterations runners use) to the target language as standard. We
-extended V8, HHVM and JRuby/Truffle
-to expose this monotonic clock via a user-visible function.
-On OpenBSD, we use the \texttt{CLOCK\_MONOTONIC} timer; on Linux this timer is subject to
-interference from the \texttt{adjtime} function, and we thus use the
-\texttt{CLOCK\_MONOTONIC\_RAW} timer.
+\begin{description}
+\item[Wallclock time delta] The delta between the system wallclock time before
+    and after each in-process iteration. The clock source used is monotonic
+    with sub-millisecond accuracy.
+\item[Per-core cycle count deltas] For each CPU core, the delta between the
+    cycle counter (\texttt{CPU\_CLK\_UNHALTED.CORE}) before and after the
+    in-process iteration. This can be used as a proxy for the amount of "work"
+    done by each logical CPU and is immune to the CPU frequency changing over
+    time.
+\item[Per-core IA32\_APERF/IA32\_AMERF delta ratios] Intel processors have
+    per-core counters for estimating CPU frequency. \texttt{IA32\_MPERF}
+    increments at a fixed reference frequency, whereas \texttt{IA32\_APERF} is
+    adjusted with regards to actual clock speed. If -- for the duration of an
+    in-process iteration -- the ratio of the deltas is $<$1, then the core was
+    not running at full speed for the entire in-process iteration.
+\end{description}
 
-\begin{figure}[t]
-\begin{lstlisting}
-iter_times = [-1.0] * iters
-for i in xrange(iters):
-  start_time = clock_gettime_monotonic()
-  call_iteration()
-  stop_time = clock_gettime_monotonic()
-  iter_times[i] = stop_time - start_time
-
-sys.stdout.write("[%s]" % ",".join([str(x) for x in iter_times]))
-\end{lstlisting}
-\caption{An elided example of the in-process iteration runner for Python. As
-this shows, the core loop is extremely minimal to minimise the introduction of
-timing noise and distortion. Note that the \texttt{iter\_times} array is
-pre-allocated to a fixed size, so no array reallocation happens in the core
-loop; and that the timing data is only written once all in-process iterations
-are complete.}
-\label{fig:pythonitsrunner}
-\end{figure}
+Collection of the above metrics is implemented in a small C library
+\texttt{libkruntime.so} which each iterations runner calls using -- if possible
+-- a foreign function interface. VMs which do not have the ability to call out
+to C code were instead patched to expose our measurement functions at the
+language-level. Note that collection of the cycle counts and the performance
+ratios is only possible on Linux at this time.
 
 A deliberate design goal of the in-process iterations runners is to minimise the
-introduction of timing noise and distortion. First, we do not make any system
-calls other than to \texttt{clock\_gettime}. System calls require the CPU to
+introduction of timing noise and distortion. Inside the core loop, we do not
+make any system calls other than those required to take measurements. We store
+results in memory instead of emitting the immediately. System calls require the
+CPU to
 switch from user mode to kernel mode, and then execute an arbitrary amount
-of code; on Linux, calling complex functions as \texttt{write} can evict as much
+of code; on Linux, calling complex functions such as \texttt{write} can evict as much
 as two thirds of an x86's vital L1 cache~\cite{soares10flexsc}, as well as
 increasing the chances of a full process context switch (which is significantly
-slower than a mere mode switch). Second, we allocate the minimum possible memory in
-the core loop (in some languages, we allocate no memory\edd{???}; in others, we are
-unable to remove the memory needed for basic items such as integers). In
-conjunction, these two design goals mean that we pre-allocate an array of floats
-with one entry per in-process iteration before the core loop. After each
-in-process iteration, the relevant entry is updated in the array. After
-all in-process iterations have completed, the total array is printed to
-\texttt{stdout}. Figure~\ref{fig:pythonitsrunner} shows an elided version
-of the Python in-process iterations runner, embodying these design goals.
+slower than a mere mode switch). Second, we allocate as little memory as
+possible in the core loop. The results array is allocated ahead of time to
+avoid the possibility of ad-hoc array resizing. After all in-process iterations
+have completed, the measurements are emitted on \texttt{stdout} in JSON format,
+which the \krun supervisor accepts over a pipe. Figure~\ref{lst:pyiter} shows
+an elided version of the Python in-process iterations runner.
+Listing~\ref{lst:krun-measure} shows the underlying implementation of
+\texttt{krun\_measure}.
 
+\begin{lstlisting}[label=lst:pyiter, caption={The Python in-process iterations runner.}]
+wallclock_times = [0] * iters
+cycle_counts = [None] * num_cores
+aperf_counts = [None] * num_cores
+mperf_counts = [None] * num_cores
+for core in xrange(num_cores):
+    cycle_counts[core] = [0] * iters
+    aperf_counts[core] = [0] * iters
+    mperf_counts[core] = [0] * iters
+
+for i in xrange(iters):
+    krun_measure(0)   # Start timed section
+    bench_func(param) # Call the benchmark
+    krun_measure(1)   # End timed section
+
+    wallclock_times[i] = \
+        krun_get_wallclock(1) - krun_get_wallclock(0)
+    for core in xrange(num_cores):
+        cycle_counts[core][i] = (
+            krun_get_core_cycles(1, core) -
+            krun_get_core_cycles(0, core))
+        aperf_counts[core][i] = (
+            krun_get_aperf(1, core) -
+            krun_get_aperf(0, core))
+        mperf_counts[core][i] = (
+            krun_get_mperf(1, core) -
+            krun_get_mperf(0, core))
+js = {
+    "wallclock_times": wallclock_times,
+    "core_cycle_counts": cycle_counts,
+    "aperf_counts": aperf_counts,
+    "mperf_counts": mperf_counts
+}
+sys.stdout.write("%s\n" % json.dumps(js))
+\end{lstlisting}
+
+\begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
+        caption={The C code responsible for taking measurements. Wallclock time
+                 is most important, so this is the innermost measurement.}]
+void krun_measure(int mdata_idx) {
+  struct krun_data *data = &(krun_mdata[mdata_idx]);
+  if (mdata_idx == 0) { // start readings
+    for (int core = 0; core < num_cores; core++) {
+      data->aperf[core] = read_aperf(core);
+      data->mperf[core] = read_mperf(core);
+      data->core_cycles[core] = read_core_cycles(core);
+    }
+    data->wallclock = krun_clock_gettime_monotonic();
+  } else { // stop readings
+    data->wallclock = krun_clock_gettime_monotonic();
+    for (int core = 0; core < num_cores; core++) {
+      data->core_cycles[core] = read_core_cycles(core);
+      data->aperf[core] = read_aperf(core);
+      data->mperf[core] = read_mperf(core);
+    }
+  }
+}
+\end{lstlisting}
 
 \section{Classifying Results}
 \label{sec:Results}

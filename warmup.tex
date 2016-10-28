@@ -789,32 +789,34 @@ The statistical method presented in Section \laurie{XXX} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\laurie{cite?}
 (JavaScript). In both cases, we ran 10 process executions and 2000 in-process
-iterations on \bencherthree (without reboots, temperature controls, or any of Krun's
-other controlling features).
+iterations on \bencherthree (without reboots, temperature control etc.).
 
-We used DaCapo without modifications, running it on both Graal and HotSpot, as
-it comes with simple support for setting the number of in-process executions.
+We ran DaCapo on Graal and HotSpot. As it already has support for
+altering the number of in-process executions, we used it without modification.
 However, we were unable to run some benchmarks. \laurie{CF: can you list, and
 briefly explain, the ones you disabled?}. We also disabled tradesoap, which
-failed during our first `full' run on HotSpot with the failure of an internal
-verification: although we have not subsequently observed this failure, we assume
-it could reoccur, and have thus disabled it.
+failed an internal validation check during our first `full' run on HotSpot:
+although we have not subsequently observed this failure, we assume it could
+reoccur, and have thus disabled it.
 
-We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8, making two changes to the benchmark suite.
-First, we had to lightly edit its benchmark runner to run 2000 in-process
-iterations, and output the timings to \texttt{stdout}. Many of Octane's
+We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8. 
+We replaced its complex runner (which reported timings with a non-monotonic
+microsecond timer) with a simpler alternative (using a monotonic millisecond
+timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
 adequately long running benchmark (very roughly, around 1s on \bencherthree, for
-example). We recorded 2000 iterations of the outer benchmark. Second, 3 of
-Octane's 17 benchmarks failed to complete when we ran them for this length of
-time. \texttt{pdfjs} had a memory leak, caused by writing to a global list that
-was not flushed on each iteration; a single-line change (since submitted, though
-not yet accepted, to Octane) fixes the problem. \texttt{CodeLoadClosure} also
+example). We recorded 2000 iterations of the outer benchmark; our runner
+fully resets the benchmark and the random number generator between each
+iteration. When run for this long, 3 of
+Octane's 17 benchmarks failed to complete. \texttt{pdfjs} had a memory leak,
+which we fixed by emptying a globally held list after each iteration
+(a patch has been submitted, though
+not yet accepted, to Octane). \texttt{CodeLoadClosure} also
 fails due to a memory leak, though we have not identified the root cause;
 \texttt{zlib} fails due to an \texttt{asm.js} error whose root cause is also, we
 suspect, due to a memory leak. We therefore include (the lightly modified)
-\texttt{pdfjs}, but not \texttt{CodeLoadClosure} or \texttt{zlib}
+\texttt{pdfjs}, but not \texttt{CodeLoadClosure} or \texttt{zlib}.
 
 
 \section{Threats to Validity}

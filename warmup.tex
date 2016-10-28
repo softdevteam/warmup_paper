@@ -869,21 +869,39 @@ Despite this, our benchmarks show fairly predictable performance across
 different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
 
-Although we have minimised the amount of system calls that our in-process
-iterations runner makes to the OS, two \edd{wrong} calls to \texttt{clock\_gettime} remain.
-On OpenBSD \laurie{someone should check this on linux}, this can take an
+Although we have minimised the number of system calls that our in-process
+iterations runners make, some still remain for taking measurements. For each
+in-process iteration, we make two calls to \texttt{clock\_gettime()} to
+read the start and finish time of each in-process iteration. On OpenBSD
+\laurie{someone should check this on linux}, this can take an
 unbounded amount of time as, indirectly, it enters a loop which only terminates
 when a particular data-structure ceases to be modified, akin to a spin-lock. In
 practise, \texttt{clock\_gettime} returns sufficiently quickly that this seems a
-minor worry at most. Nevertheless, we investigated other timing mechanisms, most
-notably the Time Stamp Counter (TSC) built into x86 processors. In essence,
-the TSC is a built-in processor instruction which returns a monotonically
-increasing count of clock ticks. While modern x86 processors synchronise the
-TSC across multiple cores, older Intel processors and some (perhaps all)
-non-Intel/non-x86 processors make no such guarantees. Thus while reading the TSC would
-probably slightly lessen the amount of noise in our timings, it is likely that
-some machines would silently produce incorrect results, and that we would also
-lose the ability to compare timings across machines.
+minor worry at most.
+On Linux, we make additional calls to \texttt{open()}, \texttt{close()},
+\texttt{lseek()} and \texttt{read()} to obtain performance counter values from
+Model Specific Register (MSR) device nodes\footnote{We use a slightly modified
+    \texttt{msr} device driver. The modification disables \texttt{capabilities}
+so that we can access MSRs \emph{and} use \texttt{LD\_LIBRARY\_PATH} as a
+non-root user.}. We found these calls to be more expensive than invoking system
+calls, which is why wallclock time measurements (which we consider to be the
+most important readings) are the innermost measurements (see
+Listing~\ref{lst:krun-measure}). \texttt{libkruntime.so} also holds open file
+descriptors to device nodes for the duration of a process execution, thus
+minimising the number of calls to \texttt{open()} and \texttt{close()}.
+
+Reading a performance counter value from an MSR device node causes the
+underlying device driver to execute an \texttt{RDMSR} instruction. To read
+counters from other CPU cores than the current core, the driver must use
+inter-processor interrupts (IPIs) to schedule \texttt{RDMSR} instructions
+elsewhere. There is inherent latency in this mechanism, as it involves bus
+communication and the interrupted core must save its registers to memory before
+it can perform the requested work.
+
+We investigated other timing mechanisms, most notably the Time Stamp Counter
+(TSC) built into x86 processors. On older systems this regsister could be used
+as a proxy for CPU frequency, but in modern systems the counter increments at a
+fixed frequency and is thus not useful for our purposes.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have
@@ -915,7 +933,7 @@ cores. We experimented with two ways of doing this under Linux. The first,
 suffered as much as a 3x slowdown. A
 bug\footnote{\url{https://bugzilla.kernel.org/show_bug.cgi?id=116701}} in this
 Linux kernel causes threads to be scheduled on the same core, thus defeating
-the multi-threading use by some VMs (e.g. JRuby/Truffle) for compilation, GC,
+the multi-threading used by some VMs (e.g. JRuby/Truffle) for compilation, GC,
 etc. We were able to achieve the desired effect using a Linux ``cpuset shield''
 occupying 3 of the 4 cores of our machines, however, we were worried that VMs
 may attempt to schedule 4-cores worth of threads oblivious to the CPU affinity

@@ -870,7 +870,7 @@ different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
 
 Although we have minimised the amount of system calls that our in-process
-iterations runner makes to the OS, two calls to \texttt{clock\_gettime} remain.
+iterations runner makes to the OS, two \edd{wrong} calls to \texttt{clock\_gettime} remain.
 On OpenBSD \laurie{someone should check this on linux}, this can take an
 unbounded amount of time as, indirectly, it enters a loop which only terminates
 when a particular data-structure ceases to be modified, akin to a spin-lock. In
@@ -909,15 +909,18 @@ effect (e.g.~that Linux allows a process to allocate memory beyond that
 specified in the soft and hard \texttt{ulimit}).
 
 In some cases, we found that seemingly reasonable settings had undesirable
-effects. Most notably, we trialled running experiments on a fixed CPU core which
-no other processes were allowed to run on (using Linux's \texttt{isolcpus}
-feature). While this may have removed noise from some some VMs,
-it slowed others down by
-a factor of up to 3x. The reason for this is that pinning a process to a CPU
-core also pins its threads to the same core. Some VMs -- such as
-JRuby/Truffle -- create extra threads for compilation, GC, and the like. By
-running all these threads on a single core, we removed the considerable
-performance benefits of running such computation in parallel.
+effects. Most notably, we trialled ``pinning'' benchmarks to a set of idle CPU
+cores. We experimented with two ways of doing this under Linux. The first,
+\texttt{isolcpus}, worked for single threaded VMs, but multi-threaded VMs
+suffered as much as a 3x slowdown. A
+bug\footnote{\url{https://bugzilla.kernel.org/show_bug.cgi?id=116701}} in this
+Linux kernel causes threads to be scheduled on the same core, thus defeating
+the multi-threading use by some VMs (e.g. JRuby/Truffle) for compilation, GC,
+etc. We were able to achieve the desired effect using a Linux ``cpuset shield''
+occupying 3 of the 4 cores of our machines, however, we were worried that VMs
+may attempt to schedule 4-cores worth of threads oblivious to the CPU affinity
+of the cpuset.
+
 
 
 \section{Related work}

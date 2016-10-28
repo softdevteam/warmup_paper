@@ -630,6 +630,27 @@ void krun_measure(int mdata_idx) {
 }
 \end{lstlisting}
 
+\subsubsection{VM Instrumentation Mode}
+
+For a subset of VMs, \krun has an \emph{instrumentation mode}, which logs VM
+events of interest. For PyPy and HotSpot, we log -- for each in-process
+iteration -- the amount of time spent in garbage collection and the time spent
+in JIT compilation. Our hope is that this will help to associate meaning to
+steps and spikes in in-process iteration times. By default this mode is off,
+since the instrumentation itself may interfere with the measurements. Instead,
+we will re-run a subset of the experiment under this mode after collecting the
+main batch of results.
+
+\section{Secondary Experiments}
+
+\edd{Need blurb on why we ran these}
+
+\subsection{Startup Experiment}
+
+\subsection{Octane}
+
+\subsection{XXX: The other one}
+
 \section{Results}
 \label{sec:Results}
 

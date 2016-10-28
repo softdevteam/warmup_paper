@@ -13,6 +13,7 @@
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{mdwlist} % tighter description environment (starred)
+\usepackage{gensymb}
 
 \usepackage{graphicx}
 \usepackage{softdev}
@@ -61,15 +62,6 @@
 %\authorrunning{E. Barrett, C. F. Bolz, R. Killick, V. Knight, S. Mount, and L. Tratt}
 
 \maketitle
-
-\edd{When talking about TSR into doubles: "It's cycle count since the last
-reboot. A double has 52 bits of mantissa, so 2 ** 52 can still be represented
-precisely in a double. The cycle count is around 3e9 per second. 2**52 / 3e9 is
-about 416 hours. Since we reboot regularly, we should be fine."}
-
-\edd{Intel benchmarking doc with the asm snippets:
-\url{http://www.intel.com/content/dam/www/public/us/en/documents/white-papers/ia-32-ia-64-benchmark-code-execution-paper.pdf}
--- see page 16}
 
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
@@ -346,8 +338,7 @@ with each others in complex ways, introducing considerable noise.
 
 We ran the benchmarks on the following language implementations: GCC 4.9.3;
 Graal \#9405be47 (an alternative JIT compiler for HotSpot); HHVM 3.14.0 (a JIT
-compiling VM for PHP); JRuby/Truffle \laurie{version
-`graal-vm-0.12-build-pack-compat'?}; HotSpot 8u72b15 (the most widely used Java
+compiling VM for PHP); JRuby/Truffle \#170c9ae6; HotSpot 8u72b15 (the most widely used Java
 VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
 meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
 compiling VM for JavaScript). We created a build script which downloads,
@@ -405,9 +396,9 @@ start at approximately the same temperature. Before the first process execution,
 cools down; after this point, it collects temperature
 readings from all available temperature sensors and uses these as
 base temperature readings. Before each process execution, \krun
-waits until each temperature sensor is within 10\%{} \edd{check that -- i think it changed?}of its base temperature
+waits until each temperature sensor is within 3$^\circ$C of its base temperature
 before continuing. If any sensor fails to meet this threshold
-within 10 minutes, \krun terminates the entire experiment.
+within an hour, \krun terminates the entire experiment.
 
 \krun also allows arbitrary shell commands to be run before and after each
 process execution. We use this feature to stop irrelevant daemons -- such as
@@ -516,7 +507,11 @@ Collection of the above metrics is implemented in a small C library
 \texttt{libkruntime.so} which each iterations runner calls using -- if possible
 -- a foreign function interface. VMs which do not have the ability to call out
 to C code were instead patched to expose our measurement functions at the
-language-level. Note that collection of the cycle counts and the performance
+language-level. Since some of the measurements are 64-bit unsigned integers,
+which some of the languages under investigation do not support. In these cases,
+the measurements are converted to double-precision floats, which are checked
+for loss of precision. Note that collection of the cycle counts and the
+performance
 ratios is only possible on Linux at this time.
 
 A deliberate design goal of the in-process iterations runners is to minimise the
@@ -598,13 +593,13 @@ void krun_measure(int mdata_idx) {
 
 \subsubsection{VM Instrumentation Mode}
 
-For a subset of VMs, \krun has an \emph{instrumentation mode}, which logs VM
-events of interest. For PyPy and HotSpot, we log -- for each in-process
-iteration -- the amount of time spent in garbage collection and the time spent
-in JIT compilation. Our hope is that this will help to associate meaning to
+For PyPy and Hotspot, \krun has an \emph{instrumentation mode}, which logs certain
+VM events. We collect data that allows us to compute (for each in-process
+iteration) how much time was spent in the garbage collector and in the JIT.
+Our hope is that this will help to associate meaning to
 steps and spikes in in-process iteration times. By default this mode is off,
-since the instrumentation itself may interfere with the measurements. Instead,
-we will re-run a subset of the experiment under this mode after collecting the
+since the instrumentation itself may interfere with measurements.
+We will re-run a subset of the experiment under this mode after collecting the
 main batch of results.
 
 \section{Secondary Experiments}

@@ -630,29 +630,29 @@ void krun_measure(int mdata_idx) {
 }
 \end{lstlisting}
 
-\section{Classifying Results}
+\section{Results}
 \label{sec:Results}
 
-\laurie{This section should probably be called something like `A Statistical
-Method for Classifying and Quantifying Warmup'. If anyone has a snappier title,
-I'm all ears!}
+\edd{check numbers again, use --info?}Our experiment runs 450 unique process
+executions, giving a total of 900\,000 in-process iteration readings. For each
+process execution we generate a series of plots. All plots have a common $x$
+axis: the sequential in-process execution number. The $y$ axis for a
+\textbf{run-sequence plot} is the wallclock time delta (in seconds). The $y$
+axis for a \textbf{core-cycle plot} is the cycle count delta for an individual
+CPU core. The $y$ axis for a \textbf{frequency ratio plot} plot is the
+\texttt{IA32\_APERF}/\texttt{IA32\_AMERF} delta ratio for an individual CPU
+core. The latter two plots are per-core, so for these we plot one for each CPU
+core for each process execution.
 
-Our experiment runs 450 unique process executions, giving a total of 900\,000
-in-process iteration readings. For each process execution we generate a
-run-sequence graph, with the in-process iteration number on the $x$ axis, and the
-in-process iteration time (in seconds) on the $y$ axis.
-These graphs, though simple, highlight a number of
-interesting features, which we informally classify.
+These plots, though simple, highlight a number of interesting features, which
+we informally classify. The run-sequence plots are most important, since these
+reflect performance as the user percieves it. We use the other plots to help
+understanding why we see certain artifacts in run-sequence plots.
 
-One common feature in our results are \emph{outliers}: informally, these are
-in-process iterations which are slower (or, less commonly, much
-faster) than neighbouring in-process iterations. In general, we disregard outliers
-when classifying data (i.e.~we pretend the outliers do not exist). Figure~\ref{fig:examples:outliers1}
-shows a typical
-example, where in amongst largely consistent timings, a single in-process
-iteration is substantially slower than its neighbours.
+\edd{how to break down all of the results we have over sections?}
 
-A full set of run-sequence graphs, as well as our raw data, can be downloaded from:
+A full set of plots and raw data, can be downloaded from:
+\edd{XXX bump version when new data is up}
 \vspace{-.5em}
 \begin{center}
 {\small%
@@ -672,8 +672,16 @@ A full set of run-sequence graphs, as well as our raw data, can be downloaded fr
 \label{fig:examples:slowdown1}
 \end{figure}
 
+\subsection{Automated Statistcal Classification of Warmup Behaviours}
 
-\subsection{Classifications}
+One common feature is \emph{outliers}: informally, these are in-process
+iterations which are slower (or, less commonly, much faster) than neighbouring
+in-process iterations. In general, we disregard outliers when classifying data
+(i.e.~we pretend the outliers do not exist).
+Figure~\ref{fig:examples:outliers1} shows a typical example, where in amongst
+largely consistent timings, a single in-process iteration is substantially
+slower than its neighbours.
+
 
 Our classifications are as follows.
 

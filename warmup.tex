@@ -805,8 +805,10 @@ which we fixed by emptying a globally held list after each iteration
 not yet accepted, to Octane). \texttt{CodeLoadClosure} also
 fails due to a memory leak, though we have not identified the root cause;
 \texttt{zlib} fails due to an \texttt{asm.js} error whose root cause is also, we
-suspect, due to a memory leak. We therefore include (the lightly modified)
-\texttt{pdfjs}, but not \texttt{CodeLoadClosure} or \texttt{zlib}.
+suspect, due to a memory leak. Furthermore, the \texttt{box2d},
+\texttt{gameboy}, and \texttt{mandreel} benchmarks do not properly reset their
+state between runs, leading to run-time errors. We therefore include (the
+lightly modified) \texttt{pdfjs}, but none of the benchmarks with errors.
 
 
 \section{Threats to Validity}

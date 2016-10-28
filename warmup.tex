@@ -75,7 +75,7 @@ about 416 hours. Since we reboot regularly, we should be fine."}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines which
 parts of a program would most benefit from dynamic compilation; after
-compilation has occurred the program is said to be at \emph{peak performance}.
+compilation has occurred, the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we first run a number of small,
@@ -83,9 +83,7 @@ deterministic benchmarks on a variety of well known VMs, before introducing
 a rigorous statistical model for determining when warmup has occurred.
 In our experiment, \laurie{only XXX\%} of the benchmark/VM pairs conform to
 the traditional notion of warmup, and none of the
-VMs we tested consistently warms up in the traditional notion. This raises
-a number of questions about VM benchmarking, which are of interest to
-both VM authors and end users.
+VMs we tested consistently warms up in the traditional notion.
 \end{abstract}
 
 \section{Introduction}
@@ -97,13 +95,12 @@ machine code at run-time. Since it takes time to determine which parts of the
 program are hot, and then compile them, programs which are JIT compiled are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
-fast afterwards, when \emph{peak performance} is said to have been reached
+fast afterwards, when a steady state of \emph{peak performance} is said to have been reached
 (see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
-generally aim to measure peak performance.
-Benchmarking methodologies usually
-require running benchmarks several times within a single VM process, and
-discarding any timing data collected before warmup is complete.
+usually require running benchmarks several times within a single VM process,
+discarding any timing data collected before warmup is complete, and
+reporting only peak performance figures.
 
 The fundamental aim of this paper is to test the following hypothesis, which captures a constrained
 notion of the traditional notion of warmup:
@@ -114,15 +111,8 @@ In order to test this hypothesis, we present a carefully designed
 experiment where a number of simple benchmarks are run on a variety of
 VMs for a large number of \emph{in-process iterations} and repeated using fresh
 \emph{process executions} (i.e.~each process execution runs multiple in-process
-iterations). Note that we deliberately treat VMs as black
-boxes: we simply run benchmarks and record timing data. It is not our intention
-to understand the effects we see in the resulting timing data, for the simple
-reason that we are not experts in most of the VMs under investigation. Even were
-we experts, understanding some of the resulting data could take many person
-months of effort per VM.
-%From this we obtain \emph{time series} data, to which we apply a
-%number of statistical techniques that have not previously been applied
-%in the context of VM benchmarking.
+iterations). We also introduce the first automated approach to determining
+\emph{when} warmup has completed, based on changepoint analysis.
 
 \begin{figure}[t]
 \centering
@@ -134,72 +124,48 @@ is said to have completed, and peak performance reached.}
 \label{fig:trad}
 \end{figure}
 
-We expected our experiment to validate Hypothesis H1, allowing us to
-easily compare warmup across VMs. While some benchmarks on some VMs run as per
-traditional expectations, we found a number of surprising cases. At
-the most extreme, some benchmarks never warm up, staying at their initial performance
-levels indefinitely and some even slowdown. Of the eight
-VMs we looked at, none consistently warmed under the traditional model.
+While our results show that some benchmarks on some VMs run as per traditional
+expectations, many surprising cases exist: some benchmarks slowdown rather than
+warmup; some never hit a steady state; some perform very differently over
+different process executions; and many exhibit cyclic behaviour. Of the eight
+VMs we looked at, none consistently warmed up as suggested by the traditional model.
 
-Our results clearly show that the traditional view of warmup is no longer valid (and, perhaps,
-that it may not have held in the past). We are not aware that anyone has systematically noted this
-problem before, let alone take it into account when benchmarking. This suggests
-that many published VM benchmarks (including our own) may have presented
-results which are misleading in some situations.
-
-A reasonable question, therefore, is whether inaccuracies in VM benchmarking are of anything
-other than academic interest. We believe that accurate VM benchmarking is needed
-by both VM authors and many end users. When
-implementing optimisations, VM authors need to know if their optimisations have
-had the intended effect or not: since many optimisations, in isolation, have only a
-small effect, accurate benchmarking is vital. Our results suggest that decisions
-about the effectiveness of an optimisation may sometimes be made based on
-unreliable data.
-It is likely that this has caused some ineffective, and perhaps even some deleterious,
-optimisations to be included in VMs. Many end users have workloads that are more
-sensitive to latency than throughput. For example, users running games (or other
-soft real-time systems) require predictable performance. Our results show that some
-VMs JIT compile programs that have unpredictable long-term performance.
-
-%This paper's contributions are as follows:
-%\begin{enumerate*}
-%  \item \laurie{blah blah}
-%\end{enumerate*}
-%
-%This paper's structure is as follows. \laurie{blah blah}
+Our results thus clearly invalidate Hypothesis H1, showing that the traditional
+view of warmup is no longer valid (and, perhaps, that it may not have held in
+the past). This is of importance to both VM developers and users, since it means
+that much VM benchmarking is likely to be partly misleading: indeed, it is
+likely to have allowed some ineffective, and perhaps even some deleterious,
+optimisations to make their way into production VMs.
 
 
 \section{Background}
 \label{sec:warmup}
 
+Figure~\ref{fig:trad} shows the expected performance profile of a
+program subject to the traditional model of warmup.
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are dynamically compiled into machine code; and subsequent
 executions of those loops or methods use (fast) machine code rather than the
 (slow) interpreter. Once machine code generation has completed, the VM is
-traditionally said to have finished warming up, and the program to be executing
-at peak performance.\footnote{This traditional notion applies equally to VMs
+said to have finished warming up, and the program to be executing
+at a steady state of peak performance.\footnote{This traditional notion applies equally to VMs
 that perform immediate compilation instead of using an interpreter, and to
 those VMs which have more than one layer of JIT compilation (later JIT
 compilation is used for `very hot' portions of a program, and tolerates slower
 compilation time for better machine code generation).}
-
-Figure~\ref{fig:trad} shows the expected performance profile of a
-program subject to the conventional model of warmup. Exactly how long warmup
-takes is highly dependent on
-the program and the JIT compiler, but this basic assumption about the
-performance model is shared by every JIT compiling
-VM~\cite{kalibera13rigorous}.
+While the length of the warmup period
+is dependent on the program and JIT compiler, all JIT compiling
+VMs assume this performance model holds true~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on peak
-performance, in large part because the widespread assumption has been that
+performance, partly due to an assumption that
 warmup is both fast and inconsequential to users. With that assumption in mind, the
 methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations are then discarded, on the basis that warmup
 will have completed at some point before $n$. It is common for
-$n$ to be a hard-coded number -- in our experience it is often set at 5 --
-that is used for all benchmarks.
+$n$ to be hard-coded -- in our experience often to 5 -- for all benchmarks.
 
 One of the obvious flaws in this simple methodology is that one does not know if warmup
 has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology

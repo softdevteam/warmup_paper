@@ -463,18 +463,16 @@ globally.
 
 Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
 there are two OpenBSD specific features in \krun.
-
 First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
 to running benchmarks. This is equivalent to setting Linux's CPU governor to
 \texttt{performance} mode, but note that OpenBSD offers no means of influencing
 Intel P-states.
-
-Second, \krun sets OpenBSD's default \texttt{malloc} implementation to be
-deterministic. By default, OpenBSD's \texttt{malloc} performs several operations
-for security purposes, including allocating guard pages and randomising layout.
-We set the \texttt{MALLOC\_OPTIONS} environment variable to \texttt{sfghjpru},
-turning it into a more traditional, and hopefully largely deterministic,
-\texttt{malloc}.
+Second, \krun aims to minimise computation and non-determinism in OpenBSD's
+\texttt{malloc}, by disablng security enhancements. For example turning off
+``junking'' \texttt{malloc} will no longer overwrite freed allocations, and by
+turning off ``\texttt{realloc} always moves'' we improve determinism. The exact
+\texttt{malloc} flags we use are \texttt{sfghjpru}. Note that this setting
+does not guarantee to make the allocator fully deterministic by any means.
 
 
 \subsubsection{The Iterations Runners}

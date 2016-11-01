@@ -343,9 +343,11 @@ VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
 meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
 compiling VM for JavaScript). We created a build script which downloads,
 configures, and builds fixed versions of the VMs, ensuring that we can easily
-repeat builds. All VMs were compiled with GCC/G++ 4.9.3. Since none of Graal,
+repeat builds. All VMs were compiled with GCC/G++ 4.9.3 (with \texttt{-j1} to
+give a determinstic build}. Since none of Graal,
 HHVM, and JRuby/Truffle have been ported to OpenBSD, those VMs are only
-available to us under Linux.
+available to us under Linux. Some benchmarks were skipped on certain VMs:
+fasta on JRubyTruffle crashes, and Richards on HHVM is excessively slow.
 
 
 \subsection{\krun}

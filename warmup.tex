@@ -486,16 +486,17 @@ in-process iterations runner is responsible for: loading the specified
 benchmark, invoking the benchmark in a loop, and for collecting measurements.
 For each in-process iteration, we measure:
 
-\begin{description}
-\item[Wallclock time delta] The delta between the system wallclock time before
+\textbf{Wallclock time deltas} The delta between the system wallclock time before
     and after each in-process iteration. The clock source used is monotonic
     with sub-millisecond accuracy.
-\item[Per-core cycle count deltas] For each CPU core, the delta between the
+
+\textbf{Cycle count deltas} For each CPU core, the delta between the
     cycle counter (\texttt{CPU\_CLK\_UNHALTED.CORE}) before and after the
     in-process iteration. This can be used as a proxy for the amount of "work"
     done by each logical CPU and is immune to the CPU frequency changing over
     time.
-\item[Per-core IA32\_APERF/IA32\_AMERF delta ratios] Intel processors have
+
+\textbf{IA32\_APERF/IA32\_AMERF delta ratios} Intel processors have
     per-core counters for estimating CPU frequency. \texttt{IA32\_MPERF}
     increments at a fixed reference frequency, whereas \texttt{IA32\_APERF} is
     adjusted with regards to actual clock speed. If for the duration of an
@@ -503,7 +504,6 @@ For each in-process iteration, we measure:
     not running at full speed for the entire in-process iteration. Note the two
     counters only increment whilst the CPU core is switched on, so this metric
     is not useful for idle cores which power off to save energy.
-\end{description}
 
 Collection of the above metrics is implemented in a small C library
 \texttt{libkruntime.so} which each iterations runner calls using -- if possible
@@ -699,7 +699,7 @@ an example with a cycle of 6 in-process iterations.
 \label{fig:examples:neverending}
 \end{figure}
 
-\textbf{No Steady State} \label{sub:long}
+\textbf{No steady state} \label{sub:long}
 Some process executions have distinct phases of execution but never seem to
 settle on a single behaviour. Figure~\ref{fig:examples:neverending} shows an
 example.

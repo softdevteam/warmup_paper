@@ -516,20 +516,18 @@ for loss of precision. Note that collection of the cycle counts and the
 performance
 ratios is only possible on Linux at this time.
 
-A deliberate design goal of the in-process iterations runners is to minimise the
-introduction of timing noise and distortion. Inside the core loop, we do not
-make any system calls other than those required to take measurements. We store
-results in memory instead of emitting the immediately. System calls require the
-CPU to
-switch from user mode to kernel mode, and then execute an arbitrary amount
-of code; on Linux, calling complex functions such as \texttt{write} can evict as much
-as two thirds of an x86's vital L1 cache~\cite{soares10flexsc}, as well as
-increasing the chances of a full process context switch (which is significantly
-slower than a mere mode switch). Second, we allocate as little memory as
-possible in the core loop. The results array is allocated ahead of time to
-avoid the possibility of ad-hoc array resizing. After all in-process iterations
-have completed, the measurements are emitted on \texttt{stdout} in JSON format,
-which the \krun supervisor accepts over a pipe. Figure~\ref{lst:pyiter} shows
+A deliberate design goal of the in-process iterations runners is to minimise
+timing noise and distortion from measurements. We do not make any system calls
+other than those required to take measurements. System calls require the CPU to
+switch from user mode to kernel mode, before executing code in the kernel; on
+Linux, calling functions such as \texttt{write} can evict as much as two thirds
+of an x86's L1 cache~\cite{soares10flexsc}, and can increase the chances of a
+context switch (which is significantly slower than a mode switch). We avoid
+in-benchmark I/O and memory allocation by storing measurements in statically
+bounded memory buffers. Only once the final in-process iteration has finished
+are the measurements emitted to \texttt{stdout}. \krun then accepts the
+measurements in JSON format over a pipe and stores them to disk.
+Figure~\ref{lst:pyiter} shows
 an elided version of the Python in-process iterations runner.
 Listing~\ref{lst:krun-measure} shows the underlying implementation of
 \texttt{krun\_measure}.

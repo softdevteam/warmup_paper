@@ -665,18 +665,15 @@ iteration \#120.}
 \label{fig:examples:trad}
 \end{figure*}
 
-\textbf{Traditional Warmup} Our results challenge the traditional notion of
-warmup. Indeed, in some cases, it is hard to say whether some runs follow the
-traditional notion or not (for example, are small temporary slowdowns
-acceptable?). With that qualification in mind, of the 45 benchmark/VM pairs we ran,
-less than a quarter can be said to consistently warm-up as per traditional
-expectations. Figure~\ref{fig:examples:trad} shows examples of process executions that
-warm-up as per traditional expectations.
+\textbf{Flat} Some process executions, particularly the C benchmarks, have
+constant in-process iteration times for the whole process execution.
 
+\textbf{Warmup} Some process executions warmup up as per our
+expectations. Figure~\ref{fig:examples:trad} shows some examples of traditional
+warmup.
 
 \textbf{Slowdown} \label{sub:slowdowns}
-In stark contrast to the traditional expectation of `warmup', some benchmarks
-exhibit `slowdown', where the performance of
+Some process executions exhibit `slowdown', where the performance of
 in-process iterations drops over time. Figure~\ref{fig:examples:slowdown1} shows
 an example where a sharp slowdown occurs.
 
@@ -688,31 +685,12 @@ iterations).}
 \label{fig:examples:cycles}
 \end{figure}
 
-\begin{figure}[tbp]
-\includegraphics[width=.475\textwidth]{examples/slow_warmup1}
-\caption{An example of a late phase change, with a significant speed-up occurring
-at in-process iteration \#1387.}
-\label{fig:examples:late1}
-\end{figure}
 
-
-\textbf{Cyclic Behaviour} \label{sub:cyclic}
-Some benchmarks exhibit cyclic behaviour, where in-process iteration times
-repeat in a predictable pattern. We observed cycle lengths ranging from
-2 to several hundred in-process iterations. Figure~\ref{fig:examples:cycles} shows
+\textbf{Cyclic} \label{sub:cyclic}
+Some process executions exhibit cyclic behaviour, where in-process iteration times
+repeat in a predictable pattern. 
+Figure~\ref{fig:examples:cycles} shows
 an example with a cycle of 6 in-process iterations.
-
-
-\textbf{Late Phase Change} \label{sub:phase}
-Late phase changes are one of the surprising results from our experiment: it is
-clear that some benchmarks change phase after a much larger number of in-process iterations
-than previous experiments have considered, as shown in Figure~\ref{fig:examples:late1}.
-It is important to note that `late' is relative only to the number of in-process
-iterations we ran in our experiment: it is probable that some benchmarks would
-undergo further phase changes if we were to run a greater number of in-process
-iterations. Note that late phase changes are orthogonal to most of our other
-classifiers: after a late phase change, a benchmark may run faster, slower, or
-become cyclic etc.
 
 
 \begin{figure}[t]
@@ -721,11 +699,10 @@ become cyclic etc.
 \label{fig:examples:neverending}
 \end{figure}
 
-\textbf{Never-ending Phase Changes} \label{sub:long}
-Some benchmarks keep changing phase without appearing to finally settle on a
-single phase. Note that sometimes this can involve cycling between a small
-number of phases, or moving between a seemingly arbitrary number of different
-phases (as shown in Figure~\ref{fig:examples:neverending}).
+\textbf{No Steady State} \label{sub:long}
+Some process executions have distinct phases of execution but never seem to
+settle on a single behaviour. Figure~\ref{fig:examples:neverending} shows an
+example.
 
 
 \begin{figure*}[t!]
@@ -748,20 +725,36 @@ machines.}
 \end{figure*}
 
 \textbf{Inconsistent Process Executions} \label{sub:inconsistent}
-A number of benchmarks behave inconsistently when comparing different process executions. Sometimes this occurs on
-in-process executions within a single machine; sometimes only across machines.
+For some benchmark and VM pairings, different process executions behave
+inconsistently. Sometimes this occurs on the same machine; sometimes between
+different machines.
 Figure~\ref{fig:examples:inconsistent} shows examples of both cases.
 
+In many cases the behavoirs we see can be explained by examining the core-cycle
+and frequency ratio plots. \edd{examples}. In other cases though, unexpected
+behaviours cannot be explained \edd{examples}.
+
+\edd{Startup results in here somewhere?}
 
 \subsection{Automated Statistcal Classification of Warmup Behaviours}
 
 Having informally classified warmup behaviours, we now formally define these
-behaviours and show that we can automatically classify all XXX in-process
-executions in our data.
+behaviours using automated statistical methods, before proceeding to classify
+all XXX in-process executions in our data.
 
-\edd{FAO: stats people, prose here is old and much more needed}
+\edd{formally define}
 
-One common feature is \emph{outliers}: informally, these are in-process
+\textbf{Flat}
+
+\textbf{Warmup}
+
+\textbf{Slowdown}
+
+\textbf{Cyclic}
+
+\textbf{No steady state}
+
+\edd{Is this para needed somewhere?}One common feature is \emph{outliers}: informally, these are in-process
 iterations which are slower (or, less commonly, much faster) than neighbouring
 in-process iterations. In general, we disregard outliers when classifying data
 (i.e.~we pretend the outliers do not exist).
@@ -769,13 +762,13 @@ Figure~\ref{fig:examples:outliers1} shows a typical example, where in amongst
 largely consistent timings, a single in-process iteration is substantially
 slower than its neighbours.
 
+\edd{Table showing results from automated analysis}
+
 \begin{figure}[tbp]
 \includegraphics[width=.475\textwidth]{examples/outliers1}
 \caption{An example of an outlier, at in-process iteration \#1646.}
 \label{fig:examples:outliers1}
 \end{figure}
-
-
 
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 

@@ -498,9 +498,11 @@ For each in-process iteration, we measure:
 \item[Per-core IA32\_APERF/IA32\_AMERF delta ratios] Intel processors have
     per-core counters for estimating CPU frequency. \texttt{IA32\_MPERF}
     increments at a fixed reference frequency, whereas \texttt{IA32\_APERF} is
-    adjusted with regards to actual clock speed. If -- for the duration of an
-    in-process iteration -- the ratio of the deltas is $<$1, then the core was
-    not running at full speed for the entire in-process iteration.
+    adjusted with regards to actual clock speed. If for the duration of an
+    in-process iteration, the ratio of the deltas is $<$1, then the core was
+    not running at full speed for the entire in-process iteration. Note the two
+    counters only increment whilst the CPU core is switched on, so this metric
+    is not useful for idle cores which power off to save energy.
 \end{description}
 
 Collection of the above metrics is implemented in a small C library

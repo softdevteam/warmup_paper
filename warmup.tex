@@ -569,8 +569,11 @@ sys.stdout.write("%s\n" % json.dumps(js))
 \end{lstlisting}
 
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
-        caption={The C code responsible for taking measurements. Wallclock time
-                 is most important, so this is the innermost measurement.}]
+        caption={%
+\texttt{krun\_measure}: We cannot easily collect the measurements atomically,
+so we take the most important reading, wallclock time, innermost. The
+\texttt{aperf} and \texttt{mperf} readings will be used to compute a ratio, and
+must be collected in the same order both before and after.}]
 void krun_measure(int mdata_idx) {
   struct krun_data *data = &(krun_mdata[mdata_idx]);
   if (mdata_idx == 0) { // start readings

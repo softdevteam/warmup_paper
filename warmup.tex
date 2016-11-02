@@ -801,17 +801,16 @@ specifies how many times the inner benchmark should be run in order to make an
 adequately long running benchmark (very roughly, around 1s on \bencherthree, for
 example). We recorded 2000 iterations of the outer benchmark; our runner
 fully resets the benchmark and the random number generator between each
-iteration. When run for this long, 3 of
-Octane's 17 benchmarks failed to complete. \texttt{pdfjs} had a memory leak,
-which we fixed by emptying a globally held list after each iteration
-(a patch has been submitted, though
-not yet accepted, to Octane). \texttt{CodeLoadClosure} also
-fails due to a memory leak, though we have not identified the root cause;
-\texttt{zlib} fails due to an \texttt{asm.js} error whose root cause is also, we
-suspect, due to a memory leak. Furthermore, the \texttt{box2d},
-\texttt{gameboy}, and \texttt{mandreel} benchmarks do not properly reset their
-state between runs, leading to run-time errors. We therefore include (the
-lightly modified) \texttt{pdfjs}, but none of the benchmarks with errors.
+iteration. The \texttt{box2d}, \texttt{gameboy}, \texttt{mandreel} benchmarks do
+not properly reset their state between runs, leading to run-time errors we have
+not been able to fix; \texttt{typescript}'s reset function, in contrast, is
+overzealous, freeing constant data needed by all iterations, which we were able
+to easily fix. When run for 2000 iterations, \texttt{CodeLoadClosure},
+\texttt{pdfjs}, and \texttt{zlib} all fail due to memory leaks. We were able to
+easily fix \texttt{pdfjs} by emptying a globally held list after each iteration,
+(a patch has been submitted to, but not yet accepted, to Octane), but not the
+others. We therefore include 12 of Octane's benchmarks (including lightly
+modified versions of \texttt{pdfjs} and \texttt{typescript}).
 
 
 \section{Threats to Validity}

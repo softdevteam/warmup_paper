@@ -502,7 +502,7 @@ in-process iterations runner is responsible for: loading the specified
 benchmark, invoking the benchmark in a loop, and for collecting measurements.
 For each in-process iteration, we measure:
 
-\textbf{Wallclock time deltas} The delta between the system wallclock time before
+\textbf{Wall-clock time deltas} The delta between the system wall-clock time before
     and after each in-process iteration. The clock source used is monotonic
     with sub-millisecond accuracy.
 
@@ -587,7 +587,7 @@ sys.stdout.write("%s\n" % json.dumps(js))
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
         caption={%
 \texttt{krun\_measure}: We cannot easily collect the measurements atomically,
-so we take the most important reading, wallclock time, innermost. The
+so we take the most important reading, wall-clock time, innermost. The
 \texttt{aperf} and \texttt{mperf} readings will be used to compute a ratio, and
 must be collected in the same order both before and after.}]
 void krun_measure(int mdata_idx) {
@@ -652,7 +652,7 @@ A full set raw data and plots can be downloaded from:
 To begin our analysis, for each
 process execution we generate a series of plots sharing a common $x$
 axis: the sequential in-process execution number. The $y$ axis for a
-\textbf{run-sequence plot} is the wallclock time delta (in seconds). The $y$
+\textbf{run-sequence plot} is the wall-clock time delta (in seconds). The $y$
 axis for a \textbf{core-cycle plot} is the cycle count delta for an individual
 CPU core. The $y$ axis for a \textbf{frequency ratio plot} plot is the
 \texttt{IA32\_APERF}/\texttt{IA32\_AMERF} delta ratio for an individual CPU
@@ -936,7 +936,7 @@ Model Specific Register (MSR) device nodes\footnote{We use a slightly modified
     \texttt{msr} device driver. The modification disables \texttt{capabilities}
 so that we can access MSRs \emph{and} use \texttt{LD\_LIBRARY\_PATH} as a
 non-root user.}. We found these calls to be more expensive than invoking system
-calls, which is why wallclock time measurements (which we consider to be the
+calls, which is why wall-clock time measurements (which we consider to be the
 most important readings) are the innermost measurements (see
 Listing~\ref{lst:krun-measure}). \texttt{libkruntime.so} also holds open file
 descriptors to device nodes for the duration of a process execution, thus

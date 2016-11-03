@@ -159,8 +159,8 @@ The first $n$ in-process iterations are then discarded, on the basis that warmup
 will have completed at some point before $n$. It is common for
 $n$ to be hard-coded -- in our experience often to 5 -- for all benchmarks.
 
-One of the obvious flaws in this simple methodology is that one does not know if warmup
-has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
+One of the obvious flaws in this simple methodology is that there is no guarantee
+that warmup has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
 was developed by \kalibera to solve a number of issues when benchmarking JIT
 compiling VMs~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
 that, for a given VM / benchmark combination, a human must inspect data obtained by
@@ -173,15 +173,31 @@ obviously warm up; and that others follow cyclic patterns post-warmup
 the latter case, the \kalibera methodology requires a consistent in-process iteration in
 the cycle to be picked for all process executions, and that used for statistical analysis.
 
-To the best of our knowledge, the \kalibera methodology is the most
+Although the \kalibera methodology is the most
 sophisticated currently available (see its use in
-e.g.~\cite{barrett15approaches,grimmer15dynamically}). While
-a real improvement over straightforward benchmarking methodologies,
+e.g.~\cite{barrett15approaches,grimmer15dynamically}),
 there remain cases where it remains hard to produce
 satisfying benchmarking statistics. Crucially, the methodology does not
-provide a guaranteed repeatable way of determining when warmup has completed. Because of this
+provide a repeatable way of determining when warmup has completed, nor does it
+deal satisfactorily with cyclic data. Because of this
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
+
+
+\section{Investigating Warmup}
+
+In order to test understand VM warmup, we present a series of experiments. The
+main experiment tests Hypothesis H1. After carefully running a number of
+benchmarks on a number of VMs, we present a new statistical method for
+automatically determining if/when warmup has occurred, classifying benchmarks
+based upon that, and presenting steady-state in-process iteration times (when
+possible) based upon those. As a useful bonus, we use this experiment to present
+measurements for \emph{startup}: how long it takes until a VM can start
+executing any user code. We then take a subset of VMs, and record how much
+Garbage Collection (GC) and JIT compilation contribute to each in-process
+iteration's execution time, hoping to gain insight into why VMs lead to
+unexpected process execution data. Finally, we show that our statistical method
+can be applied to well known benchmark suites run in a conventional manner.
 
 
 \section{Methodology}

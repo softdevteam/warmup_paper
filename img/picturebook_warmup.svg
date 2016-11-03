@@ -11,8 +11,8 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="102.88634mm"
-   height="59.429054mm"
-   viewBox="0 0 364.55795 210.57539"
+   height="49.833488mm"
+   viewBox="0 0 364.55795 176.57535"
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
@@ -101,22 +101,6 @@
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
          d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
          transform="scale(-0.6,-0.6)"
-         inkscape:connector-curvature="0" />
-    </marker>
-    <marker
-       inkscape:stockid="Arrow2Mstart"
-       orient="auto"
-       refY="0"
-       refX="0"
-       id="Arrow2Mstart"
-       style="overflow:visible"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         id="path4170"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.625;stroke-linejoin:round;stroke-opacity:1"
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         transform="scale(0.6,0.6)"
          inkscape:connector-curvature="0" />
     </marker>
     <marker
@@ -368,14 +352,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="44.981011"
-     inkscape:cy="77.173258"
+     inkscape:cx="17.753958"
+     inkscape:cy="77.173243"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:snap-global="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1145"
+     inkscape:window-width="2393"
+     inkscape:window-height="1375"
      inkscape:window-x="-2"
      inkscape:window-y="-3"
      inkscape:window-maximized="1"
@@ -395,7 +379,7 @@
        type="xygrid"
        id="grid3336"
        originx="-73.465744"
-       originy="-460.44827" />
+       originy="-460.44829" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -405,7 +389,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -413,16 +397,16 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-73.465733,-381.33853)">
+     transform="translate(-73.465733,-415.33856)">
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker4481);marker-end:url(#Arrow2Mend)"
-       d="m 435,572.3622 -345,0 0,-188"
+       d="m 435,572.3622 -345,0 0,-153.99999"
        id="path3340"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000021;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:;stroke-miterlimit:4;stroke-dasharray:none"
-       d="m 90.484772,460.8622 84.999988,0 0,-50 115,0 0,145 145,0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 90.484772,472.8622 84.999988,0 0,-39.99999 115,0 0,122.99999 145,0"
        id="path4542"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccc" />
@@ -440,14 +424,14 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.00000095px;line-height:125%;font-family:Helvetica;-inkscape-font-specification:Helvetica;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-537.36017"
+       x="-559.36017"
        y="84.400734"
        id="text4770-0"
        sodipodi:linespacing="125%"
        transform="matrix(0,-1,1,0,0,0)"><tspan
          sodipodi:role="line"
          id="tspan4772-3"
-         x="-537.36017"
+         x="-559.36017"
          y="84.400734">Time per iteration</tspan></text>
     <g
        id="g6952"
@@ -474,7 +458,7 @@
     </g>
     <g
        id="g5573"
-       transform="translate(-19.515229,12.000001)">
+       transform="translate(-19.515229,24.000001)">
       <text
          sodipodi:linespacing="125%"
          id="text4770-4-8"
@@ -495,7 +479,7 @@
     </g>
     <g
        id="g5590"
-       transform="translate(-19.515229,12.000001)">
+       transform="translate(-19.515229,32.000001)">
       <text
          sodipodi:linespacing="100%"
          id="text4770-4-8-0"

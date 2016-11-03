@@ -752,9 +752,41 @@ inconsistently. Sometimes this occurs on the same machine; sometimes between
 different machines.
 Figure~\ref{fig:examples:inconsistent} shows examples of both cases.
 
-In many cases the behavoirs we see can be explained by examining the core-cycle
-and frequency ratio plots. \edd{examples}. In other cases though, unexpected
-behaviours cannot be explained \edd{examples}.
+
+The core-cycle plots help us understand how VMs use, and how the OS schedules,
+threads. Benchmarks running on single-threaded VMs are characterised by a high
+cycle-count value on one core, and a near zero value on all other cores.
+Further, single-threaded VMs may migrate to between cores within a process
+execution. Figure~\edd{XXX} shows a process execution where the VM stays on the
+same core for the whole process execution, whereas Figure~\edd{XXX} shows a
+case where the VM migrates several times over the course of the process
+execution. For multi-threaded VMs, the OS (as expected) schedules threads on
+multiple cores simultaneously. This is characterised by consistently high
+core-cycle counts for more than one core over the same timespan.
+Figure~\edd{XXX} shows a process execution where multi-threading is evident.
+
+In some cases, the wall-clock times vary over time, and the core-cycle counts
+reflect these changes. Figure\edd{XXX} shows a case where there is a speed-up
+in the wall-clock times, and at the same time the core-cycle measurements
+decrease proportionally. This is indicative of the speed-up being a result of
+the VM doing less work on the CPU, due to e.g. the execution of freshly JIT
+compiled code. Some slowdowns and cycles can be explained in the same way:
+Figure~\edd{XXX} shows a case where a slowdown in wall-clock times is reflected
+by the core-cycle counts. Similarly, Figure~\edd{XXX} shows cyclic behaviour
+reflected in the core-cycle counts. In some cases, however, changes in
+wall-clock times are not reflected by the core-cycle counts. Figure~\edd{XXX}
+shows an example. One possible explanation might be that the CPU frequency
+changed mid-process-execution, however, as the frequency ratio plots show, the
+ratio does not drop below 1, so this cannot be the case. For all of the data
+collected, we did not observe the \texttt{IA32\_APERF/IA32\_AMERF} delta ratio
+fall significantly below than 1 for a busy CPU core.
+
+To better understand our results, we re-ran the PyPy and Hotspot benchmarks
+with instrumentation mode enabled in \krun. This allows us to see when garbage
+collection and JIT compilation occur. Although instrumentation mode performs
+more I/O, if the run-sequence, core-cycle and frequency ratio plots look on the
+whole the same as before, the instrumentation data is highly likely to
+correspond. \edd{Add more here when we have some graphs}
 
 \edd{Startup results in here somewhere?}
 

@@ -241,18 +241,18 @@ force a collection after each iteration).
 
 User programs that are deliberately non-deterministic programs are unlikely to
 warm-up in the traditional fashion.
-We therefore wish to guarantee, that our benchmarks are,
+We therefore wish to guarantee that our benchmarks are,
 at the user's level, deterministic, by which we mean that they
 take precisely the same path through the Control Flow Graph (CFG)
 on all process executions and in-process iterations. Note that non-determinism
-beyond that controllable by the user (e.g.~VM memory allocation may be
-non-deterministic) is part of what we need to test for Hypothesis H1.
+beyond that controllable by the user (i.e.~non-determinism in low-level parts of
+the VM) is part of what we need to test for Hypothesis H1.
 
 To check whether our benchmarks were deterministic at the user-level, we created
 versions with \texttt{print} statements at all possible points of CFG
 divergence (e.g.~\texttt{if} statements' true and false branches).
-These versions are available in our experimental suite. We first ran modified
-the benchmarks with 2 process executions and 20 in-process iterations,
+These versions are available in our experimental suite. We first ran the modified
+benchmarks with 2 process executions and 20 in-process iterations,
 and compared the outputs of the two processes. This was enough to show that the
 \fasta benchmark was non-deterministic
 in all language variants, due to its random number generator not being reseeded. We
@@ -262,15 +262,14 @@ of the in-process iteration main loop.
 In order to understand whether we might be subject to the effects of link
 order and other similar effects (see~\cite{mytkowicz09surprising}),
 we then used two different machines to compile VMs and ran our modified benchmarks
-on them. We then observed occasional non-determinism in Java benchmarks,
-which were due to an interaction between the modifications we had made to
-integrate with our benchmark runner and lazy class loading. In essence,
-we gave each Java benchmark an extra class to interface between our
-benchmark runner and the benchmark. Because of this, the main benchmark class was lazily loaded after
-benchmark timing had started (sometimes in a way that we could observe). We
-solved this by adding to each benchmark an empty static method, which our
+on them. We then observed occasional non-determinism in Java benchmarks.
+This was due to the extra class we had added to each benchmark
+to interface between the benchmark runner and the benchmark: on occasions the
+main benchmark class was lazily loaded after benchmark timing had started in a
+way that we could observe. We
+solved this by adding an empty static method to each benchmark, which our
 extra classes then call via a static initialiser, guaranteeing that
-the main benchmark class is not lazily loaded. Note that Java
+the main benchmark class is eagerly loaded. Note that Java
 benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
@@ -311,10 +310,10 @@ meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
 compiling VM for JavaScript). A repeatable build script downloads, patches,
 and builds fixed versions of each VM. All VMs were compiled with GCC/G++ 4.9.3
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
-with GCC/G++ 4.9.3.
+to remove possible variable performance introduced by different compilers.
 
-Since Graal, HHVM, and JRuby/Truffle have not been ported to OpenBSD, we
-skip those VMs on OpenBSD. We skip \fasta on JRubyTruffle as it crashes;
+On OpenBSD, we skip Graal, HHVM, and JRuby/Truffle, which have not yet been
+ported to OpenBSD. We skip \fasta on JRubyTruffle as it crashes;
 and we skip \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together (about 10 days).
 
@@ -328,7 +327,7 @@ following hypothesis:
 \end{description}
 We deliberately use the word `moderately', since significant changes of hardware
 (e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) imply that
-significantly different parts of the VMs will be used (e.g.~different machine
+significantly different parts of the VMs will be used (and e.g.~different machine
 code backends may not all be equally mature).
 
 In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
@@ -376,29 +375,28 @@ and debugging benchmarking suites, we describe only \krun's full `production' mo
 A typical problem with benchmarking is that earlier process executions can
 affect later ones (e.g.~a benchmark which forces memory to swap will make
 later benchmarks seem to run slower). Therefore, before each process execution
-(including before the first), \krun reboots the system, ensuring that each
-benchmark runs with the machine in a clean state. After each reboot, \krun is
-invoked automatically by the system's init subsystem; \krun then pauses for 3
+(including before the first), \krun reboots the system, ensuring that the
+benchmark runs with the machine in a (largely) known state. After each reboot, \krun is
+executed by the system's init subsystem; \krun then pauses for 3
 minutes to allow the system to fully initialise; calls \texttt{sync} (to
-flush files to disk) followed by a 30 second wait; before finally running the
+flush any remaining files to disk) followed by a 30 second wait; before finally running the
 next process execution.
 
-When \krun starts, it analyses its configuration file and creates a benchmark
-running schedule which is written to a file. When \krun loads, it reads this
+When first run, \krun analyses its configuration file and creates a benchmark
+running schedule which is written to a file. After each reboot, it reads this
 schedule in, runs the next benchmark, and updates the schedule file. The
 schedule file is formatted in such a way that it is always a constant size
 \laurie{right?}, so that, to the extent that we can control, \krun runs in
 constant memory before benchmark running. Note that after a benchmark has run,
 \krun can safely perform arbitrary memory allocation; rebooting the machine
-wipes the slate clean.
+wipes the slate clean again for the next benchmark.
 
 Modern systems have various safety limiters built in. For example,
 processors have temperature sensors in; if the processor's safe limit
-is exceeded, the processor is moved to a lower-power mode. Machines
-may also have other safety limiters. To limit the extent to which this can
-affect our benchmarks, we start each with the machine at a similar temperature.
+is exceeded, the processor is moved to a lower-power mode. To limit the extent to which this can
+affect our benchmarks, we start each process execution with the machine at a similar temperature.
 Before its first process execution, \krun waits for 1 minute, before collecting
-the values of all available temperature sensors. After each reboot, \krun waits
+the values of all available temperature sensors. After each reboot's \texttt{sync}-wait, \krun waits
 for the machine to return to these base temperatures ($\pm3\degree$C) before
 starting the benchmark. If any sensor fails to return to this temperature range
 after 1 hour, \krun aborts the whole experiment.
@@ -416,14 +414,14 @@ performs no environment configuration.
 User-configurable commands can be run before and after benchmark execution. In
 our experiment, we switch off as many Unix daemons as possible (e.g.~smtpd,
 crond) to lessen the effects of context switching to other processes. We also
-turn off network interfaces entirely, to prevent outside sources cause unbounded
-interrupts to be sent to the processor and kernel.
+turn off network interfaces entirely, to prevent outside sources causing unbounded
+(potentially performance interfering) interrupts to be sent to the processor and kernel.
 
 In order to identify problems with the machine itself, \krun monitors the
-system's \texttt{dmesg} buffer for any unknown changes (known `safe' changes
-are whitelisted), informing the user if any occur. We implemented this after
+system's \texttt{dmesg} buffer for unexpected entries (known `safe' entries
+are ignored), informing the user if any arise. We implemented this after
 noticing that one machine initially ear-marked for benchmarking occasionally
-overheated, with the only clue to this being a message left in the \texttt{dmesg}.
+overheated, with the only clue to this being a line in \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
 
 \laurie{need to think a bit about this} \edd{citation} suggests that the size of the environment can affect

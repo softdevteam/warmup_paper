@@ -548,58 +548,37 @@ an elided version of the Python in-process iterations runner.
 Listing~\ref{lst:krun-measure} shows the underlying implementation of
 \texttt{krun\_measure}.
 
-\begin{lstlisting}[label=lst:pyiter, caption={The Python in-process iterations runner.}]
+\begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
+in-process iterations runner (with core cycles etc. removed).}]
 wallclock_times = [0] * iters
-cycle_counts = [None] * num_cores
-aperf_counts = [None] * num_cores
-mperf_counts = [None] * num_cores
-for core in xrange(num_cores):
-    cycle_counts[core] = [0] * iters
-    aperf_counts[core] = [0] * iters
-    mperf_counts[core] = [0] * iters
-
 for i in xrange(iters):
     krun_measure(0)   # Start timed section
     bench_func(param) # Call the benchmark
     krun_measure(1)   # End timed section
-
     wallclock_times[i] = \
         krun_get_wallclock(1) - krun_get_wallclock(0)
-    for core in xrange(num_cores):
-        cycle_counts[core][i] = (
-            krun_get_core_cycles(1, core) -
-            krun_get_core_cycles(0, core))
-        aperf_counts[core][i] = (
-            krun_get_aperf(1, core) -
-            krun_get_aperf(0, core))
-        mperf_counts[core][i] = (
-            krun_get_mperf(1, core) -
-            krun_get_mperf(0, core))
-js = {
-    "wallclock_times": wallclock_times,
-    "core_cycle_counts": cycle_counts,
-    "aperf_counts": aperf_counts,
-    "mperf_counts": mperf_counts
-}
+js = { "wallclock_times": wallclock_times }
 sys.stdout.write("%s\n" % json.dumps(js))
 \end{lstlisting}
 
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
         caption={%
-\texttt{krun\_measure}: We cannot easily collect the measurements atomically,
-so we take the most important reading, wall-clock time, innermost. The
-\texttt{aperf} and \texttt{mperf} readings will be used to compute a ratio, and
-must be collected in the same order both before and after.}]
+\texttt{krun\_measure}: Measurements can't be taken atomically, so later
+measurements include the time taken to read earlier measurements. Since
+wall-clock time is the most important measure, it is innermost; since
+the APERF / MPERF ratio is a sanity check, it is outermost. Note that
+the APERF / MPERF ratios must be read in the same order both before
+and after a benchmark.}]
 void krun_measure(int mdata_idx) {
   struct krun_data *data = &(krun_mdata[mdata_idx]);
-  if (mdata_idx == 0) { // start readings
+  if (mdata_idx == 0) { // start benchmark readings
     for (int core = 0; core < num_cores; core++) {
       data->aperf[core] = read_aperf(core);
       data->mperf[core] = read_mperf(core);
       data->core_cycles[core] = read_core_cycles(core);
     }
     data->wallclock = krun_clock_gettime_monotonic();
-  } else { // stop readings
+  } else {              // end benchmark readings
     data->wallclock = krun_clock_gettime_monotonic();
     for (int core = 0; core < num_cores; core++) {
       data->core_cycles[core] = read_core_cycles(core);

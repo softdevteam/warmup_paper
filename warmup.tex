@@ -200,20 +200,14 @@ deal satisfactorily with cyclic data. Because of this
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 
 
-
-
-
 \section{Methodology}
 \label{sec:methodology}
 
 To test Hypothesis H1, we designed an experiment which uses a suite of
 micro-benchmarks: each is run with 2000 in-process iterations and repeated
-using 10 process executions. So as
-to collect high-quality data, we have carefully designed our
+using 10 process executions. We have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
-is practical.
-
-In this section we detail: the benchmarks we used and the modifications we
+is practical. In this section we detail: the benchmarks we used and the modifications we
 applied; the machines we used for benchmarking; the VMs we benchmarked; and the
 \krun system we developed to run benchmarks.
 
@@ -227,117 +221,124 @@ They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
 optimised by VMs than average programs; when used as a proxy for other types
 of programs (e.g.~large programs), they tend to overstate the effectiveness of
-VM optimisations (see e.g.~\cite{ratanaworabhan09jsmeter}). In our context, this weakness is in fact a strength: we need
-small, deterministic, and widely examined programs so that we can test
-Hypothesis \hypone. Put another way, if we were to run arbitrary programs
+VM optimisations (see e.g.~\cite{ratanaworabhan09jsmeter}). In our context, this weakness is in fact a strength:
+small, deterministic, and widely examined programs are our most
+reliable means of testing Hypothesis H1. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
 For each benchmark, we provide C, Java, Javascript, Python, Lua, PHP,
-and Ruby versions.\footnote{Our need to have implementations in a wide variety
-of languages restricted the micro-benchmarks we could use.} Since most of these
+and Ruby versions. Since most of these
 benchmarks have multiple implementations in any given language, we picked
 the same versions used in~\cite{bolz14impact}, which represented the fastest
-performers at the point of that publication. We were forced to skip some
-benchmark and VM pairings which either ran prohibitively slowly
-(Fasta/JRubyTruffle and Richards/HHVM), or caused the VM to crash
-(SpectralNorm/JRubyTruffle).\footnote{Later versions of this paper
-will use newer VM versions, which we hope may fix these problems.}
-For the avoidance of doubt we
-did not interfere with any VM's Garbage Collection (GC) (e.g.~we did not
+performers at the point of that publication. We lightly modified
+the benchmarks to integrate with our benchmark runner (see Section~\ref{krun}).
+For the avoidance of doubt we did not interfere with any VM's GC (e.g.~we did not
 force a collection after each iteration).
 
 
 \subsubsection{Ensuring Determinism}
 
-We wish to ensure, as far as possible, that the micro-benchmarks are
-deterministic from the user's perspective, by which we mean that they
-take precisely the same path through the Control Flow Graph (CFG) on each
-execution and iteration. Note that this definition deliberately focuses
-on non-determinism that is controllable by the user; other forms of
-non-determinism within the VM are deliberately excluded, as they are
-part of what we are trying to measure (e.g.~objects in memory may be allocated
-or garbage collected non-deterministically). To test this, we created
-versions of all benchmarks with \texttt{print} statements at all possible points of
-divergence (e.g.~\texttt{if} statements' true and false branches).
-These versions are available in our experimental suite.
+User programs that are deliberately non-deterministic programs are unlikely to
+warm-up in the traditional fashion.
+We therefore wish to guarantee, that our benchmarks are,
+at the user's level, deterministic, by which we mean that they
+take precisely the same path through the Control Flow Graph (CFG)
+on all process executions and in-process iterations. Note that non-determinism
+beyond that controllable by the user (e.g.~VM memory allocation may be
+non-deterministic) is part of what we need to test for Hypothesis H1.
 
-We first ran the benchmarks with 2 process executions and 20 in-process iterations,
+To check whether our benchmarks were deterministic at the user-level, we created
+versions with \texttt{print} statements at all possible points of CFG
+divergence (e.g.~\texttt{if} statements' true and false branches).
+These versions are available in our experimental suite. We first ran modified
+the benchmarks with 2 process executions and 20 in-process iterations,
 and compared the outputs of the two processes. This was enough to show that the
 \fasta benchmark was non-deterministic
-in all language variants. This is because \fasta generates random numbers with
-a seed that is initialised only at the very start of the benchmark, thus
-causing each in-process iteration to generate different random numbers. We
+in all language variants, due to its random number generator not being reseeded. We
 fixed this by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
-Bearing in mind surprising
-results such as the importance of link order~\cite{mytkowicz09surprising}, we
-then used two different machines to compile VMs and then ran the benchmarks
-on these machines.
-Using this technique we noticed occasional non-determinism in Java benchmarks.
-This ultimately turned out to be caused by lazy class loading. To integrate
-the Java benchmarks with \krun (see Section~\ref{krun}), each
-benchmark was given an additional \texttt{KrunEntry} class,
-which, in essence, provides an interface between \krun and the main benchmark
-class. Because of this, the main benchmark class was lazily loaded after
+In order to understand whether we might be subject to the effects of link
+order and other similar effects (see~\cite{mytkowicz09surprising}),
+we then used two different machines to compile VMs and ran our modified benchmarks
+on them. We then observed occasional non-determinism in Java benchmarks,
+which were due to an interactioMore trying-to-get-to-grips-with-the-structure
+n between the modifications we had made to
+integrate with our benchmark runner and lazy class loading. In essence,
+we gave each Java benchmark an extra class to interface between our
+benchmark runner and the benchmark. Because of this, the main benchmark class was lazily loaded after
 benchmark timing had started (sometimes in a way that we could observe). We
-solved this by adding to each benchmark an empty static method, which each
-\texttt{KrunEntry} then calls via a static initialiser. In so doing, we
-guarantee that the main benchmark class is not lazily loaded. Note that Java
+solved this by adding to each benchmark an empty static method, which our
+extra classes then call via a static initialiser, guaranteeing that
+the main benchmark class is not lazily loaded. Note that Java
 benchmarks -- as well as
 Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
 lazy loading, which is an inherent part of the JVM specification: forcing all
-classes to be eagerly loaded is impractical, and is thus part of the warmup we
-wish to measure.
+classes to be eagerly loaded is impractical, and is thus part of testing
+Hypothesis H1.
+
 
 \subsection{Measuring Computation and Not File Performance}
 
-Micro-benchmarks often perform computations which are partly or wholly
-irrelevant, i.e. the results of computations are not externally visible. Highly
-optimising compilers are thus often able to optimise away part or all of a
-micro-benchmark's computation. From a performance standpoint, this is a
-desirable characteristic for
-optimising compilers~\cite{seaton15phd}, though benchmarks whose computations
-are entirely removed are rarely useful. To ensure that computation cannot
-be optimised away, many benchmarks write intermediate and final results
-to \texttt{stdout}. However, one can quickly end up in a situation where benchmarks are
+By their very nature, micro-benchmarks tend to perform computations which
+can be easily optimised away. While this speaks well of
+optimising compilers~\cite{seaton15phd}, benchmarks whose computations
+are entirely removed are rarely useful. To avoid this,
+many benchmarks write intermediate and final results
+to \texttt{stdout}, preventing optimisers from removing the dependant code.
+However, one can quickly end up in a situation where benchmarks are
 unintentionally measuring, in part or whole, the performance of file routines in
-the OS libraries and the kernel.
+libraries and the kernel.
 
-To avoid both of these unfortunate cases,
-we modified the benchmarks to calculate a checksum during each in-process iteration.
+To avoid this possibility, we modified the benchmarks to calculate a checksum
+during each in-process iteration.
 The checksum is validated at the end of each in-process iteration against an expected
 value; if the check fails, the incorrect checksum is written to \texttt{stdout}.
 By writing benchmarks in
 this style, we make it difficult for optimising compilers to remove the
-main bulk of the benchmark. Note that each micro-benchmark has a single checksum value for all
-language variants, which also provides some assurance that each language variant is
+main bulk of the benchmark. As a useful bonus, we use a single checksum value
+for each benchmark irrespective of language, giving some assurance that each language variant is
 performing the same work.
+
+
+\subsection{VMs under investigation}
+
+We ran the benchmarks on the following language implementations: GCC 4.9.3;
+Graal \#9405be47 (an alternative JIT compiler for HotSpot); HHVM 3.14.0 (a JIT
+compiling VM for PHP); JRuby/Truffle \#170c9ae6; HotSpot 8u72b15 (the most widely used Java
+VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
+meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
+compiling VM for JavaScript). A repeatable build script downloads, patches,
+and builds fixed versions of each VM. All VMs were compiled with GCC/G++ 4.9.3
+(and GCC/G++ bootstraps itself, so that the version we use compiled itself)
+with GCC/G++ 4.9.3.
+
+Since Graal, HHVM, and JRuby/Truffle have not been ported to OpenBSD, we
+skip those VMs on OpenBSD. We skip \fasta on JRubyTruffle as it crashes;
+and we skip \richards on HHVM since it takes as long as every other benchmark
+on every other VM put together (about 10 days).
 
 
 \subsection{Benchmarking Hardware}
 
-%We used three machines and two operating systems:
-We used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
+With regards to hardware and operating systems, we started with the
+following hypothesis:
+\begin{description}
+  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup.
+\end{description}
+We deliberately use the word `moderately', since significant changes of hardware
+(e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) imply that
+significantly different parts of the VMs will be used (e.g.~different machine
+code backends may not all be equally mature).
+
+In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
 4GHz, 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
 3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, with identical
-hardware to \bencherfive, but running OpenBSD 5.8. These machines allow us to
-investigate the effects of moderately different hardware (\bencherthree and
-\bencherfive run the same OS with the same updates installed; \benchersix runs a
-different OS).
-%as well as moderately different operating systems
-%(\bencherfive and \benchersix have almost identical hardware, but run different
-%Unix
-%variants). With regards to hardware and operating systems, we started with the
-%following hypothesis:
-%\begin{description}
-%  \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup patterns.
-%\end{description}
-%We deliberately use the word `moderately', since significant changes of hardware
-%(e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) implies that
-%significantly different parts of the VMs will be used (e.g.~different machine
-%code backends may be of differing levels of maturity).
+hardware to \bencherfive, but running OpenBSD 5.8. \bencherthree and \bencherfive
+have the same OS (with the same updates etc.) but different hardware; \bencherfive
+and \benchersix have the same hardware (to the extent that we can determine)
+but different operating systems.
 
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
 feature which allows CPUs to temporarily run in an extremely high-performance
@@ -351,22 +352,6 @@ physical core is in fact more than one logical core, inter-leaving the
 execution of two or more programs or threads on a single physical core.
 Hyper-threading causes programs to interfere
 with each others in complex ways, introducing considerable noise.
-
-
-\subsection{VMs under investigation}
-
-We ran the benchmarks on the following language implementations: GCC 4.9.3;
-Graal \#9405be47 (an alternative JIT compiler for HotSpot); HHVM 3.14.0 (a JIT
-compiling VM for PHP); JRuby/Truffle \#170c9ae6; HotSpot 8u72b15 (the most widely used Java
-VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
-meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
-compiling VM for JavaScript). We created a build script which downloads,
-configures, and builds fixed versions of the VMs, ensuring that we can easily
-repeat builds. All VMs were compiled with GCC/G++ 4.9.3 (with \texttt{-j1} to
-give a determinstic build. Since none of Graal,
-HHVM, and JRuby/Truffle have been ported to OpenBSD, those VMs are only
-available to us under Linux. Some benchmarks were skipped on certain VMs:
-fasta on JRubyTruffle crashes, and Richards on HHVM is excessively slow.
 
 
 \subsection{\krun}

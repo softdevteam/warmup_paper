@@ -263,8 +263,7 @@ In order to understand whether we might be subject to the effects of link
 order and other similar effects (see~\cite{mytkowicz09surprising}),
 we then used two different machines to compile VMs and ran our modified benchmarks
 on them. We then observed occasional non-determinism in Java benchmarks,
-which were due to an interactioMore trying-to-get-to-grips-with-the-structure
-n between the modifications we had made to
+which were due to an interaction between the modifications we had made to
 integrate with our benchmark runner and lazy class loading. In essence,
 we gave each Java benchmark an extra class to interface between our
 benchmark runner and the benchmark. Because of this, the main benchmark class was lazily loaded after

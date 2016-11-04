@@ -843,7 +843,8 @@ reoccur, and have thus disabled it.
 We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8. 
 We replaced its complex runner (which reported timings with a non-monotonic
 microsecond timer) with a simpler alternative (using a monotonic millisecond
-timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
+timer). Note that both runners run all Octane benchmarks in a single process-execution.
+We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
 adequately long running benchmark (very roughly, around 1s on \bencherthree, for

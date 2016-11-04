@@ -129,6 +129,22 @@ that much VM benchmarking is likely to be partly misleading: indeed, it is
 likely to have allowed some ineffective, and perhaps even some deleterious,
 optimisations to make their way into production VMs.
 
+\vspace{10pt}
+
+\noindent In order to test Hypothesis H1, we first present a carefully designed
+experiment (Section~\ref{sec:methodology}). We then introduce a new
+statistical method for automatically determining if/when warmup has occurred,
+which allows us to classify benchmarks' warmup style, and present steady-state
+in-process iteration times (when possible) based upon the classifications
+(Section~\ref{sec:stats}). Since a number of cases fail to warmup in the
+traditional fashion, we then run a smaller experiment to understand how JIT
+compilation and Garbage Collection (GC) affect warmup
+(Section~\ref{sec:deepdive}). As a useful side bonus of our main experiment,
+we present data for VM \emph{startup} time: how long it takes until a VM can
+start executing any user code (Section~\ref{sec:startup}). Finally, we show that
+our statistical method can be applied to well known benchmark suites run in a
+conventional manner (Section~\ref{sec:existing}).
+
 
 \section{Background}
 \label{sec:warmup}
@@ -171,7 +187,7 @@ iterations. The \kalibera methodology observes that some benchmarks do not
 obviously warm up; and that others follow cyclic patterns post-warmup
 (e.g.~in-process iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
 the latter case, the \kalibera methodology requires a consistent in-process iteration in
-the cycle to be picked for all process executions, and that used for statistical analysis.
+the cycle be picked for all process executions, and used for statistical analysis.
 
 Although the \kalibera methodology is the most
 sophisticated currently available (see its use in
@@ -184,20 +200,7 @@ deal satisfactorily with cyclic data. Because of this
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 
 
-\section{Investigating Warmup}
 
-In order to test understand VM warmup, we present a series of experiments. The
-main experiment tests Hypothesis H1. After carefully running a number of
-benchmarks on a number of VMs, we present a new statistical method for
-automatically determining if/when warmup has occurred, classifying benchmarks
-based upon that, and presenting steady-state in-process iteration times (when
-possible) based upon those. As a useful bonus, we use this experiment to present
-measurements for \emph{startup}: how long it takes until a VM can start
-executing any user code. We then take a subset of VMs, and record how much
-Garbage Collection (GC) and JIT compilation contribute to each in-process
-iteration's execution time, hoping to gain insight into why VMs lead to
-unexpected process execution data. Finally, we show that our statistical method
-can be applied to well known benchmark suites run in a conventional manner.
 
 
 \section{Methodology}
@@ -621,9 +624,10 @@ since the instrumentation itself may interfere with measurements.
 We will re-run a subset of the experiment under this mode after collecting the
 main batch of results.
 
-\subsection{Measuring Startup}
 
-\edd{XXX}
+\section{Automatically Determining when Warmup has Completed}
+\label{sec:stats}
+
 
 \section{Results}
 \label{sec:Results}
@@ -790,7 +794,7 @@ correspond. \edd{Add more here when we have some graphs}
 
 \edd{Startup results in here somewhere?}
 
-\subsection{Statistcal Classification of Warmup Behaviours}
+\subsection{Statistical Classification of Warmup Behaviours}
 
 Having informally classified warmup behaviours, we now formally define these
 behaviours using automated statistical methods, before proceeding to classify
@@ -824,7 +828,18 @@ slower than its neighbours.
 \label{fig:examples:outliers1}
 \end{figure}
 
+
+\section{The Effects of Compilation and GC}
+\label{sec:deepdive}
+
+
+
+\section{Startup Time}
+\label{sec:startup}
+
+
 \section{Applying the Statistical Method to Existing Benchmark Suites}
+\label{sec:existing}
 
 The statistical method presented in Section \laurie{XXX} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard

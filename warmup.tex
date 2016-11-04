@@ -282,8 +282,8 @@ Hypothesis H1.
 
 By their very nature, micro-benchmarks tend to perform computations which
 can be easily optimised away. While this speaks well of
-optimising compilers~\cite{seaton15phd}, benchmarks whose computations
-are entirely removed are rarely useful. To avoid this,
+optimising compilers, benchmarks whose computations
+are entirely removed are rarely useful~\cite{seaton15phd}. To avoid this,
 many benchmarks write intermediate and final results
 to \texttt{stdout}, preventing optimisers from removing the dependant code.
 However, one can quickly end up in a situation where benchmarks are
@@ -588,17 +588,6 @@ void krun_measure(int mdata_idx) {
 }
 \end{lstlisting}
 
-\subsubsection{VM Instrumentation Mode}
-
-For PyPy and Hotspot, \krun has an \emph{instrumentation mode}, which logs certain
-VM events. We collect data that allows us to compute (for each in-process
-iteration) how much time was spent in the garbage collector and in the JIT.
-Our hope is that this will help to associate meaning to
-steps and spikes in in-process iteration times. By default this mode is off,
-since the instrumentation itself may interfere with measurements.
-We will re-run a subset of the experiment under this mode after collecting the
-main batch of results.
-
 
 \section{Automatically Determining when Warmup has Completed}
 \label{sec:stats}
@@ -807,6 +796,16 @@ slower than its neighbours.
 \section{The Effects of Compilation and GC}
 \label{sec:deepdive}
 
+\subsection{VM Instrumentation Mode}
+
+For PyPy and Hotspot, \krun has an \emph{instrumentation mode}, which logs certain
+VM events. We collect data that allows us to compute (for each in-process
+iteration) how much time was spent in the garbage collector and in the JIT.
+Our hope is that this will help to associate meaning to
+steps and spikes in in-process iteration times. By default this mode is off,
+since the instrumentation itself may interfere with measurements.
+We will re-run a subset of the experiment under this mode after collecting the
+main batch of results.
 
 
 \section{Startup Time}

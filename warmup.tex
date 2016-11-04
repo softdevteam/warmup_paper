@@ -357,65 +357,81 @@ with each others in complex ways, introducing considerable noise.
 \subsection{\krun}
 \label{krun}
 
-We developed a tool called \krun to fully automate the running of benchmarks
-and to control the environment under which the benchmarks run. \krun itself is a
-`supervisor' process which first configures a system before running VM-specific
-benchmarks, monitoring the system for any signs of errors during benchmarking,
-and writing results to a compressed JSON file. \krun is invoked with a
-configuration file which describes the VMs, benchmarks, and number of process
-executions and in-process iterations to
-be executed.
+Many confounding variables occur shortly before, and during the running of,
+benchmarks. In order to control as many of these as possible, we wrote
+\krun, a new benchmark runner. \krun itself is a `supervisor'
+which, given a configuration file specifying VMs, benchmarks (etc.) configures
+a Linux or OpenBSD system, runs benchmarks, and collects the results. Individual VMs and benchmarks
+are then wrapped, or altered, to report data back to \krun in an appropriate format.
 
-In the remainder of this subsection, we describe: the variables which \krun
-controls (both generic and platform dependent); and how \krun collects data.
-Note that, although \krun has `developer' modes which disable various checks,
-we describe only the `production' mode, which has all checks enabled.
+In the remainder of this subsection, we describe \krun. Since most of \krun's
+controls work identically on Linux and OpenBSD, we start with those controls,
+before detailing the differences imposed by the two operating systems. We then
+describe how \krun collects data from benchmarks.
+Note that, although \krun has various `developer' flags to aid development
+and debugging benchmarking suites, we describe only \krun's full `production' mode.
 
 
 \subsubsection{Platform Independent Controls}
 
-Several of \krun's controls work on all supported platforms. \krun imposes a
-consistent heap and stack \texttt{ulimit} for all
-VMs (we used a 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
-to inspect these values, but to allocate memory beyond them.} Benchmarks are run
-as the UNIX user `\texttt{krun}', which is created afresh (including a fresh
-home directory) for each process execution. The performs no environment
-configuration.
-\krun reboots the system before each process execution (including
-before the first) to ensure that the system is in a somewhat known state
-(e.g.~if a benchmark caused a system to transfer memory from RAM to disk-based swap,
-rebooting ensures that later benchmarks are not affected). After each reboot, \krun
-is invoked automatically by the system's init subsystem; \krun then pauses for
-3 minutes to allow the system to fully initialise, then calls \texttt{sync}
-with a 30 second wait, before finally running the next process execution.
+A typical problem with benchmarking is that earlier process executions can
+affect later ones (e.g.~a benchmark which forces memory to swap will make
+later benchmarks seem to run slower). Therefore, before each process execution
+(including before the first), \krun reboots the system, ensuring that each
+benchmark runs with the machine in a clean state. After each reboot, \krun is
+invoked automatically by the system's init subsystem; \krun then pauses for 3
+minutes to allow the system to fully initialise; calls \texttt{sync} (to
+flush files to disk) followed by a 30 second wait; before finally running the
+next process execution.
 
-\krun performs two types of monitoring before and during benchmark execution.
-First, \krun monitors the system's \texttt{dmesg} buffer, informing the user of
-any relevant changes. We implemented this feature after noticing that one of the
-machines we had earlier ear-marked for running benchmarks occasionally
+When \krun starts, it analyses its configuration file and creates a benchmark
+running schedule which is written to a file. When \krun loads, it reads this
+schedule in, runs the next benchmark, and updates the schedule file. The
+schedule file is formatted in such a way that it is always a constant size
+\laurie{right?}, so that, to the extent that we can control, \krun runs in
+constant memory before benchmark running. Note that after a benchmark has run,
+\krun can safely perform arbitrary memory allocation; rebooting the machine
+wipes the slate clean.
+
+Modern systems have various safety limiters built in. For example,
+processors have temperature sensors in; if the processor's safe limit
+is exceeded, the processor is moved to a lower-power mode. Machines
+may also have other safety limiters. To limit the extent to which this can
+affect our benchmarks, we start each with the machine at a similar temperature.
+Before its first process execution, \krun waits for 1 minute, before collecting
+the values of all available temperature sensors. After each reboot, \krun waits
+for the machine to return to these base temperatures ($\pm3\degree$C) before
+starting the benchmark. If any sensor fails to return to this temperature range
+after 1 hour, \krun aborts the whole experiment.
+
+\krun imposes a
+user-configurable heap and stack \texttt{ulimit} on all VM process executions
+(in our case, 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
+to inspect these values, but to allocate memory beyond them.} Benchmarks are run
+as the UNIX user `\texttt{krun}', which is fully deleted (including its home
+directory) and then created afresh before each process execution.
+\laurie{huh? does this mean `Note that the user has no configuration files
+included, and thus performs no environment configuration of its own.'} The
+performs no environment configuration.
+
+User-configurable commands can be run before and after benchmark execution. In
+our experiment, we switch off as many Unix daemons as possible (e.g.~smtpd,
+crond) to lessen the effects of context switching to other processes. We also
+turn off network interfaces entirely, to prevent outside sources cause unbounded
+interrupts to be sent to the processor and kernel.
+
+In order to identify problems with the machine itself, \krun monitors the
+system's \texttt{dmesg} buffer for any unknown changes (known `safe' changes
+are whitelisted), informing the user if any occur. We implemented this after
+noticing that one machine initially ear-marked for benchmarking occasionally
 overheated, with the only clue to this being a message left in the \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
-Second, \krun monitors temperature sensors. Since modern systems may limit
-performance when they get too hot, \krun ensures that all process executions
-start at approximately the same temperature. Before the first process execution,
-\krun waits for a fixed period of time (60s) in the hope that the machine
-cools down; after this point, it collects temperature
-readings from all available temperature sensors and uses these as
-base temperature readings. Before each process execution, \krun
-waits until each temperature sensor is within 3$^\circ$C of its base temperature
-before continuing. If any sensor fails to meet this threshold
-within an hour, \krun terminates the entire experiment.
 
-\krun also allows arbitrary shell commands to be run before and after each
-process execution. We use this feature to stop irrelevant daemons -- such as
-the system SMTP server and \texttt{cron} -- during benchmarking. We also insert
-shell commands to turn off the network during benchmarking, thus preventing
-interrupts caused by the network from stealing CPU time from our benchmarks.
-
-\edd{citation} suggests that the size of the environment can affect
+\laurie{need to think a bit about this} \edd{citation} suggests that the size of the environment can affect
 performance, so \krun also logs the environment under which each process
 execution is invoked. We check the environments are the same size for all 10
 process executions of each benchmark and VM pairing.
+
 
 \subsubsection{Linux-specific Controls}
 
@@ -423,7 +439,7 @@ On Linux, \krun controls several additional factors.
 
 \krun sets the CPU frequency to the highest non-over-clocked value possible.
 The user must first disable Intel P-state support in
-the kernel by passing the kernel argument \texttt{intel\_pstate=disable}.
+the kernel by passing the kernel argument \texttt{intel\_pstate=disable} \laurie{why? i think it's just because the driver isn't very good?}.
 \krun verifies P-states are disabled and uses \texttt{cpufreq-set} to set
 the CPU governor to \texttt{performance} mode. Note that even with these
 options set, we cannot fully guarantee that the CPU does as requested
@@ -454,13 +470,11 @@ effects can vary over time. Although \texttt{perf} cannot be disabled entirely,
 second.
 
 Finally, \krun disables Address Space Layout Randomisation (ASLR). While this is
-a sensible security precaution for everyday use, it makes it difficult to
-compare the performance of even a single binary.\footnote{The Stabilizer
+a sensible security precaution for everyday use, it introduces obvious
+non-determinism between process executions.\footnote{The Stabilizer
 system~\cite{curtsinger13stabilizer} is an intriguing approach for obtaining reliable
 statistics in the face of features such as ASLR. Unfortunately we were not able
-to build it on a modern Linux system.} \krun sets the
-\texttt{randomize\_va\_space} entry in \texttt{/proc} to 0, disabling ASLR
-globally.
+to build it on a modern Linux system.}
 
 
 \subsubsection{OpenBSD-specific Controls}
@@ -471,43 +485,41 @@ First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
 to running benchmarks. This is equivalent to setting Linux's CPU governor to
 \texttt{performance} mode, but note that OpenBSD offers no means of influencing
 Intel P-states.
-Second, \krun aims to minimise computation and non-determinism in OpenBSD's
-\texttt{malloc}, by disablng security enhancements. For example turning off
-``junking'' \texttt{malloc} will no longer overwrite freed allocations, and by
-turning off ``\texttt{realloc} always moves'' we improve determinism. The exact
-\texttt{malloc} flags we use are \texttt{sfghjpru}. Note that this setting
-does not guarantee to make the allocator fully deterministic by any means.
+Second, \krun minimises the non-determinism in OpenBSD's malloc implementation,
+for example not requiring \texttt{realloc} to always reallocate memory to
+an entirely new location. The \texttt{malloc.conf} flags we use are \texttt{sfghjpru}.
 
 
 \subsubsection{The Iterations Runners}
 
-Since we run benchmarks in several different languages, we need a way to report
-timings from benchmarks to \krun. For each language, we created an
+Since we run benchmarks in several different languages, timing data needs
+to be reported back to the main \krun process. Thus for each language, we created an
 \emph{in-process iterations runner}. When \krun wants to run a benchmark, it opens a pipe to the
-appropriate in-process iterations runner, passing it the name of the
-benchmark to be run, and the desired number of in-process iterations. The
-in-process iterations runner is responsible for: loading the specified
-benchmark, invoking the benchmark in a loop, and for collecting measurements.
-For each in-process iteration, we measure:
+appropriate in-process iterations runner, passing it a benchmark name, and the
+desired number of in-process iterations. For each in-process iteration we
+measure the wall-clock time taken (on Linux and OpenBSD), core
+cycle count deltas and APERF/MPERF ratios (on Linux only).
 
-\textbf{Wall-clock time deltas} The delta between the system wall-clock time before
-    and after each in-process iteration. The clock source used is monotonic
-    with sub-millisecond accuracy.
+We use a monotonic wall-clock timer with sub-millisecond accuracy
+(\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\_MONOTONIC} on
+OpenBSD). Although wall-clock time is the only measure which really matters to
+users, it doesn't provide insight into multi-threaded computations. By recording
+core cycle counts using the \texttt{CPU\_CLK\_UNHALTED.CORE} counter, we can see
+what work each core is actually doing. The APERF counter increments at a fixed
+frequency for each instruction executed; the MPERF counter increments at a rate
+proportional to the processor's current frequency. With an APERF / MPERF ratio of
+precisely 1, the processor is running at full speed; below 1 it is being
+throttled; and above 1, turbo boost is being used. The APERF/MPERF ratio
+therefore acts as a safety check that our wall-clock times are meaningful. On
+Linux, we read these two counters via a special file node, which is relatively
+slow; for very short time periods \laurie{need a figure here. is it something
+like 0.0001 or smaller?}, the error in reading the two counters can become
+noticeable. This is compounded by the fact that when inactive, cores do not
+update the counters. Fortunately, all our benchmarks run long enough for this
+error to be immaterial on active cores.
 
-\textbf{Cycle count deltas} For each CPU core, the delta between the
-    cycle counter (\texttt{CPU\_CLK\_UNHALTED.CORE}) before and after the
-    in-process iteration. This can be used as a proxy for the amount of "work"
-    done by each logical CPU and is immune to the CPU frequency changing over
-    time.
-
-\textbf{IA32\_APERF/IA32\_AMERF delta ratios} Intel processors have
-    per-core counters for estimating CPU frequency. \texttt{IA32\_MPERF}
-    increments at a fixed reference frequency, whereas \texttt{IA32\_APERF} is
-    adjusted with regards to actual clock speed. If for the duration of an
-    in-process iteration, the ratio of the deltas is $<$1, then the core was
-    not running at full speed for the entire in-process iteration. Note the two
-    counters only increment whilst the CPU core is switched on, so this metric
-    is not useful for idle cores which power off to save energy.
+\laurie{edd, you used IA32\_MPERF as a name. why IA32? are there other
+aperf/mperf counterss on the processors we're using?}
 
 Collection of the above metrics is implemented in a small C library
 \texttt{libkruntime.so} which each iterations runner calls using -- if possible

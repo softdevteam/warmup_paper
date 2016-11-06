@@ -506,7 +506,10 @@ frequency for each instruction executed; the MPERF counter increments at a rate
 proportional to the processor's current frequency. With an APERF / MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is being
 throttled; and above 1, turbo boost is being used. On
-Linux, we read these two counters via a special file node, which is relatively
+Linux, we read these counters via Model Specific Register (MSR) device
+nodes\footnote{We use a slightly modified version of Linux's \texttt{msr} device
+driver, which disables a capability check so that we can access the MSRs as an
+unprivileged user.}, which is relatively
 slow; for very short time periods \laurie{need a figure here. is it something
 like 0.0001 or smaller?}, the error in reading the two counters can become
 noticeable. This is compounded by the fact that when inactive, cores do not
@@ -567,7 +570,8 @@ avoid in-benchmark I/O and memory allocation by storing measurements in a
 pre-allocated buffer and only writing measurements to \texttt{stdout} after all
 in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
 example). However, the situation on Linux is complicated by our need to read
-core cycle and APERF/MPERF counts from (special) files. Since wall-clock time
+core cycle and APERF/MPERF counts from (special) files (see
+Section~\ref{sec:threats} for further details). Since wall-clock time
 is the most important measure, we ensure that it is the innermost measure taken
 (i.e.~to the extent we control, it does not include the time taken to read
 core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
@@ -871,20 +875,18 @@ However, hardware cannot always be controlled in isolation from software:
 the greater the differences in hardware, the more likely that JIT compilers
 compilers are to use different code paths (e.g.~different code generators and
 the like). Put another way, an apples-to-apples comparison across very different
-hardware is likely to be impossible, because the software being run will
-change its behaviour.
+hardware is likely to be impossible, because the `same' software in fact has
+different behaviour on the different platforms.
 
-We have not yet systematically tested whether rebuilding VMs effects warmup, an
-effect noted by \kalibera. Our previous experience of JIT compilers suggests
-that there is little effect in rebuilding such VMs when measuring peak
-performance~\cite{barrett15approaches}. However, since measuring warm-up largely
+We have not systematically tested whether rebuilding VMs effects warmup, an
+effect noted by \kalibera, though which seems to have little effect on
+the performance of JIT compiled code~\cite{barrett15approaches}. However, since measuring warm-up largely
 involves measuring code that was not created by a JIT compiler, it is possible
 that these effects may impact upon our experiment. To a very limited extent, the
-rebuilding of VMs that occurred on our different VMs gives some small evidence
-as to this effect, or lack thereof, but we will perform a deeper investigation
-in the future.
+rebuilding of VMs that occurred on each of our benchmarking machines gives
+some small evidence as to this effect, or lack thereof.
 
-The checksums we added ensure that, at a user-visible level, each benchmark
+The checksums we added to benchmarks ensure that, at a user-visible level, each
 performs equivalent work in each language variant. However, it is impossible to
 say whether each performs equivalent work at the lowest level or not. For
 example, choosing to use a different data type in a language's core library may
@@ -894,11 +896,12 @@ of other language's implementations: a benchmark for a given language could be
 rewritten in a way that betters either or both of its warmup and peak
 performance. From our perspective, this possibility is somewhat less important,
 since we are more interested in the warmup patterns of reasonable programs,
-whether they be the fastest possible or not. It is also possible that by
+whether they be the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
 this complaint could arguably be directed at the unmodified benchmarks too.
 
-Although \krun does as much to control CPU clock speed as possible, modern CPUs
+\laurie{with luck, the APERF/MPERF ratios will allow us to shorten this paragraph
+and say ``our data shows this did not affect our experiment''. We'll see!} Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. Even on Linux, where we control
 the CPU's P-state, we cannot guarantee that this fixes the CPU frequency: as
 the Linux kernel documentation states, ``the idea that frequency can be set to a single
@@ -911,43 +914,35 @@ different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
 
 Although we have minimised the number of system calls that our in-process
-iterations runners make, some still remain for taking measurements. For each
-in-process iteration, we make two calls to \texttt{clock\_gettime()} to
-read the start and finish time of each in-process iteration. On OpenBSD
-\laurie{someone should check this on linux}, this can take an
+iterations runners make, some still remain for taking measurements. On
+OpenBSD, only two calls are used, both to \texttt{clock\_gettime()};
+on OpenBSD \laurie{someone should check this on linux}, this can take an
 unbounded amount of time as, indirectly, it enters a loop which only terminates
 when a particular data-structure ceases to be modified, akin to a spin-lock. In
-practise, \texttt{clock\_gettime} returns sufficiently quickly that this seems a
-minor worry at most.
-On Linux, we make additional calls to \texttt{open()}, \texttt{close()},
-\texttt{lseek()} and \texttt{read()} to obtain performance counter values from
-Model Specific Register (MSR) device nodes\footnote{We use a slightly modified
-    \texttt{msr} device driver. The modification disables \texttt{capabilities}
-so that we can access MSRs \emph{and} use \texttt{LD\_LIBRARY\_PATH} as a
-non-root user.}. We found these calls to be more expensive than invoking system
-calls, which is why wall-clock time measurements (which we consider to be the
-most important readings) are the innermost measurements (see
-Listing~\ref{lst:krun-measure}). \texttt{libkruntime.so} also holds open file
-descriptors to device nodes for the duration of a process execution, thus
-minimising the number of calls to \texttt{open()} and \texttt{close()}.
-
-Reading a performance counter value from an MSR device node causes the
-underlying device driver to execute an \texttt{RDMSR} instruction. To read
-counters from other CPU cores than the current core, the driver must use
-inter-processor interrupts (IPIs) to schedule \texttt{RDMSR} instructions
-elsewhere. There is inherent latency in this mechanism, as it involves bus
-communication and the interrupted core must save its registers to memory before
-it can perform the requested work.
-
-We investigated other timing mechanisms, most notably the Time Stamp Counter
-(TSC) built into x86 processors. On older systems this regsister could be used
-as a proxy for CPU frequency, but in modern systems the counter increments at a
-fixed frequency and is thus not useful for our purposes.
+practise, \texttt{clock\_gettime} returns far quicker than the granularity
+of any our benchmarks, so this is a minor worry at most. The situation
+on Linux is complicated by our reading of core cycle and APERF/MPERF
+counts via MSR device nodes: we call \texttt{lseek} and \texttt{read}
+between each in-process iteration (we keep the files open across all
+in-process iterations to reduce the open/close overhead). Both of
+these calls are more involved than \texttt{clock\_gettime} \laurie{let's put a
+figure on it}, before one even considers how the counts are obtained from
+hardware. Reading from a MSR device node requires inter-processor interrupts to
+schedule an \texttt{RDMSR} instruction on the desired core (which may not be the
+currently running core). Not only does this require bus communication, but the
+interrupted core must save its registers before running the scheduled code. We
+were not able to find a lighter-weight timing mechanisms, despite trying
+candidates such as the x86 Time Stamp Counter (TSC). On older systems the TSC
+increments relative to the CPU's frequency (and thus can be indirectly used to
+detect CPU frequency changes); on modern systems, its readings are always
+normalised to a fixed CPU frequency (and its readings are thus immune from CPU
+frequency changes).
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have
 created a system that shows warmup effects that few people will ever see in
-practise.
+practise. However, our judgement is that this is preferable to running on a
+noisy system that is likely to introduce substantial noise into our readings.
 
 We have identified a number of different styles of warmup (slowdown, cyclic,
 etc.). However, we do not claim to have uncovered all possible warmup styles. It

@@ -432,37 +432,33 @@ process executions of each benchmark and VM pairing.
 
 \subsubsection{Linux-specific Controls}
 
-On Linux, \krun controls several additional factors.
+On Linux, \krun controls several additional factors, sometimes by checking that
+the user has correctly set controls which can only be set manually.
 
 \krun sets the CPU frequency to the highest non-over-clocked value possible.
-The user must first disable Intel P-state support in
+\krun verifies that the user has disabled Intel P-state support in
 the kernel by passing the kernel argument \texttt{intel\_pstate=disable} \laurie{why? i think it's just because the driver isn't very good?}.
-\krun verifies P-states are disabled and uses \texttt{cpufreq-set} to set
+\krun verifies P-states are disabled, and then uses \texttt{cpufreq-set} to set
 the CPU governor to \texttt{performance} mode. Note that even with these
 options set, we cannot fully guarantee that the CPU does as requested
 (see Section~\ref{sec:threats} for details).
 
-\krun checks that it is running on a `full tickless' kernel, which aims to reduce
-jitter in time-sensitive workloads~\cite{tickless}. The default
-Linux kernel interrupts each active logical CPU\footnote{Note that each core of
-each individual processor chip counts as a logical CPU.} 250 times (`ticks') a second to
-decide whether to perform a context switch. We used a kernel with the
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} compile-time option set, which puts
-all CPUs except one (the boot CPU) into adaptive-tick mode.
-CPUs in adaptive-tick mode are only interrupted by the kernel if more than
-one runnable process is scheduled.
-When we compared a subset of benchmarks on a tickless vs.~a standard
-kernel, we noticed a small reduction in jitter, although not enough for us to
-conclusively say that the tickless kernel was the cause. However,
-since, at worst, it appears to have no negative effects, we ran our experiments
-using the tickless kernel.
+By default, Linux interrupts each logical CPU\footnote{Note that each core of
+each individual processor chip counts as a logical CPU.} 250 times (`ticks') per second to
+decide whether to perform a context switch. To avoid these repeated
+interruptions, \krun checks that it is running on a `tickless'
+kernel~\cite{tickless}, which requires recompiling the kernel with the
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set. Whilst the boot CPU is still
+interrupted 250 times a second, this option means that other CPUs are only
+interrupted if more than one runnable process is scheduled.
 
-Linux's \texttt{perf} system dynamically profiles system performance by
-repeatedly sampling hardware counters. We became aware of \texttt{perf} when
-\krun's \texttt{dmesg} checks notified us that the kernel had decreased the
-sample-rate as it determined that it was sampling too often. Since \texttt{perf}
-can interrupt benchmarking, its existence is undesirable, particularly since its
-effects can vary over time. Although \texttt{perf} cannot be disabled entirely,
+Similarly, Linux's \texttt{perf} system repeatedly interjects itself \laurie{how
+often?} on each logical CPU in order to sample hardware counters. We became
+aware of \texttt{perf} when \krun's \texttt{dmesg} checks notified us that the
+kernel had decreased the sample-rate as it determined that it was sampling too
+often. Unlike default kernel ticks, \texttt{perf}'s rate of interruptions can
+vary over time, which is particularly troubling from a benchmarking perspective.
+Since \texttt{perf} cannot be disabled entirely,
 \krun sets the sample-rate to the smallest possible value of 1 sample per
 second.
 
@@ -491,23 +487,25 @@ an entirely new location. The \texttt{malloc.conf} flags we use are \texttt{sfgh
 
 Since we run benchmarks in several different languages, timing data needs
 to be reported back to the main \krun process. Thus for each language, we created an
-\emph{in-process iterations runner}. When \krun wants to run a benchmark, it opens a pipe to the
-appropriate in-process iterations runner, passing it a benchmark name, and the
-desired number of in-process iterations. For each in-process iteration we
+\emph{iteration runner} which takes the name of a specific benchmark and the
+the desired number of in-process iterations, runs the benchmark appropriately,
+and once it has completed, prints the times to \texttt{stdout} for \krun to
+capture. For each in-process iteration we
 measure the wall-clock time taken (on Linux and OpenBSD), core
 cycle count deltas and APERF/MPERF ratios (on Linux only).
 
 We use a monotonic wall-clock timer with sub-millisecond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
-users, it doesn't provide insight into multi-threaded computations. By recording
+users, it gives no insight into multi-threaded computations: by recording
 core cycle counts using the \texttt{CPU\_CLK\_UNHALTED.CORE} counter, we can see
-what work each core is actually doing. The APERF counter increments at a fixed
+what work each core is actually doing. In contrast, we use the APERF/MPERF
+ratio solely as a safety check that our wall-clock times are valid.
+The APERF counter increments at a fixed
 frequency for each instruction executed; the MPERF counter increments at a rate
 proportional to the processor's current frequency. With an APERF / MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is being
-throttled; and above 1, turbo boost is being used. The APERF/MPERF ratio
-therefore acts as a safety check that our wall-clock times are meaningful. On
+throttled; and above 1, turbo boost is being used. On
 Linux, we read these two counters via a special file node, which is relatively
 slow; for very short time periods \laurie{need a figure here. is it something
 like 0.0001 or smaller?}, the error in reading the two counters can become
@@ -518,46 +516,18 @@ error to be immaterial on active cores.
 \laurie{edd, you used IA32\_MPERF as a name. why IA32? are there other
 aperf/mperf counterss on the processors we're using?}
 
-Collection of the above metrics is implemented in a small C library
-\texttt{libkruntime.so} which each iterations runner calls using -- if possible
--- a foreign function interface. VMs which do not have the ability to call out
-to C code were instead patched to expose our measurement functions at the
-language-level. Since some of the measurements are 64-bit unsigned integers,
-which some of the languages under investigation do not support. In these cases,
-the measurements are converted to double-precision floats, which are checked
-for loss of precision. Note that collection of the cycle counts and the
-performance
-ratios is only possible on Linux at this time.
+Not all of the VMs in our experiment give us access to the appropriate monotonic
+timer, and none gives us direct access to hardware counters. We therefore
+implemented a small C library (\texttt{libkruntime.so}) which exposes these
+measures (see Listing~\ref{lst:krun-measure} for an example). When possible
+\laurie{which VMs?}, we used a language's FFI to dynamically load this library
+in; in the remaining cases, we linked the library directly against the VM, which
+then required us to add user-language visible functions to access them. Some
+\laurie{which?} of the measurements are 64-bit unsigned integers, which some
+\laurie{which?} VMs do not support. In such cases, we convert the numbers to 64
+bit doubles, throwing an error if this leads to a loss of precision.
 
-A deliberate design goal of the in-process iterations runners is to minimise
-timing noise and distortion from measurements. We do not make any system calls
-other than those required to take measurements. System calls require the CPU to
-switch from user mode to kernel mode, before executing code in the kernel; on
-Linux, calling functions such as \texttt{write} can evict as much as two thirds
-of an x86's L1 cache~\cite{soares10flexsc}, and can increase the chances of a
-context switch (which is significantly slower than a mode switch). We avoid
-in-benchmark I/O and memory allocation by storing measurements in statically
-bounded memory buffers. Only once the final in-process iteration has finished
-are the measurements emitted to \texttt{stdout}. \krun then accepts the
-measurements in JSON format over a pipe and stores them to disk.
-Figure~\ref{lst:pyiter} shows
-an elided version of the Python in-process iterations runner.
-Listing~\ref{lst:krun-measure} shows the underlying implementation of
-\texttt{krun\_measure}.
-
-\begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
-in-process iterations runner (with core cycles etc. removed).}]
-wallclock_times = [0] * iters
-for i in xrange(iters):
-    krun_measure(0)   # Start timed section
-    bench_func(param) # Call the benchmark
-    krun_measure(1)   # End timed section
-    wallclock_times[i] = \
-        krun_get_wallclock(1) - krun_get_wallclock(0)
-js = { "wallclock_times": wallclock_times }
-sys.stdout.write("%s\n" % json.dumps(js))
-\end{lstlisting}
-
+\begin{figure}[t]
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
         caption={%
 \texttt{krun\_measure}: Measurements can't be taken atomically, so later
@@ -585,6 +555,37 @@ void krun_measure(int mdata_idx) {
   }
 }
 \end{lstlisting}
+\vspace{-.8cm}
+\end{figure}
+
+A deliberate design goal of the in-process iterations runners is to minimise
+timing noise and distortion from measurements. Since system calls can have a
+significant overhead (on Linux, calling functions such as \texttt{write} can
+evict as much as two thirds of an x86's L1 cache~\cite{soares10flexsc}), we
+avoid making any system calls other than those required to take measurements. We
+avoid in-benchmark I/O and memory allocation by storing measurements in a
+pre-allocated buffer and only writing measurements to \texttt{stdout} after all
+in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
+example). However, the situation on Linux is complicated by our need to read
+core cycle and APERF/MPERF counts from (special) files. Since wall-clock time
+is the most important measure, we ensure that it is the innermost measure taken
+(i.e.~to the extent we control, it does not include the time taken to read
+core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
+
+\begin{figure}[t]
+\begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
+in-process iterations runner (with core cycles etc. removed).}]
+wallclock_times = [0] * iters
+for i in xrange(iters):
+    krun_measure(0)   # Start timed section
+    bench_func(param) # Call the benchmark
+    krun_measure(1)   # End timed section
+    wallclock_times[i] = \
+        krun_get_wallclock(1) - krun_get_wallclock(0)
+js = { "wallclock_times": wallclock_times }
+sys.stdout.write("%s\n" % json.dumps(js))
+\end{lstlisting}
+\end{figure}
 
 
 \section{Automatically Determining when Warmup has Completed}

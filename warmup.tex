@@ -338,18 +338,16 @@ have the same OS (with the same updates etc.) but different hardware; \bencherfi
 and \benchersix have the same hardware (to the extent that we can determine)
 but different operating systems.
 
-We disabled turbo boost and hyper-threading in the BIOS. Turbo boost is a
-feature which allows CPUs to temporarily run in an extremely high-performance
-mode; when the CPU's safe limits (e.g.~power draw, or temperature) are exceeded,
-performance is partly or wholly reduced. For example, we observed on a 4 core
-nominally-3.4GHz machine that when 3 or fewer cores were in use turbo boost
-raised performance to 3.8GHz, but that using all 4 cores immediately reduced
-performance to 3.6GHz. Turbo boost can thus substantially change one's
+We disabled turbo boost and hyper-threading in the BIOS. Turbo boost
+allows CPUs to temporarily run in an higher-performance
+mode; if the CPU deems it ineffective, or if its safe limits (e.g.~temperature) are exceeded,
+turbo boost is reduced~\cite{charles09turboboost}. Turbo boost
+can thus substantially change one's
 perception of performance. Hyper-threading gives the illusion that a single
-physical core is in fact more than one logical core, inter-leaving the
-execution of two or more programs or threads on a single physical core.
-Hyper-threading causes programs to interfere
-with each others in complex ways, introducing considerable noise.
+physical core is in fact two logical cores, inter-leaving the
+execution of multiple programs or threads on a single physical core,
+leading to a less predictable performance pattern
+than on physical cores alone.
 
 
 \subsection{\krun}
@@ -978,8 +976,6 @@ data, or which we have not detected.
 
 
 \section{Related work}
-
-\edd{paper on the effects of turbo boost: \url{https://www.cs.sfu.ca/~fedorova/papers/TurboBoostEvaluation.pdf}}
 
 There are two works we are aware of which explicitly note unusual warmup
 patterns. Gil et al.'s main focus is on non-determinism of process executions on

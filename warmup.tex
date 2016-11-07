@@ -493,10 +493,10 @@ measure the wall-clock time taken (on Linux and OpenBSD), core
 cycle count deltas and APERF/MPERF ratios (on Linux only).
 
 We use a monotonic wall-clock timer with sub-millisecond accuracy
-(\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\_MONOTONIC} on
+(\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \\\texttt{CLOCK\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
 users, it gives no insight into multi-threaded computations: by recording
-core cycle counts using the \texttt{CPU\_CLK\_UNHALTED.CORE} counter, we can see
+core cycle counts using the \\\texttt{CPU\_CLK\_UNHALTED.CORE} counter, we can see
 what work each core is actually doing. In contrast, we use the APERF/MPERF
 ratio solely as a safety check that our wall-clock times are valid.
 The IA32\_APERF counter increments at a fixed
@@ -666,7 +666,7 @@ an example where a sharp slowdown occurs.
 
 \textbf{Cyclic} \label{sub:cyclic}
 Some process executions exhibit cyclic behaviour, where in-process iteration times
-repeat in a predictable pattern. 
+repeat in a predictable pattern.
 Figure~\ref{fig:examples:cycles} shows
 an example with a cycle of 6 in-process iterations.
 
@@ -818,7 +818,7 @@ crashes with a \texttt{InvocationTargetException}; \texttt{eclipse},
 \texttt{tomcat}, and (intermittently) \texttt{tradesoap} fail their own internal
 validation checks.
 
-We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8. 
+We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8.
 We replaced its complex runner (which reported timings with a non-monotonic
 microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). Note that both runners run all Octane benchmarks in a single process-execution.

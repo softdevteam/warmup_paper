@@ -501,8 +501,8 @@ users, it gives no insight into multi-threaded computations: by recording
 core cycle counts using the \texttt{CPU\_CLK\_UNHALTED.CORE} counter, we can see
 what work each core is actually doing. In contrast, we use the APERF/MPERF
 ratio solely as a safety check that our wall-clock times are valid.
-The APERF counter increments at a fixed
-frequency for each instruction executed; the MPERF counter increments at a rate
+The IA32\_APERF counter increments at a fixed
+frequency for each instruction executed; the IA32\_MPERF counter increments at a rate
 proportional to the processor's current frequency. With an APERF / MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is being
 throttled; and above 1, turbo boost is being used. On
@@ -515,9 +515,6 @@ like 0.0001 or smaller?}, the error in reading the two counters can become
 noticeable. This is compounded by the fact that when inactive, cores do not
 update the counters. Fortunately, all our benchmarks run long enough for this
 error to be immaterial on active cores.
-
-\laurie{edd, you used IA32\_MPERF as a name. why IA32? are there other
-aperf/mperf counterss on the processors we're using?}
 
 Not all of the VMs in our experiment give us access to the appropriate monotonic
 timer, and none gives us direct access to hardware counters. We therefore

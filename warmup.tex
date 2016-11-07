@@ -933,12 +933,23 @@ hardware. Reading from a MSR device node requires inter-processor interrupts to
 schedule an \texttt{RDMSR} instruction on the desired core (which may not be the
 currently running core). Not only does this require bus communication, but the
 interrupted core must save its registers before running the scheduled code. We
-were not able to find a lighter-weight timing mechanisms, despite trying
+were not able to find a lighter-weight timing mechanism, despite trying
 candidates such as the x86 Time Stamp Counter (TSC). On older systems the TSC
 increments relative to the CPU's frequency (and thus can be indirectly used to
 detect CPU frequency changes); on modern systems, its readings are always
 normalised to a fixed CPU frequency (and its readings are thus immune from CPU
 frequency changes).
+
+Our experiments allow the kernel to run on the same core as benchmarking code.
+We experimented extensively with CPU pinning, but eventually abandoned it. After
+being confused by the behaviour of Linux's \texttt{isolcpus} mechanism (whose
+semantics changes between a normal and a real-time kernel), we used CPU shielding
+(\texttt{cset shield}) to pin the benchmarks to the 3 non-boot cores on our
+machines. However, we then observed notably worse performance for VMs such as
+HotSpot. Our data suggests that such VMs query the OS for the number of
+available cores and create a matching number of compilation threads; by reducing
+the number of available cores, we accidentally forced two of these threads to
+compete on a single core.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have
@@ -950,33 +961,6 @@ We have identified a number of different styles of warmup (slowdown, cyclic,
 etc.). However, we do not claim to have uncovered all possible warmup styles. It
 is quite possible that other patterns exist that either do not show up in our
 data, or which we have not detected.
-
-
-\section{Discussion}
-\label{sec:Discussion}
-
-Although we are fairly experienced in designing and implementing
-experiments, the experiment in this paper took more time and effort than we
-expected. In part this is because there is limited precedent for such detailed
-experiments. Investigating possible confounding variables, understanding how to
-control them, and implementing the necessary checks, all took time. In many
-cases, we had to implement small programs or systems to understand a variable's
-effect (e.g.~that Linux allows a process to allocate memory beyond that
-specified in the soft and hard \texttt{ulimit}).
-
-In some cases, we found that seemingly reasonable settings had undesirable
-effects. Most notably, we trialled ``pinning'' benchmarks to a set of idle CPU
-cores. We experimented with two ways of doing this under Linux. The first,
-\texttt{isolcpus}, worked for single threaded VMs, but multi-threaded VMs
-suffered as much as a 3x slowdown. A
-bug\footnote{\url{https://bugzilla.kernel.org/show_bug.cgi?id=116701}} in this
-Linux kernel causes threads to be scheduled on the same core, thus defeating
-the multi-threading used by some VMs (e.g. JRuby/Truffle) for compilation, GC,
-etc. We were able to achieve the desired effect using a Linux ``cpuset shield''
-occupying 3 of the 4 cores of our machines, however, we were worried that VMs
-may attempt to schedule 4-cores worth of threads oblivious to the CPU affinity
-of the cpuset.
-
 
 
 \section{Related work}
@@ -997,17 +981,40 @@ manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
 \section{Conclusions}
 \label{sec:conclusion}
 
-Warmup has always been an informally defined term~\cite{seaton15phd} and in this
-paper we have shown cases where the definition fails to hold.
-To the best of our knowledge, this paper is the first to classify different
-`warmup' styles and note the relatively high frequency of non-traditional
-classifications such as slowdown and never-ending phase changes.
-However, as every keen student of history discovers, it is easier to destroy than to
-create: we have not yet found an acceptable alternative definition of warmup.
-Based on our experiences thus far, we think it unlikely that the different
-styles of warmup we have seen can be captured in a single metric. We suspect it
-is more likely that a number of different metrics will be needed to describe and
-compare warmup styles.
+Warmup has previously been an informally defined term~\cite{seaton15phd} and in this
+paper we have shown cases where the definition fails to hold. Through a carefully
+designed experiment, and an application of a new statistical method, we hope
+to have helped give the study of warmup a firmer base.
+
+Although we are fairly experienced in designing and implementing
+experiments, the experiment in this paper took far more time than we expected
+--- about 2 full person years. In part this is because there is limited precedent for such detailed
+experiments. Investigating possible confounding variables, understanding how to
+control them, and implementing the necessary checks, all took time. In many
+cases, we had to implement small programs or systems to understand a variable's
+effect (e.g.~that Linux allows a process to allocate memory beyond that
+specified in the soft and hard \texttt{ulimit}). However, we are realistic that
+few people will have the time or energy to institute all the controls that we
+implemented. An open question is which of the controls are the most significant
+in terms of producing a reliable experiment. The large number of partly
+inter-locking combinations means that we estimate that untangling this will
+require 3--6 months of experimental running time.
+
+Our results have suggested to us some potentially useful advice for VM
+developers and users. First, simply running benchmarks for a larger number of
+in-process iterations is a simple way of understanding a VM's long-term
+performance stability. Second, as a community, we need to accept that a steady
+state of peak performance is not guaranteed to exist. Third, the significant
+differences in warmup time between VMs strongly suggest that VM benchmarking
+should always include warmup time. Fourth, we suspect that some of the odd
+results we have seen results from over-training VM heuristics on small sets of
+benchmarks. We may be able to use the approach taken by the machine-learning
+community, and use a training set to help us devise VM heuristics, and a
+separate validation set on which published results are given. Fifth, we suspect
+that our reliance on small suites of benchmarks means that we are only
+benchmarking small parts of our VMs effectively: we are increasingly of the
+opinion that benchmarking quality and quantity are tightly related, and that we
+are in need of more benchmarks.
 
 \textbf{Acknowledgements:} We are particularly grateful to Vincent Knight
 who helped put together the team that made this paper. We also thank (in alphabetical order) Dave Dice, Kenny

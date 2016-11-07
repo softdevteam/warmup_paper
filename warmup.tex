@@ -814,6 +814,26 @@ main batch of results.
 \section{Startup Time}
 \label{sec:startup}
 
+The data presented thus far in the paper has all been collected after the VM has
+started executing the user program. The period between starting to execute a VM
+and the VM executing the user program is the VM's \emph{startup} time, and is an
+important component in understanding a VM's performance. We measure startup time
+by taking a wall-clock time measurement immediately before executing a VM; and
+then having the VM execute a user-level program whose sole action is to print
+out wall-clock time. The delta between these two values is thus the VM's startup
+time.
+
+Although not an original design goal, a simple hack allows us to use \krun and
+its controls to measure startup time. We prepend each VM execution command with
+a small C wrapper, which prints out wall-clock time before immediately executing
+the VM itself; and we provide a simple user-level file for each language under
+investigation which immediately prints out wall-clock time. For each VM we run
+200 process executions of the startup experiment (for this measure, in-process
+executions are irrelevant, as the user-level program completes as soon as it has
+printed out wall-clock time). Figure~\laurie{XXX} shows the data for each of our
+3 benchmarking machines. As this data clearly shows, there is substantial
+variation in the startup time of various VMs.
+
 
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 \label{sec:existing}

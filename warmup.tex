@@ -74,8 +74,8 @@ performance. In this paper we first run a number of small,
 deterministic benchmarks on a variety of well known VMs, before introducing
 a rigorous statistical model for determining when warmup has occurred.
 In our experiment, \laurie{only XXX\%} of the benchmark/VM pairs conform to
-the traditional notion of warmup, and none of the
-VMs we tested consistently warms up in the traditional notion.
+the traditional view of warmup, and none of the
+VMs we tested consistently warms up.
 \end{abstract}
 
 \section{Introduction}
@@ -95,13 +95,13 @@ discarding any timing data collected before warmup is complete, and
 reporting only peak performance figures.
 
 The fundamental aim of this paper is to test the following hypothesis, which captures a constrained
-notion of the traditional notion of warmup:
+notion of the traditional view of warmup:
 \begin{description}
   \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
 \end{description}
-In order to test this hypothesis, we present a carefully designed
-experiment where a number of simple benchmarks are run on a variety of
-VMs for a large number of \emph{in-process iterations} and repeated using fresh
+We present a carefully designed
+experiment where a number of simple benchmarks are run on seven
+VMs and GCC for a large number of \emph{in-process iterations} and repeated using fresh
 \emph{process executions} (i.e.~each process execution runs multiple in-process
 iterations). We also introduce the first automated approach to determining
 \emph{when} warmup has completed, based on changepoint analysis.
@@ -109,25 +109,25 @@ iterations). We also introduce the first automated approach to determining
 \begin{figure}[t]
 \centering
 \includegraphics[width=.475\textwidth]{img/picturebook_warmup}
-\caption{The traditional notion of warmup: a program starts slowly executing in
+\caption{The traditional view of warmup: a program starts slowly executing in
 an interpreter; once hot parts of the program are identified, they are
 translated by the JIT compiler to machine code; at this point warmup
 is said to have completed, and peak performance reached.}
 \label{fig:trad}
 \end{figure}
 
-While our results show that some benchmarks on some VMs run as per traditional
-expectations, many surprising cases exist: some benchmarks slowdown rather than
+While our results show that some benchmarks on some VMs run as per the traditional
+view, many surprising cases exist: some benchmarks slowdown rather than
 warmup; some never hit a steady state; some perform very differently over
-different process executions; and many exhibit cyclic behaviour. Of the eight
-VMs we looked at, none consistently warmed up as suggested by the traditional model.
+different process executions; and many exhibit cyclic behaviour. Of the seven
+VMs we looked at, none consistently warms up as per the traditional view.
 
-Our results thus clearly invalidate Hypothesis H1, showing that the traditional
+Our results clearly invalidate Hypothesis H1, showing that the traditional
 view of warmup is no longer valid (and, perhaps, that it may not have held in
-the past). This is of importance to both VM developers and users, since it means
-that much VM benchmarking is likely to be partly misleading: indeed, it is
-likely to have allowed some ineffective, and perhaps even some deleterious,
-optimisations to make their way into production VMs.
+the past). This is of importance to both VM developers and users:
+much prior VM benchmarking is likely to be partly misleading: and it is
+likely to have allowed some ineffective, and perhaps some deleterious,
+optimisations to be included in production VMs.
 
 \vspace{10pt}
 
@@ -149,18 +149,17 @@ conventional manner (Section~\ref{sec:existing}).
 \section{Background}
 \label{sec:warmup}
 
-Figure~\ref{fig:trad} shows the expected performance profile of a
-program subject to the traditional model of warmup.
+Figure~\ref{fig:trad} shows the traditional view of warmup.
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are dynamically compiled into machine code; and subsequent
 executions of those loops or methods use (fast) machine code rather than the
 (slow) interpreter. Once machine code generation has completed, the VM is
 said to have finished warming up, and the program to be executing
-at a steady state of peak performance.\footnote{This traditional notion applies equally to VMs
+at a steady state of peak performance.\footnote{The traditional view applies equally to VMs
 that perform immediate compilation instead of using an interpreter, and to
 those VMs which have more than one layer of JIT compilation (later JIT
-compilation is used for `very hot' portions of a program, and tolerates slower
+compilation is used for `very hot' portions of a program, trading slower
 compilation time for better machine code generation).}
 While the length of the warmup period
 is dependent on the program and JIT compiler, all JIT compiling
@@ -168,17 +167,15 @@ VMs assume this performance model holds true~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on peak
 performance, partly due to an assumption that
-warmup is both fast and inconsequential to users. With that assumption in mind, the
-methodologies used are typically straightforward: benchmarks are run for a number
+warmup is both fast and inconsequential to users.
+The methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
-The first $n$ in-process iterations are then discarded, on the basis that warmup
-will have completed at some point before $n$. It is common for
-$n$ to be hard-coded -- in our experience often to 5 -- for all benchmarks.
+The first $n$ in-process iterations\footnote{In our experience, often hard-coded
+to 5.} are then discarded, on the basis that warmup should have completed in
+that period: however, no guarantees can be made that it has completed.
 
-One of the obvious flaws in this simple methodology is that there is no guarantee
-that warmup has completed by in-process iteration $n$. A more sophisticated VM benchmarking methodology
-was developed by \kalibera to solve a number of issues when benchmarking JIT
-compiling VMs~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
+A more sophisticated VM benchmarking methodology
+was developed by \kalibera~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
 that, for a given VM / benchmark combination, a human must inspect data obtained by
 executing a small number of process executions, and determine at which in-process iteration the
 benchmark has definitively warmed up. A larger number of VM process executions are then
@@ -190,12 +187,12 @@ the latter case, the \kalibera methodology requires a consistent in-process iter
 the cycle be picked for all process executions, and used for statistical analysis.
 
 Although the \kalibera methodology is the most
-sophisticated currently available (see its use in
-e.g.~\cite{barrett15approaches,grimmer15dynamically}),
+sophisticated currently available,
 there remain cases where it remains hard to produce
 satisfying benchmarking statistics. Crucially, the methodology does not
-provide a repeatable way of determining when warmup has completed, nor does it
-deal satisfactorily with cyclic data. Because of this
+provide a repeatable way of determining when warmup has completed, does
+not deal with process executions which warmup at different points,
+nor does it deal satisfactorily with cyclic data. Because of this
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 
@@ -208,7 +205,7 @@ micro-benchmarks: each is run with 2000 in-process iterations and repeated
 using 10 process executions. We have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical. In this section we detail: the benchmarks we used and the modifications we
-applied; the machines we used for benchmarking; the VMs we benchmarked; and the
+applied; the VMs we benchmarked; the machines we used for benchmarking; and the
 \krun system we developed to run benchmarks.
 
 
@@ -227,10 +224,10 @@ reliable means of testing Hypothesis H1. Put another way, if we were to run arbi
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-For each benchmark, we provide C, Java, Javascript, Python, Lua, PHP,
-and Ruby versions. Since most of these
+For each benchmark, we provide versions in C, Java, Javascript, Python, Lua, PHP,
+and Ruby. Since most of these
 benchmarks have multiple implementations in any given language, we picked
-the same versions used in~\cite{bolz14impact}, which represented the fastest
+the versions used in~\cite{bolz14impact}, which represented the fastest
 performers at the point of that publication. We lightly modified
 the benchmarks to integrate with our benchmark runner (see Section~\ref{krun}).
 For the avoidance of doubt we did not interfere with any VM's GC (e.g.~we did not
@@ -242,13 +239,13 @@ force a collection after each iteration).
 User programs that are deliberately non-deterministic programs are unlikely to
 warm-up in the traditional fashion.
 We therefore wish to guarantee that our benchmarks are,
-at the user's level, deterministic, by which we mean that they
-take precisely the same path through the Control Flow Graph (CFG)
-on all process executions and in-process iterations. Note that non-determinism
+to the extent controllable by the user, deterministic: that they
+take the same path through the Control Flow Graph (CFG)
+on all process executions and in-process iterations.\footnote{Note that non-determinism
 beyond that controllable by the user (i.e.~non-determinism in low-level parts of
-the VM) is part of what we need to test for Hypothesis H1.
+the VM) is part of what we need to test for Hypothesis H1.}
 
-To check whether our benchmarks were deterministic at the user-level, we created
+To check whether the benchmarks were deterministic at the user-level, we created
 versions with \texttt{print} statements at all possible points of CFG
 divergence (e.g.~\texttt{if} statements' true and false branches).
 These versions are available in our experimental suite. We first ran the modified
@@ -264,7 +261,7 @@ order and other similar effects (see~\cite{mytkowicz09surprising}),
 we then used two different machines to compile VMs and ran our modified benchmarks
 on them. We then observed occasional non-determinism in Java benchmarks.
 This was due to the extra class we had added to each benchmark
-to interface between the benchmark runner and the benchmark: on occasions the
+to interface between it and the benchmark runner: sometimes, the
 main benchmark class was lazily loaded after benchmark timing had started in a
 way that we could observe. We
 solved this by adding an empty static method to each benchmark, which our
@@ -285,19 +282,18 @@ optimising compilers, benchmarks whose computations
 are entirely removed are rarely useful~\cite{seaton15phd}. To avoid this,
 many benchmarks write intermediate and final results
 to \texttt{stdout}, preventing optimisers from removing the dependant code.
-However, one can quickly end up in a situation where benchmarks are
-unintentionally measuring, in part or whole, the performance of file routines in
-libraries and the kernel.
+However, the performance of file routines in libraries and the kernel can then
+unintentionally become a significant part of the eventual measure.
 
-To avoid this possibility, we modified the benchmarks to calculate a checksum
+To avoid this, we modified the benchmarks to calculate a checksum
 during each in-process iteration.
 The checksum is validated at the end of each in-process iteration against an expected
 value; if the check fails, the incorrect checksum is written to \texttt{stdout}.
 By writing benchmarks in
-this style, we make it difficult for optimising compilers to remove the
-main bulk of the benchmark. As a useful bonus, we use a single checksum value
-for each benchmark irrespective of language, giving some assurance that each language variant is
-performing the same work.
+this style, we make it difficult for optimisers to remove the
+benchmark's main computations. We also use this mechanism to give some assurance
+that each language variant is performing the same work, as we use a single
+checksum value for each benchmark, irrespective of language.
 
 
 \subsection{VMs under investigation}
@@ -310,25 +306,24 @@ meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
 compiling VM for JavaScript). A repeatable build script downloads, patches,
 and builds fixed versions of each VM. All VMs were compiled with GCC/G++ 4.9.3
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
-to remove possible variable performance introduced by different compilers.
+to remove the possibility of variance through the use of different compilers.
 
 On OpenBSD, we skip Graal, HHVM, and JRuby/Truffle, which have not yet been
-ported to OpenBSD. We skip \fasta on JRubyTruffle as it crashes;
+ported to it. We skip \fasta on JRubyTruffle as it crashes;
 and we skip \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together (about 10 days).
 
 
 \subsection{Benchmarking Hardware}
 
-With regards to hardware and operating systems, we started with the
+With regards to hardware and operating systems, we made the
 following hypothesis:
 \begin{description}
   \item[\hyptwo] Moderately different hardware and operating systems have little effect on warmup.
 \end{description}
 We deliberately use the word `moderately', since significant changes of hardware
 (e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) imply that
-significantly different parts of the VMs will be used (and e.g.~different machine
-code backends may not all be equally mature).
+significantly different parts of the VMs will be used (see Section~\ref{sec:threats}).
 
 In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
 4GHz, 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
@@ -997,6 +992,10 @@ that our reliance on small suites of benchmarks means that we are only
 benchmarking small parts of our VMs effectively: we are increasingly of the
 opinion that benchmarking quality and quantity are tightly related, and that we
 are in need of more benchmarks.
+
+\textbf{Transparency:} Three of this paper's authors have contributed
+substantial code to the PyPy project. The King's group has received
+several funding gifts from Oracle Labs.
 
 \textbf{Acknowledgements:} We are particularly grateful to Vincent Knight
 who helped put together the team that made this paper. We also thank (in alphabetical order) Dave Dice, Kenny

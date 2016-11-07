@@ -635,23 +635,13 @@ Though simple, our plots highlight a number of interesting warmup behaviours:
 \label{fig:examples:slowdown1}
 \end{figure}
 
-\begin{figure*}[tbp]
-\makebox[\textwidth][c]{
-\begin{minipage}{.475\textwidth}
-\includegraphics[width=\textwidth]{examples/good1.pdf}
-\end{minipage}
-\begin{minipage}{.475\textwidth}
-\includegraphics[width=\textwidth]{examples/good2.pdf}
-\end{minipage}
-}
-\caption{Examples of traditional warmup behaviour. Since such warmup often completes
-relatively quickly, the $x$-axis scale can make it hard to see when such warmup
-completes. The inner graph zooms in on the relevant initial iterations to allow
-close examination of the warmup in-process iterations. On the left-hand side,
-warmup is complete by in-process iteration 1; on the right-hand side by around
-iteration \#120.}
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
+\caption{Example of traditional warmup behaviour on a single core. Warmup is
+complete by in-process iteration 1}
 \label{fig:examples:trad}
-\end{figure*}
+\end{figure}
 
 \textbf{Flat} Some process executions, particularly the C benchmarks, have
 constant in-process iteration times for the whole process execution.

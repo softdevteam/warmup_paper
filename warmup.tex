@@ -685,21 +685,9 @@ example.
 
 
 \begin{figure*}[t!]
-\makebox[\textwidth][c]{
-\includegraphics[width=\textwidth]{examples/inconsistent1.pdf}\\
-}
-\makebox[\textwidth][c]{~}  % only way I could add vertical space
-\makebox[\textwidth][c]{
-\includegraphics[width=\textwidth]{examples/inconsistent2.pdf}
-}
-\caption{Examples of inconsistent benchmarks.
-The top row shows inconsistencies between different process
-executions on the same machine. In this case the Fannkuch Redux benchmark
-seems to follow two distinct patterns on different process executions,
-sometimes going through a second warmup phase until around in-process iteration 375, and
-other times not doing so (based on our data, these two patterns seem to occur
-equally often). The bottom row shows inconsistencies between
-machines.}
+\centering
+\includegraphics[width=\textwidth]{examples/new_inconsistent.pdf}
+\caption{Examples of inconsistent process executions on the same system.}
 \label{fig:examples:inconsistent}
 \end{figure*}
 

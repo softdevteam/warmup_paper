@@ -826,9 +826,11 @@ iterations on \bencherthree (without reboots, temperature control etc.).
 
 We ran DaCapo on Graal and HotSpot. As it already has support for
 altering the number of in-process executions, we used it without modification.
-However, we were unable to run some benchmarks. \laurie{CF: can you list, and
-briefly explain, the ones you disabled?}. We also disabled tradesoap, which
-failed an internal validation check during our first `full' run on HotSpot:
+However, we were unable to run some benchmarks. The \texttt{batik} benchmark
+failed with a \texttt{InvocationTargetException}, \texttt{eclipse} and
+\texttt{tomcat} failed their own internal validation checks.
+We also disabled tradesoap, which
+failed its internal validation check during our first `full' run on HotSpot:
 although we have not subsequently observed this failure, we assume it could
 reoccur, and have thus disabled it.
 

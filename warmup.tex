@@ -379,8 +379,16 @@ When first run, \krun analyses its configuration file and creates a benchmark
 running schedule which is written to a file. After each reboot, it reads this
 schedule in, runs the next benchmark, and updates the schedule file. The
 schedule file is formatted in such a way that it is always a constant size
-\laurie{right?}, so that, to the extent that we can control, \krun runs in
-constant memory before benchmark running. Note that after a benchmark has run,
+\laurie{right?}\edd{Yes, but I don't think these implementation details
+important. It's probably enough to say that the results are not in-memory
+during benchmarking, then we have more space for more important stuff.}, so
+that, to the extent that we can control, \krun runs
+in
+constant memory before benchmark running\edd{The file is never entirely read
+in. The reason the fields are fixed-size is so that we can update the file
+without skewing the offsets and having to rewrite the rest of the file out.
+Let's kill this para? It's not important for the reader to know these
+details.}. Note that after a benchmark has run,
 \krun can safely perform arbitrary memory allocation; rebooting the machine
 wipes the slate clean again for the next benchmark.
 
@@ -398,11 +406,8 @@ after 1 hour, \krun aborts the whole experiment.
 user-configurable heap and stack \texttt{ulimit} on all VM process executions
 (in our case, 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
 to inspect these values, but to allocate memory beyond them.} Benchmarks are run
-as the UNIX user `\texttt{krun}', which is fully deleted (including its home
-directory) and then created afresh before each process execution.
-\laurie{huh? does this mean `Note that the user has no configuration files
-included, and thus performs no environment configuration of its own.'} The
-performs no environment configuration.
+as the UNIX user `\texttt{krun}', whose account and home directory are created
+afresh before each process execution.
 
 User-configurable commands can be run before and after benchmark execution. In
 our experiment, we switch off as many Unix daemons as possible (e.g.~smtpd,
@@ -431,13 +436,14 @@ the user has correctly set controls which can only be set manually.
 \krun sets the CPU frequency to the highest non-over-clocked value possible.
 \krun verifies that the user has disabled Intel P-state support in
 the kernel by passing the kernel argument \texttt{intel\_pstate=disable} \laurie{why? i think it's just because the driver isn't very good?}.
+\edd{No, disabling the driver stops the Linux kernel requesting P-state transitions.}
 \krun verifies P-states are disabled, and then uses \texttt{cpufreq-set} to set
 the CPU governor to \texttt{performance} mode. Note that even with these
 options set, we cannot fully guarantee that the CPU does as requested
 (see Section~\ref{sec:threats} for details).
 
 By default, Linux interrupts each logical CPU\footnote{Note that each core of
-each individual processor chip counts as a logical CPU.} 250 times (`ticks') per second to
+each individual processor chip counts as a logical CPU.} 250 times\edd{citation?} (`ticks') per second to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
 kernel~\cite{tickless}, which requires recompiling the kernel with the
@@ -513,12 +519,16 @@ Not all of the VMs in our experiment give us access to the appropriate monotonic
 timer, and none gives us direct access to hardware counters. We therefore
 implemented a small C library (\texttt{libkruntime.so}) which exposes these
 measures (see Listing~\ref{lst:krun-measure} for an example). When possible
-\laurie{which VMs?}, we used a language's FFI to dynamically load this library
+(all VMs apart from JRuby/Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
 in; in the remaining cases, we linked the library directly against the VM, which
-then required us to add user-language visible functions to access them. Some
-\laurie{which?} of the measurements are 64-bit unsigned integers, which some
-\laurie{which?} VMs do not support. In such cases, we convert the numbers to 64
-bit doubles, throwing an error if this leads to a loss of precision.
+then required us to add user-language visible functions to access them.
+Core-cycle counts, \texttt{IA32\_APERF} and \texttt{IA32\_MPERF}
+values are 64-bit unsigned integers, which some languages
+(Javascript and Lua) do not support. For VMs targeting those languages, we
+convert the 64-bit unsigned measurements to
+double-precision floating point values, throwing an error if this leads to a
+loss of precision.~\footnote{We also consistently use doubles for PHP, whose
+integer values are automatically promoted upon exceeding their maximum.}
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
@@ -635,7 +645,7 @@ Though simple, our plots highlight a number of interesting warmup behaviours:
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
 \caption{Example of traditional warmup behaviour on a single core. Warmup is
-complete by in-process iteration 1}
+complete by in-process iteration \edd{XXX}}
 \label{fig:examples:trad}
 \end{figure}
 

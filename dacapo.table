@@ -1,0 +1,33 @@
+\begin{tabular}{lrrr}
+\toprule
+\multicolumn{1}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
+\multicolumn{1}{c}{+classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
+\midrule
+avroras & $\substack{684\\\scriptscriptstyle{\pm261}}$ & $\substack{1374750.20\\\scriptscriptstyle{\pm196207.750}}$ & $\substack{1684.33505\\\scriptscriptstyle{\pm4.969454}}$\\[2pt]
+fop$\rightsquigarrow{}^*$ &  &  & \\[2pt]
+h2s$^*$ &  &  & \\[2pt]
+jythons$^*$ &  &  & \\[2pt]
+luindexs & $\substack{919\\\scriptscriptstyle{\pm78}}$ & $\substack{333504.25\\\scriptscriptstyle{\pm35724.000}}$ & $\substack{385.68624\\\scriptscriptstyle{\pm0.960960}}$\\[2pt]
+lusearchs & $\substack{45\\\scriptscriptstyle{\pm33}}$ & $\substack{37372.40\\\scriptscriptstyle{\pm19628.350}}$ & $\substack{757.24149\\\scriptscriptstyle{\pm0.679931}}$\\[2pt]
+pmds & $\substack{728\\\scriptscriptstyle{\pm137}}$ & $\substack{453309.25\\\scriptscriptstyle{\pm141846.000}}$ & $\substack{645.88001\\\scriptscriptstyle{\pm3.373591}}$\\[2pt]
+sunflow$\rightsquigarrow$ &  &  & \\[2pt]
+tradebeans$\searrow{}^*$ &  &  & \\[2pt]
+xalans & $\substack{83\\\scriptscriptstyle{\pm87}}$ & $\substack{36745.45\\\scriptscriptstyle{\pm30937.450}}$ & $\substack{430.92362\\\scriptscriptstyle{\pm2.023091}}$\\
+\midrule
+richards\\[2pt]
+deltablue\\[2pt]
+encrypt\\[2pt]
+decrypt\\[2pt]
+raytrace\\[2pt]
+earley\\[2pt]
+boyer\\[2pt]
+regexp\\[2pt]
+splay\\[2pt]
+navierstokes\\[2pt]
+pdfjs\\[2pt]
+mandreel\\[2pt]
+gameboy\\[2pt]
+box2d\\[2pt]
+typescript\\
+\bottomrule
+\end{tabular}

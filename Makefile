@@ -10,7 +10,7 @@ LATEX_COMMON =
 
 DIAGRAMS = img/picturebook_warmup.pdf
 
-TABLES=
+TABLES= dacapo.table
 
 CODE =
 

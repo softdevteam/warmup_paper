@@ -595,9 +595,15 @@ sys.stdout.write("%s\n" % json.dumps(js))
 
 In total, our experiment runs  1270 unique process executions, giving a total
 of 2,440,000 in-process iteration readings.
-In this section, we analyse this data.
-
-A full set raw data and plots can be downloaded from:
+For each process execution we generate a series of plots sharing a common $x$
+axis: the sequential in-process execution number. The $y$ axis for a
+\textbf{run-sequence plot} is the wall-clock time delta (in seconds). The $y$
+axis for a \textbf{core-cycle plot} is the cycle count delta for an individual
+CPU core. The $y$ axis for a \textbf{frequency ratio plot} plot is the
+\texttt{IA32\_APERF}/\texttt{IA32\_AMERF} delta ratio for an individual CPU
+core. The latter two plots are per-core, so for these, for each
+process-execution we plot one for each CPU core. A full set of plots (and raw
+data) can be downloaded from:
 \edd{XXX bump version when new data is up}
 \vspace{-.5em}
 \begin{center}
@@ -606,77 +612,61 @@ A full set raw data and plots can be downloaded from:
 }
 \end{center}
 
-\subsection{Results at a Glance}
-
-To begin our analysis, for each
-process execution we generate a series of plots sharing a common $x$
-axis: the sequential in-process execution number. The $y$ axis for a
-\textbf{run-sequence plot} is the wall-clock time delta (in seconds). The $y$
-axis for a \textbf{core-cycle plot} is the cycle count delta for an individual
-CPU core. The $y$ axis for a \textbf{frequency ratio plot} plot is the
-\texttt{IA32\_APERF}/\texttt{IA32\_AMERF} delta ratio for an individual CPU
-core. The latter two plots are per-core, so for these we plot one for each CPU
-core for each process execution. Since the
-\texttt{IA32\_APERF}/\texttt{IA32\_AMERF} ratio is not usable during intervals
-where a CPU core is powered down, we omit these sections from our frequency
-ratio plots.\footnote{XXX detail the heuristic used to identify an idle core.}
-Though simple, our plots highlight a number of interesting warmup behaviours:
-
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_slowdown.pdf}
-\caption{An example of slowdown, at in-process iteration \#199.}
+\caption{Slowdown at in-process iteration \#199.}
 \label{fig:examples:slowdown1}
 \end{figure}
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
-\caption{Example of traditional warmup behaviour on a single core. Warmup is
-complete by in-process iteration \#134.}
+\caption{Traditional warmup behaviour on a single core. Warmup is complete by
+in-process iteration \#134. Cores 0, 2 and 3 (not shown) had cycle counts close
+to 0 for the entire in-process execution.}
 \label{fig:examples:trad}
 \end{figure}
 
-\textbf{Flat} Some process executions, particularly the C benchmarks, have
-constant in-process iteration times for the whole process execution.
-
-\textbf{Warmup} Some process executions warmup up as per our
-expectations. Figure~\ref{fig:examples:trad} shows some examples of traditional
-warmup.
-
-\textbf{Slowdown} \label{sub:slowdowns}
-Some process executions exhibit `slowdown', where the performance of
+Though simple, a cursory glance of our plots is enough to highlight a number of
+interesting warmup behaviours. \textbf{Flat} process executions (particularly
+the C benchmarks), have constant (allowing for noise) in-process iteration
+times across the entire process execution. Some process executions
+\textbf{warmup} as per our expectations. Figure~\ref{fig:examples:trad} shows
+an example. Some process executions \textbf{slowdown}, \label{sub:slowdowns}
+where the performance of
 in-process iterations drops over time. Figure~\ref{fig:examples:slowdown1} shows
 an example where a sharp slowdown occurs.
+\textbf{Cyclic} \label{sub:cyclic} process executions have in-process iteration
+times which repeat in a predictable pattern. Figure~\ref{fig:examples:cycles}
+shows an example with a cycles spanning more than 100 in-process iterations.
+Some process executions have \textbf{no steady state}, \label{sub:long} where
+wall-clock times significantly change over time, but never seem to converge
+upon a steady state. Figure~\ref{fig:examples:neverending} shows an example.
+Finally, we observe \textbf{inconsistent process executions}
+\label{sub:inconsistent} where, for some benchmark and VM pairings, distinct
+process executions behave differently. Sometimes (perhaps as one may expect)
+this occurs on the same machine; sometimes on different machines.
+Figure~\ref{fig:examples:inconsistent} shows an example of the latter case.
+Later in Section~\ref{sec:stats} we formally define and automatically classify
+these bahviours.
+
 
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_cyclic.pdf}
-\caption{An example of cyclic behaviour. The cycle is also evident in the core-cycle count.}
+\caption{Cyclic behaviour (also evident in the core-cycle plot).}
 \label{fig:examples:cycles}
 \end{figure}
-
-
-\textbf{Cyclic} \label{sub:cyclic}
-Some process executions exhibit cyclic behaviour, where in-process iteration times
-repeat in a predictable pattern.
-Figure~\ref{fig:examples:cycles} shows
-an example with a cycle of 6 in-process iterations.
 
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_no_steady.pdf}
-\caption{An process execution with no steady state. The VM also migrated CPU
-cores at around iteration 950.}
+\caption{No steady state. There is a small behavioral shift around iteration
+950, where the VM migrates from (tickless) core 1 to (ticked) core 0.}
 \label{fig:examples:neverending}
 \end{figure}
-
-\textbf{No steady state} \label{sub:long}
-Some process executions have distinct phases of execution but never seem to
-settle on a single behaviour. Figure~\ref{fig:examples:neverending} shows an
-example.
-
 
 \begin{figure*}[t!]
 \centering
@@ -685,49 +675,31 @@ example.
 \label{fig:examples:inconsistent}
 \end{figure*}
 
-\textbf{Inconsistent Process Executions} \label{sub:inconsistent}
-For some benchmark and VM pairings, different process executions behave
-inconsistently. Sometimes this occurs on the same machine; sometimes between
-different machines.
-Figure~\ref{fig:examples:inconsistent} shows examples of both cases.
-
-
 The core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
 cycle-count value on one core, and a near zero value on all other cores.
 Further, single-threaded VMs may migrate to between cores within a process
-execution. Figure~\edd{XXX} shows a process execution where the VM stays on the
-same core for the whole process execution, whereas Figure~\edd{XXX} shows a
-case where the VM migrates several times over the course of the process
+execution. Figure~\ref{fig:examples:trad} shows a process execution where the
+VM stays on the same core for the whole process execution, whereas
+Figure~\ref{fig:examples:neverending} shows a case where the VM migrates
+mid-process
 execution. For multi-threaded VMs, the OS (as expected) schedules threads on
 multiple cores simultaneously. This is characterised by consistently high
-core-cycle counts for more than one core over the same timespan.
-Figure~\edd{XXX} shows a process execution where multi-threading is evident.
+core-cycle counts for more than one core over the same slice of in-process iterations.
 
-In some cases, the wall-clock times vary over time, and the core-cycle counts
-reflect these changes. Figure\edd{XXX} shows a case where there is a speed-up
-in the wall-clock times, and at the same time the core-cycle measurements
-decrease proportionally. This is indicative of the speed-up being a result of
-the VM doing less work on the CPU, due to e.g. the execution of freshly JIT
-compiled code. Some slowdowns and cycles can be explained in the same way:
-Figure~\edd{XXX} shows a case where a slowdown in wall-clock times is reflected
-by the core-cycle counts. Similarly, Figure~\edd{XXX} shows cyclic behaviour
-reflected in the core-cycle counts. In some cases, however, changes in
-wall-clock times are not reflected by the core-cycle counts. Figure~\edd{XXX}
-shows an example. One possible explanation might be that the CPU frequency
-changed mid-process-execution, however, as the frequency ratio plots show, the
-ratio does not drop below 1, so this cannot be the case. For all of the data
-collected, we did not observe the \texttt{IA32\_APERF/IA32\_AMERF} delta ratio
-fall significantly below than 1 for a busy CPU core.
-
-To better understand our results, we re-ran the PyPy and Hotspot benchmarks
-with instrumentation mode enabled in \krun. This allows us to see when garbage
-collection and JIT compilation occur. Although instrumentation mode performs
-more I/O, if the run-sequence, core-cycle and frequency ratio plots look on the
-whole the same as before, the instrumentation data is highly likely to
-correspond. \edd{Add more here when we have some graphs}
-
-\edd{Startup results in here somewhere?}
+In some cases where there is a behavioral change in wall-clock times, the
+core-cycle counts reflect the changes, as can be seen in
+Figure~\ref{fig:examples:cycles}. This is indicative of the increased (or
+decreased) wallclock times being a result of the corresponding CPU core doing
+more (or less work). Often JIT compilation or garbage collection can account
+for consistent changes in the wall-clock time and core-cycle counts (we
+investigate this in Section~\ref{sec:deepdive}). However, not all wall-clock
+time changes are reflected by core-cycle counts, which suggests that there is
+another (as yet unkown) source of variation. We did not observe an
+\texttt{IA32\_APERF/IA32\_AMERF} delta ratio that fell significantly below 1
+for a busy CPU core, thus ruling out the possibility of CPU frequency being the
+cause of such wall-clock time changes.\edd{can we leave that unsolved? Perhaps
+need a graph, either here or in instrumentation section?}
 
 \subsection{Statistical Classification of Warmup Behaviours}
 \label{sec:stats}

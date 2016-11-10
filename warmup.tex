@@ -825,6 +825,19 @@ variation in the startup time of various VMs.
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 \label{sec:existing}
 
+\begin{figure}[t]
+\centering
+\input{dacapo.table}
+\caption{Dacapo results. \textsc{Key}: flat=\flatc,
+warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\input{octane.table}
+\caption{Octane results.}
+\end{figure}
+
 The statistical method presented in Section \laurie{XXX} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\laurie{cite?}
@@ -862,12 +875,7 @@ replicate the running order of Octane's original runner. Since Octane runs all
 benchmarks in a single process execution, this could affect the performance of
 later benchmarks in the suite.
 
-\begin{figure}[ht]
-\centering
-\input{dacapo.table}
-\caption{Dacapo results. \textsc{Key}: flat=\flatc,
-warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
-\end{figure}
+
 
 \section{Threats to Validity}
 \label{sec:threats}

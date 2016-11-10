@@ -1,9 +1,10 @@
-\begin{tabular}{lcrrr}
+\begin{tabular}{p{5pt}lcrrr}
 \toprule
-\multicolumn{2}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
-\multicolumn{2}{c}{\& classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
+& \multicolumn{2}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
+& \multicolumn{2}{c}{\& classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
 \midrule
-avroras &
+\multirow{12}{*}{\rotatebox[origin=c]{90}{Graal}}
+& avroras &
 \inconsistent &
 $
 \begin{array}{rr}
@@ -26,10 +27,10 @@ $
 \end{array}
 $
 \\[2pt]
-fop & \nosteadystate &  &  & \\[2pt]
-h2s & &  &  & \\[2pt]
-jythons & &  &  & \\[2pt]
-luindexs & &
+& fop & \nosteadystate &  &  & \\[2pt]
+&h2s & &  &  & \\[2pt]
+&jythons & &  &  & \\[2pt]
+&luindexs & &
 $
 \begin{array}{rr}
 \scriptstyle{12} \\[-6pt]
@@ -51,26 +52,65 @@ $
 \end{array}
 $
 \\[2pt]
-lusearchs \\[2pt]
-pmds \\[2pt]
-sunflow & \nosteadystate &   \\[2pt]
-tradebeans &  & \\[2pt]
-xalans & \warmup & \\
+&lusearchs \\[2pt]
+&pmds \\[2pt]
+&sunflow & \nosteadystate &   \\[2pt]
+&tradebeans &  & \\[2pt]
+&xalans & \warmup & \\
 \midrule
-richards\\[2pt]
-deltablue\\[2pt]
-encrypt\\[2pt]
-decrypt\\[2pt]
-raytrace\\[2pt]
-earley\\[2pt]
-boyer\\[2pt]
-regexp\\[2pt]
-splay\\[2pt]
-navierstokes\\[2pt]
-pdfjs\\[2pt]
-mandreel\\[2pt]
-gameboy\\[2pt]
-box2d\\[2pt]
-typescript\\
+\multirow{12}{*}{\rotatebox[origin=c]{90}{HotSpot}}
+& avroras &
+\inconsistent &
+$
+\begin{array}{rr}
+\scriptstyle{128} \\[-6pt]
+\scriptscriptstyle{\pm13}
+\end{array}
+$
+&
+$
+\begin{array}{rr}
+\scriptstyle{1.374} \\[-6pt]
+\scriptscriptstyle{\pm0.196}
+\end{array}
+$
+&
+$
+\begin{array}{rr}
+\scriptstyle{1.684} \\[-6pt]
+\scriptscriptstyle{\pm0.196}
+\end{array}
+$
+\\[2pt]
+& fop & \nosteadystate &  &  & \\[2pt]
+&h2s & &  &  & \\[2pt]
+&jythons & &  &  & \\[2pt]
+&luindexs & &
+$
+\begin{array}{rr}
+\scriptstyle{12} \\[-6pt]
+\scriptscriptstyle{\pm2}
+\end{array}
+$
+&
+$
+\begin{array}{rr}
+\scriptstyle{12.345} \\[-6pt]
+\scriptscriptstyle{\pm1.234}
+\end{array}
+$
+& 
+$
+\begin{array}{rr}
+\scriptstyle{1234.567} \\[-6pt]
+\scriptscriptstyle{\pm0.123}
+\end{array}
+$
+\\[2pt]
+&lusearchs \\[2pt]
+&pmds \\[2pt]
+&sunflow & \nosteadystate &   \\[2pt]
+&tradebeans &  & \\[2pt]
+&xalans & \warmup & \\
 \bottomrule
 \end{tabular}

@@ -51,11 +51,11 @@ $
 \end{array}
 $
 \\[2pt]
-lusearchs & & $\substack{45\\\scriptscriptstyle{\pm33}}$ & $\substack{37372.40\\\scriptscriptstyle{\pm19628.350}}$ & $\substack{757.24149\\\scriptscriptstyle{\pm0.679931}}$\\[2pt]
-pmds & & $\substack{728\\\scriptscriptstyle{\pm137}}$ & $\substack{453309.25\\\scriptscriptstyle{\pm141846.000}}$ & $\substack{645.88001\\\scriptscriptstyle{\pm3.373591}}$\\[2pt]
-sunflow & \nosteadystate &  &  & \\[2pt]
-tradebeans &  &  &  & \\[2pt]
-xalans & \warmup & $\substack{83\\\scriptscriptstyle{\pm87}}$ & $\substack{36745.45\\\scriptscriptstyle{\pm30937.450}}$ & $\substack{430.92362\\\scriptscriptstyle{\pm2.023091}}$\\
+lusearchs \\[2pt]
+pmds \\[2pt]
+sunflow & \nosteadystate &   \\[2pt]
+tradebeans &  & \\[2pt]
+xalans & \warmup & \\
 \midrule
 richards\\[2pt]
 deltablue\\[2pt]

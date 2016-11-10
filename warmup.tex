@@ -118,8 +118,8 @@ is said to have completed, and peak performance reached.}
 
 While our results show that some benchmarks on some VMs run as per the traditional
 view, many surprising cases exist: some benchmarks slowdown rather than
-warmup; some never hit a steady state; some perform very differently over
-different process executions; and many exhibit cyclic behaviour. Of the seven
+warmup; some never hit a steady state; and some perform very differently over
+different process executions. Of the seven
 VMs we looked at, none consistently warms up as per the traditional view.
 
 Our results clearly invalidate Hypothesis H1, showing that the traditional
@@ -184,15 +184,14 @@ iterations. The \kalibera methodology observes that some benchmarks do not
 obviously warm up; and that others follow cyclic patterns post-warmup
 (e.g.~in-process iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
 the latter case, the \kalibera methodology requires a consistent in-process iteration in
-the cycle be picked for all process executions, and used for statistical analysis.
+the cycle (ideally the first post-warmup iteration) be picked for all process
+executions, and used for statistical analysis.
 
 Although the \kalibera methodology is the most
 sophisticated currently available,
-there remain cases where it remains hard to produce
-satisfying benchmarking statistics. Crucially, the methodology does not
-provide a repeatable way of determining when warmup has completed, does
-not deal with process executions which warmup at different points,
-nor does it deal satisfactorily with cyclic data. Because of this
+there remain cases where it remains hard to produce satisfying benchmarking
+statistics. Crucially, as it relies on human expertise, the methodology does not
+provide a repeatable way of determining when warmup has completed. Because of this
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 
@@ -728,6 +727,29 @@ in-process iterations. In general, we disregard outliers when classifying data
 (i.e.~we pretend the outliers do not exist).
 
 \edd{Table showing results from automated analysis}
+
+
+\subsection{Cyclic data}
+
+Our previous benchmarking experience led us to suspect that enough benchmarks
+would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
+require special support in our automated analysis. We therefore took one process
+execution from each benchmark run on \bencherthree, removed the first 1500
+in-process iterations, and plotted an autocorrelation graph for the remainder
+(in similar fashion to \kalibera). Only 4 benchmarks showed what we have come to
+call `fully cyclic' behaviour, where all in-process iterations repeat in a
+predictable pattern. A further 8 showed `partially cyclic' behaviour, where
+most iterations are noise around a mean, but every $n$ iterations there is a
+predictable and significant peak in-process iteration (with $n$ varying from 5
+to 19).
+
+For partially cyclic data, or fully cyclic data with a large cycle-length (as in
+Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
+appropriately. However, identifying small cycle lengths in fully cyclic data is
+an open research challenge in change-point analysis. Since it is so rare (only 2
+of our benchmarks, in both cases with a small absolute difference between the
+elements of the cycle), we do not consider this a significant problem in practise.
+
 
 \section{The Effects of Compilation and GC}
 \label{sec:deepdive}

@@ -796,14 +796,17 @@ iterations on \bencherthree (without reboots, temperature control etc.).
 We ran DaCapo on Graal and HotSpot. As it already has support for
 altering the number of in-process executions, we used it without modification.
 However, we were unable to run 4 of its 14 benchmarks: \texttt{batik}
-crashes with a \texttt{InvocationTargetException}; \texttt{eclipse},
+crashes with a \texttt{InvocationTargetException}, whereas \texttt{eclipse},
 \texttt{tomcat}, and (intermittently) \texttt{tradesoap} fail their own internal
 validation checks.
 
 We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8.
 We replaced its complex runner (which reported timings with a non-monotonic
 microsecond timer) with a simpler alternative (using a monotonic millisecond
-timer). Note that both runners run all Octane benchmarks in a single process-execution.
+timer). Note that both runners run all Octane benchmarks in a
+single process-execution\edd{both runners run all Octane benchmarks in a single
+process-execution" is there one runner for each vm, or do you mean octane and
+dacapo?}\edd{Worth saying why we find this odd? -- ordering of benchmarks will matter}.
 We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an

@@ -806,11 +806,7 @@ validation checks.
 We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8.
 We replaced its complex runner (which reported timings with a non-monotonic
 microsecond timer) with a simpler alternative (using a monotonic millisecond
-timer). Note that both runners run all Octane benchmarks in a
-single process-execution\edd{both runners run all Octane benchmarks in a single
-process-execution" is there one runner for each vm, or do you mean octane and
-dacapo?}\edd{Worth saying why we find this odd? -- ordering of benchmarks will matter}.
-We also had to decide on an acceptable notion of `iteration'. Many of Octane's
+timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
 adequately long running benchmark (very roughly, around 1s on \bencherthree, for
@@ -826,6 +822,10 @@ easily fix \texttt{pdfjs} by emptying a globally held list after each iteration,
 (a patch has been submitted to, but not yet accepted, to Octane), but not the
 others. We therefore include 12 of Octane's benchmarks (including lightly
 modified versions of \texttt{pdfjs} and \texttt{typescript}).
+Because we run fewer benchmarks, our modified runner is thus unable to fully
+replicate the running order of Octane's original runner. Since Octane runs all
+benchmarks in a single process execution, this could affect the performance of
+later benchmarks in the suite.
 
 
 \section{Threats to Validity}

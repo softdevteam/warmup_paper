@@ -591,6 +591,27 @@ sys.stdout.write("%s\n" % json.dumps(js))
 \end{figure}
 
 
+\section{Automatically Determining When Warmup Has Completed}
+
+\laurie{rebecca: if you can stick stuff in here about changepoints, that would be great!}
+
+\subsection{Classifications}
+
+Building atop changepoint analysis, we can then define useful classifications of
+time-series data from VM benchmarks. Benchmarks which consist of a
+single changepoint segment are \emph{flat} ($\rightarrow$). Since all our benchmarks run for 2000
+in-process iterations we (somewhat arbitrarily) define that a benchmark reaches
+a steady-state if the last 500 in-process iterations are part of a single
+changepoint segment. Benchmarks with more than one segment in the last 500
+in-process iterations are \emph{no steady state} ($\rightsquigarrow$). Steady-state
+benchmarks whose final segment has the lowest execution time of all segments is
+a \emph{warmup} ($\uparrow$). Steady-state benchmarks whose final segment is not
+the lowest execution time of all segments are a \emph{slowdown} ($\downarrow$).
+Benchmarks whose individual process executions have different classified
+(e.g.~where some are warmups, some slowdowns) are \emph{inconsistent}
+($\rightleftarrows$).
+
+
 \section{Results}
 \label{sec:Results}
 

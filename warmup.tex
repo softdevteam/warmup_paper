@@ -9,11 +9,11 @@
 \usepackage{booktabs}
 \usepackage{courier}
 \usepackage[scaled]{helvet}
-\usepackage{url}
 \usepackage{listings}
 \usepackage{enumitem}
 \usepackage{mdwlist} % tighter description environment (starred)
 \usepackage{gensymb}
+\usepackage{hyperref}
 
 \usepackage{graphicx}
 \usepackage{softdev}
@@ -144,6 +144,13 @@ we present data for VM \emph{startup} time: how long it takes until a VM can
 start executing any user code (Section~\ref{sec:startup}). Finally, we show that
 our statistical method can be applied to well known benchmark suites run in a
 conventional manner (Section~\ref{sec:existing}).
+
+The repeatable experiment we designed, as well as the specific results used
+in this paper, can be downloaded from:
+\vspace{-.5em}
+\begin{center}
+\url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.7/}
+\end{center}
 
 
 \section{Background}
@@ -602,15 +609,7 @@ axis for a \textbf{core-cycle plot} is the cycle count delta for an individual
 CPU core. The $y$ axis for a \textbf{frequency ratio plot} plot is the
 \texttt{IA32\_APERF}/\texttt{IA32\_AMERF} delta ratio for an individual CPU
 core. The latter two plots are per-core, so for these, for each
-process-execution we plot one for each CPU core. A full set of plots (and raw
-data) can be downloaded from:
-\edd{XXX bump version when new data is up}
-\vspace{-.5em}
-\begin{center}
-{\small%
-\url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.1/}
-}
-\end{center}
+process-execution we plot one for each CPU core.
 
 \begin{figure}[tbp]
 \centering

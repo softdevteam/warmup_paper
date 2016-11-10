@@ -647,7 +647,7 @@ process executions behave differently. Sometimes (perhaps as one may expect)
 this occurs on the same machine; sometimes on different machines.
 Figure~\ref{fig:examples:inconsistent} shows an example of the latter case.
 Later in Section~\ref{sec:stats} we formally define and automatically classify
-these bahviours.
+these behaviours.
 
 
 \begin{figure}[tbp]
@@ -690,15 +690,15 @@ execution. For multi-threaded VMs, the OS (as expected) schedules threads on
 multiple cores simultaneously. This is characterised by consistently high
 core-cycle counts for more than one core over the same slice of in-process iterations.
 
-In some cases where there is a behavioral change in wall-clock times, the
+In some cases where there is a behavioural change in wall-clock times, the
 core-cycle counts reflect the changes, as can be seen in
 Figure~\ref{fig:examples:cycles}. This is indicative of the increased (or
-decreased) wallclock times being a result of the corresponding CPU core doing
+decreased) wall-clock times being a result of the corresponding CPU core doing
 more (or less work). Often JIT compilation or garbage collection can account
 for consistent changes in the wall-clock time and core-cycle counts (we
 investigate this in Section~\ref{sec:deepdive}). However, not all wall-clock
 time changes are reflected by core-cycle counts, which suggests that there is
-another (as yet unkown) source of variation. We did not observe an
+another (as yet unknown) source of variation. We did not observe an
 \texttt{IA32\_APERF/IA32\_AMERF} delta ratio that fell significantly below 1
 for a busy CPU core, thus ruling out the possibility of CPU frequency being the
 cause of such wall-clock time changes.\edd{can we leave that unsolved? Perhaps

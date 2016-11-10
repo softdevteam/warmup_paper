@@ -673,6 +673,11 @@ these bahviours.
 \label{fig:examples:inconsistent}
 \end{figure*}
 
+Many process executions have \emph{outliers}: informally, these are in-process
+iterations which are slower (or, less commonly, much faster) than neighbouring
+in-process iterations. Many of these are due to garbage collection (see
+Section~\ref{sec:deepdive} for more on the effects of garbage collection).
+
 The core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
 cycle-count value on one core, and a near zero value on all other cores.
@@ -719,11 +724,6 @@ all XXX in-process executions in our data.
 \textbf{No steady state}
 
 \textbf{Inconsistent Process Executions}
-
-\edd{Is this para needed somewhere?}One common feature is \emph{outliers}: informally, these are in-process
-iterations which are slower (or, less commonly, much faster) than neighbouring
-in-process iterations. In general, we disregard outliers when classifying data
-(i.e.~we pretend the outliers do not exist).
 
 \edd{Table showing results from automated analysis}
 

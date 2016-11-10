@@ -374,14 +374,16 @@ minutes to allow the system to fully initialise; calls \texttt{sync} (to
 flush any remaining files to disk) followed by a 30 second wait; before finally running the
 next process execution.
 
-Loading \krun's results file is a relatively memory intensive task which we do
-not want to occur before benchmarking (since it is likely to e.g.~fragment
-memory). Instead of consulting the results file to decide which process
-execution to run next, \krun uses a simple schedule file (created prior to the
-first reboot), which is scanned line-by-line for the next process execution.
-Only once the process execution is completed, does \krun load the results file
-and append the new result. The schedule file is updated before the system
-reboots to run the next process execution.
+The obvious way for \krun to determine which benchmark to run next is to examine
+its results file. However, this is a large file which grows over time, and
+reading it in could affect benchmarks (e.g.~due to significant memory
+fragmentation). On its initial execution, and before the first reboot, \krun
+therefore creates a simple schedule file. After each reboot this is scanned
+line-by-line for the next benchmark to run; the benchmark is run; and the schedule
+updated (without changing its size). Once the process execution is
+complete, \krun can safely load the results file in and append the results data,
+knowing that the reboot that will occur shortly after will put the machine into
+a (largely) known state.
 
 Modern systems have various safety limiters built in. For example,
 processors have temperature sensors in; if the processor's safe limit

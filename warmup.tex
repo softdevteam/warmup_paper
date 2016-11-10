@@ -598,18 +598,25 @@ sys.stdout.write("%s\n" % json.dumps(js))
 \subsection{Classifications}
 
 Building atop changepoint analysis, we can then define useful classifications of
-time-series data from VM benchmarks. Benchmarks which consist of a
-single changepoint segment are \emph{flat} ($\rightarrow$). Since all our benchmarks run for 2000
-in-process iterations we (somewhat arbitrarily) define that a benchmark reaches
-a steady-state if the last 500 in-process iterations are part of a single
-changepoint segment. Benchmarks with more than one segment in the last 500
-in-process iterations are \emph{no steady state} ($\rightsquigarrow$). Steady-state
-benchmarks whose final segment has the lowest execution time of all segments is
-a \emph{warmup} ($\uparrow$). Steady-state benchmarks whose final segment is not
-the lowest execution time of all segments are a \emph{slowdown} ($\downarrow$).
-Benchmarks whose individual process executions have different classified
-(e.g.~where some are warmups, some slowdowns) are \emph{inconsistent}
-($\rightleftarrows$).
+time-series data from VM benchmarks.
+
+First, we define classifications for individual process executions. A process
+execution which consists of a single changepoint segment is classified
+\emph{flat} ($\rightarrow$). Since all our benchmarks run for 2000 in-process
+iterations we (somewhat arbitrarily) define that a process execution reaches a
+steady-state if the last 500 in-process iterations are part of a single
+changepoint segment. A process execution with more than one segment in its last
+500 in-process iterations is classified \emph{no steady state}
+($\rightsquigarrow$). A steady-state process execution whose final segment has
+the lowest execution time of all segments is classified \emph{warmup}
+($\uparrow$). A steady-state process execution whose final segment is not the
+lowest execution time of all segments is classified a \emph{slowdown}
+($\downarrow$).
+
+Second, we define classifications for a benchmark's set of process executions.
+If its process executions all share the same classification (e.g.~warmup) then
+we classify the benchmark the same (warmup); otherwise we classify the benchmark as
+\emph{inconsistent} ($\rightleftarrows$).
 
 
 \section{Results}

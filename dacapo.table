@@ -1,18 +1,61 @@
-\begin{tabular}{lrrr}
+\begin{tabular}{lcrrr}
 \toprule
-\multicolumn{1}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
-\multicolumn{1}{c}{+classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
+\multicolumn{2}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
+\multicolumn{2}{c}{\& classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
 \midrule
-avroras & $\substack{684\\\scriptscriptstyle{\pm261}}$ & $\substack{1374750.20\\\scriptscriptstyle{\pm196207.750}}$ & $\substack{1684.33505\\\scriptscriptstyle{\pm4.969454}}$\\[2pt]
-fop$\rightsquigarrow{}^*$ &  &  & \\[2pt]
-h2s$^*$ &  &  & \\[2pt]
-jythons$^*$ &  &  & \\[2pt]
-luindexs & $\substack{919\\\scriptscriptstyle{\pm78}}$ & $\substack{333504.25\\\scriptscriptstyle{\pm35724.000}}$ & $\substack{385.68624\\\scriptscriptstyle{\pm0.960960}}$\\[2pt]
-lusearchs & $\substack{45\\\scriptscriptstyle{\pm33}}$ & $\substack{37372.40\\\scriptscriptstyle{\pm19628.350}}$ & $\substack{757.24149\\\scriptscriptstyle{\pm0.679931}}$\\[2pt]
-pmds & $\substack{728\\\scriptscriptstyle{\pm137}}$ & $\substack{453309.25\\\scriptscriptstyle{\pm141846.000}}$ & $\substack{645.88001\\\scriptscriptstyle{\pm3.373591}}$\\[2pt]
-sunflow$\rightsquigarrow$ &  &  & \\[2pt]
-tradebeans$\searrow{}^*$ &  &  & \\[2pt]
-xalans & $\substack{83\\\scriptscriptstyle{\pm87}}$ & $\substack{36745.45\\\scriptscriptstyle{\pm30937.450}}$ & $\substack{430.92362\\\scriptscriptstyle{\pm2.023091}}$\\
+avroras &
+\inconsistent &
+$
+\begin{array}{rr}
+\scriptstyle{128} \\[-6pt]
+\scriptscriptstyle{\pm13}
+\end{array}
+$
+&
+$
+\begin{array}{rr}
+\scriptstyle{1.374} \\[-6pt]
+\scriptscriptstyle{\pm0.196}
+\end{array}
+$
+&
+$
+\begin{array}{rr}
+\scriptstyle{1.684} \\[-6pt]
+\scriptscriptstyle{\pm0.196}
+\end{array}
+$
+\\[2pt]
+fop & \nosteadystate &  &  & \\[2pt]
+h2s & &  &  & \\[2pt]
+jythons & &  &  & \\[2pt]
+luindexs & &
+$
+\begin{array}{rr}
+\scriptstyle{12} \\[-6pt]
+\scriptscriptstyle{\pm2}
+\end{array}
+$
+&
+$
+\begin{array}{rr}
+\scriptstyle{12.345} \\[-6pt]
+\scriptscriptstyle{\pm1.234}
+\end{array}
+$
+& 
+$
+\begin{array}{rr}
+\scriptstyle{1234.567} \\[-6pt]
+\scriptscriptstyle{\pm0.123}
+\end{array}
+$
+\\[2pt]
+lusearchs & & $\substack{45\\\scriptscriptstyle{\pm33}}$ & $\substack{37372.40\\\scriptscriptstyle{\pm19628.350}}$ & $\substack{757.24149\\\scriptscriptstyle{\pm0.679931}}$\\[2pt]
+pmds & & $\substack{728\\\scriptscriptstyle{\pm137}}$ & $\substack{453309.25\\\scriptscriptstyle{\pm141846.000}}$ & $\substack{645.88001\\\scriptscriptstyle{\pm3.373591}}$\\[2pt]
+sunflow & \nosteadystate &  &  & \\[2pt]
+tradebeans &  &  &  & \\[2pt]
+xalans & \warmup & $\substack{83\\\scriptscriptstyle{\pm87}}$ & $\substack{36745.45\\\scriptscriptstyle{\pm30937.450}}$ & $\substack{430.92362\\\scriptscriptstyle{\pm2.023091}}$\\
 \midrule
 richards\\[2pt]
 deltablue\\[2pt]

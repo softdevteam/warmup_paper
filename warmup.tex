@@ -632,22 +632,36 @@ we classify the benchmark the same (warmup); otherwise we classify the benchmark
 \section{Results}
 \label{sec:Results}
 
+\begin{table*}[t]
+\centering
+\begin{minipage}{.48\textwidth}
+\input{results1.table}
+\end{minipage}
+\begin{minipage}{.48\textwidth}
+\input{results2.table}
+\end{minipage}
+\caption{Main experiment results. \textsc{Key}: flat=\flatc,
+warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
+\label{tab:mainresults}
+\end{table*}
+
 %           execs    iters
 % BSD         350  600,000
 % Linux       460  920,000
 %
 % This excludes the empty benchmark
 
-In total, our experiment runs  1270 unique process executions, giving a total
-of 2,440,000 in-process iteration readings.
-For each process execution we generate a series of plots sharing a common $x$
-axis: the sequential in-process execution number. The $y$ axis for a
-\textbf{run-sequence plot} is the wall-clock time delta (in seconds). The $y$
-axis for a \textbf{core-cycle plot} is the cycle count delta for an individual
-CPU core. The $y$ axis for a \textbf{frequency ratio plot} plot is the
-\texttt{IA32\_APERF}/\texttt{IA32\_AMERF} delta ratio for an individual CPU
-core. The latter two plots are per-core, so for these, for each
-process-execution we plot one for each CPU core.
+Our experiment consists of 1270 process executions and 2.5 million in-process
+executions. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}
+(results from the other machines can be seen in Appendix~\ref{app:mainresults}).
+\laurie{we should summarise: X\% are flat, Y\% are warmup etc.}
+
+For each process execution, we create a series of plots with
+in-process iterations as a common $x$-axis. Different plots have different $y$
+axes: \emph{run-sequence plots} show wall-clock time; \emph{core-cycle plots}
+show the processor cycle count; and \emph{frequency/ratio plots} show the
+APERF/MPERF ratio. The latter two plots are per-core, so each process execution
+has one per core. For run-sequence plots
 
 \begin{figure}[tbp]
 \centering
@@ -764,17 +778,6 @@ all XXX in-process executions in our data.
 
 \textbf{Inconsistent Process Executions}
 
-\begin{figure*}[t]
-\centering
-\begin{minipage}{.48\textwidth}
-\input{results1.table}
-\end{minipage}
-\begin{minipage}{.48\textwidth}
-\input{results2.table}
-\end{minipage}
-\caption{Main experiment results. \textsc{Key}: flat=\flatc,
-warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.\edd{for real table, merge two into one.}}
-\end{figure*}
 
 \subsection{Cyclic data}
 
@@ -838,18 +841,13 @@ variation in the startup time of various VMs.
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 \label{sec:existing}
 
-\begin{figure}[t]
+\begin{table}[t]
 \centering
 \input{dacapo.table}
 \caption{Dacapo results. \textsc{Key}: flat=\flatc,
 warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\input{octane.table}
-\caption{Octane results.}
-\end{figure}
+\label{tab:dacapo}
+\end{table}
 
 The statistical method presented in Section \laurie{XXX} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
@@ -887,7 +885,6 @@ Because we run fewer benchmarks, our modified runner is thus unable to fully
 replicate the running order of Octane's original runner. Since Octane runs all
 benchmarks in a single process execution, this could affect the performance of
 later benchmarks in the suite.
-
 
 
 \section{Threats to Validity}
@@ -1060,6 +1057,24 @@ Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
 
 \bibliographystyle{plain}
 \bibliography{bib}
+
+\newpage
+
+\appendix
+
+\section{Main Results}
+\label{app:mainresults}
+
+\laurie{the results for the other 2 benchers should go here}
+
+
+\section{Octane Results}
+
+\begin{figure}[t]
+\centering
+\input{octane.table}
+\caption{Octane results.}
+\end{figure}
 
 \end{document}
 

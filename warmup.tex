@@ -268,10 +268,9 @@ in all language variants, due to its random number generator not being reseeded.
 fixed this by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
-In order to understand whether we might be subject to the effects of link
-order or other similar effects (see~\cite{mytkowicz09surprising}),
-we then used two different machines to compile VMs and ran our modified benchmarks
-on them. We then observed occasional non-determinism in Java benchmarks.
+In order to understand the effects of compilation non-determinism,
+we then compiled VMs and ran our modified benchmarks on two different machines.
+We then observed occasional non-determinism in Java benchmarks.
 This was due to the extra class we had added to each benchmark
 to interface between it and the benchmark runner: sometimes, the
 main benchmark class was lazily loaded after benchmark timing had started in a

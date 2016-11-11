@@ -1,0 +1,33 @@
+\begin{tabular}{p{5pt}lcrrr}
+\toprule
+\multicolumn{3}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
+\multicolumn{3}{c}{\& classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
+\midrule
+\multirow{8}{*}{\rotatebox[origin=c]{90}{binarytrees}} & PyPy & \flatc\\[2pt]
+&Hotspot\\[2pt]
+&Graal&\inconsistent\\[2pt]
+&LuaJITt&\warmup\\[2pt]
+&HHVM\\[2pt]
+&JRubyTruffle\\[2pt]
+&V8\\[2pt]
+&C\\[2pt]
+\midrule
+\multirow{8}{*}{\rotatebox[origin=c]{90}{richards}} & PyPy & \flatc\\[2pt]
+&Hotspot\\[2pt]
+&Graal&\inconsistent\\[2pt]
+&LuaJITt&\warmup\\[2pt]
+&HHVM\\[2pt]
+&JRubyTruffle\\[2pt]
+&V8\\[2pt]
+&C\\[2pt]
+\midrule
+\multirow{8}{*}{\rotatebox[origin=c]{90}{spectralnorm}} & PyPy & \flatc\\[2pt]
+&Hotspot\\[2pt]
+&Graal&\inconsistent\\[2pt]
+&LuaJITt&\warmup\\[2pt]
+&HHVM\\[2pt]
+&JRubyTruffle\\[2pt]
+&V8\\[2pt]
+&C\\[2pt]
+\bottomrule
+\end{tabular}

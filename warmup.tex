@@ -451,26 +451,27 @@ Intel P-state support in the kernel by passing the kernel argument
 fully guarantee that the CPU does as requested
 (see Section~\ref{sec:threats} for details).
 
-By default, Linux interrupts each logical CPU\footnote{Note that each core of
-each individual processor chip counts as a logical CPU.} 250 times\edd{citation?} (`ticks') per second to
+By default, Linux interrupts (`ticks') each logical CPU\footnote{Note that each
+core of each individual processor chip counts as a logical CPU.}
+\texttt{CONFIG\_HZ} times per second (usually 250) to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
 kernel~\cite{tickless}, which requires recompiling the kernel with the
 \texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set. Whilst the boot CPU is still
-interrupted 250 times a second, this option means that other CPUs are only
+interrupted, other CPUs are only
 interrupted if more than one runnable process is scheduled.
 
-Similarly, Linux's \texttt{perf} system repeatedly interjects itself \laurie{how
-often?} on each logical CPU in order to sample hardware counters. We became
-aware of \texttt{perf} when \krun's \texttt{dmesg} checks notified us that the
-kernel had decreased the sample-rate as it determined that it was sampling too
-often. Unlike default kernel ticks, \texttt{perf}'s rate of interruptions can
-vary over time, which is particularly troubling from a benchmarking perspective.
-Since \texttt{perf} cannot be disabled entirely,
-\krun sets the sample-rate to the smallest possible value of 1 sample per
-second.
+Similarly, Linux's \texttt{perf} profiler may interrupt CPUs many times a
+second (the default maximum sample rate is 100,000Hz) to sample performance
+counters. We became aware of \texttt{perf} when \krun's \texttt{dmesg} checks
+notified us that the kernel had automatically decreased the sample-rate by
+50\%,  as it determined that sampling was taking too long. This is troubling
+from a benchmarking perspective, as the change of sample rate could change
+benchmark performance mid-process execution. We were unable to completely
+disable \texttt{perf}, however \krun sets the sample-rate to the smallest
+possible value of 1Hz, thus minimising interruptions.
 
-Finally, \krun disables Address Space Layout Randomisation (ASLR). While this is
+Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
 a sensible security precaution for everyday use, it introduces obvious
 non-determinism between process executions.\footnote{The Stabilizer
 system~\cite{curtsinger13stabilizer} is an intriguing approach for obtaining reliable

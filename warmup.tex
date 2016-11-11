@@ -602,6 +602,7 @@ sys.stdout.write("%s\n" % json.dumps(js))
 
 
 \section{Automatically Determining When Warmup Has Completed}
+\label{sec:stats}
 
 \laurie{rebecca: if you can stick stuff in here about changepoints, that would be great!}
 
@@ -654,69 +655,44 @@ warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
 Our experiment consists of 1270 process executions and 2.5 million in-process
 executions. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}
 (results from the other machines can be seen in Appendix~\ref{app:mainresults}).
-\laurie{we should summarise: X\% are flat, Y\% are warmup etc.}
+\laurie{we should summarise: X\% are flat, Y\% are warmup etc.} These results
+clearly invalidate Hypothesis H1.
 
-For each process execution, we create a series of plots with
-in-process iterations as a common $x$-axis. Different plots have different $y$
+In order to understand why, we create a series of plots for each process execution
+with in-process iterations as a common $x$-axis. Different plots have different $y$
 axes: \emph{run-sequence plots} show wall-clock time; \emph{core-cycle plots}
 show the processor cycle count; and \emph{frequency/ratio plots} show the
 APERF/MPERF ratio. The latter two plots are per-core, so each process execution
-has one per core. For run-sequence plots
+has one per core. Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
+\ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
+and no steady state respectively. Figure~\ref{fig:examples:inconsistent} shows
+an example of inconsistent process executions on identical (machine, VM,
+benchmark) triples.
 
-\begin{figure}[tbp]
+\begin{figure}[t]
+\centering
+\includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
+\caption{An example of traditional warmup behaviour with the n-body benchmark on
+HHVM (process execution 4 of 10 run on \bencherthree). Warmup completed by
+in-process iteration \#134. In this example, the main benchmark computation
+occurred almost entirely on core 1: cores 0, 2 and 3 had Cycle Counts (CC) close
+to 0 for the entire in-process execution and are thus not shown.}
+\label{fig:examples:trad}
+\end{figure}
+
+\begin{figure}[t]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_slowdown.pdf}
 \caption{Slowdown at in-process iteration \#199.}
 \label{fig:examples:slowdown1}
 \end{figure}
 
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
-\caption{Traditional warmup behaviour on a single core. Warmup is complete by
-in-process iteration \#134. Cores 0, 2 and 3 (not shown) had cycle counts close
-to 0 for the entire in-process execution.}
-\label{fig:examples:trad}
-\end{figure}
-
-Though simple, a cursory glance of our plots is enough to highlight a number of
-interesting warmup behaviours. \textbf{Flat} process executions (particularly
-the C benchmarks), have constant (allowing for noise) in-process iteration
-times across the entire process execution. Some process executions
-\textbf{warmup} as per our expectations. Figure~\ref{fig:examples:trad} shows
-an example. Some process executions \textbf{slowdown}, \label{sub:slowdowns}
-where the performance of
-in-process iterations drops over time. Figure~\ref{fig:examples:slowdown1} shows
-an example where a sharp slowdown occurs.
-\textbf{Cyclic} \label{sub:cyclic} process executions have in-process iteration
-times which repeat in a predictable pattern. Figure~\ref{fig:examples:cycles}
-shows an example with a cycles spanning more than 100 in-process iterations.
-Some process executions have \textbf{no steady state}, \label{sub:long} where
-wall-clock times significantly change over time, but never seem to converge
-upon a steady state. Figure~\ref{fig:examples:neverending} shows an example.
-Finally, we observe \textbf{inconsistent process executions}
-\label{sub:inconsistent} where, for some benchmark and VM pairings, distinct
-process executions behave differently. Sometimes (perhaps as one may expect)
-this occurs on the same machine; sometimes on different machines.
-Figure~\ref{fig:examples:inconsistent} shows an example of the latter case.
-Later in Section~\ref{sec:stats} we formally define and automatically classify
-these behaviours.
-
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=.45\textwidth]{examples/new_cyclic.pdf}
-\caption{Cyclic behaviour (also evident in the core-cycle plot).}
-\label{fig:examples:cycles}
-\end{figure}
-
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_no_steady.pdf}
-\caption{No steady state. There is a small behavioral shift around iteration
+\caption{No steady state. There is a small behavioural shift around iteration
 950, where the VM migrates from (tickless) core 1 to (ticked) core 0.}
-\label{fig:examples:neverending}
+\label{fig:examples:nosteadystate}
 \end{figure}
 
 \begin{figure*}[t!]
@@ -757,29 +733,15 @@ for a busy CPU core, thus ruling out the possibility of CPU frequency being the
 cause of such wall-clock time changes.\edd{can we leave that unsolved? Perhaps
 need a graph, either here or in instrumentation section?}
 
-\subsection{Statistical Classification of Warmup Behaviours}
-\label{sec:stats}
-
-Having informally classified warmup behaviours, we now formally define these
-behaviours using automated statistical methods, before proceeding to classify
-all XXX in-process executions in our data.
-
-\edd{formally define}
-
-\textbf{Flat}
-
-\textbf{Warmup}
-
-\textbf{Slowdown}
-
-\textbf{Cyclic}
-
-\textbf{No steady state}
-
-\textbf{Inconsistent Process Executions}
-
 
 \subsection{Cyclic data}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=.45\textwidth]{examples/new_cyclic.pdf}
+\caption{Cyclic behaviour (also evident in the core-cycle plot).}
+\label{fig:examples:cycles}
+\end{figure}
 
 Our previous benchmarking experience led us to suspect that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to

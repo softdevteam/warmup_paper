@@ -523,7 +523,7 @@ slow; for very short time periods \laurie{need a figure here. is it something
 like 0.0001 or smaller?}, the error in reading the two counters can become
 noticeable. This is compounded by the fact that when inactive, cores do not
 update the counters. Fortunately, all our benchmarks run long enough for this
-error to be immaterial on active cores.
+error to be immaterial on active cores. \label{error in cycle counts}
 
 Not all of the VMs in our experiment give us access to the appropriate monotonic
 timer, and none gives us direct access to hardware counters. We therefore
@@ -607,6 +607,8 @@ sys.stdout.write("%s\n" % json.dumps(js))
 
 \laurie{rebecca: if you can stick stuff in here about changepoints, that would be great!}
 
+\laurie{somewhere we need to talk about outliers}
+
 \subsection{Classifications}
 
 Building atop changepoint analysis, we can then define useful classifications of
@@ -627,7 +629,7 @@ lowest execution time of all segments is classified as a \emph{slowdown}
 
 Second, we define classifications for a benchmark's set of process executions.
 If its process executions all share the same classification (e.g.~warmup) then
-we classify the benchmark the same (warmup); otherwise we classify the benchmark as
+we classify the benchmark the same (in this example, warmup); otherwise we classify the benchmark as
 \emph{inconsistent} (\inconsistent).
 
 
@@ -642,8 +644,8 @@ we classify the benchmark the same (warmup); otherwise we classify the benchmark
 \begin{minipage}{.48\textwidth}
 \input{results2.table}
 \end{minipage}
-\caption{Main experiment results. \textsc{Key}: flat=\flatc,
-warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
+\caption{Main experiment results. Key: \flatc: flat, \warmup: warmup, \slowdown:
+slowdown, \nosteadystate: no steady state, \inconsistent: inconsistent.}
 \label{tab:mainresults}
 \end{table*}
 
@@ -664,8 +666,8 @@ with in-process iterations as a common $x$-axis. Different plots have different 
 axes: \emph{run-sequence plots} show wall-clock time; \emph{core-cycle plots}
 show the processor cycle count; and \emph{frequency/ratio plots} show the
 APERF/MPERF ratio. The latter two plots are per-core, so each process execution
-has one per core. Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
-\ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
+has one per core. The run-sequence and core-cycle plots in Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
+and \ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
 and no steady state respectively. Figure~\ref{fig:examples:inconsistent} shows
 an example of inconsistent process executions on identical (machine, VM,
 benchmark) triples.
@@ -674,10 +676,11 @@ benchmark) triples.
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
 \caption{An example of traditional warmup behaviour with the n-body benchmark on
-HHVM (process execution 4 of 10 run on \bencherthree). Warmup completed by
-in-process iteration \#134. In this example, the main benchmark computation
+HHVM (process execution 4 of 10 run on \bencherthree). The run-sequence plot
+(bottom) shows that warmup completed by in-process iteration \#134. The
+core-cycle plot (top) shows that the main benchmark computation
 occurred almost entirely on core 1: cores 0, 2 and 3 had Cycle Counts (CC) close
-to 0 for the entire in-process execution and are thus not shown.}
+to 0 for the entire in-process execution and are thus elided.}
 \label{fig:examples:trad}
 \end{figure}
 
@@ -703,36 +706,28 @@ to 0 for the entire in-process execution and are thus not shown.}
 \label{fig:examples:inconsistent}
 \end{figure*}
 
-Many process executions have \emph{outliers}: informally, these are in-process
-iterations which are slower (or, less commonly, much faster) than neighbouring
-in-process iterations. Many of these are due to garbage collection (see
-Section~\ref{sec:deepdive} for more on the effects of garbage collection).
-
-The core-cycle plots help us understand how VMs use, and how the OS schedules,
+Core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
-cycle-count value on one core, and a near zero value on all other cores.
-Further, single-threaded VMs may migrate to between cores within a process
-execution. Figure~\ref{fig:examples:trad} shows a process execution where the
-VM stays on the same core for the whole process execution, whereas
-Figure~\ref{fig:examples:cycles} shows a case where the VM migrates
-mid-process
-execution. For multi-threaded VMs, the OS (as expected) schedules threads on
-multiple cores simultaneously. This is characterised by consistently high
-core-cycle counts for more than one core over the same slice of in-process iterations.
+cycle-count on one core, and very low (though never quite zero) values on all
+other cores. Such VMs may still be migrated between cores during process
+execution, as can be clearly seen in Figure~\ref{fig:examples:nosteadystate}.
+Multi-threaded VMs can run JIT compilation and / or GC in parallel:
+Figure~\laurie{XXX maybe show the core cycle counts for hotspot/richards?} shows
+an example. It is often hard to detect parallelism in the resulting core counts as
+the main benchmark computation tends to be frequently migrated between cores:
+however, it can often easily be seen that several cores are active during the first few
+in-process iterations whilst JIT compilation occurs.
 
-In some cases where there is a behavioural change in wall-clock times, the
-core-cycle counts reflect the changes, as can be seen in
-Figure~\ref{fig:examples:cycles}. This is indicative of the increased (or
-decreased) wall-clock times being a result of the corresponding CPU core doing
-more (or less work). Often JIT compilation or garbage collection can account
-for consistent changes in the wall-clock time and core-cycle counts (we
-investigate this in Section~\ref{sec:deepdive}). However, not all wall-clock
-time changes are reflected by core-cycle counts, which suggests that there is
-another (as yet unknown) source of variation. We did not observe an
-\texttt{IA32\_APERF/IA32\_AMERF} delta ratio that fell significantly below 1
-for a busy CPU core, thus ruling out the possibility of CPU frequency being the
-cause of such wall-clock time changes.\edd{can we leave that unsolved? Perhaps
-need a graph, either here or in instrumentation section?}
+Frequency/ratio plots display the APERF/MPERF ratio (see the Appendix for
+examples). These allow us to see if the processor's frequency changed during
+benchmarking execution. As discussed in Section~\ref{error in cycle counts}, the
+error in reading the APERF/MPERF ratio is relatively high for very short running
+iterations or (largely) inactive cores. Thus whilst in an ideal world we would
+insist that the APERF/MPERF ratio should always be exactly 1, we have to apply a
+small amount of discretion. We wrote a simple automated analysis that checks the
+APERF/MPERF data; any core whose cycle count for a given in-process iteration is
+below \laurie{XXX} is ignored; `active' cores are then checked for an
+APERF/MPERF ratio between \laurie{i guess something like 0.97 and 1.03?}.
 
 
 \subsection{Cyclic data}
@@ -744,9 +739,11 @@ need a graph, either here or in instrumentation section?}
 \label{fig:examples:cycles}
 \end{figure}
 
-Our previous benchmarking experience led us to suspect that enough benchmarks
+We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
-require special support in our automated analysis. We therefore took one process
+require special support in our automated analysis; and a by-eye glance at
+data seemed to confirm this. In order to gain a more rigorous
+understanding, we took one process
 execution from each benchmark run on \bencherthree, removed the first 1500
 in-process iterations, and plotted an autocorrelation graph for the remainder
 (in similar fashion to \kalibera). Only 4 benchmarks showed what we have come to
@@ -758,7 +755,8 @@ to 19).
 
 For partially cyclic data, or fully cyclic data with a large cycle-length (as in
 Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
-appropriately. However, identifying small cycle lengths in fully cyclic data is
+appropriately (in the specific example, classifying it as no steady state).
+However, identifying small cycle lengths in fully cyclic data is
 an open research challenge in change-point analysis. Since it is so rare (only 2
 of our benchmarks, in both cases with a small absolute difference between the
 elements of the cycle), we do not consider this a significant problem in practise.

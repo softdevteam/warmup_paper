@@ -668,8 +668,8 @@ broadly similar. We believe that these validate Hypothesis H2.''?}
 In order to understand why, we create a series of plots for each process execution
 with in-process iterations as a common $x$-axis. Different plots have different $y$
 axes: \emph{run-sequence plots} show wall-clock time; \emph{core-cycle plots}
-show the processor cycle count; and \emph{frequency/ratio plots} show the
-APERF/MPERF ratio. The latter two plots are per-core, so each process execution
+show the processor cycle count; and \emph{APERF/MPERF plots} show whether
+the processor frequency changed. The latter two plots are per-core, so each process execution
 has one per core. The run-sequence and core-cycle plots in Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
 and \ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
 and no steady state respectively. Figure~\ref{fig:examples:inconsistent} shows
@@ -722,8 +722,8 @@ the main benchmark computation tends to be frequently migrated between cores:
 however, it can often easily be seen that several cores are active during the first few
 in-process iterations whilst JIT compilation occurs.
 
-Frequency/ratio plots display the APERF/MPERF ratio (see the Appendix for
-examples). These allow us to see if the processor's frequency changed during
+The APERF/MPERF ratio plots(see the Appendix for
+examples)  allow us to see if the processor's frequency changed during
 benchmarking execution. As discussed in Section~\ref{error in cycle counts}, the
 error in reading the APERF/MPERF ratio is relatively high for very short running
 iterations or (largely) inactive cores. Thus whilst in an ideal world we would

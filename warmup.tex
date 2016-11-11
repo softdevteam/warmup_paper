@@ -269,7 +269,7 @@ fixed this by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
 In order to understand whether we might be subject to the effects of link
-order and other similar effects (see~\cite{mytkowicz09surprising}),
+order or other similar effects (see~\cite{mytkowicz09surprising}),
 we then used two different machines to compile VMs and ran our modified benchmarks
 on them. We then observed occasional non-determinism in Java benchmarks.
 This was due to the extra class we had added to each benchmark
@@ -428,10 +428,15 @@ noticing that one machine initially ear-marked for benchmarking occasionally
 overheated, with the only clue to this being a line in \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
 
-\laurie{need to think a bit about this} \edd{citation} suggests that the size of the environment can affect
-performance, so \krun also logs the environment under which each process
-execution is invoked. We check the environments are the same size for all 10
-process executions of each benchmark and VM pairing.
+In some cases, the Unix environment size can cause measurement
+bias~\cite{mytkowicz09surprising}. The complexity of our experimental
+setup makes it hard for \krun to set a unified environment size across all VMs and
+benchmarks. However, \krun ensures that the \texttt{krun} Unix user uses
+a fixed size environment (we recorded and verified this for all process
+executions), and we designed the experiment such that, for a particular (VM,
+benchmark) pair the additional environment used to configure the VM is constant
+size. In other words, all process executions for a given (VM, benchmark pair)
+pair have a constant environment size.
 
 
 \subsubsection{Linux-specific Controls}

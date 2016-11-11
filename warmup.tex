@@ -1007,14 +1007,14 @@ performance stability. Second, as a community, we need to accept that a steady
 state of peak performance is not guaranteed to exist. Third, the significant
 differences in warmup time between VMs strongly suggest that VM benchmarking
 should always include warmup time. Fourth, we suspect that some of the odd
-results we have seen results from over-training VM heuristics on small sets of
-benchmarks. We may be able to use the approach taken by the machine-learning
-community, and use a training set to help us devise VM heuristics, and a
-separate validation set on which published results are given. Fifth, we suspect
-that our reliance on small suites of benchmarks means that we are only
-benchmarking small parts of our VMs effectively: we are increasingly of the
-opinion that benchmarking quality and quantity are tightly related, and that we
-are in need of more benchmarks.
+results we have seen result from over-training VM heuristics on small sets of
+benchmarks. The approach taken by the machine-learning community may be apply
+equally well to the VMs: using a training set to devise heuristics, and then
+benchmarking the resulting system(s) on a separate validation system. Fifth, we suspect
+that the general reliance on small suites of benchmarks means that only
+small parts of VMs are being benchmarked effectively: we are increasingly of the
+opinion that benchmarking quality and quantity are tightly related, and that VMs
+need more benchmarks.
 
 \textbf{Transparency:} Three of this paper's authors have contributed
 substantial code to the PyPy project. The King's group has received

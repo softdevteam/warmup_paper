@@ -1,7 +1,7 @@
 \begin{tabular}{p{5pt}lcrrr}
 \toprule
-& \multicolumn{2}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
-& \multicolumn{2}{c}{\& classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
+\multicolumn{3}{c}{Benchmark}   &\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\
+\multicolumn{3}{c}{\& classification}  &\multicolumn{1}{c}{(iter. \#)}       &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}\\
 \midrule
 \multirow{14}{*}{\rotatebox[origin=c]{90}{SpiderMonkey}} &
 richards\\[2pt]

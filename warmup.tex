@@ -656,10 +656,14 @@ slowdown, \nosteadystate: no steady state, \inconsistent: inconsistent.}
 % This excludes the empty benchmark
 
 Our experiment consists of 1270 process executions and 2.5 million in-process
-executions. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}
-(results from the other machines can be seen in Appendix~\ref{app:mainresults}).
+executions. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}.
 \laurie{we should summarise: X\% are flat, Y\% are warmup etc.} These results
-clearly invalidate Hypothesis H1.
+clearly invalidate Hypothesis H1. The results for \laurie{other benchers}
+can be seen in Appendix~\ref{app:mainresults}. \laurie{summarise the data}
+\laurie{Something like ``The two Linux machines, despite their moderately
+different hardware, have exceptionally similar classifications across our
+benchmark suite. The OpenBSD machine is slightly more different, but still
+broadly similar. We believe that these validate Hypothesis H2.''?}
 
 In order to understand why, we create a series of plots for each process execution
 with in-process iterations as a common $x$-axis. Different plots have different $y$
@@ -762,19 +766,20 @@ of our benchmarks, in both cases with a small absolute difference between the
 elements of the cycle), we do not consider this a significant problem in practise.
 
 
-\section{The Effects of Compilation and GC}
+\subsection{The Effects of Compilation and GC}
 \label{sec:deepdive}
 
-\subsection{VM Instrumentation Mode}
+The large number of non-warmup cases in our data led us to make the following hypothesis:
+\begin{description}
+  \item[H3] Non-warmup process executions are largely due to JIT compilation or GC.
+\end{description}
+To test this hypothesis, we made use of the that both HotSpot and PyPy allow
+information about the duration of JIT compilation and GC to be recorded. Since
+recording this additional data could potentially change the results we collect,
+it is only collected when \krun is explicitly set to `instrumentation mode'. An
+example instrumentation-plot can be seen in Figure~\laurie{XXX}.
 
-For PyPy and Hotspot, \krun has an \emph{instrumentation mode}, which logs certain
-VM events. We collect data that allows us to compute (for each in-process
-iteration) how much time was spent in the garbage collector and in the JIT.
-Our hope is that this will help to associate meaning to
-steps and spikes in in-process iteration times. By default this mode is off,
-since the instrumentation itself may interfere with measurements.
-We will re-run a subset of the experiment under this mode after collecting the
-main batch of results.
+\laurie{discuss the effect once we've got the data}
 
 
 \section{Startup Time}

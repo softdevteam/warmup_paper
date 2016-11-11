@@ -714,7 +714,7 @@ cycle-count value on one core, and a near zero value on all other cores.
 Further, single-threaded VMs may migrate to between cores within a process
 execution. Figure~\ref{fig:examples:trad} shows a process execution where the
 VM stays on the same core for the whole process execution, whereas
-Figure~\ref{fig:examples:neverending} shows a case where the VM migrates
+Figure~\ref{fig:examples:cycles} shows a case where the VM migrates
 mid-process
 execution. For multi-threaded VMs, the OS (as expected) schedules threads on
 multiple cores simultaneously. This is characterised by consistently high
@@ -740,7 +740,7 @@ need a graph, either here or in instrumentation section?}
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_cyclic.pdf}
-\caption{Cyclic behaviour (also evident in the core-cycle plot).}
+\caption{Cycles in wall-clock times and core-cycle counts.}
 \label{fig:examples:cycles}
 \end{figure}
 
@@ -812,7 +812,7 @@ warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
 \label{tab:dacapo}
 \end{table}
 
-The statistical method presented in Section \laurie{XXX} is not limited to data
+The statistical method presented in Section~\ref{sec:stats} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\laurie{cite?}
 (JavaScript). In both cases, we ran 10 process executions and 2000 in-process

@@ -451,8 +451,8 @@ Intel P-state support in the kernel by passing the kernel argument
 fully guarantee that the CPU does as requested
 (see Section~\ref{sec:threats} for details).
 
-By default, Linux interrupts (`ticks') each logical CPU\footnote{Note that each
-core of each individual processor chip counts as a logical CPU.}
+By default, Linux interrupts (`ticks') each logical CPU\footnote{Note that
+under Linux each individual CPU core counts as a logical CPU.}
 \texttt{CONFIG\_HZ} times per second (usually 250) to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'

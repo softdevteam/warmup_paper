@@ -910,26 +910,23 @@ different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
 
 Although we have minimised the number of system calls that our in-process
-iterations runners make, some still remain for taking measurements. We call
-\texttt{clock\_gettime()} to take monotonic in-process iteration start and stop times.
-In both the Linux and OpenBSD kernels, reading the monotonic clock is not
-atomic. To ensure a correct clock value is obtained, there is an (unbounded)
-read loop, which terminates only if the clock value did not change during the
-read.~\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the
-OpenBSD source code and \texttt{getrawmonotonic} in
-\texttt{kernel/time/timekeeping.c} in the Linux source code.} In
-practise, \texttt{clock\_gettime} returns far quicker than the granularity
+iterations runners make, we cannot escape them entirely. We call
+\texttt{clock\_gettime()} to obtain monotonic wall-clock time.
+On both Linux and OpenBSD, this function contains what is effectively a spin-lock,
+meaning that there is no guarantee that it returns within a fixed bound.
+%\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the
+%OpenBSD source code and \texttt{getrawmonotonic} in
+%\texttt{kernel/time/timekeeping.c} in the Linux source code.}
+In practise, \texttt{clock\_gettime} returns far quicker than the granularity
 of any our benchmarks, so this is a minor worry at most. The situation
 on Linux is complicated by our reading of core cycle and APERF/MPERF
 counts via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
 in-process iterations to reduce the open/close overhead).
 These calls are more involved than \texttt{clock\_gettime} \laurie{let's put a
-figure on it}. Reading from a MSR device node requires filesystem access and
-then inter-processor interrupts to
-schedule an \texttt{RDMSR} instruction on the desired core (which may not be the
-currently running core). Not only does this require bus communication, but the
-interrupted core must save its registers before running the scheduled code. We
+figure on it}. As well as the filesystem overhead, reading from a MSR device
+node triggers inter-processor interrupts to schedule an \texttt{RDMSR}
+instruction on the desired core (causing the running core to save its registers etc.). We
 were not able to find a lighter-weight timing mechanism, despite trying
 candidates such as the x86 Time Stamp Counter (TSC). On older systems the TSC
 increments relative to the CPU's frequency (and thus can be indirectly used to

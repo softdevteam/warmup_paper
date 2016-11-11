@@ -35,7 +35,7 @@
 \newcommand{\bencherthree}{Linux1/i7-4709K\xspace}
 \newcommand{\bencherfive}{Linux2/i7-4790\xspace}
 \newcommand{\benchersix}{OpenBSD/i7-4790\xspace}
-\newcommand{\bencherseven}{ARM\edd{XXX name properly if used}\xspace}
+\newcommand{\bencherseven}{Linux3/E3-1240v5\xspace}
 
 \newcommand{\flatc}{$\rightarrow$}
 \newcommand{\nosteadystate}{$\rightsquigarrow$}
@@ -817,14 +817,20 @@ warmup=\warmup, slowdown=\slowdown, inconsistent=\inconsistent.}
 
 The statistical method presented in Section~\ref{sec:stats} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
-benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\laurie{cite?}
-(JavaScript). In both cases, we ran 10 process executions and 2000 in-process
-iterations on \bencherthree (without reboots, temperature control etc.).
+benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\cite{octane}
+(JavaScript). We ran both for 10 process executions and 2000 in-process
+iterations without reboots, temperature control etc.: DaCapo on \bencherthree;
+and Octane on \bencherseven (a Xeon machine, with a software setup
+identical to \bencherthree).\footnote{The large amount of CPU time our
+experiments require meant that we ran out of time to run Octane on \bencherthree
+before paper submission. For the final paper, we will run DaCapo and Octane on
+the same machine. Although we do not expect this to result in significant
+changes to the data, it will reduce a source of variation.}
 
-We ran DaCapo on Graal and HotSpot. As it already has support for
+We ran DaCapo (with its default benchmark size) on Graal and HotSpot. As it already has support for
 altering the number of in-process executions, we used it without modification.
 However, we were unable to run 4 of its 14 benchmarks: \texttt{batik}
-crashes with a \texttt{InvocationTargetException}, whereas \texttt{eclipse},
+crashes with a \texttt{Invocation\-Target\-Exception}; \texttt{eclipse},
 \texttt{tomcat}, and (intermittently) \texttt{tradesoap} fail their own internal
 validation checks.
 
@@ -834,7 +840,7 @@ microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
-adequately long running benchmark (very roughly, around 1s on \bencherthree, for
+adequately long running benchmark (very roughly, around 1s on \bencherseven, for
 example). We recorded 2000 iterations of the outer benchmark; our runner
 fully resets the benchmark and the random number generator between each
 iteration. The \texttt{box2d}, \texttt{gameboy}, \texttt{mandreel} benchmarks do
@@ -843,14 +849,17 @@ not been able to fix; \texttt{typescript}'s reset function, in contrast, is
 overzealous, freeing constant data needed by all iterations, which we were able
 to easily fix. When run for 2000 iterations, \texttt{CodeLoadClosure},
 \texttt{pdfjs}, and \texttt{zlib} all fail due to memory leaks. We were able to
-easily fix \texttt{pdfjs} by emptying a globally held list after each iteration,
+easily fix \texttt{pdfjs} by emptying a global list after each iteration,
 (a patch has been submitted to, but not yet accepted, to Octane), but not the
 others. We therefore include 12 of Octane's benchmarks (including lightly
 modified versions of \texttt{pdfjs} and \texttt{typescript}).
-Because we run fewer benchmarks, our modified runner is thus unable to fully
+Because we run fewer benchmarks, our modified runner is unable to fully
 replicate the running order of Octane's original runner. Since Octane runs all
 benchmarks in a single process execution, this could affect the performance of
 later benchmarks in the suite.
+
+Table~\ref{tab:dacapo} shows the DaCapo results and Table~\ref{tab:octane} (in
+the Appendix) the Octane results.
 
 
 \section{Threats to Validity}
@@ -858,7 +867,7 @@ later benchmarks in the suite.
 
 While we have designed our experiment as carefully as possible, we do not
 pretend to have controlled every possibly confounding variable. Indeed, our
-experience when designing the experiment has been one of gradually uncovering
+designing the experiment has been one of continually uncovering
 confounding variables whose existence we had not previously imagined. It
 is inevitable that there are further confounding variables that we
 do not know about; some of these may be controllable, although many may not be.
@@ -866,11 +875,11 @@ It is possible that confounding variables that we are not aware of have
 coloured our results.
 
 We have tried to gain a partial understanding of the effects of different
-hardware on benchmarks by using benchmarking machines with the same OS but
+hardware on benchmarks by using machines with the same OS but
 different hardware. However, while the hardware between the two is
-different, much more distinct hardware (e.g.~using a non-x86 architecture) is
+different, much more distinct hardware (e.g.~a non-x86 architecture) is
 available, and is more likely to uncover hardware-related differences.
-However, hardware cannot always be controlled in isolation from software:
+However, hardware cannot be varied in isolation from software:
 the greater the differences in hardware, the more likely that JIT compilers
 compilers are to use different code paths (e.g.~different code generators and
 the like). Put another way, an apples-to-apples comparison across very different
@@ -881,7 +890,7 @@ We have not systematically tested whether rebuilding VMs effects warmup, an
 effect noted by \kalibera, though which seems to have little effect on
 the performance of JIT compiled code~\cite{barrett15approaches}. However, since measuring warm-up largely
 involves measuring code that was not created by a JIT compiler, it is possible
-that these effects may impact upon our experiment. To a very limited extent, the
+that these effects may impact upon our experiment. To a limited extent, the
 rebuilding of VMs that occurred on each of our benchmarking machines gives
 some small evidence as to this effect, or lack thereof.
 
@@ -890,10 +899,9 @@ performs equivalent work in each language variant. However, it is impossible to
 say whether each performs equivalent work at the lowest level or not. For
 example, choosing to use a different data type in a language's core library may
 substantially impact performance. There is also the perennial problem as to the
-degree to which an individual language benchmark should maintain the structure
-of other language's implementations: a benchmark for a given language could be
-rewritten in a way that betters either or both of its warmup and peak
-performance. From our perspective, this possibility is somewhat less important,
+degree to which an implementation of a benchmark should respect other
+language's implementations or be idiomatic (the latter being likely to
+run faster). From our perspective, this possibility is somewhat less important,
 since we are more interested in the warmup patterns of reasonable programs,
 whether they be the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
@@ -913,9 +921,9 @@ different hardware, suggesting that the effect of CPU performance changes may
 not be significant in our case.
 
 Although we have minimised the number of system calls that our in-process
-iterations runners make, we cannot escape them entirely. We call
-\texttt{clock\_gettime()} to obtain monotonic wall-clock time.
-On both Linux and OpenBSD, this function contains what is effectively a spin-lock,
+iterations runners make, we cannot escape them entirely. For example,
+on both Linux and OpenBSD, \texttt{clock\_gettime()} (which we use to obtain
+monotonic wall-clock time) contains what is effectively a spin-lock,
 meaning that there is no guarantee that it returns within a fixed bound.
 %\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the
 %OpenBSD source code and \texttt{getrawmonotonic} in
@@ -943,21 +951,16 @@ being confused by the behaviour of Linux's \texttt{isolcpus} mechanism (whose
 semantics changes between a normal and a real-time kernel), we used CPU shielding
 (\texttt{cset shield}) to pin the benchmarks to the 3 non-boot cores on our
 machines. However, we then observed notably worse performance for VMs such as
-HotSpot. Our data suggests that such VMs query the OS for the number of
+HotSpot. We suspect this is because such VMs query the OS for the number of
 available cores and create a matching number of compilation threads; by reducing
 the number of available cores, we accidentally forced two of these threads to
-compete on a single core.
+compete for a single core's resources.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have
 created a system that shows warmup effects that few people will ever see in
 practise. However, our judgement is that this is preferable to running on a
 noisy system that is likely to introduce substantial noise into our readings.
-
-We have identified a number of different styles of warmup (slowdown, cyclic,
-etc.). However, we do not claim to have uncovered all possible warmup styles. It
-is quite possible that other patterns exist that either do not show up in our
-data, or which we have not detected.
 
 
 \section{Related work}
@@ -970,7 +973,9 @@ least one benchmark (listBubbleSort) which on some process executions undergoes 
 would classify a slowdown. \kalibera note the
 existence of what we have called cyclic behaviour (in the context of benchmarking,
 they then require the user to
-manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}).
+manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}):
+the data from our experiment seems to be less often cyclic, though we have no
+explanation for why.
 
 
 \section{Conclusions}
@@ -1036,11 +1041,12 @@ Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
 
 \section{Octane Results}
 
-\begin{figure}[t]
+\begin{table}[t]
 \centering
 \input{octane.table}
 \caption{Octane results.}
-\end{figure}
+\label{tab:octane}
+\end{table}
 
 \end{document}
 

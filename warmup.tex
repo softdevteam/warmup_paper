@@ -60,7 +60,7 @@
 
 \authorinfo{Edd Barrett}{King's College London}{\texttt{http://eddbarrett.co.uk/}}
 \authorinfo{Carl Friedrich Bolz}{King's College London}{\texttt{http://cfbolz.de/}}
-\authorinfo{Rebecca Killick}{University of Lancaster}{\texttt{http://www.lancs.ac.uk/\~{}killick/}}
+\authorinfo{Rebecca Killick}{Lancaster University}{\texttt{http://www.lancs.ac.uk/\~{}killick/}}
 \authorinfo{Sarah Mount}{King's College London}{\texttt{http://snim2.org/}}
 \authorinfo{Laurence Tratt}{King's College London}{\texttt{http://tratt.net/laurie/}}
 %\keywords{warmup, benchmarking, virtual machines, programming languages.}
@@ -110,7 +110,7 @@ experiment where a number of simple benchmarks are run on seven
 VMs and GCC for a large number of \emph{in-process iterations} and repeated using fresh
 \emph{process executions} (i.e.~each process execution runs multiple in-process
 iterations). We also introduce the first automated approach to determining
-\emph{when} warmup has completed, based on changepoint analysis.
+\emph{when} warmup has completed, based on statistical changepoint analysis.
 
 \begin{figure}[t]
 \centering
@@ -157,7 +157,8 @@ in this paper, can be downloaded from:
 \begin{center}
 \url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.7/}
 \end{center}
-
+% should you say where people can get the code to run it themselves?  This sentance just feels like 
+% it is ``reproducible rersearch'' rather than ``please run it on your own data''.
 
 \section{Background}
 \label{sec:warmup}
@@ -600,10 +601,97 @@ sys.stdout.write("%s\n" % json.dumps(js))
 
 \section{Automatically Determining When Warmup Has Completed}
 \label{sec:stats}
+Using the above setup for each VM-microbenmark pair we have a 2000 length time series.  The aim 
+of this section is to automatically determine if/when warmup occurs and classify each time series 
+into predetermined groups.
 
-\laurie{rebecca: if you can stick stuff in here about changepoints, that would be great!}
+\subsection{Data Preparation}
+Prior to any statistical analysis of time series data it is prudent to remove any outliers that 
+would potentially mislead the statistical methodology.  There are many techniques for outlier 
+detection in the statistical literature.  We chose to apply Tukey's method 
+\citep{tukey1977exploratory}
+% @Book{tukey1977exploratory,
+%   Title                    = {Exploratory Data Analysis},
+%   Author                   = {Tukey, J.W.},
+%   Publisher                = {Addison-Wesley Publishing Company},
+%   Year                     = {1977},
+%   Series                   = {Addison-Wesley series in behavioral science},
+% 
+%   ISBN                     = {9780201076165},
+%   Lccn                     = {76005080},
+%   Url                      = {https://books.google.co.uk/books?id=UT9dAAAAIAAJ}
+% }
+as this is a popular technique with time series data and is resistant to extreme values.  More 
+specifically we define a time point as an outlier if it falls outside median $\pm$ 3*(90\%ile - 
+10\%ile).  This conservative view of an outlier appears to perform well and \laurie{XX\%} of all 
+data was classified as outliers.  Within a single time series the maximum number of points 
+identified as outliers was in \laurie{<this compiler>} with \laurie{XX} points identified as 
+outliers.
 
-\laurie{somewhere we need to talk about outliers}
+\subsection{Changepoint Analysis}
+The traditional view of warmup, where there are a small number of iterations before hot components 
+are compiled and a quicker peak performance is achieved, is perfectly suited to analysis using an 
+area of statistics called changepoint analysis.  Changepoints are points in time where the 
+statistical properties of the data prior to that time point are different from the statistical 
+properties of the data after that time point. From this description of a changepoint the end of 
+the warmup phase is likely to coincide with a change in mean.  For a statistical introduction to 
+changepoint analysis see \cite{EckleyFearnheadKillick2011}.  
+% @InCollection{EckleyFearnheadKillick2011,
+%   Title                    = {Analysis of Changepoint Models},
+%   Author                   = {Eckley, I. A. and Fearnhead, P. and Killick, R.},
+%   Booktitle                = {Bayesian Time Series Models},
+%   Publisher                = {Cambridge University Press},
+%   Year                     = {2011},
+%   Editor                   = {Barber, D. And Cemgil, T. And Chiappa, S.},
+% }
+Whilst the traditional view of warmup appears to be a change in mean problem, the variance is also 
+changing and not taking this into account produces spurious changes.  Thus we consider changepoints 
+within in-process iterations to be changes in both the mean and variance of compilation times.  We 
+used the \texttt{cpt.meanvar} function in the {\texttt changepoint} package \citep{R:changepoint} 
+available within the {\texttt R}  \citep{R} statistical software.
+% @Article{R:changepoint,
+%   Title                    = {changepoint: An R Package for Changepoint Analysis},
+%   Author                   = {Rebecca Killick and Idris Eckley},
+%   Journal                  = {Journal of Statistical Software},
+%   Year                     = {2014},
+%   Number                   = {1},
+%   Pages                    = {1--19},
+%   Volume                   = {58},
+% 
+%   Doi                      = {10.18637/jss.v058.i03},
+%   ISSN                     = {1548-7660},
+%   Url                      = {https://www.jstatsoft.org/index.php/jss/article/view/v058i03}
+% }
+%   @Manual{R,
+%     title = {R: A Language and Environment for Statistical Computing},
+%     author = {{R Core Team}},
+%     organization = {R Foundation for Statistical Computing},
+%     address = {Vienna, Austria},
+%     year = {2016},
+%     url = {https://www.R-project.org/},
+%   }
+This function uses the PELT algorithm \citep{Killick2012} for fast and exact 
+detection of potentially multiple changes. The output of this function gives us both the 
+changepoint locations as well as estimates of the mean and variance between changes.  We give the 
+algorithm no information on when or how large a change we might be expecting, instead allowing the 
+algorithm to determine statistically different parts of the data.
+% @Article{Killick2012,
+%   Title                    = {Optimal Detection of Changepoints With a Linear Computational Cost},
+%   Author                   = {R. Killick and P. Fearnhead and I. A. Eckley},
+%   Journal                  = {J. Am. Stat. Assoc.},
+%   Year                     = {2012},
+%   Number                   = {500},
+%   Pages                    = {1590-1598},
+%   Volume                   = {107},
+% 
+%   Doi                      = {10.1080/01621459.2012.737745},
+%   Eprint                   = { http://dx.doi.org/10.1080/01621459.2012.737745 
+% },
+%   Url                      = { http://dx.doi.org/10.1080/01621459.2012.737745 
+% }
+% }
+A resulting plot for a single VM-benchmark paid with the means overlaid is given in Figure 
+\laurie{insert ref here}.
 
 \subsection{Classifications}
 

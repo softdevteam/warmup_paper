@@ -784,13 +784,13 @@ example instrumentation-plot can be seen in Figure~\laurie{XXX}.
 The data presented thus far in the paper has all been collected after the VM has
 started executing the user program. The period between a VM being initially
 invoked and it executing the first line of the user program is the VM's \emph{startup} time,
-and is an important component in understanding a VM's performance.
+and is an important component in understanding a VM's real-world performance.
 
 A small modification to \krun enables us to measure startup. We prepend each VM
 execution command with a small C wrapper, which prints out wall-clock time
 before immediately executing the VM itself; and, for each language under
 investigation, we provide a `dummy' iterations runner which simply prints out
-wall-clock time. In other words, we measure the time just before the VM starts
+wall-clock time. In other words, we measure the time just before the VM is loaded
 and at the first point that a user-level program can execute code on the VM; the
 delta between the two is the startup time. For each VM we run 200 process
 executions (note that, for this measure, in-process executions are irrelevant,
@@ -961,11 +961,15 @@ noisy system that is likely to introduce substantial noise into our readings.
 \section{Related work}
 
 There are two works we are aware of which explicitly note unusual warmup
-patterns. Gil et al.'s main focus is on non-determinism of process executions on
-HotSpot, and the difficulties this raises in terms of providing reliable
-benchmarking numbers~\cite{gil11microbenchmark}. In this process, they report at
-least one benchmark (listBubbleSort) which on some process executions undergoes what we
-would classify a slowdown. \kalibera note the
+patterns. Whilst running benchmarks on HotSpot, Gil et
+al.~\cite{gil11microbenchmark} experienced inconsistent process executions
+(e.g.~recursiveErgodic), and benchmarks that we could classify as no
+steady state (listBubbleSort) and slowdown (arrayBubbleSort). By running a
+larger number of (somewhat larger) benchmarks on a number of VMs, and executing
+them in a more tightly controlled execution environment, our results can be seen
+as significantly strengthening Gil et al.'s observations. Our work also adds an
+automated approach to identifying when warmup has occurred.
+\kalibera note the
 existence of what we have called cyclic behaviour (in the context of benchmarking,
 they then require the user to
 manually pick one part of the cycle for measurement~\cite{kalibera13rigorous}):

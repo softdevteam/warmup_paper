@@ -507,10 +507,9 @@ proportional to the processor's current frequency. With an APERF / MPERF ratio o
 precisely 1, the processor is running at full speed; below 1 it is being
 throttled; and above 1, turbo boost is being used. On
 Linux, we read these counters via Model Specific Register (MSR) file device
-nodes\footnote{We use a slightly modified version of Linux's \texttt{msr} device
-driver, which disables a capability check so that we can access the MSRs as an
-unprivileged user.}, which is relatively
-slow (see Section~\ref{aperf/mperf error})
+nodes,\footnote{We forked, and slightly modified, Linux's \texttt{msr} device
+driver to allow us to access the MSRs as a non-root user.}
+which is relatively slow (see Section~\ref{aperf/mperf error})
 
 Not all of the VMs in our experiment give us access to the appropriate monotonic
 timer, and none gives us direct access to hardware counters. We therefore

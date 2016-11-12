@@ -157,7 +157,7 @@ in this paper, can be downloaded from:
 \begin{center}
 \url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.7/}
 \end{center}
-% should you say where people can get the code to run it themselves?  This sentance just feels like 
+% should you say where people can get the code to run it themselves?  This sentance just feels like
 % it is ``reproducible rersearch'' rather than ``please run it on your own data''.
 
 \section{Background}
@@ -440,16 +440,13 @@ pair have a constant environment size.
 On Linux, \krun controls several additional factors, sometimes by checking that
 the user has correctly set controls which can only be set manually.
 
-\krun sets the CPU frequency to the highest non-over-clocked value possible,
-using \texttt{cpufreq-set} to set the CPU governor to \texttt{performance} mode.
+\krun uses \texttt{cpufreq-set} to set the CPU governor to \texttt{performance} mode
+(i.e.~the highest non-overclocked frequency possible).
 To stop the kernel overriding this, \krun verifies that the user has disabled
 Intel P-state support in the kernel by passing the kernel argument
-\texttt{intel\_pstate=disable}. Note that even with these options set, we cannot
-fully guarantee that the CPU does as requested
-(see Section~\ref{sec:threats} for details).
+\texttt{intel\_pstate=disable}.
 
-By default, Linux interrupts (`ticks') each logical CPU\footnote{Note that
-under Linux each individual CPU core counts as a logical CPU.}
+By default, Linux interrupts (`ticks') each core
 \texttt{CONFIG\_HZ} times per second (usually 250) to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
@@ -458,15 +455,14 @@ kernel~\cite{tickless}, which requires recompiling the kernel with the
 interrupted, other CPUs are only
 interrupted if more than one runnable process is scheduled.
 
-Similarly, Linux's \texttt{perf} profiler may interrupt CPUs many times a
-second (the default maximum sample rate is 100,000Hz) to sample performance
-counters. We became aware of \texttt{perf} when \krun's \texttt{dmesg} checks
-notified us that the kernel had automatically decreased the sample-rate by
-50\%,  as it determined that sampling was taking too long. This is troubling
+Similarly, Linux's \texttt{perf} profiler may interrupt cores up to 100,000 times a
+second. We became aware of \texttt{perf} when \krun's \texttt{dmesg} checks
+notified us that the kernel had decreased the sample-rate by
+50\% due to its performance hit. This is troubling
 from a benchmarking perspective, as the change of sample rate could change
-benchmark performance mid-process execution. We were unable to completely
-disable \texttt{perf}, however \krun sets the sample-rate to the smallest
-possible value of 1Hz, thus minimising interruptions.
+benchmark performance mid-process execution. Although
+\texttt{perf} cannot be completely disabled, \krun sets it sample at most
+once per second, minimising interruptions.
 
 Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
 a sensible security precaution for everyday use, it introduces obvious
@@ -481,9 +477,7 @@ to build it on a modern Linux system.}
 Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
 there are two OpenBSD specific features in \krun.
 First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
-to running benchmarks. This is equivalent to setting Linux's CPU governor to
-\texttt{performance} mode, but note that OpenBSD offers no means of influencing
-Intel P-states.
+to running benchmarks (equivalent to Linux's \texttt{performance} mode).
 Second, \krun minimises the non-determinism in OpenBSD's malloc implementation,
 for example not requiring \texttt{realloc} to always reallocate memory to
 an entirely new location. The \texttt{malloc.conf} flags we use are \texttt{sfghjpru}.
@@ -491,36 +485,32 @@ an entirely new location. The \texttt{malloc.conf} flags we use are \texttt{sfgh
 
 \subsubsection{The Iterations Runners}
 
-Since we run benchmarks in several different languages, timing data needs
-to be reported back to the main \krun process. Thus for each language, we created an
-\emph{iteration runner} which takes the name of a specific benchmark and the
-the desired number of in-process iterations, runs the benchmark appropriately,
-and once it has completed, prints the times to \texttt{stdout} for \krun to
+To report timing data to \krun, we created an
+\emph{iterations runner} for each language under investigation.
+These take the name of a specific benchmark and the
+the desired number of in-process iterations, run the benchmark appropriately,
+and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
-measure the wall-clock time taken (on Linux and OpenBSD), core
-cycle count deltas and APERF/MPERF ratios (on Linux only).
+measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
+cycle count deltas and APERF/MPERF ratios.
 
 We use a monotonic wall-clock timer with sub-millisecond accuracy
-(\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \\\texttt{CLOCK\_MONOTONIC} on
+(\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
-users, it gives no insight into multi-threaded computations: by recording
-core cycle counts using the \\\texttt{CPU\_CLK\_UNHALTED.CORE} counter, we can see
+users, it gives no insight into multi-threaded computations: we therefore also record
+core cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
 what work each core is actually doing. In contrast, we use the APERF/MPERF
 ratio solely as a safety check that our wall-clock times are valid.
-The IA32\_APERF counter increments at a fixed
-frequency for each instruction executed; the IA32\_MPERF counter increments at a rate
+The \texttt{IA32\_APERF} counter increments at a fixed
+frequency for each instruction executed; the \texttt{IA32\_MPERF} counter increments at a rate
 proportional to the processor's current frequency. With an APERF / MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is being
 throttled; and above 1, turbo boost is being used. On
-Linux, we read these counters via Model Specific Register (MSR) device
+Linux, we read these counters via Model Specific Register (MSR) file device
 nodes\footnote{We use a slightly modified version of Linux's \texttt{msr} device
 driver, which disables a capability check so that we can access the MSRs as an
 unprivileged user.}, which is relatively
-slow; for very short time periods \laurie{need a figure here. is it something
-like 0.0001 or smaller?}, the error in reading the two counters can become
-noticeable. This is compounded by the fact that when inactive, cores do not
-update the counters. Fortunately, all our benchmarks run long enough for this
-error to be immaterial on active cores. \label{error in cycle counts}
+slow (see Section~\ref{aperf/mperf error})
 
 Not all of the VMs in our experiment give us access to the appropriate monotonic
 timer, and none gives us direct access to hardware counters. We therefore
@@ -565,7 +555,7 @@ void krun_measure(int mdata_idx) {
   }
 }
 \end{lstlisting}
-\vspace{-.8cm}
+%\vspace{-.8cm}
 \end{figure}
 
 A deliberate design goal of the in-process iterations runners is to minimise
@@ -762,11 +752,10 @@ the main benchmark computation tends to be frequently migrated between cores:
 however, it can often easily be seen that several cores are active during the first few
 in-process iterations whilst JIT compilation occurs.
 
-The APERF/MPERF ratio plots(see the Appendix for
-examples)  allow us to see if the processor's frequency changed during
-benchmarking execution. As discussed in Section~\ref{error in cycle counts}, the
-error in reading the APERF/MPERF ratio is relatively high for very short running
-iterations or (largely) inactive cores. Thus whilst in an ideal world we would
+The APERF/MPERF ratio plots (see the Appendix for
+examples) allow us to see if the processor's frequency changed during
+benchmarking. The error in reading these values is relatively high (see
+Section~\ref{aperf/mperf error}). Thus whilst in an ideal world we would
 insist that the APERF/MPERF ratio should always be exactly 1, we have to apply a
 small amount of discretion. We wrote a simple automated analysis that checks the
 APERF/MPERF data; any core whose cycle count for a given in-process iteration is
@@ -968,7 +957,7 @@ meaning that there is no guarantee that it returns within a fixed bound.
 %OpenBSD source code and \texttt{getrawmonotonic} in
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
 In practise, \texttt{clock\_gettime} returns far quicker than the granularity
-of any our benchmarks, so this is a minor worry at most. The situation
+of any our benchmarks, so this is a minor worry at most. \label{aperf/mperf error} The situation
 on Linux is complicated by our reading of core cycle and APERF/MPERF
 counts via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all

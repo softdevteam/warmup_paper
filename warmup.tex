@@ -601,45 +601,53 @@ sys.stdout.write("%s\n" % json.dumps(js))
 
 \section{Automatically Determining When Warmup Has Completed}
 \label{sec:stats}
-Using the above setup for each VM-microbenmark pair we have a 2000 length time series.  The aim 
-of this section is to automatically determine if/when warmup occurs and classify each time series 
-into predetermined groups.
 
-\subsection{Data Preparation}
-Prior to any statistical analysis of time series data it is prudent to remove any outliers that 
-would potentially mislead the statistical methodology.  There are many techniques for outlier 
-detection in the statistical literature.  We chose to apply Tukey's method 
-\citep{tukey1977exploratory}
+The main data created by our experiment is the time that each in-process
+iteration takes to run. Formally, this data is a 2000 length time series. In
+this Section we explain how we use changepoint analysis to enable us to
+understand this time series data and classify the results we see, giving the
+first automated basis to identifying warmup.
 
-as this is a popular technique with time series data and is resistant to extreme values.  More 
-specifically we define a time point as an outlier if it falls outside median $\pm$ 3*(90\%ile - 
-10\%ile).  This conservative view of an outlier appears to perform well and \laurie{XX\%} of all 
-data was classified as outliers.  Within a single time series the maximum number of points 
-identified as outliers was in \laurie{<this compiler>} with \laurie{XX} points identified as 
-outliers.
+
+\subsection{Outliers}
+
+As is common with analyses of time series data, we first identify outliers
+(i.e.~in-process iterations with much larger/smaller times than their near
+neighbours) so that our later analysis can ignore them. In our case, the
+intuition is that such outliers are likely to be the result of JIT compilation,
+GC, or of other processes interrupting benchmarks. We use Tukey's
+method~\cite{tukey1977exploratory}, conservatively defining an outlier as one that, within a
+sliding window of 200 in-process iterations, lies outside the median $\pm
+3*(90\%\textrm{ile} - 10\%\textrm{ile})$. Of the \laurie{XXX} in-process
+iteration timings, \texttt{XXX\%} are classified as outliers, with the most for
+a single process execution being \texttt{XXX}.
+
 
 \subsection{Changepoint Analysis}
-The traditional view of warmup, where there are a small number of iterations before hot components 
-are compiled and a quicker peak performance is achieved, is perfectly suited to analysis using an 
-area of statistics called changepoint analysis.  Changepoints are points in time where the 
-statistical properties of the data prior to that time point are different from the statistical 
-properties of the data after that time point. From this description of a changepoint the end of 
-the warmup phase is likely to coincide with a change in mean.  For a statistical introduction to 
-changepoint analysis see \cite{EckleyFearnheadKillick2011}.  
 
-Whilst the traditional view of warmup appears to be a change in mean problem, the variance is also 
-changing and not taking this into account produces spurious changes.  Thus we consider changepoints 
-within in-process iterations to be changes in both the mean and variance of compilation times.  We 
-used the \texttt{cpt.meanvar} function in the {\texttt changepoint} package \citep{R:changepoint} 
-available within the {\texttt R}  \citep{R} statistical software.
+Intuitively, in order to uncover if/when warmup has completed, we need to
+determine when the times taken for an in-process execution have shifted from one
+mode to another. Put another way, the we expect to see a number of in-process
+executions taking time $t$ to be followed by a number at time $t'$. In order to
+automatically determine when this occurs, we use changepoint analysis
+(see~\cite{EckleyFearnheadKillick2011} for an introduction). Formally, a
+\emph{changepoint} is a point in time where the statistical properties of prior
+data are different from the statistical properties of subsequent data; the data
+between two changepoints is a \texttt{changepoint segment}. There are various
+ways that one can determine when a changepoint should occur, but the best fit
+for our data is to consider changes in both the mean and variance of in-process
+iterations.
 
-This function uses the PELT algorithm \citep{Killick2012} for fast and exact 
-detection of potentially multiple changes. The output of this function gives us both the 
-changepoint locations as well as estimates of the mean and variance between changes.  We give the 
-algorithm no information on when or how large a change we might be expecting, instead allowing the 
-algorithm to determine statistically different parts of the data.
-A resulting plot for a single VM-benchmark paid with the means overlaid is given in Figure 
-\laurie{insert ref here}.
+In order to automate this, we use the \texttt{cpt.meanvar} function in the R
+\texttt{changepoint} package~\cite{R:changepoint}. This function uses the PELT
+algorithm~\citep{Killick2012} for fast and exact detection of \laurie{what does
+`potentially multiple changes' mean?} potentially multiple changes. The function
+outputs \laurie{can we say `returns'?} changepoint locations and estimates
+\laurie{why are they estimates and not precise?} of the mean and variance
+between changes. We give the algorithm no information on when or how large a
+change we might be expecting, allowing it to determine statistically different
+parts of the data.
+
 
 \subsection{Classifications}
 

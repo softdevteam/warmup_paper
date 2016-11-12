@@ -277,12 +277,9 @@ main benchmark class was lazily loaded after benchmark timing had started in a
 way that we could observe. We
 solved this by adding an empty static method to each benchmark, which our
 extra classes then call via a static initialiser, guaranteeing that
-the main benchmark class is eagerly loaded. Note that Java
-benchmarks -- as well as
-Java-based systems such as Graal and JRuby/Truffle -- will still be subject to
-lazy loading, which is an inherent part of the JVM specification: forcing all
-classes to be eagerly loaded is impractical, and is thus part of testing
-Hypothesis H1.
+the main benchmark class is eagerly loaded. Note that we do not attempt to eagerly
+load other classes: lazy loading is an inherent part of the JVM specification,
+and part of what we need to measure.
 
 
 \subsection{Measuring Computation and Not File Performance}
@@ -290,19 +287,18 @@ Hypothesis H1.
 By their very nature, micro-benchmarks tend to perform computations which
 can be easily optimised away. While this speaks well of
 optimising compilers, benchmarks whose computations
-are entirely removed are rarely useful~\cite{seaton15phd}. To avoid this,
-many benchmarks write intermediate and final results
-to \texttt{stdout}, preventing optimisers from removing the dependant code.
-However, the performance of file routines in libraries and the kernel can then
-unintentionally become a significant part of the eventual measure.
+are entirely removed are rarely useful~\cite{seaton15phd}. To prevent optimisers
+removing such code, many benchmarks write intermediate and final results
+to \texttt{stdout}. However, this then means that one starts including
+the performance of file routines in libraries and the kernel in measurements,
+which can become a significant part of the eventual measure.
 
 To avoid this, we modified the benchmarks to calculate a checksum
-during each in-process iteration.
-The checksum is validated at the end of each in-process iteration against an expected
-value; if the check fails, the incorrect checksum is written to \texttt{stdout}.
-By writing benchmarks in
-this style, we make it difficult for optimisers to remove the
-benchmark's main computations. We also use this mechanism to give some assurance
+during each in-process iteration. At the end of each in-process iteration
+the checksum is compared to a predetermined value; if the comparison fails then
+the incorrect checksum is written to \texttt{stdout}. Using this idiom
+means that optimisers can't remove the main benchmark code even though
+no output is produced. We also use this mechanism to give some assurance
 that each language variant is performing the same work, as we use a single
 checksum value for each benchmark, irrespective of language.
 
@@ -367,7 +363,7 @@ a Linux or OpenBSD system, runs benchmarks, and collects the results. Individual
 are then wrapped, or altered, to report data back to \krun in an appropriate format.
 
 In the remainder of this subsection, we describe \krun. Since most of \krun's
-controls work identically on Linux and OpenBSD, we start with those controls,
+controls work identically on Linux and OpenBSD, we start with those,
 before detailing the differences imposed by the two operating systems. We then
 describe how \krun collects data from benchmarks.
 Note that, although \krun has various `developer' flags to aid development

@@ -524,7 +524,7 @@ values are 64-bit unsigned integers, which some languages
 (Javascript and Lua) do not support. For VMs targeting those languages, we
 convert the 64-bit unsigned measurements to
 double-precision floating point values, throwing an error if this leads to a
-loss of precision.~\footnote{We also consistently use doubles for PHP, whose
+loss of precision.\footnote{We also consistently use doubles for PHP, whose
 integer values are automatically promoted upon exceeding their maximum\laurie{promoted to what?}.}
 
 \begin{figure}[t]

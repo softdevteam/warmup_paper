@@ -139,8 +139,7 @@ optimisations to be included in production VMs.
 
 \noindent In order to test Hypothesis H1, we first present a carefully designed
 experiment (Section~\ref{sec:methodology}). We then introduce a new
-statistical method for automatically determining if/when warmup has occurred,
-which allows us to classify benchmarks' warmup style, and present steady-state
+statistical method for automatically classifying benchmarks' warmup style, and present steady-state
 in-process iteration times (when possible) based upon the classifications
 (Section~\ref{sec:stats}). Since a number of cases fail to warmup in the
 traditional fashion, we then run a smaller experiment to understand how JIT
@@ -587,7 +586,7 @@ sys.stdout.write("%s\n" % json.dumps(js))
 \end{figure}
 
 
-\section{Automatically Determining When Warmup Has Completed}
+\section{Classifying Warmup}
 \label{sec:stats}
 
 The main data created by our experiment is the time that each in-process

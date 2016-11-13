@@ -491,8 +491,7 @@ the desired number of in-process iterations, run the benchmark appropriately,
 and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
-cycle count deltas and APERF/MPERF ratios\edd{reference to core-cycles and
-ratios before this terminology is introduced}.
+cycle count deltas and APERF/MPERF ratios.
 
 We use a monotonic wall-clock timer with sub-millisecond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
@@ -503,9 +502,9 @@ what work each core is actually doing. In contrast, we use the APERF/MPERF
 ratio solely as a safety check that our wall-clock times are valid.
 The \texttt{IA32\_APERF} counter increments at a fixed
 frequency for each instruction executed; the \texttt{IA32\_MPERF} counter increments at a rate
-proportional to the processor's current frequency. With an APERF / MPERF ratio of
-precisely 1, the processor is running at full speed; below 1 it is being
-throttled\edd{can we find a less informal term that "throttled"}; and above 1, turbo boost is being used.
+proportional to the processor's current frequency. With an APERF/MPERF ratio of
+precisely 1, the processor is running at full speed; below 1 it is in
+a power-saving mode; and above 1, turbo boost is being used.
 
 A deliberate design goal of the in-process iterations runners is to minimise
 timing noise and distortion from measurements. Since system calls can have a
@@ -518,11 +517,7 @@ in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
 example). However, the situation on Linux is complicated by our need to read
 core cycle and APERF/MPERF counts from Model Specific Register (MSR) file device
 nodes,\footnote{We forked, and slightly modified, Linux's \texttt{msr} device
-driver to allow us to access the MSRs as a non-root user\edd{Not quite right.
-We can access the MSRs as a non-root user with the standard msr driver if we:
-tag the binaries with the right capabiliby flag (annoyong) and avoid use of
-LD\_LIBRARY\_PATH, which krun uses a lot, but which is illegal for capability
-tagged binaries. Hard to explain in one sentence...}} which are relatively
+driver to allow us to easily access the MSRs as a non-root user.} which are relatively
 slow (see Section~\ref{aperf/mperf error}). Since wall-clock time
 is the most important measure, we ensure that it is the innermost measure taken
 (i.e.~to the extent we control, it does not include the time taken to read
@@ -534,8 +529,8 @@ core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 \texttt{krun\_measure}: Measuring before (the \texttt{if's} true branch) and
 after (its false branch) a benchmark. Since
 wall-clock time is the most important measure, it is innermost; since
-the APERF / MPERF ratio is a sanity check, it is outermost. Note that
-the APERF / MPERF ratios must be read in the same order both before
+the APERF/MPERF ratio is a sanity check, it is outermost. Note that
+the APERF/MPERF ratios must be read in the same order both before
 and after a benchmark.}]
 void krun_measure(int mdata_idx) {
   struct krun_data *data = &(krun_mdata[mdata_idx]);
@@ -779,18 +774,18 @@ would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process
 execution from each benchmark run on \bencherthree, removed the first 1500
 in-process iterations, and generated an autocorrelation plot for the remainder
-(in similar fashion to \kalibera). 4 benchmarks showed what we have come to
+(in similar fashion to \kalibera). 4 (VM, benchmark) pairs showed what we have come to
 call `fully cyclic' behaviour, where all in-process iterations repeat in a
-predictable pattern. 8 showed `partially cyclic' behaviour, where
+predictable pattern; 8 showed `partially cyclic' behaviour, where
 most iterations are noise around a mean, but every $n$ iterations there is a
 predictable and significant peak (with $n$ varying from 5 to 19).
 
-For partially cyclic data, or fully cyclic data with a large cycle-length (as in
+For partially cyclic data, or fully cyclic data with a large period (as in
 Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
 appropriately (classifying Figure~\ref{fig:examples:cycles} as no steady state).
-However, identifying small cycle lengths in fully cyclic data is
-an open research challenge in changepoint analysis. Since this only happens for 2
-of 47 benchmarks \edd{what is a benchmark here? s/benchmarks/process executions/?}, both of which have a small absolute difference between the
+However, changepoint analysis cannot currently identify small cycle periods in
+fully cyclic data. Since this only happens for 2
+of 47 (VM, benchmark) pairs, both of which have a small absolute difference between the
 cycle's elements, we consider this a minor worry.
 
 
@@ -825,21 +820,23 @@ investigation, we provide a `dummy' iterations runner which simply prints out
 wall-clock time. In other words, we measure the time just before the VM is loaded
 and at the first point that a user-level program can execute code on the VM; the
 delta between the two is the startup time. For each VM we run 200 process
-executions (note that, for this measure, in-process executions are irrelevant,
+executions (for startup, in-process executions are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
-time). Figure~\ref{fig:startup} shows the data for two
-of the benchmarking machines. As this data clearly shows, there is substantial
-variation in the startup time of various VMs.
-\edd{Since we reboot after each run, arguably a large chunk of the times is
-I/O. Maybe for the real run we should not reboot and consider the startup times
-themselves to "warmup" due to I/O caching}
+time).
 
-\begin{figure}[ht]
+Table~\ref{fig:startup} shows startup times from both \bencherthree and \benchersix. Since
+\krun reboots before each process execution, these are measures of a `cold'
+start and thus partly reflect disk speed etc. (though both machines load VMs
+from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
+taking C as a baseline, the fastest VM (LuaJIT) is around 2x slower, whilst the
+slowest VM (JRubyTruffle) is around 1000x slower, to startup.
+
+\begin{table}[ht]
 \centering
 \input{startup.table}
-\caption{Startup times for the VMs.}
+\caption{VM startup time (in seconds with 99\% confidence intervals).}
 \label{fig:startup}
-\end{figure}
+\end{table}
 
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 \label{sec:existing}

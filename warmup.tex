@@ -391,22 +391,19 @@ complete, \krun can safely load the results file in and append the results data,
 knowing that the reboot that will occur shortly after will put the machine into
 a (largely) known state.
 
-Modern systems have various safety limiters built in. For example,
-processors have temperature sensors in; if the processor's safe limit
-is exceeded, the processor is moved to a lower-power mode. To limit the extent to which this can
-affect our benchmarks, we start each process execution with the machine at a similar temperature.
-Before its first process execution, \krun waits for 1 minute, before collecting
+Modern systems have various temperature-based limiters built in:
+CPUs, for example, lower their frequency if they get too hot.
+After its initial execution, \krun waits for 1 minute before collecting
 the values of all available temperature sensors. After each reboot's \texttt{sync}-wait, \krun waits
 for the machine to return to these base temperatures ($\pm3\degree$C) before
-starting the benchmark. If any sensor fails to return to this temperature range
-after 1 hour, \krun aborts the whole experiment.
+starting the benchmark, fatally aborting if this temperature range is not
+met within 1 hour. In so doing, we aim to lessen the impact of ambient temperature changes.
 
-\krun imposes a
-user-configurable heap and stack \texttt{ulimit} on all VM process executions
+\krun fixes the heap and stack \texttt{ulimit} for all VM process executions
 (in our case, 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
 to inspect these values, but to allocate memory beyond them.} Benchmarks are run
-as the UNIX user `\texttt{krun}', whose account and home directory are created
-afresh before each process execution.
+as the `\texttt{krun}' user, whose account and home directory are created
+afresh before each process execution to prevent cached files affecting benchmarking.
 
 User-configurable commands can be run before and after benchmark execution. In
 our experiment, we switch off as many Unix daemons as possible (e.g.~smtpd,
@@ -421,10 +418,10 @@ noticing that one machine initially ear-marked for benchmarking occasionally
 overheated, with the only clue to this being a line in \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
 
-In some cases, the Unix environment size can cause measurement
+The Unix environment size can cause measurement
 bias~\cite{mytkowicz09surprising}. The complexity of our experimental
 setup makes it hard for \krun to set a unified environment size across all VMs and
-benchmarks. However, \krun ensures that the \texttt{krun} Unix user uses
+benchmarks. However, \krun ensures that the \texttt{krun} user uses
 a fixed size environment (we recorded and verified this for all process
 executions), and we designed the experiment such that, for a particular (VM,
 benchmark) pair the additional environment used to configure the VM is constant
@@ -448,9 +445,8 @@ By default, Linux interrupts (`ticks') each core
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
 kernel~\cite{tickless}, which requires recompiling the kernel with the
-\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set. Whilst the boot CPU is still
-interrupted, other CPUs are only
-interrupted if more than one runnable process is scheduled.
+\texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set. Whilst the boot core still
+`ticks', other cores only `tick' if more than one runnable process is scheduled.
 
 Similarly, Linux's \texttt{perf} profiler may interrupt cores up to 100,000 times a
 second. We became aware of \texttt{perf} when \krun's \texttt{dmesg} checks
@@ -458,7 +454,7 @@ notified us that the kernel had decreased the sample-rate by
 50\% due to its performance hit. This is troubling
 from a benchmarking perspective, as the change of sample rate could change
 benchmark performance mid-process execution. Although
-\texttt{perf} cannot be completely disabled, \krun sets it sample at most
+\texttt{perf} cannot be completely disabled, \krun sets it to sample at most
 once per second, minimising interruptions.
 
 Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
@@ -491,7 +487,7 @@ capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
 cycle count deltas and APERF/MPERF ratios.
 
-We use a monotonic wall-clock timer with sub-millisecond accuracy
+We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
 users, it gives no insight into multi-threaded computations: we therefore also record

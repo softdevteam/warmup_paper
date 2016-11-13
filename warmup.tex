@@ -674,13 +674,15 @@ slowdown, \nosteadystate: no steady state, \inconsistent: inconsistent.}
 \label{tab:mainresults}
 \end{table*}
 
-%           execs    iters
-% BSD         350  600,000
-% Linux       460  920,000
-%
-% This excludes the empty benchmark
+% Excluding the empty benchmark we have:
+%  Linux: 6 benchmarks, 8 VMs == 48 benchmarks *but* we skip 2
+%        (fasta/JRubyTruffle and Richards/HHVM), so actually 46
+%  OpenBSD: 6 benchmark, 5 VMs = 30 benchmarks
+%  So 2*Linux + 1*OpenBSD = 2 * 46 + 1 * 30 = 122 benchmarks
+%  Num process execs: 122 * 10 = 1220
+%  Num in-process iters: 1220 * 2000 = 2,440,000
 
-Our experiment consists of 1270 process executions and 2.5 million in-process
+Our experiment consists of 1220 process executions and 2.4 million in-process
 executions. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}.
 \laurie{we should summarise: X\% are flat, Y\% are warmup etc.} These results
 clearly invalidate Hypothesis H1. The results for \laurie{other benchers}
@@ -783,7 +785,7 @@ Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
 appropriately (classifying Figure~\ref{fig:examples:cycles} as no steady state).
 However, identifying small cycle lengths in fully cyclic data is
 an open research challenge in changepoint analysis. Since this only happens for 2
-of 54 benchmarks, both of which have a small absolute difference between the
+of 47 benchmarks, both of which have a small absolute difference between the
 cycle's elements, we consider this a minor worry.
 
 

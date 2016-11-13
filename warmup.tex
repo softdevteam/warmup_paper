@@ -860,17 +860,15 @@ microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
-adequately long running benchmark (very roughly, around 1s on \bencherseven, for
-example). We recorded 2000 iterations of the outer benchmark; our runner
+adequately long running benchmark. We recorded 2000 iterations of the outer benchmark; our runner
 fully resets the benchmark and the random number generator between each
 iteration. The \texttt{box2d}, \texttt{gameboy}, \texttt{mandreel} benchmarks do
 not properly reset their state between runs, leading to run-time errors we have
-not been able to fix; \texttt{typescript}'s reset function, in contrast, is
-overzealous, freeing constant data needed by all iterations, which we were able
+not been able to fix; \texttt{typescript}'s reset function, in contrast,
+frees constant data needed by all iterations, which we were able
 to easily fix. When run for 2000 iterations, \texttt{CodeLoadClosure},
 \texttt{pdfjs}, and \texttt{zlib} all fail due to memory leaks. We were able to
-easily fix \texttt{pdfjs} by emptying a global list after each iteration,
-(a patch has been submitted to, but not yet accepted, to Octane), but not the
+easily fix \texttt{pdfjs} by emptying a global list after each iteration, but not the
 others. We therefore include 12 of Octane's benchmarks (including lightly
 modified versions of \texttt{pdfjs} and \texttt{typescript}).
 Because we run fewer benchmarks, our modified runner is unable to fully
@@ -886,25 +884,22 @@ the Appendix) the Octane results.
 \label{sec:threats}
 
 While we have designed our experiment as carefully as possible, we do not
-pretend to have controlled every possibly confounding variable. Indeed, our
-designing the experiment has been one of continually uncovering
-confounding variables whose existence we had not previously imagined. It
-is inevitable that there are further confounding variables that we
-do not know about; some of these may be controllable, although many may not be.
-It is possible that confounding variables that we are not aware of have
+pretend to have controlled every possibly confounding variable. It
+is inevitable that there are further confounding variables that
+we are not aware of, some of which may be controllable, although many may not.
+It is possible that confounding variables we are not aware of have
 coloured our results.
 
 We have tried to gain a partial understanding of the effects of different
 hardware on benchmarks by using machines with the same OS but
 different hardware. However, while the hardware between the two is
-different, much more distinct hardware (e.g.~a non-x86 architecture) is
-available, and is more likely to uncover hardware-related differences.
+different, more distinct hardware (e.g.~a non-x86 architecture)
+is more likely to uncover hardware-related differences.
 However, hardware cannot be varied in isolation from software:
 the greater the differences in hardware, the more likely that JIT compilers
-compilers are to use different code paths (e.g.~different code generators and
-the like). Put another way, an apples-to-apples comparison across very different
-hardware is likely to be impossible, because the `same' software in fact has
-different behaviour on the different platforms.
+compilers are to use different components (e.g.~different code generators).
+Put another way, an apples-to-apples comparison across very different
+hardware is often impossible, because the `same' software is itself different.
 
 We have not systematically tested whether rebuilding VMs effects warmup, an
 effect noted by \kalibera, though which seems to have little effect on
@@ -961,9 +956,8 @@ instruction on the desired core (causing the running core to save its registers 
 were not able to find a lighter-weight timing mechanism, despite trying
 candidates such as the x86 Time Stamp Counter (TSC). On older systems the TSC
 increments relative to the CPU's frequency (and thus can be indirectly used to
-detect CPU frequency changes); on modern systems, its readings are always
-normalised to a fixed CPU frequency (and its readings are thus immune from CPU
-frequency changes).
+detect frequency changes); on modern systems, its readings are
+normalised to a fixed CPU frequency (and thus immune from frequency changes).
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After
@@ -987,7 +981,7 @@ noisy system that is likely to introduce substantial noise into our readings.
 
 There are two works we are aware of which explicitly note unusual warmup
 patterns. Whilst running benchmarks on HotSpot, Gil et
-al.~\cite{gil11microbenchmark} experienced inconsistent process executions
+al.~\cite{gil11microbenchmark} observed inconsistent process executions
 (e.g.~recursiveErgodic), and benchmarks that we could classify as no
 steady state (listBubbleSort) and slowdown (arrayBubbleSort). By running a
 larger number of (somewhat larger) benchmarks on a number of VMs, and executing

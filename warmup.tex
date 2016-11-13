@@ -505,32 +505,30 @@ The \texttt{IA32\_APERF} counter increments at a fixed
 frequency for each instruction executed; the \texttt{IA32\_MPERF} counter increments at a rate
 proportional to the processor's current frequency. With an APERF / MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is being
-throttled; and above 1, turbo boost is being used. On
-Linux, we read these counters via Model Specific Register (MSR) file device
-nodes,\footnote{We forked, and slightly modified, Linux's \texttt{msr} device
-driver to allow us to access the MSRs as a non-root user.}
-which is relatively slow (see Section~\ref{aperf/mperf error})
+throttled; and above 1, turbo boost is being used.
 
-Not all of the VMs in our experiment give us access to the appropriate monotonic
-timer, and none gives us direct access to hardware counters. We therefore
-implemented a small C library (\texttt{libkruntime.so}) which exposes these
-measures (see Listing~\ref{lst:krun-measure} for an example). When possible
-(all VMs apart from JRuby/Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
-in; in the remaining cases, we linked the library directly against the VM, which
-then required us to add user-language visible functions to access them.
-Core-cycle counts, \texttt{IA32\_APERF} and \texttt{IA32\_MPERF}
-values are 64-bit unsigned integers, which some languages
-(Javascript and Lua) do not support. For VMs targeting those languages, we
-convert the 64-bit unsigned measurements to
-double-precision floating point values, throwing an error if this leads to a
-loss of precision.\footnote{We also consistently use doubles for PHP, whose
-integer values are automatically promoted upon exceeding their maximum\laurie{promoted to what?}.}
+A deliberate design goal of the in-process iterations runners is to minimise
+timing noise and distortion from measurements. Since system calls can have a
+significant overhead (on Linux, calling functions such as \texttt{write} can
+evict as much as two thirds of an x86's L1 cache~\cite{soares10flexsc}), we
+avoid making any system calls other than those required to take measurements. We
+avoid in-benchmark I/O and memory allocation by storing measurements in a
+pre-allocated buffer and only writing measurements to \texttt{stdout} after all
+in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
+example). However, the situation on Linux is complicated by our need to read
+core cycle and APERF/MPERF counts from Model Specific Register (MSR) file device
+nodes,\footnote{We forked, and slightly modified, Linux's \texttt{msr} device
+driver to allow us to access the MSRs as a non-root user.} which are relatively
+slow (see Section~\ref{aperf/mperf error}). Since wall-clock time
+is the most important measure, we ensure that it is the innermost measure taken
+(i.e.~to the extent we control, it does not include the time taken to read
+core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
         caption={%
-\texttt{krun\_measure}: Measurements can't be taken atomically, so later
-measurements include the time taken to read earlier measurements. Since
+\texttt{krun\_measure}: Measuring before (the \texttt{if's} true branch) and
+after (its false branch) a benchmark. Since
 wall-clock time is the most important measure, it is innermost; since
 the APERF / MPERF ratio is a sanity check, it is outermost. Note that
 the APERF / MPERF ratios must be read in the same order both before
@@ -557,20 +555,21 @@ void krun_measure(int mdata_idx) {
 %\vspace{-.8cm}
 \end{figure}
 
-A deliberate design goal of the in-process iterations runners is to minimise
-timing noise and distortion from measurements. Since system calls can have a
-significant overhead (on Linux, calling functions such as \texttt{write} can
-evict as much as two thirds of an x86's L1 cache~\cite{soares10flexsc}), we
-avoid making any system calls other than those required to take measurements. We
-avoid in-benchmark I/O and memory allocation by storing measurements in a
-pre-allocated buffer and only writing measurements to \texttt{stdout} after all
-in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
-example). However, the situation on Linux is complicated by our need to read
-core cycle and APERF/MPERF counts from (special) files (see
-Section~\ref{sec:threats} for further details). Since wall-clock time
-is the most important measure, we ensure that it is the innermost measure taken
-(i.e.~to the extent we control, it does not include the time taken to read
-core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
+The need to carefully sequence the measurements means that we cannot rely
+on user-level libraries: not all of the VMs in our experiment give us access to
+the appropriate monotonic timer. We therefore
+implemented a small C library (\texttt{libkruntime.so}) which exposes these
+measures (see Listing~\ref{lst:krun-measure} for an example). When possible
+(all VMs apart from JRuby/Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
+in; in the remaining cases, we linked the library directly against the VM, which
+then required us to add user-language visible functions to access them.
+Core-cycle counts, \texttt{IA32\_APERF} and \texttt{IA32\_MPERF}
+values are 64-bit unsigned integers, which some languages
+(Javascript and Lua) do not support. For VMs targeting those languages, we
+convert the 64-bit unsigned measurements to
+double-precision floating point values, throwing an error if this leads to a
+loss of precision.\footnote{We also consistently use doubles for PHP, whose
+integer values are automatically promoted upon exceeding their maximum\laurie{promoted to what?}.}
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python

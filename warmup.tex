@@ -518,7 +518,11 @@ in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
 example). However, the situation on Linux is complicated by our need to read
 core cycle and APERF/MPERF counts from Model Specific Register (MSR) file device
 nodes,\footnote{We forked, and slightly modified, Linux's \texttt{msr} device
-driver to allow us to access the MSRs as a non-root user.} which are relatively
+driver to allow us to access the MSRs as a non-root user\edd{Not quite right.
+We can access the MSRs as a non-root user with the standard msr driver if we:
+tag the binaries with the right capabiliby flag (annoyong) and avoid use of
+LD\_LIBRARY\_PATH, which krun uses a lot, but which is illegal for capability
+tagged binaries. Hard to explain in one sentence...}} which are relatively
 slow (see Section~\ref{aperf/mperf error}). Since wall-clock time
 is the most important measure, we ensure that it is the innermost measure taken
 (i.e.~to the extent we control, it does not include the time taken to read
@@ -569,7 +573,7 @@ values are 64-bit unsigned integers, which some languages
 convert the 64-bit unsigned measurements to
 double-precision floating point values, throwing an error if this leads to a
 loss of precision.\footnote{We also consistently use doubles for PHP, whose
-integer values are automatically promoted upon exceeding their maximum\laurie{promoted to what?}.}
+integer values are automatically promoted to floating point upon exceeding their maximum.}
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python

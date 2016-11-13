@@ -491,7 +491,8 @@ the desired number of in-process iterations, run the benchmark appropriately,
 and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
-cycle count deltas and APERF/MPERF ratios.
+cycle count deltas and APERF/MPERF ratios\edd{reference to core-cycles and
+ratios before this terminology is introduced}.
 
 We use a monotonic wall-clock timer with sub-millisecond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
@@ -504,7 +505,7 @@ The \texttt{IA32\_APERF} counter increments at a fixed
 frequency for each instruction executed; the \texttt{IA32\_MPERF} counter increments at a rate
 proportional to the processor's current frequency. With an APERF / MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is being
-throttled; and above 1, turbo boost is being used.
+throttled\edd{can we find a less informal term that "throttled"}; and above 1, turbo boost is being used.
 
 A deliberate design goal of the in-process iterations runners is to minimise
 timing noise and distortion from measurements. Since system calls can have a

@@ -1,6 +1,6 @@
 \begin{tabular}{lrr}
 \toprule
-\multicolumn{1}{c}{\multirow{2}{*}{VM}}&\multicolumn{2}{c}{Machine}\\&\multicolumn{1}{c}{\footnotesize Linux1}&\multicolumn{1}{c}{\footnotesize OpenBSD1} \\
+\multicolumn{1}{c}{\multirow{2}{*}{VM}}&\multicolumn{2}{c}{Machine}\\&\multicolumn{1}{c}{\footnotesize \bencherthree}&\multicolumn{1}{c}{\footnotesize \benchersix} \\
 \midrule
 C&$
 \begin{array}{rr}

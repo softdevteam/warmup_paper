@@ -32,10 +32,10 @@
 \newcommand{\nbody}{\emph{n-body}\xspace}
 \newcommand{\fasta}{\emph{fasta}\xspace}
 \newcommand{\fannkuch}{\emph{fannkuch redux}\xspace}
-\newcommand{\bencherthree}{Linux1/i7-4709K\xspace}
-\newcommand{\bencherfive}{Linux2/i7-4790\xspace}
-\newcommand{\benchersix}{OpenBSD/i7-4790\xspace}
-\newcommand{\bencherseven}{Linux3/E3-1240v5\xspace}
+\newcommand{\bencherthree}{Linux$_\textrm{4790K}$\xspace}
+\newcommand{\bencherfive}{Linux$_\textrm{4790}$\xspace}
+\newcommand{\benchersix}{OpenBSD$_\textrm{4790}$\xspace}
+\newcommand{\bencherseven}{Linux$_\textrm{E3-1240v5}$\xspace}
 
 \newcommand{\flatc}{$\rightarrow$}
 \newcommand{\nosteadystate}{$\rightsquigarrow$}
@@ -334,10 +334,10 @@ significantly different parts of the VMs will be used (see Section~\ref{sec:thre
 
 In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
 4GHz, 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
-3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, with identical
-hardware to \bencherfive, but running OpenBSD 5.8. \bencherthree and \bencherfive
+3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, a quad-core i7-4790
+3.6GHz, 32GB of RAM, running OpenBSD 5.8. \bencherthree and \bencherfive
 have the same OS (with the same updates etc.) but different hardware; \bencherfive
-and \benchersix have the same hardware (to the extent that we can determine)
+and \benchersix have the same hardware (to the extent we can determine)
 but different operating systems.
 
 We disabled turbo boost and hyper-threading in the BIOS. Turbo boost

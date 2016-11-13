@@ -1,0 +1,80 @@
+\begin{tabular}{lrr}
+\toprule
+\multicolumn{1}{c}{\multirow{2}{*}{VM}}&\multicolumn{2}{c}{Machine}\\&\multicolumn{1}{c}{\footnotesize Linux1}&\multicolumn{1}{c}{\footnotesize OpenBSD1} \\
+\midrule
+C&$
+\begin{array}{rr}
+\scriptstyle{0.00213} \\[-6pt]
+\scriptscriptstyle{\pm0.000005}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.00110} \\[-6pt]
+\scriptscriptstyle{\pm0.000004}
+\end{array}
+$\\ 
+Graal&$
+\begin{array}{rr}
+\scriptstyle{0.24744} \\[-6pt]
+\scriptscriptstyle{\pm0.000339}
+\end{array}
+$&\\ 
+HHVM&$
+\begin{array}{rr}
+\scriptstyle{0.78364} \\[-6pt]
+\scriptscriptstyle{\pm0.001834}
+\end{array}
+$&\\ 
+Hotspot&$
+\begin{array}{rr}
+\scriptstyle{0.10655} \\[-6pt]
+\scriptscriptstyle{\pm0.000411}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.19041} \\[-6pt]
+\scriptscriptstyle{\pm0.000148}
+\end{array}
+$\\ 
+JRubyTruffle&$
+\begin{array}{rr}
+\scriptstyle{2.21071} \\[-6pt]
+\scriptscriptstyle{\pm0.007821}
+\end{array}
+$&\\ 
+LuaJIT&$
+\begin{array}{rr}
+\scriptstyle{0.00432} \\[-6pt]
+\scriptscriptstyle{\pm0.000013}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.00673} \\[-6pt]
+\scriptscriptstyle{\pm0.000004}
+\end{array}
+$\\ 
+PyPy&$
+\begin{array}{rr}
+\scriptstyle{0.21710} \\[-6pt]
+\scriptscriptstyle{\pm0.000563}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.82526} \\[-6pt]
+\scriptscriptstyle{\pm0.000235}
+\end{array}
+$\\ 
+V8&$
+\begin{array}{rr}
+\scriptstyle{0.03702} \\[-6pt]
+\scriptscriptstyle{\pm0.000097}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.09607} \\[-6pt]
+\scriptscriptstyle{\pm0.000048}
+\end{array}
+$\\ 
+
+\bottomrule
+\end{tabular}

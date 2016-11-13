@@ -823,10 +823,19 @@ and at the first point that a user-level program can execute code on the VM; the
 delta between the two is the startup time. For each VM we run 200 process
 executions (note that, for this measure, in-process executions are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
-time). Figure~\laurie{XXX} shows the data for each of our
-3 benchmarking machines. As this data clearly shows, there is substantial
+time). Figure~\ref{fig:startup} shows the data for two
+of the benchmarking machines. As this data clearly shows, there is substantial
 variation in the startup time of various VMs.
+\edd{Since we reboot after each run, arguably a large chunk of the times is
+I/O. Maybe for the real run we should not reboot and consider the startup times
+themselves to "warmup" due to I/O caching}
 
+\begin{figure}[ht]
+\centering
+\input{startup.table}
+\caption{Startup times for the VMs.}
+\label{fig:startup}
+\end{figure}
 
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 \label{sec:existing}

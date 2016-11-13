@@ -697,11 +697,11 @@ different hardware, have exceptionally similar classifications across our
 benchmark suite. The OpenBSD machine is slightly more different, but still
 broadly similar. We believe that these validate Hypothesis H2.''?}
 
-In order to understand why, we create a series of plots for each process execution
-with in-process iterations as a common $x$-axis. Different plots have different $y$
-axes: \emph{run-sequence plots} show wall-clock time; \emph{core-cycle plots}
-show the processor cycle count; and \emph{APERF/MPERF plots} show whether
-the processor frequency changed. The latter two plots are per-core, so each process execution
+To understand why, for each process execution we create a series of plots. All
+plots have in-process iteration number on the $x$-axis. For $y$-axes:
+\emph{run-sequence plots} show wall-clock time; \emph{core-cycle plots} show
+the processor cycle count; and \emph{APERF/MPERF plots} show the ratio of the
+two registers. The latter two plots are per-core, so each process execution
 has one per core. The run-sequence and core-cycle plots in Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
 and \ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
 and no steady state respectively. Figure~\ref{fig:examples:inconsistent} shows
@@ -749,8 +749,8 @@ other cores. Such VMs may still be migrated between cores during process
 execution, as can be clearly seen in Figure~\ref{fig:examples:nosteadystate}.
 Multi-threaded VMs can run JIT compilation and / or GC in parallel:
 Figure~\laurie{XXX maybe show the core cycle counts for hotspot/richards?} shows
-an example. It is often hard to detect parallelism in the resulting core counts as
-the main benchmark computation tends to be frequently migrated between cores:
+an example. It can be hard to detect parallelism in the resulting core counts as
+sometimes the VM migrates frequently between cores:
 however, it can often easily be seen that several cores are active during the first few
 in-process iterations whilst JIT compilation occurs.
 
@@ -778,7 +778,7 @@ We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process
 execution from each benchmark run on \bencherthree, removed the first 1500
-in-process iterations, and plotted an autocorrelation graph for the remainder
+in-process iterations, and generated an autocorrelation plot for the remainder
 (in similar fashion to \kalibera). 4 benchmarks showed what we have come to
 call `fully cyclic' behaviour, where all in-process iterations repeat in a
 predictable pattern. 8 showed `partially cyclic' behaviour, where
@@ -790,7 +790,7 @@ Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
 appropriately (classifying Figure~\ref{fig:examples:cycles} as no steady state).
 However, identifying small cycle lengths in fully cyclic data is
 an open research challenge in changepoint analysis. Since this only happens for 2
-of 47 benchmarks, both of which have a small absolute difference between the
+of 47 benchmarks \edd{what is a benchmark here? s/benchmarks/process executions/?}, both of which have a small absolute difference between the
 cycle's elements, we consider this a minor worry.
 
 

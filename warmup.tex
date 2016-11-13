@@ -769,25 +769,22 @@ APERF/MPERF ratio between \laurie{i guess something like 0.97 and 1.03?}.
 
 We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
-require special support in our automated analysis; and a by-eye glance at
-data seemed to confirm this. In order to gain a more rigorous
-understanding, we took one process
+require special support in our automated analysis. To quantify this, we took one process
 execution from each benchmark run on \bencherthree, removed the first 1500
 in-process iterations, and plotted an autocorrelation graph for the remainder
-(in similar fashion to \kalibera). Only 4 benchmarks showed what we have come to
+(in similar fashion to \kalibera). 4 benchmarks showed what we have come to
 call `fully cyclic' behaviour, where all in-process iterations repeat in a
-predictable pattern. A further 8 showed `partially cyclic' behaviour, where
+predictable pattern. 8 showed `partially cyclic' behaviour, where
 most iterations are noise around a mean, but every $n$ iterations there is a
-predictable and significant peak in-process iteration (with $n$ varying from 5
-to 19).
+predictable and significant peak (with $n$ varying from 5 to 19).
 
 For partially cyclic data, or fully cyclic data with a large cycle-length (as in
 Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
-appropriately (in the specific example, classifying it as no steady state).
+appropriately (classifying Figure~\ref{fig:examples:cycles} as no steady state).
 However, identifying small cycle lengths in fully cyclic data is
-an open research challenge in changepoint analysis. Since it is so rare (only 2
-of our benchmarks, in both cases with a small absolute difference between the
-elements of the cycle), we do not consider this a significant problem in practice.
+an open research challenge in changepoint analysis. Since this only happens for 2
+of 54 benchmarks, both of which have a small absolute difference between the
+cycle's elements, we consider this a minor worry.
 
 
 \subsection{The Effects of Compilation and GC}

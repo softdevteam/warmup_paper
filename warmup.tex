@@ -183,15 +183,15 @@ performance, partly due to an assumption that
 warmup is both fast and inconsequential to users.
 The methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
-The first $n$ in-process iterations\footnote{In our experience, often hard-coded
-to 5.} are then discarded, on the basis that warmup should have completed in
-that period: however, no guarantees can be made that it has completed.
+The first $n$ in-process iterations (typically a small value such as 5)
+are then discarded, on the basis that warmup \emph{should} have completed in
+that period, whether or not it has actually done so.
 
 A more sophisticated VM benchmarking methodology
-was developed by \kalibera~\cite{kalibera12quantifying,kalibera13rigorous}. The basic idea is
-that, for a given VM / benchmark combination, a human must inspect data obtained by
-executing a small number of process executions, and determine at which in-process iteration the
-benchmark has definitively warmed up. A larger number of VM process executions are then
+was developed by \kalibera~\cite{kalibera12quantifying,kalibera13rigorous}. After
+a specific VM / benchmark combination has been run for a small number of
+process executions, a human must determine at which in-process iteration warmup
+has occurred. A larger number of VM process executions are then
 run, and the previously determined cut-off point applied to each process's
 iterations. The \kalibera methodology observes that some benchmarks do not
 obviously warm up; and that others follow cyclic patterns post-warmup
@@ -200,11 +200,9 @@ the latter case, the \kalibera methodology requires a consistent in-process iter
 the cycle (ideally the first post-warmup iteration) be picked for all process
 executions, and used for statistical analysis.
 
-Although the \kalibera methodology is the most
-sophisticated currently available,
-there remain cases where it remains hard to produce satisfying benchmarking
-statistics. Crucially, as it relies on human expertise, the methodology does not
-provide a repeatable way of determining when warmup has completed. Because of this
+Despite its many advances, the \kalibera methodology's reliance on human
+expertise means that it cannot provide a fully repeatable way of determining
+when warmup has completed. Because of this
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 
@@ -567,7 +565,7 @@ values are 64-bit unsigned integers, which some languages
 (Javascript and Lua) do not support. For VMs targeting those languages, we
 convert the 64-bit unsigned measurements to
 double-precision floating point values, throwing an error if this leads to a
-loss of precision.\footnote{We also consistently use doubles for PHP, whose
+loss of precision.\footnote{\laurie{this makes no sense to me}We also consistently use doubles for PHP, whose
 integer values are automatically promoted to floating point upon exceeding their maximum.}
 
 \begin{figure}[t]
@@ -620,7 +618,7 @@ automatically determine when this occurs, we use changepoint analysis
 (see~\cite{EckleyFearnheadKillick2011} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different from the statistical properties of subsequent data; the data
-between two changepoints is a \texttt{changepoint segment}. There are various
+between two changepoints is a \emph{changepoint segment}. There are various
 ways that one can determine when a changepoint should occur, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
 iterations.

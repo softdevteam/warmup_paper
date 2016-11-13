@@ -629,14 +629,8 @@ iterations.
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{R:changepoint}. This function uses the PELT
-algorithm~\citep{Killick2012} for fast and exact detection of \laurie{what does
-`potentially multiple changes' mean? Just that you can get 0, 1, or more changes.  Most cp 
-algorithms only do 0,1 changes so we usually mention that we can find multiple} potentially 
-multiple changes. The function
-outputs \laurie{can we say `returns'? Yes} changepoint locations and estimates
-\laurie{why are they estimates and not precise? Estimates because we don't know the truth.  You 
-can just remove estimates and just put ``mean and variance between changes''} of the mean and 
-variance
+algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints.
+The function returns changepoint locations and the mean and variance
 between changes. We give the algorithm no information on when or how large a
 change we might be expecting, allowing it to determine statistically different
 parts of the data.

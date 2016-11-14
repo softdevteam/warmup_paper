@@ -650,6 +650,17 @@ If its process executions all share the same classification (e.g.~warmup) then
 we classify the benchmark the same (in this example, warmup); otherwise we classify the benchmark as
 \emph{inconsistent} (\inconsistent).
 
+Informally, we suggest that benchmarks whose behaviour is either flat or warmup
+are `good' (flat benchmarks may be unobservably fast warmup), while
+benchmarks which are slowdown or no steady state are `bad'.
+Inconsistent benchmarks are more subjective and require careful consideration of
+the classification of their process executions, which we report in brackets. A
+benchmark which is \inconsistent(5x\slowdown, 5x\nosteadystate) is clearly `bad';
+but a benchmark which is \inconsistent(8x\warmup, 2x\flatc) is likely to be
+`good' if the warmups are small in magnitude (and thus are not far from being
+classified as flat) but may be considered `bad' if the warmups are large in
+magnitude (and the flats are, relatively speaking, more anomalous).
+
 
 \section{Results}
 \label{sec:Results}

@@ -739,7 +739,11 @@ magnitude (and the flats are, relatively speaking, more anomalous).
 \begin{table*}[t]
 \centering
 \input{bencher3.table}
-\caption{Main experiment results. Key: \flatc: flat, \warmup: warmup, \slowdown:
+\caption{Benchmark results. For processes which reach a steady state:
+\emph{steady state iter} is the median in-process iteration that the steady
+state was reached at; \emph{steady state secs} is the wall-clock time since the
+beginning of the process execution that the steady state was reached.
+Classifiers key: \flatc: flat, \warmup: warmup, \slowdown:
 slowdown, \nosteadystate: no steady state, \inconsistent: inconsistent.}
 \label{tab:mainresults}
 \end{table*}

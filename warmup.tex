@@ -822,15 +822,15 @@ sometimes the VM migrates frequently between cores:
 however, it can often easily be seen that several cores are active during the first few
 in-process iterations whilst JIT compilation occurs.
 
-The APERF/MPERF ratio plots (see the Appendix for
+\label{aperf/mperf check} The APERF/MPERF ratio plots (see the Appendix for
 examples) allow us to see if the processor's frequency changed during
 benchmarking. The error in reading these values is relatively high (see
-Section~\ref{aperf/mperf error}). Thus whilst in an ideal world we would
-insist that the APERF/MPERF ratio should always be exactly 1, we have to apply a
-small amount of discretion. We wrote a simple automated analysis that checks the
+Section~\ref{aperf/mperf error}) and we can't expect to always see a
+value of precisely 1. We wrote a simple automated analysis that checks the
 APERF/MPERF data; any core whose cycle count for a given in-process iteration is
 below \laurie{XXX} is ignored; `active' cores are then checked for an
-APERF/MPERF ratio between \laurie{i guess something like 0.97 and 1.03?}.
+APERF/MPERF ratio between $1 \pm 0.015$. All active cores in our experiment
+were within these limits.
 
 
 \subsection{Cyclic data}
@@ -1001,18 +1001,10 @@ whether they be the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
 this complaint could arguably be directed at the unmodified benchmarks too.
 
-\laurie{with luck, the APERF/MPERF ratios will allow us to shorten this paragraph
-and say ``our data shows this did not affect our experiment''. We'll see!} Although \krun does as much to control CPU clock speed as possible, modern CPUs
-do not always respect operating system requests. Even on Linux, where we control
-the CPU's P-state, we cannot guarantee that this fixes the CPU frequency: as
-the Linux kernel documentation states, ``the idea that frequency can be set to a single
-frequency is fiction for Intel Core processors''~\cite{pstate}. In
-some cases, changes the CPU makes to its performance are detected and reported
-by the operating system (e.g.~performance throttling due to potential
-overheating); in other cases, changes may go undetected or unreported.
-Despite this, our benchmarks show fairly predictable performance across
-different hardware, suggesting that the effect of CPU performance changes may
-not be significant in our case.
+Although \krun does as much to control CPU clock speed as possible, modern CPUs
+do not always respect operating system requests. However, the APERF/MPERF
+check of Section~\ref{aperf/mperf check} strongly suggests that our main
+experiment was not subject to any significant CPU frequency changes.
 
 Although we have minimised the number of system calls that our in-process
 iterations runners make, we cannot escape them entirely. For example,
@@ -1028,15 +1020,11 @@ on Linux is complicated by our reading of core cycle and APERF/MPERF
 counts via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
 in-process iterations to reduce the open/close overhead).
-These calls are more involved than \texttt{clock\_gettime} \laurie{let's put a
-figure on it}. As well as the filesystem overhead, reading from a MSR device
+These calls are more involved than \texttt{clock\_gettime}:
+as well as the filesystem overhead, reading from a MSR device
 node triggers inter-processor interrupts to schedule an \texttt{RDMSR}
-instruction on the desired core (causing the running core to save its registers etc.). We
-were not able to find a lighter-weight timing mechanism, despite trying
-candidates such as the x86 Time Stamp Counter (TSC). On older systems the TSC
-increments relative to the CPU's frequency (and thus can be indirectly used to
-detect frequency changes); on modern systems, its readings are
-normalised to a fixed CPU frequency (and thus immune from frequency changes).
+instruction on the desired core (causing the running core to save its registers etc.).
+We are not currently aware of a practical way to lower these costs.
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After

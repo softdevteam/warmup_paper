@@ -660,10 +660,10 @@ intuition is that such outliers are likely to be the result of JIT compilation,
 GC, or of other processes interrupting benchmarks. We use Tukey's
 method~\cite{tukey1977exploratory}, conservatively defining an outlier as one that, within a
 sliding window of 200 in-process iterations, lies outside the median $\pm
-3*(90\%\textrm{ile} - 10\%\textrm{ile})$. We ignore the first window of 200
-in-process iterations, as we want to avoid classifying a small number of slow
-iterations at the start of the series as outliers, since these may be an
-indication of good warm-up behaviour. Of the \laurie{XXX} in-process
+3*(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
+slow warm-up iterations at the start of an execution as outliers (when they are
+in fact likely to be important warmup data), we ignore the first 200 in-process
+iterations. Of the \laurie{XXX} in-process
 iteration timings, \laurie{XXX\%} are classified as outliers, with the most for
 a single process execution being \laurie{XXX}.
 
@@ -671,10 +671,9 @@ a single process execution being \laurie{XXX}.
 \subsection{Changepoint Analysis}
 
 Intuitively, in order to uncover if/when warmup has completed, we need to
-determine when the time taken by in-process executions to complete have become
-faster. Put another way, we expect to see a number of in-process
-executions taking time $t$ to be followed by a number at time $t'$, where
-$t>t'$. In order to
+determine when the times taken by in-process iterations have become faster
+within a process execution. Put another way, we expect to see a number of in-process
+executions taking time $t$ to be followed by a number at time $t'$. In order to
 automatically determine when this occurs, we use statistical changepoint analysis
 (see~\cite{EckleyFearnheadKillick2011} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
@@ -685,20 +684,18 @@ for our data is to consider changes in both the mean and variance of in-process
 iterations.
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
-\texttt{changepoint} package~\cite{R:changepoint}. This function uses the PELT
+\texttt{changepoint} package~\cite{R:changepoint}, passing $15\log{n}$ (where
+$n$ is the time series length minus the number of outliters) to the
+\texttt{penalty} argument. This function uses the PELT
 algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints.
-We pass a \emph{penalty} to the function of $15\log{N}$, where $N$ is
-the length of the time series once outliers have been removed.
-\texttt{cpt.meanvar} returns changepoint locations and the mean and variance
+returns changepoint locations and the mean and variance
 of each segment. For the particular, somewhat noisy, data we obtain, the
 algorithm is slightly over-sensitive to changes in the variance, particularly
 for very fast in-process iterations. Although we use a microsecond timer, our experience
 is that time deltas under 0.001s are at the mercy of the non-determinism
 inherent in a real machine and OS. We therefore merge consecutive sequences of segments (from
-left-to-right) whose confidence intervals overlap, and/or whose means are within
-0.001s of each other. We use inter-quartile range as a confidence interval, as
-it is a conservative statistic which does not assume an underlying distribution
-of the data.
+left-to-right) whose confidence intervals (calculated using the inter-quartile
+range) overlap, and/or whose means are within 0.001s of each other.
 
 
 \subsection{Classifications}
@@ -729,8 +726,8 @@ are `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are slowdown or no steady state are `bad'.
 Inconsistent benchmarks are more subjective and require careful consideration of
 the classification of their process executions, which we report in brackets. A
-benchmark which is \inconsistent(5x\slowdown, 5x\nosteadystate) is clearly `bad';
-but a benchmark which is \inconsistent(8x\warmup, 2x\flatc) is likely to be
+benchmark which is \inconsistent(5\slowdown, 5\nosteadystate) is clearly `bad';
+but a benchmark which is \inconsistent(8\warmup, 2\flatc) is likely to be
 `good' if the warmups are small in magnitude (and thus are not far from being
 classified as flat) but may be considered `bad' if the warmups are large in
 magnitude (and the flats are, relatively speaking, more anomalous).

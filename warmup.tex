@@ -22,6 +22,8 @@
 \usepackage{pifont}
 \usepackage{xspace}
 
+\usepackage{sparklines}
+
 \newcommand{\kalibera}{Kalibera \& Jones\xspace}
 \newcommand{\krun}{Krun\xspace}
 \newcommand{\hypone}{H1\xspace}
@@ -37,11 +39,71 @@
 \newcommand{\benchersix}{OpenBSD$_\mathrm{4790}$\xspace}
 \newcommand{\bencherseven}{Linux$_\mathrm{E3-1240v5}$\xspace}
 
-\newcommand{\flatc}{$\rightarrow$}
-\newcommand{\nosteadystate}{$\rightsquigarrow$}
-\newcommand{\warmup}{$\uparrow$}
-\newcommand{\slowdown}{$\downarrow$}
-\newcommand{\inconsistent}{$\rightleftarrows$}
+%\newcommand{\flatc}{$\rightarrow$}
+%\newcommand{\nosteadystate}{$\rightsquigarrow$}
+%\DeclareRobustCommand{\warmup}{
+%\setlength{\sparklinethickness}{0.4pt}
+%\begin{sparkline}{3}
+%\spark 0 1.0.0
+       %0.3 1.0
+       %0.3 0.0
+       %0.6 0.0
+       %/%
+%\end{sparkline}
+%}
+%\newcommand{\slowdown}{$\downarrow$}
+%\newcommand{\inconsistent}{$\rightleftarrows$}
+
+\DeclareRobustCommand{\flatc}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.0 0.35
+       1.0 0.35
+       /%
+\end{sparkline}\xspace}
+\DeclareRobustCommand{\nosteadystate}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.0 0.35
+       0.1 0.5
+       0.3 0.2
+       0.5 0.5
+       0.7 0.2
+       0.9 0.5
+       1.0 0.35
+       /%
+\end{sparkline}\xspace}
+\DeclareRobustCommand{\warmup}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.0 0.8
+       0.5 0.8
+       0.5 0.0
+       1.0 0.0
+       /%
+\end{sparkline}\xspace}
+\DeclareRobustCommand{\slowdown}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.0 0.0
+       0.5 0.0
+       0.5 0.8
+       1.0 0.8
+       /%
+\end{sparkline}\xspace}
+\DeclareRobustCommand{\inconsistent}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.0 0.55
+       1.0 0.55
+       /%
+\spark 0.0 0.2
+       1.0 0.2
+       /%
+\spark 0.1 0.75
+       0.9 0.0
+       /%
+\end{sparkline}\xspace}
 
 \lstset{
     basicstyle=\tt\scriptsize,

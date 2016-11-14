@@ -1,0 +1,182 @@
+{
+
+\begin{tabular}{lp{5pt}crrrp{5pt}crrr}
+\toprule
+\multicolumn{1}{c}{\multirow{2}{*}{VM}}&\multicolumn{2}{c}{Bench.} \&&\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}&\multicolumn{2}{c}{Bench.} \&&\multicolumn{2}{c}{Steady state}&\multicolumn{1}{c}{Median}\\&\multicolumn{2}{c}{class.} &\multicolumn{1}{c}{(iter)} &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)}&\multicolumn{2}{c}{class.} &\multicolumn{1}{c}{(iter)} &\multicolumn{1}{c}{(secs)}&\multicolumn{1}{c}{(secs)} \\
+\midrule
+V8&\multirow{7}{*}{\rotatebox[origin=c]{90}{binarytrees}}&\inconsistent&&&&\multirow{7}{*}{\rotatebox[origin=c]{90}{nbody}}&\inconsistent&&&\\[-3pt] 
+C&&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{3.30823} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&&\inconsistent&&&\\[-3pt] 
+PyPy&&\warmup&$
+\begin{array}{rr}
+\scriptstyle{1} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{91.80} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.45539} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{3.86816} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\[-3pt] 
+LuaJIT&&\inconsistent&&&&&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{0.29452} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\[-3pt] 
+Hotspot&&\warmup&$
+\begin{array}{rr}
+\scriptstyle{1} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.31} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.18688} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&&\warmup&$
+\begin{array}{rr}
+\scriptstyle{1} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.18} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.17176} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\ 
+\midrule
+V8&\multirow{7}{*}{\rotatebox[origin=c]{90}{fannkuch\_redux}}&\inconsistent&&&&\multirow{7}{*}{\rotatebox[origin=c]{90}{richards}}&\inconsistent&&&\\[-3pt] 
+C&&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{0.41144} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&&\inconsistent&&&\\[-3pt] 
+PyPy&&\inconsistent&&&&&\warmup&$
+\begin{array}{rr}
+\scriptstyle{30} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{30.80} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.08484} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\[-3pt] 
+LuaJIT&&\inconsistent&&&&&\inconsistent&&&\\[-3pt] 
+Hotspot&&\warmup&$
+\begin{array}{rr}
+\scriptstyle{272} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{102.16} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.35448} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&&\slowdown&$
+\begin{array}{rr}
+\scriptstyle{198} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{51.15} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.27382} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\ 
+\midrule
+V8&\multirow{7}{*}{\rotatebox[origin=c]{90}{fasta}}&\slowdown&$
+\begin{array}{rr}
+\scriptstyle{361} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{367.97} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.15670} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&\multirow{7}{*}{\rotatebox[origin=c]{90}{spectralnorm}}&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{0.46779} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\[-3pt] 
+C&&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{0.07412} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$&&\inconsistent&&&\\[-3pt] 
+PyPy&&\inconsistent&&&&&\warmup&$
+\begin{array}{rr}
+\scriptstyle{107} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{62.17} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.51931} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\[-3pt] 
+LuaJIT&&\inconsistent&&&&&\flatc&&&$
+\begin{array}{rr}
+\scriptstyle{0.46778} \\[-6pt]
+\scriptscriptstyle{\pm0.000000}
+\end{array}
+$\\[-3pt] 
+Hotspot&&\inconsistent&&&&&\inconsistent&&&\\ 
+
+\bottomrule
+\end{tabular}
+}

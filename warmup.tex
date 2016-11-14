@@ -624,7 +624,13 @@ algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoint
 The function returns changepoint locations and the mean and variance
 between changes. We give the algorithm no information on when or how large a
 change we might be expecting, allowing it to determine statistically different
-parts of the data.
+parts of the data. For the particular, somewhat noisy, data we obtain, the
+algorithm is somewhat over-sensitive to changes in the variance, particularly
+for very small time values. Although we use a microsecond timer, our experience
+is that time deltas under 0.001s are at the mercy of the non-determinism
+inherent in a real machine and OS. We therefore merge consecutive sequences of segments (from
+left-to-right) if all their means variances overlap, and/or whose means are within
+0.001s of each other.
 
 
 \subsection{Classifications}

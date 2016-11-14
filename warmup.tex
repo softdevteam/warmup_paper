@@ -726,7 +726,8 @@ are `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are slowdown or no steady state are `bad'.
 Inconsistent benchmarks are more subjective and require careful consideration of
 the classification of their process executions, which we report in brackets. A
-benchmark which is \inconsistent(5\slowdown, 5\nosteadystate) is clearly `bad';
+benchmark which is \inconsistent(5\slowdown, 5\nosteadystate) (i.e.~inconsistent,
+with 5 process executions classified as slowdown, and 5 classified as no steady state) is clearly `bad';
 but a benchmark which is \inconsistent(8\warmup, 2\flatc) is likely to be
 `good' if the warmups are small in magnitude (and thus are not far from being
 classified as flat) but may be considered `bad' if the warmups are large in

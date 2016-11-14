@@ -557,12 +557,11 @@ measures (see Listing~\ref{lst:krun-measure} for an example). When possible
 in; in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
 Core-cycle counts, \texttt{IA32\_APERF} and \texttt{IA32\_MPERF}
-values are 64-bit unsigned integers, which some languages
-(Javascript and Lua) do not support. For VMs targeting those languages, we
+values are 64-bit unsigned integers; since JavaScript and current versions of LuaJIT do not support
+integers, and since PHP's minimum integer size varies across OS and PHP versions, we
 convert the 64-bit unsigned measurements to
-double-precision floating point values, throwing an error if this leads to a
-loss of precision.\footnote{\laurie{this makes no sense to me}We also consistently use doubles for PHP, whose
-integer values are automatically promoted to floating point upon exceeding their maximum.}
+double-precision floating point values in those VMs, throwing an error if this leads to a
+loss of precision.
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python

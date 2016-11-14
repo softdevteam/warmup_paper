@@ -14,6 +14,7 @@
 \usepackage{mdwlist} % tighter description environment (starred)
 \usepackage{gensymb}
 \usepackage{hyperref}
+\usepackage{caption}
 
 \usepackage{graphicx}
 \usepackage{softdev}
@@ -38,21 +39,6 @@
 \newcommand{\bencherfive}{Linux$_\mathrm{4790}$\xspace}
 \newcommand{\benchersix}{OpenBSD$_\mathrm{4790}$\xspace}
 \newcommand{\bencherseven}{Linux$_\mathrm{E3-1240v5}$\xspace}
-
-%\newcommand{\flatc}{$\rightarrow$}
-%\newcommand{\nosteadystate}{$\rightsquigarrow$}
-%\DeclareRobustCommand{\warmup}{
-%\setlength{\sparklinethickness}{0.4pt}
-%\begin{sparkline}{3}
-%\spark 0 1.0.0
-       %0.3 1.0
-       %0.3 0.0
-       %0.6 0.0
-       %/%
-%\end{sparkline}
-%}
-%\newcommand{\slowdown}{$\downarrow$}
-%\newcommand{\inconsistent}{$\rightleftarrows$}
 
 \DeclareRobustCommand{\flatc}{%
 \setlength{\sparklinethickness}{0.4pt}%
@@ -1144,19 +1130,33 @@ Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
 \newpage
 
 \appendix
+\onecolumn
 
-\section{Main Results}
+\noindent In this appendix, we first present complete data from our experiment
+(Appendices~\ref{app:mainresults}, \ref{app:dacapo}, and \ref{app:octane}). We
+then present a curated selection of interesting run-sequence / core-cycle /
+APERF/MPERF plots. The complete series of plots is available in a separate
+document.
+
+
+\section{Further Results}
 \label{app:mainresults}
+\label{app:dacapo}
+\label{app:octane}
 
-The results for \bencherfive and \benchersix can be seen in
-Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
+\noindent The main experiment's results for \bencherfive and \benchersix can be
+seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}. Full
+DaCapo data can be seen in Table~\ref{tab:dacapo}. Full Octane data can be seen
+in Table~\ref{tab:octane}.
 
-\begin{table*}[t]
+
+\vspace{10pt}
+\begin{minipage}{\linewidth}
 \centering
 \input{bencher5.table}
-\caption{Benchmark results for \bencherfive.}
+\captionof{table}{Benchmark results for \bencherfive.}
 \label{tab:bencher5results}
-\end{table*}
+\end{minipage}
 
 \begin{table*}[t]
 \centering
@@ -1166,8 +1166,6 @@ Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \end{table*}
 
 
-\section{DaCapo Results}
-
 \begin{table}[t]
 \centering
 \input{dacapo.table}
@@ -1175,8 +1173,6 @@ Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \label{tab:dacapo}
 \end{table}
 
-
-\section{Octane Results}
 
 \begin{table}[t]
 \centering

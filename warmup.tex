@@ -105,6 +105,14 @@
        /%
 \end{sparkline}\xspace}
 
+\newlength{\blankheight}
+\settototalheight{\blankheight}{
+$\begin{array}{rr}
+\scriptstyle{0.16} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}$
+}
+
 \lstset{
     basicstyle=\tt\scriptsize,
     xleftmargin=2em,
@@ -739,10 +747,12 @@ magnitude (and the flats are, relatively speaking, more anomalous).
 \begin{table*}[t]
 \centering
 \input{bencher3.table}
-\caption{Benchmark results. For processes which reach a steady state:
-\emph{steady state iter} is the median in-process iteration that the steady
-state was reached at; \emph{steady state secs} is the wall-clock time since the
-beginning of the process execution that the steady state was reached.
+\caption{Benchmark results for \bencherthree. For processes which reach a steady
+state: \emph{steady iter (\#)} is the median in-process iteration that the steady
+state was reached at; \emph{steady iter (s)} is the wall-clock time since the
+beginning of the process execution that the steady state was reached;
+\emph{steady perf (s)} is the median performance of the steady state segment
+across all process executions.
 Classifiers key: \flatc: flat, \warmup: warmup, \slowdown:
 slowdown, \nosteadystate: no steady state, \inconsistent: inconsistent.}
 \label{tab:mainresults}
@@ -1138,7 +1148,22 @@ Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
 \section{Main Results}
 \label{app:mainresults}
 
-\laurie{the results for the other 2 benchers should go here}
+The results for \bencherfive and \benchersix can be seen in
+Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
+
+\begin{table*}[t]
+\centering
+\input{bencher5.table}
+\caption{Benchmark results for \bencherfive.}
+\label{tab:bencher5results}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\input{bencher6.table}
+\caption{Benchmark results for \benchersix.}
+\label{tab:bencher6results}
+\end{table*}
 
 
 \section{DaCapo Results}

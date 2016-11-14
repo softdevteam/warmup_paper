@@ -732,14 +732,16 @@ magnitude (and the flats are, relatively speaking, more anomalous).
 \begin{table*}[t]
 \centering
 \input{bencher3.table}
-\caption{Benchmark results for \bencherthree. For processes which reach a steady
+\caption{Benchmark results for \bencherthree. Classifiers key: \flatc: flat,
+\warmup: warmup, \slowdown: slowdown, \nosteadystate: no steady state,
+\inconsistent: inconsistent. For processes which reach a steady
 state: \emph{steady iter (\#)} is the median in-process iteration that the steady
 state was reached at; \emph{steady iter (s)} is the wall-clock time since the
 beginning of the process execution that the steady state was reached;
 \emph{steady perf (s)} is the median performance of the steady state segment
-across all process executions.
-Classifiers key: \flatc: flat, \warmup: warmup, \slowdown:
-slowdown, \nosteadystate: no steady state, \inconsistent: inconsistent.}
+across all process executions. We give the
+constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slowdown, 8\warmup) means
+2 of the process executions were slowdown, and 8 warmup.}
 \label{tab:mainresults}
 \end{table*}
 

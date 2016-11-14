@@ -644,11 +644,11 @@ sys.stdout.write("%s\n" % json.dumps(js))
 \section{Classifying Warmup}
 \label{sec:stats}
 
-The main data created by our experiment is the time that each in-process
-iteration takes to run. Formally, this data is a 2000 length time series. In
-this Section we explain how we use changepoint analysis to enable us to
+The main data created by our experiment is the time taken by each in-process
+iteration to run. Formally, this is time series data of length 2000. In
+this Section we explain how we use statistical changepoint analysis to enable us to
 understand this time series data and classify the results we see, giving the
-first automated basis to identifying warmup.
+first automated method for identifying warmup.
 
 
 \subsection{Outliers}
@@ -660,7 +660,10 @@ intuition is that such outliers are likely to be the result of JIT compilation,
 GC, or of other processes interrupting benchmarks. We use Tukey's
 method~\cite{tukey1977exploratory}, conservatively defining an outlier as one that, within a
 sliding window of 200 in-process iterations, lies outside the median $\pm
-3*(90\%\textrm{ile} - 10\%\textrm{ile})$. Of the \laurie{XXX} in-process
+3*(90\%\textrm{ile} - 10\%\textrm{ile})$. We ignore the first window of 200
+in-process iterations, as we want to avoid classifying a small number of slow
+iterations at the start of the series as outliers, since these may be an
+indication of good warm-up behaviour. Of the \laurie{XXX} in-process
 iteration timings, \laurie{XXX\%} are classified as outliers, with the most for
 a single process execution being \laurie{XXX}.
 
@@ -668,13 +671,14 @@ a single process execution being \laurie{XXX}.
 \subsection{Changepoint Analysis}
 
 Intuitively, in order to uncover if/when warmup has completed, we need to
-determine when the times taken for an in-process execution have shifted from one
-mode to another. Put another way, we expect to see a number of in-process
-executions taking time $t$ to be followed by a number at time $t'$. In order to
-automatically determine when this occurs, we use changepoint analysis
+determine when the time taken by in-process executions to complete have become
+faster. Put another way, we expect to see a number of in-process
+executions taking time $t$ to be followed by a number at time $t'$, where
+$t>t'$. In order to
+automatically determine when this occurs, we use statistical changepoint analysis
 (see~\cite{EckleyFearnheadKillick2011} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
-data are different from the statistical properties of subsequent data; the data
+data are different to the statistical properties of subsequent data; the data
 between two changepoints is a \emph{changepoint segment}. There are various
 ways that one can determine when a changepoint should occur, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
@@ -683,16 +687,18 @@ iterations.
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{R:changepoint}. This function uses the PELT
 algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints.
-The function returns changepoint locations and the mean and variance
-between changes. We give the algorithm no information on when or how large a
-change we might be expecting, allowing it to determine statistically different
-parts of the data. For the particular, somewhat noisy, data we obtain, the
-algorithm is somewhat over-sensitive to changes in the variance, particularly
-for very small time values. Although we use a microsecond timer, our experience
+We pass a \emph{penalty} to the function of $15\log{N}$, where $N$ is
+the length of the time series once outliers have been removed.
+\texttt{cpt.meanvar} returns changepoint locations and the mean and variance
+of each segment. For the particular, somewhat noisy, data we obtain, the
+algorithm is slightly over-sensitive to changes in the variance, particularly
+for very fast in-process iterations. Although we use a microsecond timer, our experience
 is that time deltas under 0.001s are at the mercy of the non-determinism
 inherent in a real machine and OS. We therefore merge consecutive sequences of segments (from
-left-to-right) if all their means variances overlap, and/or whose means are within
-0.001s of each other.
+left-to-right) whose confidence intervals overlap, and/or whose means are within
+0.001s of each other. We use inter-quartile range as a confidence interval, as
+it is a conservative statistic which does not assume an underlying distribution
+of the data.
 
 
 \subsection{Classifications}
@@ -701,16 +707,16 @@ Building atop changepoint analysis, we can then define useful classifications of
 time-series data from VM benchmarks.
 
 First, we define classifications for individual process executions. A process
-execution which consists of a single changepoint segment is classified as
+execution with no changepoints is classified as
 \emph{flat} (\flatc). Since all our benchmarks run for 2000 in-process
 iterations we (somewhat arbitrarily) define that a process execution reaches a
 steady-state if the last 500 in-process iterations are part of a single
-changepoint segment. A process execution with more than one segment in its last
+changepoint segment. A process execution with a changepoint in its last
 500 in-process iterations is classified as \emph{no steady state}
 (\nosteadystate). A steady-state process execution whose final segment has
-the lowest execution time of all segments is classified as a \emph{warmup}
+the shortest execution time of all segments is classified as a \emph{warmup}
 (\warmup). A steady-state process execution whose final segment is not the
-lowest execution time of all segments is classified as a \emph{slowdown}
+shortest execution time of all segments is classified as a \emph{slowdown}
 (\slowdown).
 
 Second, we define classifications for a benchmark's set of process executions.

@@ -710,11 +710,10 @@ iterations we (somewhat arbitrarily) define that a process execution reaches a
 steady-state if the last 500 in-process iterations are part of a single
 changepoint segment. A process execution with a changepoint in its last
 500 in-process iterations is classified as \emph{no steady state}
-(\nosteadystate). A steady-state process execution whose final segment has
-the shortest execution time of all segments is classified as a \emph{warmup}
-(\warmup). A steady-state process execution whose final segment is not the
-shortest execution time of all segments is classified as a \emph{slowdown}
-(\slowdown).
+(\nosteadystate). A steady-state process execution whose final segment:
+is the fastest execution time of all segments is classified as \emph{warmup}
+(\warmup); is not the fastest execution time of all segments is classified as
+\emph{slowdown} (\slowdown).
 
 Second, we define classifications for a benchmark's set of process executions.
 If its process executions all share the same classification (e.g.~warmup) then
@@ -906,7 +905,7 @@ from an SSD). As this data clearly shows, startup time varies significantly amon
 taking C as a baseline, the fastest VM (LuaJIT) is around 2x slower, whilst the
 slowest VM (JRubyTruffle) is around 1000x slower, to startup.
 
-\begin{table}[ht]
+\begin{table}[t]
 \centering
 \input{startup.table}
 \caption{VM startup time (in seconds with 99\% confidence intervals).}

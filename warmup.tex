@@ -1212,8 +1212,26 @@ replicate the running order of Octane's original runner. Since Octane runs all
 benchmarks in a single process execution, this could affect the performance of
 later benchmarks in the suite.
 
-Tables~\ref{tab:dacapo} and \ref{tab:octane} (both in the Appendix) show the full
-Octane results. They can be summarised as follows \laurie{XXX}.
+Table~\ref{tab:dacapo} shows the full DaCapo results. Graal and HotSpot both
+perform similarly. The luindex benchmark is consistently a slowdown on Graal,
+and mostly a slowdown on HotSpot. Jython is notably inconsistent on both VMs. In
+summary, even on this most carefully designed of benchmark suites, only 70\%
+of (VM, benchmark) pairs have `good' warmup.
+
+Tables~\ref{tab:octane} shows the full Octane results. These are notably less
+consistent than the DaCapo results, with SpiderMonkey being somewhat less
+consistent than V8. In summary, only 45.8\% of (VM, benchmark) pairs have `good'
+warmup.
+
+As these results show, our automated statistical method produces satisfying
+results even on existing benchmark suites that have not been subject to the
+\krun treatment. Both DaCapo and (mostly) Octane use much larger benchmarks than
+our main experiment. We have no realistic way of understanding to what extent
+this makes `good' warmup more or less likely. For example, it is likely that
+there is CFG non-determinism in many of these benchmarks; however, their larger
+code-bases may give VMs the ability to `spread out' VM costs, making smaller
+blips less likely.
+
 
 \begin{table*}[t]
 \centering
@@ -1237,9 +1255,7 @@ Octane results. They can be summarised as follows \laurie{XXX}.
 \label{app:octane}
 
 \noindent The main experiment's results for \bencherfive and \benchersix can be
-seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}. Full
-DaCapo data can be seen in Table~\ref{tab:dacapo}. Full Octane data can be seen
-in Table~\ref{tab:octane}.
+seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 
 \begin{table*}[t]
 \centering

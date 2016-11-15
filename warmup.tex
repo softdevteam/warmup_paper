@@ -138,7 +138,7 @@ $\begin{array}{rr}
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines
-parts of a program would most benefit from dynamic compilation and JIT
+parts of a program that would most benefit from dynamic compilation and JIT
 compiles them into machine code; after
 compilation has occurred, the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
@@ -386,7 +386,7 @@ to remove the possibility of variance through the use of different compilers.
 
 \label{openbsd porting} On OpenBSD, we skip Graal, HHVM, and JRuby+Truffle, which have not yet been
 ported to it. We skip \fasta on JRuby+Truffle as it crashes;
-and we skip \richards on HHVM since it takes as long as every other benchmark
+and we skip \richards on HHVM since 10 process executions take as long as every other benchmark
 on every other VM put together (about 10 days).
 
 
@@ -454,7 +454,7 @@ next process execution.
 The obvious way for \krun to determine which benchmark to run next is to examine
 its results file. However, this is a large file which grows over time, and
 reading it in could affect benchmarks (e.g.~due to significant memory
-fragmentation). On its initial execution, and before the first reboot, \krun
+fragmentation). On its initial invocation, and before the first reboot, \krun
 therefore creates a simple schedule file. After each reboot this is scanned
 line-by-line for the next benchmark to run; the benchmark is run; and the schedule
 updated (without changing its size). Once the process execution is
@@ -464,7 +464,7 @@ a (largely) known state.
 
 Modern systems have various temperature-based limiters built in:
 CPUs, for example, lower their frequency if they get too hot.
-After its initial execution, \krun waits for 1 minute before collecting
+After its initial invocation, \krun waits for 1 minute before collecting
 the values of all available temperature sensors. After each reboot's \texttt{sync}-wait, \krun waits
 for the machine to return to these base temperatures ($\pm3\degree$C) before
 starting the benchmark, fatally aborting if this temperature range is not
@@ -491,7 +491,7 @@ We did not use this machine for our final benchmarking.
 
 A process's environment size can cause measurement
 bias~\cite{mytkowicz09surprising}. The diversity of VMs and platforms
-we use setup makes it impossible to set a unified environment size across all VMs and
+in our setup makes it impossible to set a unified environment size across all VMs and
 benchmarks. However, the \texttt{krun} user does not
 vary its environment (we recorded the environment seen by each process
 execution and verified their size), and we designed the experiment such that, for a particular (machine, VM,
@@ -590,7 +590,7 @@ core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
         caption={%
-\texttt{krun\_measure}: Measuring before (the \texttt{if's} true branch) and
+\texttt{krun\_measure}: Measuring before (the \texttt{if}'s true branch) and
 after (its false branch) a benchmark. Since
 wall-clock time is the most important measure, it is innermost; since
 the APERF/MPERF counters are a sanity check, they are outermost. Note that
@@ -862,7 +862,7 @@ Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherthree)
 enables to make us several observations. Of the 6 benchmarks, only \nbody comes
 close to `good' warmup behaviour on all
-VM on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
+VMs on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
 slows down. Second, there appears to be a bimodal pattern for the number
 of in-process iterations required to reach a steady state (when it exists): VMs
 tend either to reach it very quickly (often in 10 or fewer in-process iterations)
@@ -933,7 +933,7 @@ iterations.}
 Core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
 cycle-count on one core, and very low (though never quite zero) values on all
-other cores. Such VMs may still be migrated between cores during process
+other cores. Such VMs may still be migrated between cores during a process
 execution, as can be clearly seen in Figure~\ref{fig:examples:nosteadystate}.
 Although multi-threaded VMs can run JIT compilation and / or GC in parallel,
 it is typically hard to visually detect such parallelism as it tends to be
@@ -983,7 +983,7 @@ information about the duration of JIT compilation and GC to be recorded. Since
 recording this additional data could potentially change the results we collect,
 it is only collected when \krun is explicitly set to `instrumentation mode'. An
 example instrumentation-plot can be seen in the slowdown of
-Figure~{fig:examples:slowdown1} where there is a clear correlation (though we
+Figure~\ref{fig:examples:slowdown1} where there is a clear correlation (though we
 cannot be entirely sure that it is a causation) between a JIT compilation and
 the slowdown. However, some other notably odd examples have no such correlation,
 as can be seen in Figure~\ref{fig:goodcomp}.
@@ -1111,7 +1111,7 @@ meaning that there is no guarantee that it returns within a fixed bound.
 %OpenBSD source code and \texttt{getrawmonotonic} in
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
 In practise, \texttt{clock\_gettime} returns far quicker than the granularity
-of any our benchmarks, so this is a minor worry at most. \label{aperf/mperf error} The situation
+of any of our benchmarks, so this is a minor worry at most. \label{aperf/mperf error} The situation
 on Linux is complicated by our reading of core cycle, APERF, and MPERF
 counters via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
@@ -1189,7 +1189,7 @@ state of peak performance is not guaranteed to exist. Third, the significant
 differences in warmup time between VMs strongly suggest that VM benchmarking
 should always include warmup time. Fourth, we suspect that some of the odd
 results we have seen result from over-training VM heuristics on small sets of
-benchmarks. The approach taken by the machine-learning community may be apply
+benchmarks. The approach taken by the machine-learning community may apply
 equally well to the VMs: using a training set to devise heuristics, and then
 benchmarking the resulting system(s) on a separate validation system. Fifth, we suspect
 that the general reliance on small suites of benchmarks means that only
@@ -1237,7 +1237,7 @@ benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\cite{octane}
 (JavaScript). We ran both for 10 process executions and 2000 in-process
 iterations without reboots, temperature control etc.: DaCapo on \bencherthree;
 and Octane on \bencherseven (a Xeon machine, with a software setup
-identical to \bencherthree).\footnote{The large amount of CPU time our
+similar to \bencherthree).\footnote{The large amount of CPU time our
 experiments require meant that we ran out of time to run Octane on \bencherthree
 before paper submission. For the final paper, we will run DaCapo and Octane on
 the same machine. Although we do not expect this to result in significant
@@ -1278,7 +1278,7 @@ and mostly a slowdown on HotSpot. Jython is notably inconsistent on both VMs. In
 summary, even on this most carefully designed of benchmark suites, only 70\%
 of (VM, benchmark) pairs have `good' warmup.
 
-Tables~\ref{tab:octane} shows the full Octane results. These are notably less
+Table~\ref{tab:octane} shows the full Octane results. These are notably less
 consistent than the DaCapo results, with SpiderMonkey being somewhat less
 consistent than V8. In summary, only 45.8\% of (VM, benchmark) pairs have `good'
 warmup.

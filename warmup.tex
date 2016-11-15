@@ -727,15 +727,18 @@ we classify the benchmark the same (in this example, warmup); otherwise we class
 Informally, we suggest that benchmarks whose behaviour is either flat or warmup
 are `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are either slowdown or no steady state are `bad'.
-Inconsistent benchmarks can be more tricky: in all cases, they require careful consideration of
-the classification of their process executions, which we report in brackets. A
+Inconsistent benchmarks are sometimes easily judged through the classification
+of their process executions, which we report in brackets. A
 benchmark which is \inconsistent(6\slowdown, 4\nosteadystate) (i.e.~inconsistent,
 with 6 process executions classified as slowdown, 4 as no steady state) is clearly `bad'.
-However, a benchmark which is \inconsistent(8\warmup, 2\flatc)
-requires manual investigation of the individual process execution's data:
-if the warmups are small in magnitude (and thus are not far from being
-classified as flat) one may consider it `good', but if the warmups are large in
-magnitude (and the flats are, relatively speaking, more anomalous) `bad'.
+However, there are some more subjective cases. For example, consider a benchmark
+which is \inconsistent(8\warmup, 2\flatc). Manual investigation of the individual process execution's data
+may show that there is considerable difference between the warmup and flat
+process executions and that it is clearly `bad'. However, if the
+warmups are small in magnitude (and thus are not far from being
+classified as flat) some may consider it `good' whilst some will consider it `neutral',
+on the basis that they should all be consistent. To avoid such subjectivity,
+we consider inconsistent benchmarks to be either obviously `bad' or `neutral'.
 
 
 \section{Results}
@@ -791,14 +794,14 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
 Our experiment consists of 1220 process executions and 2.4 million in-process
-iterations. Table~\ref{table:summarystats} summarises the (VM, benchmark) pairs
+iterations. Table~\ref{tab:summarystats} summarises the (VM, benchmark) pairs
 and process executions for each benchmarking machine. Taking \bencherthree
 as a representative example,
 \FPeval{\result}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
 \result\% of (VM, benchmark) pairs and
 \FPeval{\result}{round(\bencherthreeflatpercentage+\bencherthreewarmuppercentage,1)}%
 \result\% of process executions have `good' warmup (\flatc, \warmup) (for comparison, \bencherfive
-is 
+is
 \FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
 \result\% and
 \FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
@@ -811,9 +814,9 @@ warmup because some inconsistent (VM, benchmark) pairs have some `good' warmup
 process executions. More worryingly, on \bencherthree
 \bencherthreevmbenchpairsslowdownpercentage\% of (VM, benchmark) pairs slowdown
 and \bencherthreevmbenchpairsinconsistentpercentage\% are inconsistent
-(with around three quarters of those being obviously `bad');
-\bencherfive and \benchersix are broadly similar. In our opinion, since a
-large proportion of VMs have `bad' warmup, these results clearly invalidate
+(with over two thirds of those being obviously `bad'); \bencherfive and
+\benchersix are broadly similar. Taking \bencherthree is an example,
+one third of its (VM, benchmark) pairs are `bad', leading us to clearly reject
 Hypothesis H1.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherthree
@@ -838,8 +841,7 @@ tend either to reach it very quickly (often in 10 or fewer in-process iterations
 or take hundreds of in-process iterations. Those that take a long time
 to stabilise are troubling, because previous benchmarking methodologies
 will not have run them long enough to see this steady state emerge.
-Finally, there seems to be very lit
-tle
+Finally, there seems to be very little
 correlation between the time it takes a VM to reach a steady state and the
 performance of that steady state: i.e.~it does not seem to be the case that VMs
 which take a long time to warmup are creating more efficient
@@ -866,8 +868,8 @@ benchmark) triples.
 HHVM (process execution 4 of 10 run on \bencherthree). The run-sequence plot
 (bottom) shows that warmup completed by in-process iteration \#134. The
 core-cycle plot (top) shows that the main benchmark computation
-occurred almost entirely on core 1: cores 0, 2 and 3 had Cycle Counts (CC) close
-to 0 for the entire in-process execution and are thus elided.}
+occurred almost entirely on core 1: cores 0, 2 and 3 Cycle Counts (CC)
+were low enough for us to classify them as `inactive', and we have thus elided them.}
 \label{fig:examples:trad}
 \vspace{-.2cm}
 \end{figure}

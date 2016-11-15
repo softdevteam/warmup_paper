@@ -39,7 +39,7 @@ ${BIBDB}: ${PREBIB} softdev.bib
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
-		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES}
+		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES} summary_macros.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex

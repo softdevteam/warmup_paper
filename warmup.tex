@@ -731,12 +731,38 @@ magnitude (and the flats are, relatively speaking, more anomalous) `bad'.
 \section{Results}
 \label{sec:results}
 
+\begin{table}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+               & \bencherthree & \bencherfive & \benchersix \\
+\midrule
+               & \multicolumn{3}{c}{(VM, benchmark) pairs} \\
+\flatc         & \bencherthreevmbenchpairsflatpercentage\% & \bencherfivevmbenchpairsflatpercentage\% & \benchersixvmbenchpairsflatpercentage\% \\
+\warmup        & \bencherthreevmbenchpairswarmuppercentage\% & \bencherfivevmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% \\
+\slowdown      & \bencherthreevmbenchpairsslowdownpercentage\% & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% \\
+\nosteadystate & \bencherthreevmbenchpairsnosteadystatepercentage\% & \bencherfivevmbenchpairsnosteadystatepercentage\% & \benchersixvmbenchpairsnosteadystatepercentage\% \\
+\inconsistent  & \bencherthreevmbenchpairsinconsistentpercentage\% & \bencherfivevmbenchpairsinconsistentpercentage\% & \benchersixvmbenchpairsinconsistentpercentage\% \\
+\midrule
+               & \multicolumn{3}{c}{Process executions} \\
+\flatc         & \bencherthreeflatpercentage\%          & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% \\
+\warmup        & \bencherthreewarmuppercentage\%        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% \\
+\slowdown      & \bencherthreeslowdownpercentage\%      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% \\
+\nosteadystate & \bencherthreenosteadystatepercentage\% & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% \\
+\inconsistent  & \bencherthreeinconsistentpercentage\%  & \bencherfiveinconsistentpercentage\%  & \benchersixinconsistentpercentage\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Relative proportions of classifiers across benchmarking machines.
+Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
+\nosteadystate: no steady state, \inconsistent: inconsistent.}
+\label{tab:summarystats}
+\end{table}
+
 \begin{table*}[t]
 \centering
 \input{bencher3.table}
-\caption{Benchmark results for \bencherthree. Classifiers key: \flatc: flat,
-\warmup: warmup, \slowdown: slowdown, \nosteadystate: no steady state,
-\inconsistent: inconsistent. For processes which reach a steady
+\caption{Benchmark results for \bencherthree. For processes which reach a steady
 state: \emph{steady iter (\#)} is the median in-process iteration that the steady
 state was reached at; \emph{steady iter (s)} is the wall-clock time since the
 beginning of the process execution that the steady state was reached;
@@ -756,8 +782,10 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
 Our experiment consists of 1220 process executions and 2.4 million in-process
-iterations. Table~\ref{tab:mainresults} shows the results from \bencherthree.
+iterations. Table~\ref{table:summarystats} summarises the (VM, benchmark) pairs
+and process executions for each benchmarking machine.
 
+Table~\ref{tab:mainresults} shows the results from \bencherthree.
 A few aspects of Table~\ref{tab:mainresults} are worthy of particular comment.
 First, of the 6 benchmarks, only \nbody comes close to `good' warmup behaviour on all
 VM on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
@@ -773,31 +801,7 @@ performance of that steady state: i.e.~it does not seem to be the case that VMs
 which take a long time to warmup are using it to create highly efficient
 steady-state code.
 
-\begin{table}
-\begin{center}
-\begin{tabular}{lccc}
-\toprule
-               & \bencherthree & \bencherfive & \benchersix \\
-\midrule
-               & \multicolumn{3}{c}{(VM, benchmark) pairs} \\
-\flatc         \\
-\warmup        \\
-\slowdown      \\
-\nosteadystate \\
-\inconsistent  \\
-\midrule
-               & \multicolumn{3}{c}{Process executions} \\
-\flatc         & \bencherthreeflatpercentage\%          & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% \\
-\warmup        & \bencherthreewarmuppercentage\%        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% \\
-\slowdown      & \bencherthreeslowdownpercentage\%      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% \\
-\nosteadystate & \bencherthreenosteadystatepercentage\% & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% \\
-\inconsistent  & \bencherthreeinconsistentpercentage\%  & \bencherfiveinconsistentpercentage\%  & \benchersixinconsistentpercentage\% \\
 
-\bottomrule
-\end{tabular}
-\end{center}
-\caption{Relative proportions of classifiers across benchmarking machines.}
-\end{table}
 
 \laurie{we should summarise: X\% are flat, Y\% are warmup etc.} Of the
 \laurie{XXX} (VM, benchmark) pairs, \laurie{XXX}\% are flat, \laurie{XXX}\%

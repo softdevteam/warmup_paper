@@ -490,9 +490,9 @@ A process's environment size can cause measurement
 bias~\cite{mytkowicz09surprising}. The diversity of VMs and platforms
 we use setup makes it impossible to set a unified environment size across all VMs and
 benchmarks. However, the \texttt{krun} user does not
-vary its environment (we recorded and verified this for all process
-executions), and we designed the experiment such that, for a particular (machine, VM,
-benchmark) triple the additional environment used to configure the VM is constant
+vary its environment (we recorded the environment seen by each process
+execution and verified their size), and we designed the experiment such that, for a particular (machine, VM,
+benchmark) triple the additional environment used to configure the VM is of constant
 size.
 
 

@@ -683,7 +683,7 @@ In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{R:changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliters) to the
 \texttt{penalty} argument. This function uses the PELT
-algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints.
+algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
 of each segment. For the particular, somewhat noisy, data we obtain, the
 algorithm is slightly over-sensitive to changes in the variance, particularly

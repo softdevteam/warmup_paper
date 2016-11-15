@@ -643,7 +643,7 @@ in; in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
 Core-cycle, APERF, and MPERF counts are 64-bit unsigned integers; since
 JavaScript and current versions of LuaJIT do not support
-integers, and since PHP's minimum integer size varies across OS and PHP versions, we
+integers, and since PHP's maximum integer size varies across OS and PHP versions, we
 convert the 64-bit unsigned measurements to
 double-precision floating point values in those VMs, throwing an error if this leads to a
 loss of precision.

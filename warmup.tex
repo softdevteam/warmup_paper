@@ -698,7 +698,6 @@ execution of Richards on HotSpot from \benchersix). This shows two changepoints
 200. The horizontal red lines are the means of the changepoint segments. The red
 blob denotes a solitary outlier, which was discounted by the changepoint analysis.}
 \label{fig:changepoint}
-\vspace{-.2cm}
 \end{figure}
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
@@ -836,12 +835,12 @@ is
 \FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
 \result\% respectively, though the latter runs fewer benchmarks). Fewer (VM, benchmark) pairs than process executions have `good'
 warmup because some inconsistent (VM, benchmark) pairs have some `good' warmup
-process executions. More worryingly, on \bencherthree
+process executions. On \bencherthree
 \bencherthreevmbenchpairsslowdownpercentage\% of (VM, benchmark) pairs slowdown
 and \bencherthreevmbenchpairsinconsistentpercentage\% are inconsistent
 (with over two thirds of those being obviously `bad'); \bencherfive and
-\benchersix are broadly similar. Taking \bencherthree is an example,
-one third of its (VM, benchmark) pairs are `bad', leading us to clearly reject
+\benchersix are broadly similar. Taking \bencherthree as an example,
+one third of its (VM, benchmark) pairs are `bad', clearly invalidating
 Hypothesis H1.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherthree
@@ -884,8 +883,7 @@ the processor cycle count per-core.
 The run-sequence and core-cycle plots in Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
 and \ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
 and no steady state respectively. Figure~\ref{fig:examples:inconsistent} shows
-an example of inconsistent process executions on identical (machine, VM,
-benchmark) triples.
+an example of inconsistent process executions.
 
 \begin{figure}[t]
 \centering
@@ -911,8 +909,9 @@ were low enough for us to classify them as `inactive', and we have thus elided t
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=.8\textwidth]{examples/new_inconsistent.pdf}
-\caption{Examples of inconsistent process executions on the same system.}
+\caption{An example of inconsistent process executions for the same (machine, VM, benchmark) triple.}
 \label{fig:examples:inconsistent}
+\vspace{-.4cm}
 \end{figure*}
 
 \begin{figure}[t]
@@ -983,7 +982,8 @@ it is only collected when \krun is explicitly set to `instrumentation mode'. An
 example instrumentation-plot can be seen in the slowdown of
 Figure~{fig:examples:slowdown1} where there is a clear correlation (though we
 cannot be entirely sure that it is a causation) between a JIT compilation and
-the slowdown. However, some other notably odd examples have no such correlation.
+the slowdown. However, some other notably odd examples have no such correlation,
+as can be seen in Figure~\ref{fig:goodcomp}.
 
 The relatively few results we have with GC and JIT compilation events, and the lack of a clear
 message from them, means that we feel unable to validate or invalidate
@@ -997,9 +997,13 @@ document it accurately.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=.45\textwidth]{examples/new_good_comp.pdf}
-\caption{An example showing a speed-up due to JIT compilation and
-(surprisingly) no garbage collection for the whole in-process execution.}
-\label{fig:examples:goodcomp}
+\caption{The cyclic example from Figure~\ref{fig:examples:cycles} with
+GC and JIT compilation instrumentation enabled. The additional overhead
+changes some of the details in the first half of the process
+execution, but the second half is unchanged. As this example shows, the
+cycles are not correlated with GC (of which there is none) or JIT compilation.}
+\label{fig:goodcomp}
+\vspace{-.2cm}
 \end{figure}
 
 \section{Startup Time}

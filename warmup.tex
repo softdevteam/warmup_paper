@@ -759,6 +759,22 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 
 Our experiment consists of 1220 process executions and 2.4 million in-process
 iterations. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}.
+
+A few aspects of Table~\ref{tab:mainresults} are worthy of particular comment.
+First, of the 6 benchmarks, only \nbody comes close to `good' warmup behaviour on all
+VM on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
+slows down. Second, there appears to be a bimodal pattern for the number
+of in-process iterations required to reach a steady state (when it exists): VMs
+tend either to reach it very quickly (often in 10 or fewer in-process iterations)
+or take hundreds of in-process iterations. Those that take a long time
+to stabilise are troubling, because previous benchmarking methodologies
+will not have run them long enough to see this steady state emerge.
+Finally, there seems to be very little
+correlation between the time it takes a VM to reach a steady state and the
+performance of that steady state: i.e.~it does not seem to be the case that VMs
+which take a long time to warmup are using it to create highly efficient
+steady-state code.
+
 \laurie{we should summarise: X\% are flat, Y\% are warmup etc.} Of the
 \laurie{XXX} (VM, benchmark) pairs, \laurie{XXX}\% are flat, \laurie{XXX}\%
 warmup, \laurie{XXX}\% slowdown, \laurie{XXX}\% are no steady state, and
@@ -770,17 +786,8 @@ results clearly invalidate Hypothesis H1. The results for \bencherfive and
 are very similar to \bencherthree's; \benchersix's results are broadly similar.
 We consider this strong validation of Hypothesis H2.
 
-A few aspects of Table~\ref{tab:mainresults} are worth particular comment.
-First, of the 6 benchmarks, only \nbody has `good' warmup behaviour on all
-machines: the other 5 benchmarks all have at least one VM which consistently
-slows down. Second, there appears to be a strong bimodal pattern for the number
-of in-process iterations required to reach a steady state (when it exists): VMs
-tend either to reach it very quickly (around 10 or fewer in-process iterations)
-or take hundreds of in-process iterations. Finally, there is very little
-correlation between the time it takes a VM to reach a steady state and the
-performance of that steady state: i.e.~it does not seem to be the case that VMs
-which take a long time to warmup are using it to create highly efficient
-steady-state code.
+
+\subsection{Warmup Plots}
 
 To understand why we see so many unexpected cases, we created a series of plots
 for all process executions on all machines. All

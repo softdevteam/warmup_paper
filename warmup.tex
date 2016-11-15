@@ -686,7 +686,7 @@ automatically determine when this occurs, we use statistical changepoint analysi
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
 between two changepoints is a \emph{changepoint segment}. There are various
-ways that one can determine when a changepoint should occur, but the best fit
+ways that one can determine when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
 iterations.
 
@@ -722,6 +722,7 @@ is the fastest execution time of all segments is classified as \emph{warmup}
 (\warmup); is not the fastest execution time of all segments is classified as
 \emph{slowdown} (\slowdown).
 
+\sarah{This is really a vm/benchmark pair.}
 Second, we define classifications for a benchmark's set of process executions.
 If its process executions all share the same classification (e.g.~warmup) then
 we classify the benchmark the same (in this example, warmup); otherwise we classify the benchmark as
@@ -796,7 +797,8 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num process execs: 122 * 10 = 1220
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
-Our experiment consists of 1220 process executions and 2.4 million in-process
+\sarah{Could use totaliterations macro here but FPEval doesn't like me.}
+Our experiment consists of \totalpexecs{} process executions and 2.4 million in-process
 iterations. Table~\ref{tab:summarystats} summarises the (VM, benchmark) pairs
 and process executions for each benchmarking machine. Taking \bencherthree
 as a representative example,

@@ -834,7 +834,13 @@ With that in mind, we believe that our results are a fairly clear validation of
 Hypothesis H2.
 
 Looking at \bencherthree as a concrete example, Table~\ref{tab:mainresults}
-shows some interesting details. First, of the 6 benchmarks, only \nbody comes
+shows some interesting details.
+\sarah{The below may need moving around.} Columns describing when a benchmark
+pair has reached a steady state, how long the VM took to reach a steady state
+and mean performance thereafter has been aggregated over 10 process executions.
+In each case a median is given along with confidence interval
+(bootstrapped with 10000 iterations, by sampling with replacement).
+Of the 6 benchmarks, only \nbody comes
 close to `good' warmup behaviour on all
 VM on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
 slows down. Second, there appears to be a bimodal pattern for the number

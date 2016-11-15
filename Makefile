@@ -44,4 +44,5 @@ ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
-
+	pdfsplit -o warmup_paper.pdf 0:13 warmup.pdf
+	pdfsplit -o warmup_appendix.pdf 13: warmup.pdf

@@ -721,10 +721,9 @@ is the fastest execution time of all segments is classified as \emph{warmup}
 (\warmup); is not the fastest execution time of all segments is classified as
 \emph{slowdown} (\slowdown).
 
-\sarah{This is really a vm/benchmark pair.}
-Second, we define classifications for a benchmark's set of process executions.
-If its process executions all share the same classification (e.g.~warmup) then
-we classify the benchmark the same (in this example, warmup); otherwise we classify the benchmark as
+Second, we define classifications for a (VM, benchmark pair) as follows:
+if its process executions all share the same classification (e.g.~warmup) then
+we classify the pair the same (in this example, warmup); otherwise we classify the pair as
 \emph{inconsistent} (\inconsistent).
 
 Informally, we suggest that benchmarks whose behaviour is either flat or warmup
@@ -796,8 +795,7 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num process execs: 122 * 10 = 1220
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
-\sarah{Could use totaliterations macro here but FPEval doesn't like me.}
-Our experiment consists of \totalpexecs{} process executions and 2.4 million in-process
+Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the (VM, benchmark) pairs
 and process executions for each benchmarking machine. Taking \bencherthree
 as a representative example,

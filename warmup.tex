@@ -486,15 +486,14 @@ noticing that one machine initially ear-marked for benchmarking occasionally
 overheated, with the only clue to this being a line in \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
 
-The Unix environment size can cause measurement
-bias~\cite{mytkowicz09surprising}. The complexity of our experimental
-setup makes it hard for \krun to set a unified environment size across all VMs and
-benchmarks. However, \krun ensures that the \texttt{krun} user uses
-a fixed size environment (we recorded and verified this for all process
-executions), and we designed the experiment such that, for a particular (VM,
-benchmark) pair the additional environment used to configure the VM is constant
-size. In other words, all process executions for a given (VM, benchmark pair)
-pair have a constant environment size.
+A process's environment size can cause measurement
+bias~\cite{mytkowicz09surprising}. The diversity of VMs and platforms
+we use setup makes it impossible to set a unified environment size across all VMs and
+benchmarks. However, the \texttt{krun} user does not
+vary its environment (we recorded and verified this for all process
+executions), and we designed the experiment such that, for a particular (machine, VM,
+benchmark) triple the additional environment used to configure the VM is constant
+size.
 
 
 \subsubsection{Linux-specific Controls}
@@ -504,12 +503,12 @@ the user has correctly set controls which can only be set manually.
 
 \krun uses \texttt{cpufreq-set} to set the CPU governor to \texttt{performance} mode
 (i.e.~the highest non-overclocked frequency possible).
-To stop the kernel overriding this, \krun verifies that the user has disabled
-Intel P-state support in the kernel by passing the kernel argument
-\texttt{intel\_pstate=disable}.
+To prevent the kernel overriding this setting, \krun verifies that the user has disabled
+Intel P-state support in the kernel by passing
+\texttt{intel\_pstate=disable} as a kernel argument.
 
-By default, Linux interrupts (`ticks') each core
-\texttt{CONFIG\_HZ} times per second (usually 250) to
+As standard, Linux interrupts (`ticks') each core
+\texttt{CONFIG\-\_HZ} times per second (usually 250) to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
 kernel~\cite{tickless}, which requires recompiling the kernel with the

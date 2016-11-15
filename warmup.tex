@@ -600,7 +600,22 @@ void krun_measure(int mdata_idx) {
   }
 }
 \end{lstlisting}
-%\vspace{-.8cm}
+\vspace{-.75cm}
+\end{figure}
+
+\begin{figure}[t]
+\begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
+in-process iterations runner (with core cycles etc. removed).}]
+wallclock_times = [0] * iters
+for i in xrange(iters):
+    krun_measure(0)   # Start timed section
+    bench_func(param) # Call the benchmark
+    krun_measure(1)   # End timed section
+    wallclock_times[i] = \
+        krun_get_wallclock(1) - krun_get_wallclock(0)
+js = { "wallclock_times": wallclock_times }
+sys.stdout.write("%s\n" % json.dumps(js))
+\end{lstlisting}
 \end{figure}
 
 The need to carefully sequence the measurements means that we cannot rely
@@ -617,21 +632,6 @@ integers, and since PHP's minimum integer size varies across OS and PHP versions
 convert the 64-bit unsigned measurements to
 double-precision floating point values in those VMs, throwing an error if this leads to a
 loss of precision.
-
-\begin{figure}[t]
-\begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
-in-process iterations runner (with core cycles etc. removed).}]
-wallclock_times = [0] * iters
-for i in xrange(iters):
-    krun_measure(0)   # Start timed section
-    bench_func(param) # Call the benchmark
-    krun_measure(1)   # End timed section
-    wallclock_times[i] = \
-        krun_get_wallclock(1) - krun_get_wallclock(0)
-js = { "wallclock_times": wallclock_times }
-sys.stdout.write("%s\n" % json.dumps(js))
-\end{lstlisting}
-\end{figure}
 
 
 \section{Classifying Warmup}
@@ -800,6 +800,7 @@ core-cycle plot (top) shows that the main benchmark computation
 occurred almost entirely on core 1: cores 0, 2 and 3 had Cycle Counts (CC) close
 to 0 for the entire in-process execution and are thus elided.}
 \label{fig:examples:trad}
+\vspace{-.2cm}
 \end{figure}
 
 \begin{figure}[t]

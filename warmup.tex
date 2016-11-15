@@ -15,6 +15,7 @@
 \usepackage{gensymb}
 \usepackage{hyperref}
 \usepackage{caption}
+\usepackage{fp}
 
 \usepackage{graphicx}
 \usepackage{softdev}
@@ -369,7 +370,7 @@ and builds fixed versions of each VM. All VMs were compiled with GCC/G++ 4.9.3
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
 to remove the possibility of variance through the use of different compilers.
 
-On OpenBSD, we skip Graal, HHVM, and JRuby+Truffle, which have not yet been
+\label{openbsd porting} On OpenBSD, we skip Graal, HHVM, and JRuby+Truffle, which have not yet been
 ported to it. We skip \fasta on JRuby+Truffle as it crashes;
 and we skip \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together (about 10 days).
@@ -784,11 +785,45 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 
 Our experiment consists of 1220 process executions and 2.4 million in-process
 iterations. Table~\ref{table:summarystats} summarises the (VM, benchmark) pairs
-and process executions for each benchmarking machine.
+and process executions for each benchmarking machine. Taking \bencherthree
+as a representative example,
+\FPeval{\result}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
+\result\% of (VM, benchmark) pairs and
+\FPeval{\result}{round(\bencherthreeflatpercentage+\bencherthreewarmuppercentage,1)}%
+\result\% of process executions have `good' warmup (\flatc, \warmup) (for comparison, \bencherfive
+is 
+\FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
+\result\% and
+\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
+\result\% respectively and \benchersix is
+\FPeval{\result}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
+\result\% and
+\FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
+\result\% respectively, though the latter runs fewer benchmarks). Fewer (VM, benchmark) pairs than process executions have `good'
+warmup because some inconsistent (VM, benchmark) pairs have some `good' warmup
+process executions. More worryingly, on \bencherthree
+\bencherthreevmbenchpairsslowdownpercentage\% of (VM, benchmark) pairs slowdown
+and \bencherthreevmbenchpairsinconsistentpercentage\% are inconsistent
+(with around three quarters of those being obviously `bad');
+\bencherfive and \benchersix are broadly similar. In our opinion, since a
+large proportion of VMs have `bad' warmup, these results clearly invalidate
+Hypothesis H1.
 
-Table~\ref{tab:mainresults} shows the results from \bencherthree.
-A few aspects of Table~\ref{tab:mainresults} are worthy of particular comment.
-First, of the 6 benchmarks, only \nbody comes close to `good' warmup behaviour on all
+Table~\ref{tab:summarystats} clearly shows that the results from \bencherthree
+and \bencherfive (both running Linux but on moderately different hardware) are
+comparable, with the relative proportions of all measures being only a few
+percent different. \benchersix (running OpenBSD, but on the same hardware as
+\bencherthree) is clearly somewhat different. This is in large part because it
+is unable to run benchmarks on Graal, HHVM, and JRuby+Truffle (see
+Section~\ref{openbsd porting}): of the benchmarks it can run, most behave
+similarly, with the notable exception of LuaJIT, whose benchmarks are more often
+classified as non-flat (see Table~\ref{tab:bencher6results} in the Appendix).
+With that in mind, we believe that our results are a fairly clear validation of
+Hypothesis H2.
+
+Looking at \bencherthree as a concrete example, Table~\ref{tab:mainresults}
+shows some interesting details. First, of the 6 benchmarks, only \nbody comes
+close to `good' warmup behaviour on all
 VM on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
 slows down. Second, there appears to be a bimodal pattern for the number
 of in-process iterations required to reach a steady state (when it exists): VMs
@@ -800,21 +835,8 @@ Finally, there seems to be very lit
 tle
 correlation between the time it takes a VM to reach a steady state and the
 performance of that steady state: i.e.~it does not seem to be the case that VMs
-which take a long time to warmup are using it to create highly efficient
+which take a long time to warmup are creating more efficient
 steady-state code.
-
-
-
-\laurie{we should summarise: X\% are flat, Y\% are warmup etc.} Of the
-\laurie{XXX} (VM, benchmark) pairs, \laurie{XXX}\% are flat, \laurie{XXX}\%
-warmup, \laurie{XXX}\% slowdown, \laurie{XXX}\% are no steady state, and
-\laurie{XXX}\% are inconsistent. Of the \laurie{XXX} process executions,
-\laurie{XXX}\% are flat, \laurie{XXX}\% warmup, \laurie{XXX}\% slowdown,
-\laurie{XXX}\% are no steady state, and \laurie{XXX}\% are inconsistent. These
-results clearly invalidate Hypothesis H1. The results for \bencherfive and
-\benchersix can be seen in Appendix~\ref{app:mainresults}; \bencherfive's results
-are very similar to \bencherthree's; \benchersix's results are broadly similar.
-We consider this strong validation of Hypothesis H2.
 
 
 \subsection{Warmup Plots}

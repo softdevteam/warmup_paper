@@ -123,6 +123,14 @@ $\begin{array}{rr}
 
 \maketitle
 
+\FPeval{\bthreeresult}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
+\FPeval{\bfiveresult}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
+\FPeval{\bsixresult}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
+\FPeval{\minone}{min(\bthreeresult, \bfiveresult)}
+\FPeval{\mintwo}{min(\minone, \bsixresult)}
+\FPeval{\maxone}{max(\bthreeresult, \bfiveresult)}
+\FPeval{\maxtwo}{max(\maxone, \bsixresult)}
+
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines
@@ -134,9 +142,9 @@ during the warmup phase is generally discarded, placing the focus on peak
 performance. In this paper we first run a number of small,
 deterministic benchmarks on a variety of well known VMs, before introducing
 a rigorous statistical model for determining when warmup has occurred.
-In our experiment, \laurie{only XXX\%} of the benchmark/VM pairs conform to
-the traditional view of warmup, and none of the
-VMs we tested consistently warms up.
+Across 3 benchmarking machines only \mintwo--\maxtwo\% of (VM, benchmark) pairs conform to
+the traditional view of warmup and none of the
+VMs consistently warms up.
 \end{abstract}
 
 \section{Introduction}

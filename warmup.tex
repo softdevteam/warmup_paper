@@ -1085,23 +1085,6 @@ whether they be the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
 this complaint could arguably be directed at the unmodified benchmarks too.
 
-Although \krun does as much to control CPU clock speed as possible, modern CPUs
-do not always respect operating system requests. On Linux, we can use the
-APERF/MPERF ratio to check for frequency changes. Although the hoped-for
-ratio is precisely 1, there is often noticeable variation around this value due to the
-cost of reading these counters (see Section~\ref{aperf/mperf error}). On cores
-performing active computation, the error is small (around 1\% in our
-experience), but on inactive cores it can be relatively high (10\% or more is
-not uncommon; in artificially extreme cases, we have observed up to 200\%).
-In order to verify that there had been no frequency changes during benchmarking,
-we wrote a simple checking tool. For each in-process iteration, we first check
-the corresponding cycle-count data: since active cores generally have
-cycle-counts in the billions, we conservatively classify inactive
-cores as those with cycle-counts in the low millions. Active cores are then
-checked for an APERF/MPERF ratio between $1 \pm 0.015$. All active cores in our
-experiment were within these limits, strongly suggesting that our experiment
-experienced no unexpected CPU frequency changes.
-
 Although we have minimised the number of system calls that our in-process
 iterations runners make, we cannot escape them entirely. For example,
 on both Linux and OpenBSD, \texttt{clock\_gettime()} (which we use to obtain
@@ -1121,6 +1104,23 @@ as well as the file system overhead, reading from a MSR device
 node triggers inter-processor interrupts to schedule an \texttt{RDMSR}
 instruction on the desired core (causing the running core to save its registers etc.).
 We are not currently aware of a practical way to lower these costs.
+
+Although \krun does as much to control CPU clock speed as possible, modern CPUs
+do not always respect operating system requests. On Linux, we use the
+APERF/MPERF ratio to check for frequency changes. Although the hoped-for
+ratio is precisely 1, there is often noticeable variation around this value due to the
+cost of reading these counters. On cores
+performing active computation, the error is small (around 1\% in our
+experience), but on inactive cores it can be relatively high (10\% or more is
+not uncommon; in artificially extreme cases, we have observed up to 200\%).
+In order to verify that there had been no frequency changes during benchmarking,
+we wrote a simple checking tool. For each in-process iteration, we first check
+the corresponding cycle-count data: since active cores generally have
+cycle-counts in the billions, we conservatively classify inactive
+cores as those with cycle-counts in the low millions. Active cores are then
+checked for an APERF/MPERF ratio between $1 \pm 0.015$. All active cores in our
+experiment were within these limits, strongly suggesting that our experiment
+experienced no unexpected CPU frequency changes.
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After

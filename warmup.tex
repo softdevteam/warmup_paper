@@ -674,20 +674,6 @@ iterations, \totaloutlierspercentage\% are classified as outliers, with the most
 any single process execution being \result\% of in-process iterations.
 
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=.45\textwidth]{examples/changepoint_example.pdf}
-\caption{An example of changepoint analysis, from execution \#0 of Fasta, V8
-on \bencherthree. The changepoint analysis has detected two changepoints,
-one early in the process execution, and one after iteration 500. The segment
-means are shown as horizontal red lines, and show that an early improvement
-in the benchmark performance was followed by a slowdown of approximately 0.32s.}
-\label{fig:examples:changpoint}
-\sarah{just putting this anywhere}
-\vspace{-.2cm}
-\end{figure}
-
-
 \subsection{Changepoint Analysis}
 
 Intuitively, in order to uncover if/when warmup has completed, we need to
@@ -703,6 +689,18 @@ ways that one can determine when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
 iterations.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=.45\textwidth]{examples/changepoint_example.pdf}
+\caption{\laurie{need an example with an outlier or two}An example of changepoint analysis, from execution \#0 of Fasta, V8
+on \bencherthree. The changepoint analysis has detected two changepoints,
+one early in the process execution, and one after iteration 500. The segment
+means are shown as horizontal red lines, and show that an early improvement
+in the benchmark performance was followed by a slowdown of approximately 0.32s.}
+\label{fig:examples:changepoint}
+\vspace{-.2cm}
+\end{figure}
+
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{R:changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
@@ -716,6 +714,8 @@ is that time deltas under 0.001s are at the mercy of the non-determinism
 inherent in a real machine and OS. We therefore merge consecutive sequences of segments (from
 left-to-right) whose confidence intervals (calculated using the inter-quartile
 range) overlap, and/or whose means are within 0.001s of each other.
+Figure~\ref{fig:changepoint} shows an example of a run-sequence plot with
+outliers, changepoints, and changepoint segments superimposed upon it.
 
 
 \subsection{Classifications}

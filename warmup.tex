@@ -138,7 +138,7 @@ $\begin{array}{rr}
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines
-parts of a program that would most benefit from dynamic compilation and JIT
+which parts of a program would most benefit from dynamic compilation and JIT
 compiles them into machine code; after
 compilation has occurred, the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
@@ -193,7 +193,7 @@ While our results show that some benchmarks on some VMs run as per the tradition
 view, many surprising cases exist: some benchmarks slowdown rather than
 warmup; some never hit a steady state; and some perform very differently over
 different process executions. Of the seven
-VMs we looked at, none consistently warms up as per the traditional view.
+VMs we looked at, none consistently warms up.
 
 Our results clearly invalidate Hypothesis H1, showing that the traditional
 view of warmup is no longer valid (and, perhaps, that it may not have held in
@@ -215,11 +215,11 @@ compilation and Garbage Collection (GC) are responsible for unusual warmup patte
 we present data for VM \emph{startup} time: how long it takes until a VM can
 start executing any user code (Section~\ref{sec:startup}).
 
-We present supporting material in the Appendix. First, we show that our
+We present supporting material in the Appendix: we show that our
 statistical method can be applied to well known benchmark suites run in a
-conventional manner (Appendix~\ref{sec:existing}). Second, we present a curated
-series of plots of interesting data. A separate document contains the complete
-plots of all data from all machines.
+conventional manner (Appendix~\ref{sec:existing}); and we present a curated
+series of plots of interesting data (Appendix~\ref{sec:curatedplots}). A
+separate document contains the complete plots of all data from all machines.
 
 The repeatable experiment we designed, as well as the specific results used
 in this paper, can be downloaded from:
@@ -386,8 +386,8 @@ to remove the possibility of variance through the use of different compilers.
 
 \label{openbsd porting} On OpenBSD, we skip Graal, HHVM, and JRuby+Truffle, which have not yet been
 ported to it. We skip \fasta on JRuby+Truffle as it crashes;
-and we skip \richards on HHVM since 10 process executions take as long as every other benchmark
-on every other VM put together (about 10 days).
+and we skip \richards on HHVM since it takes as long as every other benchmark
+on every other VM put together.
 
 
 \subsection{Benchmarking Hardware}
@@ -446,7 +446,7 @@ affect later ones (e.g.~a benchmark which forces memory to swap will make
 later benchmarks seem to run slower). Therefore, before each process execution
 (including before the first), \krun reboots the system, ensuring that the
 benchmark runs with the machine in a (largely) known state. After each reboot, \krun is
-executed by the system's init subsystem; \krun then pauses for 3
+executed by the init subsystem; \krun then pauses for 3
 minutes to allow the system to fully initialise; calls \texttt{sync} (to
 flush any remaining files to disk) followed by a 30 second wait; before finally running the
 next process execution.
@@ -1335,6 +1335,7 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \onecolumn
 
 \section{Curated Plots}
+\label{sec:curatedplots}
 
 \noindent The remainder of this appendix shows curated plots: we have selected
 around 5 interesting plot from each classification, to give readers a sense of

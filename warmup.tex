@@ -125,7 +125,7 @@ $\begin{array}{rr}
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: first the \emph{warmup} phase determines which
-parts of a program would most benefit from dynamic compilation; after
+parts of a program would most benefit from dynamic compilation\cfbolz{the last phrase is not enough: it sounds like the warmup phase only determines what is important, without actually compiling anything}; after
 compilation has occurred, the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
@@ -756,6 +756,7 @@ magnitude (and the flats are, relatively speaking, more anomalous) `bad'.
 \caption{Relative proportions of classifiers across benchmarking machines.
 Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 \nosteadystate: no steady state, \inconsistent: inconsistent.}
+\cfbolz{I don't understand how the numbers can sum up to more than 100\%. Is the \inconsistent percentage independent from the other percentages? That should be clarified}
 \label{tab:summarystats}
 \end{table}
 
@@ -795,7 +796,8 @@ tend either to reach it very quickly (often in 10 or fewer in-process iterations
 or take hundreds of in-process iterations. Those that take a long time
 to stabilise are troubling, because previous benchmarking methodologies
 will not have run them long enough to see this steady state emerge.
-Finally, there seems to be very little
+Finally, there seems to be very lit
+tle
 correlation between the time it takes a VM to reach a steady state and the
 performance of that steady state: i.e.~it does not seem to be the case that VMs
 which take a long time to warmup are using it to create highly efficient
@@ -912,7 +914,7 @@ The large number of non-warmup cases in our data led us to make the following hy
 \begin{description}
   \item[H3] Non-warmup process executions are largely due to JIT compilation or GC.
 \end{description}
-To test this hypothesis, we made use of the that both HotSpot and PyPy allow
+To test this hypothesis, we made use of the fact that both HotSpot and PyPy allow
 information about the duration of JIT compilation and GC to be recorded. Since
 recording this additional data could potentially change the results we collect,
 it is only collected when \krun is explicitly set to `instrumentation mode'. An

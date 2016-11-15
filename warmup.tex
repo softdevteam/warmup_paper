@@ -1004,7 +1004,7 @@ not uncommon; in artificially extreme cases, we have observed up to 200\%).
 In order to verify that there had been no frequency changes during benchmarking,
 we wrote a simple checking tool. For each in-process iteration, we first check
 the corresponding cycle-count data: since active cores generally have
-cycle-counts in the \laurie{`billions'}, we conservatively classify inactive
+cycle-counts in the billions, we conservatively classify inactive
 cores as those with cycle-counts in the low millions. Active cores are then
 checked for an APERF/MPERF ratio between $1 \pm 0.015$. All active cores in our
 experiment were within these limits, strongly suggesting that our experiment

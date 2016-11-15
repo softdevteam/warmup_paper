@@ -756,7 +756,7 @@ process executions and that it is clearly `bad'. However, if the
 warmups are small in magnitude (and thus are not far from being
 classified as flat) some may consider it `good' whilst some will consider it `neutral',
 on the basis that they should all be consistent. To avoid such subjectivity,
-we consider inconsistent benchmarks to be either obviously `bad' or `neutral'.
+we consider inconsistent benchmarks to be either (obviously) `bad' or `neutral'.
 
 \subsection{Timings}
 
@@ -850,7 +850,7 @@ Table~\ref{tab:summarystats} clearly shows that the results from \bencherthree
 and \bencherfive (both running Linux but on moderately different hardware) are
 comparable, with the relative proportions of all measures being only a few
 percent different. \benchersix (running OpenBSD, but on the same hardware as
-\bencherthree) is clearly somewhat different. This is in large part because it
+\bencherthree) is somewhat different. This is in large part because it
 is unable to run benchmarks on Graal, HHVM, and JRuby+Truffle (see
 Section~\ref{openbsd porting}): of the benchmarks it can run, most behave
 similarly, with the notable exception of LuaJIT, whose benchmarks are more often
@@ -1113,8 +1113,8 @@ cost of reading these counters. On cores
 performing active computation, the error is small (around 1\% in our
 experience), but on inactive cores it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-In order to verify that there had been no frequency changes during benchmarking,
-we wrote a simple checking tool. For each in-process iteration, we first check
+In order to verify that there were no frequency changes during benchmarking,
+we wrote a simple checking tool. For each in-process iteration, it first checks
 the corresponding cycle-count data: since active cores generally have
 cycle-counts in the billions, we conservatively classify inactive
 cores as those with cycle-counts in the low millions. Active cores are then
@@ -1190,7 +1190,7 @@ differences in warmup time between VMs strongly suggest that VM benchmarking
 should always include warmup time. Fourth, we suspect that some of the odd
 results we have seen result from over-training VM heuristics on small sets of
 benchmarks. The approach taken by the machine-learning community may apply
-equally well to the VMs: using a training set to devise heuristics, and then
+equally well to VMs: using a training set to devise heuristics, and then
 benchmarking the resulting system(s) on a separate validation system. Fifth, we suspect
 that the general reliance on small suites of benchmarks means that only
 small parts of VMs are being benchmarked effectively: we are increasingly of the

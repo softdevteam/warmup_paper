@@ -118,9 +118,6 @@ $\begin{array}{rr}
 \authorinfo{Rebecca Killick}{Lancaster University}{\href{http://www.lancs.ac.uk/~killick/}{http://www.lancs.ac.uk/\~{}killick/}}
 \authorinfo{Sarah Mount}{King's College London}{\href{http://snim2.org/}{http://snim2.org/}}
 \authorinfo{Laurence Tratt}{King's College London}{\href{http://tratt.net/laurie}{http://tratt.net/laurie/}}
-%\keywords{warmup, benchmarking, virtual machines, programming languages.}
-
-%\authorrunning{E. Barrett, C. F. Bolz, R. Killick, V. Knight, S. Mount, and L. Tratt}
 
 \maketitle
 
@@ -292,7 +289,7 @@ reliable means of testing Hypothesis H1. Put another way, if we were to run arbi
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
-For each benchmark, we provide versions in C, Java, Javascript, Python, Lua, PHP,
+For each benchmark, we provide versions in C, Java, JavaScript, Python, Lua, PHP,
 and Ruby. Since most of these
 benchmarks have multiple implementations in any given language, we picked
 the versions used in~\cite{bolz14impact}, which represented the fastest
@@ -363,7 +360,7 @@ checksum value for each benchmark, irrespective of language.
 
 We ran the benchmarks on the following language implementations: GCC 4.9.3;
 Graal \#9405be47 (an alternative JIT compiler for HotSpot); HHVM 3.14.0 (a JIT
-compiling VM for PHP); JRuby/Truffle \#170c9ae6; HotSpot 8u72b15 (the most widely used Java
+compiling VM for PHP); JRuby+Truffle \#170c9ae6; HotSpot 8u72b15 (the most widely used Java
 VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
 meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
 compiling VM for JavaScript). A repeatable build script downloads, patches,
@@ -371,8 +368,8 @@ and builds fixed versions of each VM. All VMs were compiled with GCC/G++ 4.9.3
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
 to remove the possibility of variance through the use of different compilers.
 
-On OpenBSD, we skip Graal, HHVM, and JRuby/Truffle, which have not yet been
-ported to it. We skip \fasta on JRubyTruffle as it crashes;
+On OpenBSD, we skip Graal, HHVM, and JRuby+Truffle, which have not yet been
+ported to it. We skip \fasta on JRuby+Truffle as it crashes;
 and we skip \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together (about 10 days).
 
@@ -538,7 +535,7 @@ an entirely new location. The \texttt{malloc.conf} flags we use are \texttt{sfgh
 
 To report timing data to \krun, we created an
 \emph{iterations runner} for each language under investigation.
-These take the name of a specific benchmark and the
+These take the name of a specific benchmark and
 the desired number of in-process iterations, run the benchmark appropriately,
 and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
@@ -626,7 +623,7 @@ on user-level libraries: not all of the VMs in our experiment give us access to
 the appropriate monotonic timer. We therefore
 implemented a small C library (\texttt{libkruntime.so}) which exposes these
 measures (see Listing~\ref{lst:krun-measure} for an example). When possible
-(all VMs apart from JRuby/Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
+(all VMs apart from JRuby+Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
 in; in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
 Core-cycle counts, \texttt{IA32\_APERF} and \texttt{IA32\_MPERF}
@@ -681,7 +678,7 @@ iterations.
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{R:changepoint}, passing $15\log{n}$ (where
-$n$ is the time series length minus the number of outliters) to the
+$n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
 algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
@@ -758,7 +755,7 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
 Our experiment consists of 1220 process executions and 2.4 million in-process
-iterations. Table~\ref{tab:mainresults} shows the results from \laurie{bencherX}.
+iterations. Table~\ref{tab:mainresults} shows the results from \bencherthree.
 
 A few aspects of Table~\ref{tab:mainresults} are worthy of particular comment.
 First, of the 6 benchmarks, only \nbody comes close to `good' warmup behaviour on all
@@ -917,7 +914,7 @@ Table~\ref{fig:startup} shows startup times from both \bencherthree and \bencher
 start and thus partly reflect disk speed etc. (though both machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
 taking C as a baseline, the fastest VM (LuaJIT) is around 2x slower, whilst the
-slowest VM (JRubyTruffle) is around 1000x slower, to startup.
+slowest VM (JRuby+Truffle) is around 1000x slower, to startup.
 
 \begin{table}[t]
 \centering
@@ -1001,7 +998,7 @@ counts via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
 in-process iterations to reduce the open/close overhead).
 These calls are more involved than \texttt{clock\_gettime}:
-as well as the filesystem overhead, reading from a MSR device
+as well as the file system overhead, reading from a MSR device
 node triggers inter-processor interrupts to schedule an \texttt{RDMSR}
 instruction on the desired core (causing the running core to save its registers etc.).
 We are not currently aware of a practical way to lower these costs.
@@ -1157,7 +1154,7 @@ Octane results. They can be summarised as follows \laurie{XXX}.
 \begin{table}[t]
 \centering
 \input{dacapo.table}
-\caption{Dacapo results.}
+\caption{DaCapo results.}
 \label{tab:dacapo}
 \end{table}
 

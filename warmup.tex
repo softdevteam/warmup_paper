@@ -736,9 +736,9 @@ is the fastest execution time of all segments is classified as \emph{warmup}
 (\warmup); is not the fastest execution time of all segments is classified as
 \emph{slowdown} (\slowdown).
 
-Second, we define classifications for a (VM, benchmark pair) as follows:
+Second, we define classifications for a (VM, benchmark) pair as follows:
 if its process executions all share the same classification (e.g.~warmup) then
-we classify the pair the same (in this example, warmup); otherwise we classify the pair as
+we classify the pair the same way (in this example, warmup); otherwise we classify the pair as
 \emph{inconsistent} (\inconsistent).
 
 Informally, we suggest that benchmarks whose behaviour is either flat or warmup
@@ -756,6 +756,15 @@ warmups are small in magnitude (and thus are not far from being
 classified as flat) some may consider it `good' whilst some will consider it `neutral',
 on the basis that they should all be consistent. To avoid such subjectivity,
 we consider inconsistent benchmarks to be either obviously `bad' or `neutral'.
+
+\subsection{Timings}
+
+For benchmarks which reach a steady state (\flatc, \warmup, or \slowdown)
+we report the number of iterations and the time in seconds to reach the steady state,
+as well as the performance of the steady state itself in seconds (defined as
+the final changepoint segment's mean). For the latter two measures, we report the median time
+over 10 process executions, and report 99\% confidence intervals (bootstrapped
+with 10000 iterations, sampling with replacement).
 
 
 \section{Results}
@@ -848,14 +857,9 @@ classified as non-flat (see Table~\ref{tab:bencher6results} in the Appendix).
 With that in mind, we believe that our results are a fairly clear validation of
 Hypothesis H2.
 
-Looking at \bencherthree as a concrete example, Table~\ref{tab:mainresults}
-shows some interesting details.
-\sarah{The below may need moving around.} Columns describing when a benchmark
-pair has reached a steady state, how long the VM took to reach a steady state
-and mean performance thereafter has been aggregated over 10 process executions.
-In each case a median is given along with confidence interval
-(bootstrapped with 10000 iterations, by sampling with replacement).
-Of the 6 benchmarks, only \nbody comes
+Looking at one machine's data brings out further detail. For
+example, Table~\ref{tab:mainresults} (with data from \bencherthree)
+enables to make us several observations. Of the 6 benchmarks, only \nbody comes
 close to `good' warmup behaviour on all
 VM on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
 slows down. Second, there appears to be a bimodal pattern for the number

@@ -898,13 +898,6 @@ were low enough for us to classify them as `inactive', and we have thus elided t
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=.45\textwidth]{examples/new_miscomp.pdf}
-\caption{Slowdown at in-process iteration \#199.}
-\label{fig:examples:slowdown1}
-\end{figure}
-
-\begin{figure}[t]
-\centering
 \includegraphics[width=.45\textwidth]{examples/new_no_steady.pdf}
 \caption{No steady state. There is a small behavioural shift around iteration
 950, where the VM migrates from (tickless) core 1 to (ticked) core 0.}
@@ -917,6 +910,19 @@ were low enough for us to classify them as `inactive', and we have thus elided t
 \caption{Examples of inconsistent process executions on the same system.}
 \label{fig:examples:inconsistent}
 \end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=.45\textwidth]{examples/new_miscomp.pdf}
+\caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
+turned on. Although these additional measures add overhead, in this
+case they make no observable difference to the main run-sequence graph. They
+allow us to observe that the slowdown is preceeded by two JIT compilation events
+that are likely to explain the drop in performance. Note also that the
+regular GC spikes have only a small effect on the time of in-process
+iterations.}
+\label{fig:examples:slowdown1}
+\end{figure}
 
 Core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
@@ -965,15 +971,24 @@ cycle's elements, we consider this a minor worry.
 
 The large number of non-warmup cases in our data led us to make the following hypothesis:
 \begin{description}
-  \item[H3] Non-warmup process executions are largely due to JIT compilation or GC.
+  \item[H3] Non-warmup process executions are due to JIT compilation or GC events.
 \end{description}
 To test this hypothesis, we made use of the fact that both HotSpot and PyPy allow
 information about the duration of JIT compilation and GC to be recorded. Since
 recording this additional data could potentially change the results we collect,
 it is only collected when \krun is explicitly set to `instrumentation mode'. An
-example instrumentation-plot can be seen in Figure~\laurie{XXX}.
+example instrumentation-plot can be seen in the slowdown of
+Figure~{fig:examples:slowdown1} where there is a clear correlation (though we
+cannot be entirely sure that it is a causation) between a JIT compilation and
+the slowdown. However, some other notably odd examples have no such correlation.
+\laurie{i suggest we duplicate figure 7 (the cycles) which a) shows that
+instrumentation \emph{does} change the run-sequence plot a bit, but also that
+that particularly odd example isn't explained by GC or JIT compilation}
 
-\laurie{discuss the effect once we've got the data}
+Our results leads us to tentatively invalidate Hypothesis H3: whilst some
+non-warmups are explained by GC or JIT compilation events, many are not, at
+least on HotSpot and PyPy. In such cases, we have very little idea what might be
+the cause of the unexpected behaviour.
 
 
 \section{Startup Time}

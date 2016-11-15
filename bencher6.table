@@ -6,8 +6,8 @@
 \midrule
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\binarytrees}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{3.29833} \\[-6pt]
-\scriptscriptstyle{\pm0.014250}
+\scriptstyle{3.29854} \\[-6pt]
+\scriptscriptstyle{\pm0.014325}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\nbody}}&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\warmup, $4$\flatc, $1$\nosteadystate)}\\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
@@ -22,14 +22,29 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.18689} \\[-6pt]
-\scriptscriptstyle{\pm0.000612}
+\scriptstyle{0.18688} \\[-6pt]
+\scriptscriptstyle{\pm0.000625}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+\begin{array}{rr}
+\scriptstyle{1} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.18} \\[-6pt]
+\scriptscriptstyle{\pm0.000}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.17177} \\[-6pt]
+\scriptscriptstyle{\pm0.000215}
+\end{array}
+$\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\slowdown, $3$\flatc, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.29358} \\[-6pt]
-\scriptscriptstyle{\pm0.000757}
+\scriptscriptstyle{\pm0.000771}
 \end{array}
 $\\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
@@ -40,17 +55,17 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\w
 $&$
 \begin{array}{rr}
 \scriptstyle{46.66} \\[-6pt]
-\scriptscriptstyle{\pm90.290}
+\scriptscriptstyle{\pm90.291}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.45419} \\[-6pt]
-\scriptscriptstyle{\pm0.006629}
+\scriptstyle{1.45425} \\[-6pt]
+\scriptscriptstyle{\pm0.006822}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{3.84391} \\[-6pt]
-\scriptscriptstyle{\pm0.050713}
+\scriptstyle{3.84375} \\[-6pt]
+\scriptscriptstyle{\pm0.051145}
 \end{array}
 $\\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($6$\warmup, $3$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\flatc, $3$\warmup)}\\ 
@@ -68,15 +83,30 @@ HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{73.49} \\[-6pt]
-\scriptscriptstyle{\pm58.513}
+\scriptstyle{73.50} \\[-6pt]
+\scriptscriptstyle{\pm58.486}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.35898} \\[-6pt]
-\scriptscriptstyle{\pm0.017011}
+\scriptstyle{0.35896} \\[-6pt]
+\scriptscriptstyle{\pm0.016563}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
+\begin{array}{rr}
+\scriptstyle{198} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{50.96} \\[-6pt]
+\scriptscriptstyle{\pm0.354}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.27327} \\[-6pt]
+\scriptscriptstyle{\pm0.002359}
+\end{array}
+$\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $1$\warmup, $1$\nosteadystate)}\\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -85,13 +115,13 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\i
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{32.22} \\[-6pt]
-\scriptscriptstyle{\pm9.720}
+\scriptstyle{32.23} \\[-6pt]
+\scriptscriptstyle{\pm9.555}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.08384} \\[-6pt]
-\scriptscriptstyle{\pm0.013213}
+\scriptstyle{1.08374} \\[-6pt]
+\scriptscriptstyle{\pm0.013451}
 \end{array}
 $\\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($6$\warmup, $4$\flatc)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\warmup, $2$\slowdown)}\\ 
@@ -99,10 +129,10 @@ V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inc
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\fasta}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.07415} \\[-6pt]
-\scriptscriptstyle{\pm0.000035}
+\scriptscriptstyle{\pm0.000034}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\spectralnorm}}&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\flatc, $3$\slowdown, $2$\warmup)}\\[-3pt] 
-HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\slowdown, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
+HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\slowdown, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\flatc, $1$\warmup)}\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\flatc, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.46778} \\[-6pt]
@@ -112,12 +142,12 @@ $\\[-3pt]
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\slowdown, $3$\warmup, $2$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{110} \\[-6pt]
-\scriptscriptstyle{\pm46}
+\scriptscriptstyle{\pm44}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{57.44} \\[-6pt]
-\scriptscriptstyle{\pm24.156}
+\scriptscriptstyle{\pm24.104}
 \end{array}
 $&$
 \begin{array}{rr}
@@ -132,13 +162,13 @@ V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slo
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{417.41} \\[-6pt]
-\scriptscriptstyle{\pm99.206}
+\scriptstyle{417.36} \\[-6pt]
+\scriptscriptstyle{\pm99.219}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.15643} \\[-6pt]
-\scriptscriptstyle{\pm0.004041}
+\scriptstyle{1.15646} \\[-6pt]
+\scriptscriptstyle{\pm0.004120}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}

@@ -4,13 +4,13 @@
 \toprule
 \multicolumn{1}{c}{\multirow{2}{*}{}}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}\\&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)}&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)} \\
 \midrule
-C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{binarytrees}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\binarytrees}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{3.29852} \\[-6pt]
-\scriptscriptstyle{\pm0.014480}
+\scriptstyle{3.29833} \\[-6pt]
+\scriptscriptstyle{\pm0.014250}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{nbody}}&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\warmup, $4$\flatc, $1$\nosteadystate)}\\[-3pt] 
-Hotspot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\nbody}}&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\warmup, $4$\flatc, $1$\nosteadystate)}\\[-3pt] 
+HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{1} \\[-6pt]
 \scriptscriptstyle{\pm0}
@@ -22,29 +22,14 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.18688} \\[-6pt]
-\scriptscriptstyle{\pm0.000623}
+\scriptstyle{0.18689} \\[-6pt]
+\scriptscriptstyle{\pm0.000612}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
-\begin{array}{rr}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{\pm0}
-\end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.18} \\[-6pt]
-\scriptscriptstyle{\pm0.000}
-\end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.17176} \\[-6pt]
-\scriptscriptstyle{\pm0.000213}
-\end{array}
-$\\[-3pt] 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\slowdown, $3$\flatc, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.29358} \\[-6pt]
-\scriptscriptstyle{\pm0.000763}
+\scriptscriptstyle{\pm0.000757}
 \end{array}
 $\\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
@@ -55,58 +40,43 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\w
 $&$
 \begin{array}{rr}
 \scriptstyle{46.66} \\[-6pt]
-\scriptscriptstyle{\pm90.291}
+\scriptscriptstyle{\pm90.290}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.45427} \\[-6pt]
-\scriptscriptstyle{\pm0.006967}
+\scriptstyle{1.45419} \\[-6pt]
+\scriptscriptstyle{\pm0.006629}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{3.84408} \\[-6pt]
-\scriptscriptstyle{\pm0.051074}
+\scriptstyle{3.84391} \\[-6pt]
+\scriptscriptstyle{\pm0.050713}
 \end{array}
 $\\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($6$\warmup, $3$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\flatc, $3$\warmup)}\\ 
 \midrule
-C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{fannkuch\_redux}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\fannkuch}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.41142} \\[-6pt]
 \scriptscriptstyle{\pm0.000035}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{richards}}&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $2$\warmup)}\\[-3pt] 
-Hotspot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\richards}}&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $2$\warmup)}\\[-3pt] 
+HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{195} \\[-6pt]
 \scriptscriptstyle{\pm155}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{73.51} \\[-6pt]
-\scriptscriptstyle{\pm58.559}
+\scriptstyle{73.49} \\[-6pt]
+\scriptscriptstyle{\pm58.513}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.35896} \\[-6pt]
-\scriptscriptstyle{\pm0.016593}
+\scriptstyle{0.35898} \\[-6pt]
+\scriptscriptstyle{\pm0.017011}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
-\begin{array}{rr}
-\scriptstyle{198} \\[-6pt]
-\scriptscriptstyle{\pm0}
-\end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{50.96} \\[-6pt]
-\scriptscriptstyle{\pm0.352}
-\end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.27327} \\[-6pt]
-\scriptscriptstyle{\pm0.002298}
-\end{array}
-$\\[-3pt] 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $1$\warmup, $1$\nosteadystate)}\\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -115,24 +85,24 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\i
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{32.24} \\[-6pt]
-\scriptscriptstyle{\pm9.730}
+\scriptstyle{32.22} \\[-6pt]
+\scriptscriptstyle{\pm9.720}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.08365} \\[-6pt]
-\scriptscriptstyle{\pm0.013256}
+\scriptstyle{1.08384} \\[-6pt]
+\scriptscriptstyle{\pm0.013213}
 \end{array}
 $\\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($6$\warmup, $4$\flatc)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\warmup, $2$\slowdown)}\\ 
 \midrule
-C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{fasta}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\fasta}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.07415} \\[-6pt]
-\scriptscriptstyle{\pm0.000034}
+\scriptscriptstyle{\pm0.000035}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{spectralnorm}}&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\flatc, $3$\slowdown, $2$\warmup)}\\[-3pt] 
-Hotspot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\slowdown, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\flatc, $1$\warmup)}\\[-3pt] 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\spectralnorm}}&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\flatc, $3$\slowdown, $2$\warmup)}\\[-3pt] 
+HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\slowdown, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\flatc, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.46778} \\[-6pt]
@@ -147,7 +117,7 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\i
 $&$
 \begin{array}{rr}
 \scriptstyle{57.44} \\[-6pt]
-\scriptscriptstyle{\pm23.326}
+\scriptscriptstyle{\pm24.156}
 \end{array}
 $&$
 \begin{array}{rr}
@@ -162,13 +132,13 @@ V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slo
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{417.40} \\[-6pt]
-\scriptscriptstyle{\pm99.204}
+\scriptstyle{417.41} \\[-6pt]
+\scriptscriptstyle{\pm99.206}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.15646} \\[-6pt]
-\scriptscriptstyle{\pm0.004166}
+\scriptstyle{1.15643} \\[-6pt]
+\scriptscriptstyle{\pm0.004041}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}

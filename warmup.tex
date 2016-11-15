@@ -674,6 +674,20 @@ iterations, \totaloutlierspercentage\% are classified as outliers, with the most
 any single process execution being \result\% of in-process iterations.
 
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=.45\textwidth]{examples/changepoint_example.pdf}
+\caption{An example of changepoint analysis, from execution \#0 of Fasta, V8
+on \bencherthree. The changepoint analysis has detected two changepoints,
+one early in the process execution, and one after iteration 500. The segment
+means are shown as horizontal red lines, and show that an early improvement
+in the benchmark performance was followed by a slowdown of approximately 0.32s.}
+\label{fig:examples:changpoint}
+\sarah{just putting this anywhere}
+\vspace{-.2cm}
+\end{figure}
+
+
 \subsection{Changepoint Analysis}
 
 Intuitively, in order to uncover if/when warmup has completed, we need to

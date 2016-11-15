@@ -921,8 +921,8 @@ were low enough for us to classify them as `inactive', and we have thus elided t
 \caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
 turned on. Although these additional measures add overhead, in this
 case they make no observable difference to the main run-sequence graph. They
-allow us to observe that the slowdown is preceeded by two JIT compilation events
-that are likely to explain the drop in performance. Note also that the
+allow us to observe that the slowdown is correlated with two immediately preceeding JIT compilation events
+that may explain the drop in performance. Note that the
 regular GC spikes have only a small effect on the time of in-process
 iterations.}
 \label{fig:examples:slowdown1}
@@ -933,11 +933,10 @@ threads. Benchmarks running on single-threaded VMs are characterised by a high
 cycle-count on one core, and very low (though never quite zero) values on all
 other cores. Such VMs may still be migrated between cores during process
 execution, as can be clearly seen in Figure~\ref{fig:examples:nosteadystate}.
-Multi-threaded VMs can run JIT compilation and / or GC in parallel:
-Figure~\laurie{XXX maybe show the core cycle counts for hotspot/richards?} shows
-an example. It can be hard to detect parallelism in the resulting core counts as
-sometimes the VM migrates frequently between cores:
-however, it can often easily be seen that several cores are active during the first few
+Although multi-threaded VMs can run JIT compilation and / or GC in parallel,
+it is typically hard to visually detect such parallelism as it tends to be
+accompanied by frequent migration between cores.
+However, it can often easily be seen that several cores are active during the first few
 in-process iterations whilst JIT compilation occurs.
 
 

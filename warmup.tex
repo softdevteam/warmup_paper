@@ -692,13 +692,12 @@ iterations.
 \begin{figure}[t]
 \centering
 \includegraphics[width=.45\textwidth]{examples/changepoint_example.pdf}
-\caption{An example of changepoint analysis, from execution \#0 of Fasta, Hotspot
-on \benchersix. The changepoint analysis has detected two changepoints,
-one soon after the benchmark started, and one just before iteration 600. An
-outlier (which is ignored by the changepoint software) is circled in red.
-The segment means are shown as horizontal red lines, and show that an early improvement
-in the benchmark performance was followed by a slowdown of approximately 0.03s.}
-\label{fig:examples:changepoint}
+\caption{An example of changepoint analysis on a run-sequence plot (a process
+execution of Richards on HotSpot from \benchersix). This shows two changepoints
+(the vertical red lines): one soon after startup; and another around iteration
+200. The horizontal red lines are the means of the changepoint segments. The red
+blob denotes a solitary outlier, which was discounted by the changepoint analysis.}
+\label{fig:changepoint}
 \vspace{-.2cm}
 \end{figure}
 

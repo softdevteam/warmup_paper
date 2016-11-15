@@ -91,7 +91,9 @@
        /%
 \end{sparkline}\xspace}
 
+\input{outlier_summaries.tex}
 \input{summary_macros.tex}
+
 \newlength{\blankheight}
 \settototalheight{\blankheight}{
 $\begin{array}{rr}
@@ -667,9 +669,10 @@ sliding window of 200 in-process iterations, lies outside the median $\pm
 3*(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warm-up iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
-iterations. Of the \laurie{XXX} in-process
-iteration timings, \laurie{XXX\%} are classified as outliers, with the most for
-a single process execution being \laurie{XXX}.
+iterations. Of the \totaliterations\xspace in-process
+iterations, \totaloutlierspercentage\% are classified as outliers, with the most for
+\FPeval{\result}{round(2000.0 / \maximumoutliers, 1)}%
+any single process execution being \result\% of in-process executions.
 
 
 \subsection{Changepoint Analysis}

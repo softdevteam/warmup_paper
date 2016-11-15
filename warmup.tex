@@ -125,8 +125,9 @@ $\begin{array}{rr}
 
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
-to execute programs in two phases: first the \emph{warmup} phase determines which
-parts of a program would most benefit from dynamic compilation\cfbolz{the last phrase is not enough: it sounds like the warmup phase only determines what is important, without actually compiling anything}; after
+to execute programs in two phases: first the \emph{warmup} phase determines
+parts of a program would most benefit from dynamic compilation and JIT
+compiles them into machine code; after
 compilation has occurred, the program is said to be at \emph{peak performance}.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
@@ -750,14 +751,12 @@ magnitude (and the flats are, relatively speaking, more anomalous) `bad'.
 \warmup        & \bencherthreewarmuppercentage\%        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% \\
 \slowdown      & \bencherthreeslowdownpercentage\%      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% \\
 \nosteadystate & \bencherthreenosteadystatepercentage\% & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% \\
-\inconsistent  & \bencherthreeinconsistentpercentage\%  & \bencherfiveinconsistentpercentage\%  & \benchersixinconsistentpercentage\% \\
 \bottomrule
 \end{tabular}
 \end{center}
 \caption{Relative proportions of classifiers across benchmarking machines.
 Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 \nosteadystate: no steady state, \inconsistent: inconsistent.}
-\cfbolz{I don't understand how the numbers can sum up to more than 100\%. Is the \inconsistent percentage independent from the other percentages? That should be clarified}
 \label{tab:summarystats}
 \end{table}
 

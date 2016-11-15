@@ -555,15 +555,15 @@ the desired number of in-process iterations, run the benchmark appropriately,
 and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
-cycle count deltas and APERF/MPERF ratios.
+cycle, APERF, and MPERF counters.
 
 We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
 users, it gives no insight into multi-threaded computations: we therefore also record
 core cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
-what work each core is actually doing. In contrast, we use the APERF/MPERF
-ratio solely as a safety check that our wall-clock times are valid.
+what work each core is actually doing. In contrast, we use the ratio of APERF/MPERF deltas
+solely as a safety check that our wall-clock times are valid.
 The \texttt{IA32\_APERF} counter increments at a fixed
 frequency for each instruction executed; the \texttt{IA32\_MPERF} counter increments at a rate
 proportional to the processor's current frequency. With an APERF/MPERF ratio of
@@ -593,8 +593,8 @@ core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 \texttt{krun\_measure}: Measuring before (the \texttt{if's} true branch) and
 after (its false branch) a benchmark. Since
 wall-clock time is the most important measure, it is innermost; since
-the APERF/MPERF ratio is a sanity check, it is outermost. Note that
-the APERF/MPERF ratios must be read in the same order both before
+the APERF/MPERF counters are a sanity check, they are outermost. Note that
+the APERF/MPERF counters must be read in the same order before
 and after a benchmark.}]
 void krun_measure(int mdata_idx) {
   struct krun_data *data = &(krun_mdata[mdata_idx]);
@@ -641,8 +641,8 @@ measures (see Listing~\ref{lst:krun-measure} for an example). When possible
 (all VMs apart from JRuby+Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
 in; in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
-Core-cycle counts, \texttt{IA32\_APERF} and \texttt{IA32\_MPERF}
-values are 64-bit unsigned integers; since JavaScript and current versions of LuaJIT do not support
+Core-cycle, APERF, and MPERF counts are 64-bit unsigned integers; since
+JavaScript and current versions of LuaJIT do not support
 integers, and since PHP's minimum integer size varies across OS and PHP versions, we
 convert the 64-bit unsigned measurements to
 double-precision floating point values in those VMs, throwing an error if this leads to a
@@ -1087,7 +1087,7 @@ this complaint could arguably be directed at the unmodified benchmarks too.
 
 Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. On Linux, we can use the
-APERF / MPERF ratio to check for frequency changes. Although the hoped-for
+APERF/MPERF ratio to check for frequency changes. Although the hoped-for
 ratio is precisely 1, there is often noticeable variation around this value due to the
 cost of reading these counters (see Section~\ref{aperf/mperf error}). On cores
 performing active computation, the error is small (around 1\% in our
@@ -1112,8 +1112,8 @@ meaning that there is no guarantee that it returns within a fixed bound.
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
 In practise, \texttt{clock\_gettime} returns far quicker than the granularity
 of any our benchmarks, so this is a minor worry at most. \label{aperf/mperf error} The situation
-on Linux is complicated by our reading of core cycle and APERF/MPERF
-counts via MSR device nodes: we call \texttt{lseek} and \texttt{read}
+on Linux is complicated by our reading of core cycle, APERF, and MPERF
+counters via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
 in-process iterations to reduce the open/close overhead).
 These calls are more involved than \texttt{clock\_gettime}:

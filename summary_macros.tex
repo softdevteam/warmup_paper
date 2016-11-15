@@ -1,0 +1,837 @@
+%%%
+%%% Total executions and iterations.
+%%%
+\newcommand{\totalpexecs}{1220}
+\newcommand{\totaliterations}{2440000}
+%%%
+%%% Total classifications over all executions.
+%%%
+\newcommand{\totalflat}{407}
+\newcommand{\totalnosteadystate}{67}
+\newcommand{\totalslowdown}{226}
+\newcommand{\totalwarmup}{520}
+%%%
+%%% Percentage classifications over all executions.
+%%%
+\newcommand{\totalflatpercentage}{33.4}
+\newcommand{\totalnosteadystatepercentage}{5.5}
+\newcommand{\totalslowdownpercentage}{18.5}
+\newcommand{\totalwarmuppercentage}{42.6}
+%%%
+%%% Total consistent classifications over all executions.
+%%%
+\newcommand{\totalconsistent}{77}
+\newcommand{\totalinconsistent}{45}
+%%%
+%%% Percentage consistent classifications over all executions.
+%%%
+\newcommand{\totalconsistentpercentage}{63.1}
+\newcommand{\totalinconsistentpercentage}{36.9}
+%%%
+%%% Classifications per machine (machine category).
+%%%
+%%% bencher3.
+\newcommand{\bencherthreeflat}{136}
+\newcommand{\bencherthreenosteadystate}{30}
+\newcommand{\bencherthreeslowdown}{83}
+\newcommand{\bencherthreewarmup}{211}
+%%% bencher5.
+\newcommand{\bencherfiveflat}{136}
+\newcommand{\bencherfivenosteadystate}{32}
+\newcommand{\bencherfiveslowdown}{96}
+\newcommand{\bencherfivewarmup}{196}
+%%% bencher6.
+\newcommand{\benchersixflat}{135}
+\newcommand{\benchersixnosteadystate}{5}
+\newcommand{\benchersixslowdown}{47}
+\newcommand{\benchersixwarmup}{113}
+%%%
+%%% Machine / classification percentages (machine category percentage).
+%%%
+%%% bencher3.
+\newcommand{\bencherthreeflatpercentage}{29.6}
+\newcommand{\bencherthreenosteadystatepercentage}{6.5}
+\newcommand{\bencherthreeslowdownpercentage}{18.0}
+\newcommand{\bencherthreewarmuppercentage}{45.9}
+%%% bencher5.
+\newcommand{\bencherfiveflatpercentage}{29.6}
+\newcommand{\bencherfivenosteadystatepercentage}{7.0}
+\newcommand{\bencherfiveslowdownpercentage}{20.9}
+\newcommand{\bencherfivewarmuppercentage}{42.6}
+%%% bencher6.
+\newcommand{\benchersixflatpercentage}{45.0}
+\newcommand{\benchersixnosteadystatepercentage}{1.7}
+\newcommand{\benchersixslowdownpercentage}{15.7}
+\newcommand{\benchersixwarmuppercentage}{37.7}
+%%%
+%%% Consistent classifications per machine (machine consistent).
+%%%
+%%% bencher3.
+\newcommand{\bencherthreeconsistent}{30}
+\newcommand{\bencherthreeinconsistent}{16}
+%%% bencher5.
+\newcommand{\bencherfiveconsistent}{32}
+\newcommand{\bencherfiveinconsistent}{14}
+%%% bencher6.
+\newcommand{\benchersixconsistent}{15}
+\newcommand{\benchersixinconsistent}{15}
+%%%
+%%% Consistent machine percentages (machine consistent percentage).
+%%%
+%%% bencher3.
+\newcommand{\bencherthreeconsistentpercentage}{65.2}
+\newcommand{\bencherthreeinconsistentpercentage}{34.8}
+%%% bencher5.
+\newcommand{\bencherfiveconsistentpercentage}{69.6}
+\newcommand{\bencherfiveinconsistentpercentage}{30.4}
+%%% bencher6.
+\newcommand{\benchersixconsistentpercentage}{50.0}
+\newcommand{\benchersixinconsistentpercentage}{50.0}
+%%%
+%%% Classifications per vm/benchmark pair (VM bmark category).
+%%%
+%%% Hotspot nbody.
+\newcommand{\hotspotnbodyflat}{0}
+\newcommand{\hotspotnbodynosteadystate}{0}
+\newcommand{\hotspotnbodyslowdown}{0}
+\newcommand{\hotspotnbodywarmup}{30}
+%%% LuaJIT richards.
+\newcommand{\luajitrichardsflat}{28}
+\newcommand{\luajitrichardsnosteadystate}{1}
+\newcommand{\luajitrichardsslowdown}{0}
+\newcommand{\luajitrichardswarmup}{1}
+%%% Graal fasta.
+\newcommand{\graalfastaflat}{0}
+\newcommand{\graalfastanosteadystate}{0}
+\newcommand{\graalfastaslowdown}{0}
+\newcommand{\graalfastawarmup}{20}
+%%% PyPy nbody.
+\newcommand{\pypynbodyflat}{30}
+\newcommand{\pypynbodynosteadystate}{0}
+\newcommand{\pypynbodyslowdown}{0}
+\newcommand{\pypynbodywarmup}{0}
+%%% LuaJIT binarytrees.
+\newcommand{\luajitbinarytreesflat}{10}
+\newcommand{\luajitbinarytreesnosteadystate}{0}
+\newcommand{\luajitbinarytreesslowdown}{17}
+\newcommand{\luajitbinarytreeswarmup}{3}
+%%% Graal fannkuch_redux.
+\newcommand{\graalfannkuchreduxflat}{0}
+\newcommand{\graalfannkuchreduxnosteadystate}{0}
+\newcommand{\graalfannkuchreduxslowdown}{1}
+\newcommand{\graalfannkuchreduxwarmup}{19}
+%%% JRubyTruffle binarytrees.
+\newcommand{\jrubytrufflebinarytreesflat}{0}
+\newcommand{\jrubytrufflebinarytreesnosteadystate}{1}
+\newcommand{\jrubytrufflebinarytreesslowdown}{7}
+\newcommand{\jrubytrufflebinarytreeswarmup}{12}
+%%% V8 nbody.
+\newcommand{\veightnbodyflat}{7}
+\newcommand{\veightnbodynosteadystate}{0}
+\newcommand{\veightnbodyslowdown}{0}
+\newcommand{\veightnbodywarmup}{23}
+%%% JRubyTruffle nbody.
+\newcommand{\jrubytrufflenbodyflat}{0}
+\newcommand{\jrubytrufflenbodynosteadystate}{0}
+\newcommand{\jrubytrufflenbodyslowdown}{0}
+\newcommand{\jrubytrufflenbodywarmup}{20}
+%%% V8 richards.
+\newcommand{\veightrichardsflat}{0}
+\newcommand{\veightrichardsnosteadystate}{0}
+\newcommand{\veightrichardsslowdown}{16}
+\newcommand{\veightrichardswarmup}{14}
+%%% Hotspot fasta.
+\newcommand{\hotspotfastaflat}{0}
+\newcommand{\hotspotfastanosteadystate}{0}
+\newcommand{\hotspotfastaslowdown}{16}
+\newcommand{\hotspotfastawarmup}{14}
+%%% V8 binarytrees.
+\newcommand{\veightbinarytreesflat}{0}
+\newcommand{\veightbinarytreesnosteadystate}{1}
+\newcommand{\veightbinarytreesslowdown}{4}
+\newcommand{\veightbinarytreeswarmup}{25}
+%%% PyPy fannkuch_redux.
+\newcommand{\pypyfannkuchreduxflat}{18}
+\newcommand{\pypyfannkuchreduxnosteadystate}{0}
+\newcommand{\pypyfannkuchreduxslowdown}{1}
+\newcommand{\pypyfannkuchreduxwarmup}{11}
+%%% V8 fannkuch_redux.
+\newcommand{\veightfannkuchreduxflat}{24}
+\newcommand{\veightfannkuchreduxnosteadystate}{0}
+\newcommand{\veightfannkuchreduxslowdown}{0}
+\newcommand{\veightfannkuchreduxwarmup}{6}
+%%% C richards.
+\newcommand{\crichardsflat}{28}
+\newcommand{\crichardsnosteadystate}{0}
+\newcommand{\crichardsslowdown}{0}
+\newcommand{\crichardswarmup}{2}
+%%% HHVM fannkuch_redux.
+\newcommand{\hhvmfannkuchreduxflat}{0}
+\newcommand{\hhvmfannkuchreduxnosteadystate}{1}
+\newcommand{\hhvmfannkuchreduxslowdown}{0}
+\newcommand{\hhvmfannkuchreduxwarmup}{19}
+%%% V8 fasta.
+\newcommand{\veightfastaflat}{0}
+\newcommand{\veightfastanosteadystate}{0}
+\newcommand{\veightfastaslowdown}{30}
+\newcommand{\veightfastawarmup}{0}
+%%% V8 spectralnorm.
+\newcommand{\veightspectralnormflat}{10}
+\newcommand{\veightspectralnormnosteadystate}{0}
+\newcommand{\veightspectralnormslowdown}{0}
+\newcommand{\veightspectralnormwarmup}{20}
+%%% Graal nbody.
+\newcommand{\graalnbodyflat}{0}
+\newcommand{\graalnbodynosteadystate}{0}
+\newcommand{\graalnbodyslowdown}{0}
+\newcommand{\graalnbodywarmup}{20}
+%%% Hotspot fannkuch_redux.
+\newcommand{\hotspotfannkuchreduxflat}{0}
+\newcommand{\hotspotfannkuchreduxnosteadystate}{18}
+\newcommand{\hotspotfannkuchreduxslowdown}{0}
+\newcommand{\hotspotfannkuchreduxwarmup}{12}
+%%% C binarytrees.
+\newcommand{\cbinarytreesflat}{10}
+\newcommand{\cbinarytreesnosteadystate}{19}
+\newcommand{\cbinarytreesslowdown}{1}
+\newcommand{\cbinarytreeswarmup}{0}
+%%% HHVM binarytrees.
+\newcommand{\hhvmbinarytreesflat}{0}
+\newcommand{\hhvmbinarytreesnosteadystate}{0}
+\newcommand{\hhvmbinarytreesslowdown}{0}
+\newcommand{\hhvmbinarytreeswarmup}{20}
+%%% HHVM fasta.
+\newcommand{\hhvmfastaflat}{0}
+\newcommand{\hhvmfastanosteadystate}{0}
+\newcommand{\hhvmfastaslowdown}{1}
+\newcommand{\hhvmfastawarmup}{19}
+%%% PyPy binarytrees.
+\newcommand{\pypybinarytreesflat}{0}
+\newcommand{\pypybinarytreesnosteadystate}{0}
+\newcommand{\pypybinarytreesslowdown}{20}
+\newcommand{\pypybinarytreeswarmup}{10}
+%%% Graal richards.
+\newcommand{\graalrichardsflat}{0}
+\newcommand{\graalrichardsnosteadystate}{2}
+\newcommand{\graalrichardsslowdown}{4}
+\newcommand{\graalrichardswarmup}{14}
+%%% C fannkuch_redux.
+\newcommand{\cfannkuchreduxflat}{30}
+\newcommand{\cfannkuchreduxnosteadystate}{0}
+\newcommand{\cfannkuchreduxslowdown}{0}
+\newcommand{\cfannkuchreduxwarmup}{0}
+%%% PyPy spectralnorm.
+\newcommand{\pypyspectralnormflat}{19}
+\newcommand{\pypyspectralnormnosteadystate}{0}
+\newcommand{\pypyspectralnormslowdown}{0}
+\newcommand{\pypyspectralnormwarmup}{11}
+%%% HHVM spectralnorm.
+\newcommand{\hhvmspectralnormflat}{0}
+\newcommand{\hhvmspectralnormnosteadystate}{0}
+\newcommand{\hhvmspectralnormslowdown}{0}
+\newcommand{\hhvmspectralnormwarmup}{20}
+%%% JRubyTruffle fannkuch_redux.
+\newcommand{\jrubytrufflefannkuchreduxflat}{0}
+\newcommand{\jrubytrufflefannkuchreduxnosteadystate}{0}
+\newcommand{\jrubytrufflefannkuchreduxslowdown}{20}
+\newcommand{\jrubytrufflefannkuchreduxwarmup}{0}
+%%% Hotspot richards.
+\newcommand{\hotspotrichardsflat}{0}
+\newcommand{\hotspotrichardsnosteadystate}{1}
+\newcommand{\hotspotrichardsslowdown}{29}
+\newcommand{\hotspotrichardswarmup}{0}
+%%% LuaJIT spectralnorm.
+\newcommand{\luajitspectralnormflat}{30}
+\newcommand{\luajitspectralnormnosteadystate}{0}
+\newcommand{\luajitspectralnormslowdown}{0}
+\newcommand{\luajitspectralnormwarmup}{0}
+%%% PyPy richards.
+\newcommand{\pypyrichardsflat}{0}
+\newcommand{\pypyrichardsnosteadystate}{0}
+\newcommand{\pypyrichardsslowdown}{0}
+\newcommand{\pypyrichardswarmup}{30}
+%%% LuaJIT fasta.
+\newcommand{\luajitfastaflat}{29}
+\newcommand{\luajitfastanosteadystate}{0}
+\newcommand{\luajitfastaslowdown}{0}
+\newcommand{\luajitfastawarmup}{1}
+%%% Graal spectralnorm.
+\newcommand{\graalspectralnormflat}{0}
+\newcommand{\graalspectralnormnosteadystate}{0}
+\newcommand{\graalspectralnormslowdown}{20}
+\newcommand{\graalspectralnormwarmup}{0}
+%%% HHVM nbody.
+\newcommand{\hhvmnbodyflat}{0}
+\newcommand{\hhvmnbodynosteadystate}{0}
+\newcommand{\hhvmnbodyslowdown}{0}
+\newcommand{\hhvmnbodywarmup}{20}
+%%% JRubyTruffle richards.
+\newcommand{\jrubytrufflerichardsflat}{0}
+\newcommand{\jrubytrufflerichardsnosteadystate}{0}
+\newcommand{\jrubytrufflerichardsslowdown}{17}
+\newcommand{\jrubytrufflerichardswarmup}{3}
+%%% LuaJIT fannkuch_redux.
+\newcommand{\luajitfannkuchreduxflat}{28}
+\newcommand{\luajitfannkuchreduxnosteadystate}{0}
+\newcommand{\luajitfannkuchreduxslowdown}{0}
+\newcommand{\luajitfannkuchreduxwarmup}{2}
+%%% Hotspot binarytrees.
+\newcommand{\hotspotbinarytreesflat}{0}
+\newcommand{\hotspotbinarytreesnosteadystate}{0}
+\newcommand{\hotspotbinarytreesslowdown}{0}
+\newcommand{\hotspotbinarytreeswarmup}{30}
+%%% JRubyTruffle spectralnorm.
+\newcommand{\jrubytrufflespectralnormflat}{0}
+\newcommand{\jrubytrufflespectralnormnosteadystate}{0}
+\newcommand{\jrubytrufflespectralnormslowdown}{10}
+\newcommand{\jrubytrufflespectralnormwarmup}{10}
+%%% C spectralnorm.
+\newcommand{\cspectralnormflat}{10}
+\newcommand{\cspectralnormnosteadystate}{0}
+\newcommand{\cspectralnormslowdown}{5}
+\newcommand{\cspectralnormwarmup}{15}
+%%% Graal binarytrees.
+\newcommand{\graalbinarytreesflat}{0}
+\newcommand{\graalbinarytreesnosteadystate}{0}
+\newcommand{\graalbinarytreesslowdown}{1}
+\newcommand{\graalbinarytreeswarmup}{19}
+%%% LuaJIT nbody.
+\newcommand{\luajitnbodyflat}{30}
+\newcommand{\luajitnbodynosteadystate}{0}
+\newcommand{\luajitnbodyslowdown}{0}
+\newcommand{\luajitnbodywarmup}{0}
+%%% C fasta.
+\newcommand{\cfastaflat}{30}
+\newcommand{\cfastanosteadystate}{0}
+\newcommand{\cfastaslowdown}{0}
+\newcommand{\cfastawarmup}{0}
+%%% C nbody.
+\newcommand{\cnbodyflat}{22}
+\newcommand{\cnbodynosteadystate}{1}
+\newcommand{\cnbodyslowdown}{1}
+\newcommand{\cnbodywarmup}{6}
+%%% Hotspot spectralnorm.
+\newcommand{\hotspotspectralnormflat}{14}
+\newcommand{\hotspotspectralnormnosteadystate}{0}
+\newcommand{\hotspotspectralnormslowdown}{0}
+\newcommand{\hotspotspectralnormwarmup}{16}
+%%% PyPy fasta.
+\newcommand{\pypyfastaflat}{0}
+\newcommand{\pypyfastanosteadystate}{22}
+\newcommand{\pypyfastaslowdown}{5}
+\newcommand{\pypyfastawarmup}{3}
+%%%
+%%% Classifications vm/benchmark pair percentages (VM bmark category percentage).
+%%%
+%%% Hotspot nbody.
+\newcommand{\hotspotnbodyflatpercentage}{0.0}
+\newcommand{\hotspotnbodynosteadystatepercentage}{0.0}
+\newcommand{\hotspotnbodyslowdownpercentage}{0.0}
+\newcommand{\hotspotnbodywarmuppercentage}{100.0}
+%%% LuaJIT richards.
+\newcommand{\luajitrichardsflatpercentage}{93.3}
+\newcommand{\luajitrichardsnosteadystatepercentage}{3.3}
+\newcommand{\luajitrichardsslowdownpercentage}{0.0}
+\newcommand{\luajitrichardswarmuppercentage}{3.3}
+%%% Graal fasta.
+\newcommand{\graalfastaflatpercentage}{0.0}
+\newcommand{\graalfastanosteadystatepercentage}{0.0}
+\newcommand{\graalfastaslowdownpercentage}{0.0}
+\newcommand{\graalfastawarmuppercentage}{100.0}
+%%% PyPy nbody.
+\newcommand{\pypynbodyflatpercentage}{100.0}
+\newcommand{\pypynbodynosteadystatepercentage}{0.0}
+\newcommand{\pypynbodyslowdownpercentage}{0.0}
+\newcommand{\pypynbodywarmuppercentage}{0.0}
+%%% LuaJIT binarytrees.
+\newcommand{\luajitbinarytreesflatpercentage}{33.3}
+\newcommand{\luajitbinarytreesnosteadystatepercentage}{0.0}
+\newcommand{\luajitbinarytreesslowdownpercentage}{56.7}
+\newcommand{\luajitbinarytreeswarmuppercentage}{10.0}
+%%% Graal fannkuch_redux.
+\newcommand{\graalfannkuchreduxflatpercentage}{0.0}
+\newcommand{\graalfannkuchreduxnosteadystatepercentage}{0.0}
+\newcommand{\graalfannkuchreduxslowdownpercentage}{5.0}
+\newcommand{\graalfannkuchreduxwarmuppercentage}{95.0}
+%%% JRubyTruffle binarytrees.
+\newcommand{\jrubytrufflebinarytreesflatpercentage}{0.0}
+\newcommand{\jrubytrufflebinarytreesnosteadystatepercentage}{5.0}
+\newcommand{\jrubytrufflebinarytreesslowdownpercentage}{35.0}
+\newcommand{\jrubytrufflebinarytreeswarmuppercentage}{60.0}
+%%% V8 nbody.
+\newcommand{\veightnbodyflatpercentage}{23.3}
+\newcommand{\veightnbodynosteadystatepercentage}{0.0}
+\newcommand{\veightnbodyslowdownpercentage}{0.0}
+\newcommand{\veightnbodywarmuppercentage}{76.7}
+%%% JRubyTruffle nbody.
+\newcommand{\jrubytrufflenbodyflatpercentage}{0.0}
+\newcommand{\jrubytrufflenbodynosteadystatepercentage}{0.0}
+\newcommand{\jrubytrufflenbodyslowdownpercentage}{0.0}
+\newcommand{\jrubytrufflenbodywarmuppercentage}{100.0}
+%%% V8 richards.
+\newcommand{\veightrichardsflatpercentage}{0.0}
+\newcommand{\veightrichardsnosteadystatepercentage}{0.0}
+\newcommand{\veightrichardsslowdownpercentage}{53.3}
+\newcommand{\veightrichardswarmuppercentage}{46.7}
+%%% Hotspot fasta.
+\newcommand{\hotspotfastaflatpercentage}{0.0}
+\newcommand{\hotspotfastanosteadystatepercentage}{0.0}
+\newcommand{\hotspotfastaslowdownpercentage}{53.3}
+\newcommand{\hotspotfastawarmuppercentage}{46.7}
+%%% V8 binarytrees.
+\newcommand{\veightbinarytreesflatpercentage}{0.0}
+\newcommand{\veightbinarytreesnosteadystatepercentage}{3.3}
+\newcommand{\veightbinarytreesslowdownpercentage}{13.3}
+\newcommand{\veightbinarytreeswarmuppercentage}{83.3}
+%%% PyPy fannkuch_redux.
+\newcommand{\pypyfannkuchreduxflatpercentage}{60.0}
+\newcommand{\pypyfannkuchreduxnosteadystatepercentage}{0.0}
+\newcommand{\pypyfannkuchreduxslowdownpercentage}{3.3}
+\newcommand{\pypyfannkuchreduxwarmuppercentage}{36.7}
+%%% V8 fannkuch_redux.
+\newcommand{\veightfannkuchreduxflatpercentage}{80.0}
+\newcommand{\veightfannkuchreduxnosteadystatepercentage}{0.0}
+\newcommand{\veightfannkuchreduxslowdownpercentage}{0.0}
+\newcommand{\veightfannkuchreduxwarmuppercentage}{20.0}
+%%% C richards.
+\newcommand{\crichardsflatpercentage}{93.3}
+\newcommand{\crichardsnosteadystatepercentage}{0.0}
+\newcommand{\crichardsslowdownpercentage}{0.0}
+\newcommand{\crichardswarmuppercentage}{6.7}
+%%% HHVM fannkuch_redux.
+\newcommand{\hhvmfannkuchreduxflatpercentage}{0.0}
+\newcommand{\hhvmfannkuchreduxnosteadystatepercentage}{5.0}
+\newcommand{\hhvmfannkuchreduxslowdownpercentage}{0.0}
+\newcommand{\hhvmfannkuchreduxwarmuppercentage}{95.0}
+%%% V8 fasta.
+\newcommand{\veightfastaflatpercentage}{0.0}
+\newcommand{\veightfastanosteadystatepercentage}{0.0}
+\newcommand{\veightfastaslowdownpercentage}{100.0}
+\newcommand{\veightfastawarmuppercentage}{0.0}
+%%% V8 spectralnorm.
+\newcommand{\veightspectralnormflatpercentage}{33.3}
+\newcommand{\veightspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\veightspectralnormslowdownpercentage}{0.0}
+\newcommand{\veightspectralnormwarmuppercentage}{66.7}
+%%% Graal nbody.
+\newcommand{\graalnbodyflatpercentage}{0.0}
+\newcommand{\graalnbodynosteadystatepercentage}{0.0}
+\newcommand{\graalnbodyslowdownpercentage}{0.0}
+\newcommand{\graalnbodywarmuppercentage}{100.0}
+%%% Hotspot fannkuch_redux.
+\newcommand{\hotspotfannkuchreduxflatpercentage}{0.0}
+\newcommand{\hotspotfannkuchreduxnosteadystatepercentage}{60.0}
+\newcommand{\hotspotfannkuchreduxslowdownpercentage}{0.0}
+\newcommand{\hotspotfannkuchreduxwarmuppercentage}{40.0}
+%%% C binarytrees.
+\newcommand{\cbinarytreesflatpercentage}{33.3}
+\newcommand{\cbinarytreesnosteadystatepercentage}{63.3}
+\newcommand{\cbinarytreesslowdownpercentage}{3.3}
+\newcommand{\cbinarytreeswarmuppercentage}{0.0}
+%%% HHVM binarytrees.
+\newcommand{\hhvmbinarytreesflatpercentage}{0.0}
+\newcommand{\hhvmbinarytreesnosteadystatepercentage}{0.0}
+\newcommand{\hhvmbinarytreesslowdownpercentage}{0.0}
+\newcommand{\hhvmbinarytreeswarmuppercentage}{100.0}
+%%% HHVM fasta.
+\newcommand{\hhvmfastaflatpercentage}{0.0}
+\newcommand{\hhvmfastanosteadystatepercentage}{0.0}
+\newcommand{\hhvmfastaslowdownpercentage}{5.0}
+\newcommand{\hhvmfastawarmuppercentage}{95.0}
+%%% PyPy binarytrees.
+\newcommand{\pypybinarytreesflatpercentage}{0.0}
+\newcommand{\pypybinarytreesnosteadystatepercentage}{0.0}
+\newcommand{\pypybinarytreesslowdownpercentage}{66.7}
+\newcommand{\pypybinarytreeswarmuppercentage}{33.3}
+%%% Graal richards.
+\newcommand{\graalrichardsflatpercentage}{0.0}
+\newcommand{\graalrichardsnosteadystatepercentage}{10.0}
+\newcommand{\graalrichardsslowdownpercentage}{20.0}
+\newcommand{\graalrichardswarmuppercentage}{70.0}
+%%% C fannkuch_redux.
+\newcommand{\cfannkuchreduxflatpercentage}{100.0}
+\newcommand{\cfannkuchreduxnosteadystatepercentage}{0.0}
+\newcommand{\cfannkuchreduxslowdownpercentage}{0.0}
+\newcommand{\cfannkuchreduxwarmuppercentage}{0.0}
+%%% PyPy spectralnorm.
+\newcommand{\pypyspectralnormflatpercentage}{63.3}
+\newcommand{\pypyspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\pypyspectralnormslowdownpercentage}{0.0}
+\newcommand{\pypyspectralnormwarmuppercentage}{36.7}
+%%% HHVM spectralnorm.
+\newcommand{\hhvmspectralnormflatpercentage}{0.0}
+\newcommand{\hhvmspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\hhvmspectralnormslowdownpercentage}{0.0}
+\newcommand{\hhvmspectralnormwarmuppercentage}{100.0}
+%%% JRubyTruffle fannkuch_redux.
+\newcommand{\jrubytrufflefannkuchreduxflatpercentage}{0.0}
+\newcommand{\jrubytrufflefannkuchreduxnosteadystatepercentage}{0.0}
+\newcommand{\jrubytrufflefannkuchreduxslowdownpercentage}{100.0}
+\newcommand{\jrubytrufflefannkuchreduxwarmuppercentage}{0.0}
+%%% Hotspot richards.
+\newcommand{\hotspotrichardsflatpercentage}{0.0}
+\newcommand{\hotspotrichardsnosteadystatepercentage}{3.3}
+\newcommand{\hotspotrichardsslowdownpercentage}{96.7}
+\newcommand{\hotspotrichardswarmuppercentage}{0.0}
+%%% LuaJIT spectralnorm.
+\newcommand{\luajitspectralnormflatpercentage}{100.0}
+\newcommand{\luajitspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\luajitspectralnormslowdownpercentage}{0.0}
+\newcommand{\luajitspectralnormwarmuppercentage}{0.0}
+%%% PyPy richards.
+\newcommand{\pypyrichardsflatpercentage}{0.0}
+\newcommand{\pypyrichardsnosteadystatepercentage}{0.0}
+\newcommand{\pypyrichardsslowdownpercentage}{0.0}
+\newcommand{\pypyrichardswarmuppercentage}{100.0}
+%%% LuaJIT fasta.
+\newcommand{\luajitfastaflatpercentage}{96.7}
+\newcommand{\luajitfastanosteadystatepercentage}{0.0}
+\newcommand{\luajitfastaslowdownpercentage}{0.0}
+\newcommand{\luajitfastawarmuppercentage}{3.3}
+%%% Graal spectralnorm.
+\newcommand{\graalspectralnormflatpercentage}{0.0}
+\newcommand{\graalspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\graalspectralnormslowdownpercentage}{100.0}
+\newcommand{\graalspectralnormwarmuppercentage}{0.0}
+%%% HHVM nbody.
+\newcommand{\hhvmnbodyflatpercentage}{0.0}
+\newcommand{\hhvmnbodynosteadystatepercentage}{0.0}
+\newcommand{\hhvmnbodyslowdownpercentage}{0.0}
+\newcommand{\hhvmnbodywarmuppercentage}{100.0}
+%%% JRubyTruffle richards.
+\newcommand{\jrubytrufflerichardsflatpercentage}{0.0}
+\newcommand{\jrubytrufflerichardsnosteadystatepercentage}{0.0}
+\newcommand{\jrubytrufflerichardsslowdownpercentage}{85.0}
+\newcommand{\jrubytrufflerichardswarmuppercentage}{15.0}
+%%% LuaJIT fannkuch_redux.
+\newcommand{\luajitfannkuchreduxflatpercentage}{93.3}
+\newcommand{\luajitfannkuchreduxnosteadystatepercentage}{0.0}
+\newcommand{\luajitfannkuchreduxslowdownpercentage}{0.0}
+\newcommand{\luajitfannkuchreduxwarmuppercentage}{6.7}
+%%% Hotspot binarytrees.
+\newcommand{\hotspotbinarytreesflatpercentage}{0.0}
+\newcommand{\hotspotbinarytreesnosteadystatepercentage}{0.0}
+\newcommand{\hotspotbinarytreesslowdownpercentage}{0.0}
+\newcommand{\hotspotbinarytreeswarmuppercentage}{100.0}
+%%% JRubyTruffle spectralnorm.
+\newcommand{\jrubytrufflespectralnormflatpercentage}{0.0}
+\newcommand{\jrubytrufflespectralnormnosteadystatepercentage}{0.0}
+\newcommand{\jrubytrufflespectralnormslowdownpercentage}{50.0}
+\newcommand{\jrubytrufflespectralnormwarmuppercentage}{50.0}
+%%% C spectralnorm.
+\newcommand{\cspectralnormflatpercentage}{33.3}
+\newcommand{\cspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\cspectralnormslowdownpercentage}{16.7}
+\newcommand{\cspectralnormwarmuppercentage}{50.0}
+%%% Graal binarytrees.
+\newcommand{\graalbinarytreesflatpercentage}{0.0}
+\newcommand{\graalbinarytreesnosteadystatepercentage}{0.0}
+\newcommand{\graalbinarytreesslowdownpercentage}{5.0}
+\newcommand{\graalbinarytreeswarmuppercentage}{95.0}
+%%% LuaJIT nbody.
+\newcommand{\luajitnbodyflatpercentage}{100.0}
+\newcommand{\luajitnbodynosteadystatepercentage}{0.0}
+\newcommand{\luajitnbodyslowdownpercentage}{0.0}
+\newcommand{\luajitnbodywarmuppercentage}{0.0}
+%%% C fasta.
+\newcommand{\cfastaflatpercentage}{100.0}
+\newcommand{\cfastanosteadystatepercentage}{0.0}
+\newcommand{\cfastaslowdownpercentage}{0.0}
+\newcommand{\cfastawarmuppercentage}{0.0}
+%%% C nbody.
+\newcommand{\cnbodyflatpercentage}{73.3}
+\newcommand{\cnbodynosteadystatepercentage}{3.3}
+\newcommand{\cnbodyslowdownpercentage}{3.3}
+\newcommand{\cnbodywarmuppercentage}{20.0}
+%%% Hotspot spectralnorm.
+\newcommand{\hotspotspectralnormflatpercentage}{46.7}
+\newcommand{\hotspotspectralnormnosteadystatepercentage}{0.0}
+\newcommand{\hotspotspectralnormslowdownpercentage}{0.0}
+\newcommand{\hotspotspectralnormwarmuppercentage}{53.3}
+%%% PyPy fasta.
+\newcommand{\pypyfastaflatpercentage}{0.0}
+\newcommand{\pypyfastanosteadystatepercentage}{73.3}
+\newcommand{\pypyfastaslowdownpercentage}{16.7}
+\newcommand{\pypyfastawarmuppercentage}{10.0}
+%%%
+%%% Consistent classifications per vm/bmark (vm bench consistent).
+%%%
+%%% Hotspot nbody.
+\newcommand{\hotspotnbodyconsistent}{3}
+\newcommand{\hotspotnbodyinconsistent}{0}
+%%% LuaJIT richards.
+\newcommand{\luajitrichardsconsistent}{2}
+\newcommand{\luajitrichardsinconsistent}{1}
+%%% Graal fasta.
+\newcommand{\graalfastaconsistent}{2}
+\newcommand{\graalfastainconsistent}{0}
+%%% PyPy nbody.
+\newcommand{\pypynbodyconsistent}{3}
+\newcommand{\pypynbodyinconsistent}{0}
+%%% LuaJIT binarytrees.
+\newcommand{\luajitbinarytreesconsistent}{0}
+\newcommand{\luajitbinarytreesinconsistent}{3}
+%%% Graal fannkuch_redux.
+\newcommand{\graalfannkuchreduxconsistent}{1}
+\newcommand{\graalfannkuchreduxinconsistent}{1}
+%%% JRubyTruffle binarytrees.
+\newcommand{\jrubytrufflebinarytreesconsistent}{0}
+\newcommand{\jrubytrufflebinarytreesinconsistent}{2}
+%%% V8 nbody.
+\newcommand{\veightnbodyconsistent}{2}
+\newcommand{\veightnbodyinconsistent}{1}
+%%% JRubyTruffle nbody.
+\newcommand{\jrubytrufflenbodyconsistent}{2}
+\newcommand{\jrubytrufflenbodyinconsistent}{0}
+%%% V8 richards.
+\newcommand{\veightrichardsconsistent}{0}
+\newcommand{\veightrichardsinconsistent}{3}
+%%% Hotspot fasta.
+\newcommand{\hotspotfastaconsistent}{0}
+\newcommand{\hotspotfastainconsistent}{3}
+%%% V8 binarytrees.
+\newcommand{\veightbinarytreesconsistent}{1}
+\newcommand{\veightbinarytreesinconsistent}{2}
+%%% PyPy fannkuch_redux.
+\newcommand{\pypyfannkuchreduxconsistent}{1}
+\newcommand{\pypyfannkuchreduxinconsistent}{2}
+%%% V8 fannkuch_redux.
+\newcommand{\veightfannkuchreduxconsistent}{2}
+\newcommand{\veightfannkuchreduxinconsistent}{1}
+%%% C richards.
+\newcommand{\crichardsconsistent}{2}
+\newcommand{\crichardsinconsistent}{1}
+%%% HHVM fannkuch_redux.
+\newcommand{\hhvmfannkuchreduxconsistent}{1}
+\newcommand{\hhvmfannkuchreduxinconsistent}{1}
+%%% V8 fasta.
+\newcommand{\veightfastaconsistent}{3}
+\newcommand{\veightfastainconsistent}{0}
+%%% V8 spectralnorm.
+\newcommand{\veightspectralnormconsistent}{3}
+\newcommand{\veightspectralnorminconsistent}{0}
+%%% Graal nbody.
+\newcommand{\graalnbodyconsistent}{2}
+\newcommand{\graalnbodyinconsistent}{0}
+%%% Hotspot fannkuch_redux.
+\newcommand{\hotspotfannkuchreduxconsistent}{1}
+\newcommand{\hotspotfannkuchreduxinconsistent}{2}
+%%% C binarytrees.
+\newcommand{\cbinarytreesconsistent}{2}
+\newcommand{\cbinarytreesinconsistent}{1}
+%%% HHVM binarytrees.
+\newcommand{\hhvmbinarytreesconsistent}{2}
+\newcommand{\hhvmbinarytreesinconsistent}{0}
+%%% HHVM fasta.
+\newcommand{\hhvmfastaconsistent}{1}
+\newcommand{\hhvmfastainconsistent}{1}
+%%% PyPy binarytrees.
+\newcommand{\pypybinarytreesconsistent}{3}
+\newcommand{\pypybinarytreesinconsistent}{0}
+%%% Graal richards.
+\newcommand{\graalrichardsconsistent}{0}
+\newcommand{\graalrichardsinconsistent}{2}
+%%% C fannkuch_redux.
+\newcommand{\cfannkuchreduxconsistent}{3}
+\newcommand{\cfannkuchreduxinconsistent}{0}
+%%% PyPy spectralnorm.
+\newcommand{\pypyspectralnormconsistent}{2}
+\newcommand{\pypyspectralnorminconsistent}{1}
+%%% HHVM spectralnorm.
+\newcommand{\hhvmspectralnormconsistent}{2}
+\newcommand{\hhvmspectralnorminconsistent}{0}
+%%% JRubyTruffle fannkuch_redux.
+\newcommand{\jrubytrufflefannkuchreduxconsistent}{2}
+\newcommand{\jrubytrufflefannkuchreduxinconsistent}{0}
+%%% Hotspot richards.
+\newcommand{\hotspotrichardsconsistent}{2}
+\newcommand{\hotspotrichardsinconsistent}{1}
+%%% LuaJIT spectralnorm.
+\newcommand{\luajitspectralnormconsistent}{3}
+\newcommand{\luajitspectralnorminconsistent}{0}
+%%% PyPy richards.
+\newcommand{\pypyrichardsconsistent}{3}
+\newcommand{\pypyrichardsinconsistent}{0}
+%%% LuaJIT fasta.
+\newcommand{\luajitfastaconsistent}{2}
+\newcommand{\luajitfastainconsistent}{1}
+%%% Graal spectralnorm.
+\newcommand{\graalspectralnormconsistent}{2}
+\newcommand{\graalspectralnorminconsistent}{0}
+%%% HHVM nbody.
+\newcommand{\hhvmnbodyconsistent}{2}
+\newcommand{\hhvmnbodyinconsistent}{0}
+%%% JRubyTruffle richards.
+\newcommand{\jrubytrufflerichardsconsistent}{1}
+\newcommand{\jrubytrufflerichardsinconsistent}{1}
+%%% LuaJIT fannkuch_redux.
+\newcommand{\luajitfannkuchreduxconsistent}{2}
+\newcommand{\luajitfannkuchreduxinconsistent}{1}
+%%% Hotspot binarytrees.
+\newcommand{\hotspotbinarytreesconsistent}{3}
+\newcommand{\hotspotbinarytreesinconsistent}{0}
+%%% JRubyTruffle spectralnorm.
+\newcommand{\jrubytrufflespectralnormconsistent}{0}
+\newcommand{\jrubytrufflespectralnorminconsistent}{2}
+%%% C spectralnorm.
+\newcommand{\cspectralnormconsistent}{0}
+\newcommand{\cspectralnorminconsistent}{3}
+%%% Graal binarytrees.
+\newcommand{\graalbinarytreesconsistent}{1}
+\newcommand{\graalbinarytreesinconsistent}{1}
+%%% LuaJIT nbody.
+\newcommand{\luajitnbodyconsistent}{3}
+\newcommand{\luajitnbodyinconsistent}{0}
+%%% C fasta.
+\newcommand{\cfastaconsistent}{3}
+\newcommand{\cfastainconsistent}{0}
+%%% C nbody.
+\newcommand{\cnbodyconsistent}{0}
+\newcommand{\cnbodyinconsistent}{3}
+%%% Hotspot spectralnorm.
+\newcommand{\hotspotspectralnormconsistent}{0}
+\newcommand{\hotspotspectralnorminconsistent}{3}
+%%% PyPy fasta.
+\newcommand{\pypyfastaconsistent}{2}
+\newcommand{\pypyfastainconsistent}{1}
+%%%
+%%% Consistent vm/bench percentages (vm bench consistent percentage).
+%%%
+%%% Hotspot nbody.
+\newcommand{\hotspotnbodyconsistentpercentage}{100.0}
+\newcommand{\hotspotnbodyinconsistentpercentage}{0.0}
+%%% LuaJIT richards.
+\newcommand{\luajitrichardsconsistentpercentage}{66.7}
+\newcommand{\luajitrichardsinconsistentpercentage}{33.3}
+%%% Graal fasta.
+\newcommand{\graalfastaconsistentpercentage}{100.0}
+\newcommand{\graalfastainconsistentpercentage}{0.0}
+%%% PyPy nbody.
+\newcommand{\pypynbodyconsistentpercentage}{100.0}
+\newcommand{\pypynbodyinconsistentpercentage}{0.0}
+%%% LuaJIT binarytrees.
+\newcommand{\luajitbinarytreesconsistentpercentage}{0.0}
+\newcommand{\luajitbinarytreesinconsistentpercentage}{100.0}
+%%% Graal fannkuch_redux.
+\newcommand{\graalfannkuchreduxconsistentpercentage}{50.0}
+\newcommand{\graalfannkuchreduxinconsistentpercentage}{50.0}
+%%% JRubyTruffle binarytrees.
+\newcommand{\jrubytrufflebinarytreesconsistentpercentage}{0.0}
+\newcommand{\jrubytrufflebinarytreesinconsistentpercentage}{100.0}
+%%% V8 nbody.
+\newcommand{\veightnbodyconsistentpercentage}{66.7}
+\newcommand{\veightnbodyinconsistentpercentage}{33.3}
+%%% JRubyTruffle nbody.
+\newcommand{\jrubytrufflenbodyconsistentpercentage}{100.0}
+\newcommand{\jrubytrufflenbodyinconsistentpercentage}{0.0}
+%%% V8 richards.
+\newcommand{\veightrichardsconsistentpercentage}{0.0}
+\newcommand{\veightrichardsinconsistentpercentage}{100.0}
+%%% Hotspot fasta.
+\newcommand{\hotspotfastaconsistentpercentage}{0.0}
+\newcommand{\hotspotfastainconsistentpercentage}{100.0}
+%%% V8 binarytrees.
+\newcommand{\veightbinarytreesconsistentpercentage}{33.3}
+\newcommand{\veightbinarytreesinconsistentpercentage}{66.7}
+%%% PyPy fannkuch_redux.
+\newcommand{\pypyfannkuchreduxconsistentpercentage}{33.3}
+\newcommand{\pypyfannkuchreduxinconsistentpercentage}{66.7}
+%%% V8 fannkuch_redux.
+\newcommand{\veightfannkuchreduxconsistentpercentage}{66.7}
+\newcommand{\veightfannkuchreduxinconsistentpercentage}{33.3}
+%%% C richards.
+\newcommand{\crichardsconsistentpercentage}{66.7}
+\newcommand{\crichardsinconsistentpercentage}{33.3}
+%%% HHVM fannkuch_redux.
+\newcommand{\hhvmfannkuchreduxconsistentpercentage}{50.0}
+\newcommand{\hhvmfannkuchreduxinconsistentpercentage}{50.0}
+%%% V8 fasta.
+\newcommand{\veightfastaconsistentpercentage}{100.0}
+\newcommand{\veightfastainconsistentpercentage}{0.0}
+%%% V8 spectralnorm.
+\newcommand{\veightspectralnormconsistentpercentage}{100.0}
+\newcommand{\veightspectralnorminconsistentpercentage}{0.0}
+%%% Graal nbody.
+\newcommand{\graalnbodyconsistentpercentage}{100.0}
+\newcommand{\graalnbodyinconsistentpercentage}{0.0}
+%%% Hotspot fannkuch_redux.
+\newcommand{\hotspotfannkuchreduxconsistentpercentage}{33.3}
+\newcommand{\hotspotfannkuchreduxinconsistentpercentage}{66.7}
+%%% C binarytrees.
+\newcommand{\cbinarytreesconsistentpercentage}{66.7}
+\newcommand{\cbinarytreesinconsistentpercentage}{33.3}
+%%% HHVM binarytrees.
+\newcommand{\hhvmbinarytreesconsistentpercentage}{100.0}
+\newcommand{\hhvmbinarytreesinconsistentpercentage}{0.0}
+%%% HHVM fasta.
+\newcommand{\hhvmfastaconsistentpercentage}{50.0}
+\newcommand{\hhvmfastainconsistentpercentage}{50.0}
+%%% PyPy binarytrees.
+\newcommand{\pypybinarytreesconsistentpercentage}{100.0}
+\newcommand{\pypybinarytreesinconsistentpercentage}{0.0}
+%%% Graal richards.
+\newcommand{\graalrichardsconsistentpercentage}{0.0}
+\newcommand{\graalrichardsinconsistentpercentage}{100.0}
+%%% C fannkuch_redux.
+\newcommand{\cfannkuchreduxconsistentpercentage}{100.0}
+\newcommand{\cfannkuchreduxinconsistentpercentage}{0.0}
+%%% PyPy spectralnorm.
+\newcommand{\pypyspectralnormconsistentpercentage}{66.7}
+\newcommand{\pypyspectralnorminconsistentpercentage}{33.3}
+%%% HHVM spectralnorm.
+\newcommand{\hhvmspectralnormconsistentpercentage}{100.0}
+\newcommand{\hhvmspectralnorminconsistentpercentage}{0.0}
+%%% JRubyTruffle fannkuch_redux.
+\newcommand{\jrubytrufflefannkuchreduxconsistentpercentage}{100.0}
+\newcommand{\jrubytrufflefannkuchreduxinconsistentpercentage}{0.0}
+%%% Hotspot richards.
+\newcommand{\hotspotrichardsconsistentpercentage}{66.7}
+\newcommand{\hotspotrichardsinconsistentpercentage}{33.3}
+%%% LuaJIT spectralnorm.
+\newcommand{\luajitspectralnormconsistentpercentage}{100.0}
+\newcommand{\luajitspectralnorminconsistentpercentage}{0.0}
+%%% PyPy richards.
+\newcommand{\pypyrichardsconsistentpercentage}{100.0}
+\newcommand{\pypyrichardsinconsistentpercentage}{0.0}
+%%% LuaJIT fasta.
+\newcommand{\luajitfastaconsistentpercentage}{66.7}
+\newcommand{\luajitfastainconsistentpercentage}{33.3}
+%%% Graal spectralnorm.
+\newcommand{\graalspectralnormconsistentpercentage}{100.0}
+\newcommand{\graalspectralnorminconsistentpercentage}{0.0}
+%%% HHVM nbody.
+\newcommand{\hhvmnbodyconsistentpercentage}{100.0}
+\newcommand{\hhvmnbodyinconsistentpercentage}{0.0}
+%%% JRubyTruffle richards.
+\newcommand{\jrubytrufflerichardsconsistentpercentage}{50.0}
+\newcommand{\jrubytrufflerichardsinconsistentpercentage}{50.0}
+%%% LuaJIT fannkuch_redux.
+\newcommand{\luajitfannkuchreduxconsistentpercentage}{66.7}
+\newcommand{\luajitfannkuchreduxinconsistentpercentage}{33.3}
+%%% Hotspot binarytrees.
+\newcommand{\hotspotbinarytreesconsistentpercentage}{100.0}
+\newcommand{\hotspotbinarytreesinconsistentpercentage}{0.0}
+%%% JRubyTruffle spectralnorm.
+\newcommand{\jrubytrufflespectralnormconsistentpercentage}{0.0}
+\newcommand{\jrubytrufflespectralnorminconsistentpercentage}{100.0}
+%%% C spectralnorm.
+\newcommand{\cspectralnormconsistentpercentage}{0.0}
+\newcommand{\cspectralnorminconsistentpercentage}{100.0}
+%%% Graal binarytrees.
+\newcommand{\graalbinarytreesconsistentpercentage}{50.0}
+\newcommand{\graalbinarytreesinconsistentpercentage}{50.0}
+%%% LuaJIT nbody.
+\newcommand{\luajitnbodyconsistentpercentage}{100.0}
+\newcommand{\luajitnbodyinconsistentpercentage}{0.0}
+%%% C fasta.
+\newcommand{\cfastaconsistentpercentage}{100.0}
+\newcommand{\cfastainconsistentpercentage}{0.0}
+%%% C nbody.
+\newcommand{\cnbodyconsistentpercentage}{0.0}
+\newcommand{\cnbodyinconsistentpercentage}{100.0}
+%%% Hotspot spectralnorm.
+\newcommand{\hotspotspectralnormconsistentpercentage}{0.0}
+\newcommand{\hotspotspectralnorminconsistentpercentage}{100.0}
+%%% PyPy fasta.
+\newcommand{\pypyfastaconsistentpercentage}{66.7}
+\newcommand{\pypyfastainconsistentpercentage}{33.3}

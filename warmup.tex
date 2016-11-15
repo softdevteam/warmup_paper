@@ -90,6 +90,7 @@
        /%
 \end{sparkline}\xspace}
 
+\input{summary_macros.tex}
 \newlength{\blankheight}
 \settototalheight{\blankheight}{
 $\begin{array}{rr}
@@ -771,6 +772,32 @@ correlation between the time it takes a VM to reach a steady state and the
 performance of that steady state: i.e.~it does not seem to be the case that VMs
 which take a long time to warmup are using it to create highly efficient
 steady-state code.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+               & \bencherthree & \bencherfive & \benchersix \\
+\midrule
+               & \multicolumn{3}{c}{(VM, benchmark) pairs} \\
+\flatc         \\
+\warmup        \\
+\slowdown      \\
+\nosteadystate \\
+\inconsistent  \\
+\midrule
+               & \multicolumn{3}{c}{Process executions} \\
+\flatc         & \bencherthreeflatpercentage\%          & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% \\
+\warmup        & \bencherthreewarmuppercentage\%        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% \\
+\slowdown      & \bencherthreeslowdownpercentage\%      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% \\
+\nosteadystate & \bencherthreenosteadystatepercentage\% & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% \\
+\inconsistent  & \bencherthreeinconsistentpercentage\%  & \bencherfiveinconsistentpercentage\%  & \benchersixinconsistentpercentage\% \\
+
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Relative proportions of classifiers across benchmarking machines.}
+\end{table}
 
 \laurie{we should summarise: X\% are flat, Y\% are warmup etc.} Of the
 \laurie{XXX} (VM, benchmark) pairs, \laurie{XXX}\% are flat, \laurie{XXX}\%

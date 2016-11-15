@@ -506,7 +506,7 @@ kernel~\cite{tickless}, which requires recompiling the kernel with the
 Similarly, Linux's \texttt{perf} profiler may interrupt cores up to 100,000 times a
 second. We became aware of \texttt{perf} when \krun's \texttt{dmesg} checks
 notified us that the kernel had decreased the sample-rate by
-50\% due to its performance hit. This is troubling
+50\% due to excessive sampling overhead. This is troubling
 from a benchmarking perspective, as the change of sample rate could change
 benchmark performance mid-process execution. Although
 \texttt{perf} cannot be completely disabled, \krun sets it to sample at most

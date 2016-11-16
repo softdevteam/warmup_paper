@@ -93,6 +93,7 @@
 
 \input{outlier_summaries.tex}
 \input{summary_macros.tex}
+\input{vm_versions.tex}
 
 \newlength{\blankheight}
 \settototalheight{\blankheight}{
@@ -371,13 +372,14 @@ checksum value for each benchmark, irrespective of language.
 
 \subsection{VMs under investigation}
 
-We ran the benchmarks on the following language implementations: GCC 4.9.3;
-Graal \#9405be47 (an alternative JIT compiler for HotSpot); HHVM 3.14.0 (a JIT
-compiling VM for PHP); JRuby+Truffle \#170c9ae6; HotSpot 8u72b15 (the most widely used Java
-VM); LuaJIT 2.0.4 (a tracing JIT compiling VM for Lua); PyPy 5.3.0 (a
-meta-tracing JIT compiling VM for Python 2.7); and V8 5.1.281.65 (a JIT
+We ran the benchmarks on the following language implementations: GCC \gccversion;
+Graal \graalversion (an alternative JIT compiler for HotSpot); HHVM \hhvmversion (a JIT
+compiling VM for PHP); JRuby+Truffle \jrubytruffleversion{};
+HotSpot \hotspotversion (the most widely used Java
+VM); LuaJIT \luajitversion (a tracing JIT compiling VM for Lua); PyPy \pypyversion (a
+meta-tracing JIT compiling VM for Python 2.7); and V8 \veightversion (a JIT
 compiling VM for JavaScript). A repeatable build script downloads, patches,
-and builds fixed versions of each VM. All VMs were compiled with GCC/G++ 4.9.3
+and builds fixed versions of each VM. All VMs were compiled with GCC/G++ \gccversion
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
 to remove the possibility of variance through the use of different compilers.
 
@@ -1240,7 +1242,7 @@ crashes with a \texttt{Invocation\-Target\-Exception}; \texttt{eclipse},
 \texttt{tomcat}, and (intermittently) \texttt{tradesoap} fail their own internal
 validation checks.
 
-We ran Octane on SpiderMonkey (\#465d150b, a JIT compiling VM for JavaScript) and V8.
+We ran Octane on SpiderMonkey (\spidermonkeyversion, a JIT compiling VM for JavaScript) and V8.
 We replaced its complex runner (which reported timings with a non-monotonic
 microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's

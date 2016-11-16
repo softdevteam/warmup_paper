@@ -1003,16 +1003,15 @@ changes some of the details in the first half of the process
 execution, but the second half is unchanged. As this example shows, the
 cycles are not correlated with GC (of which there is none) or JIT compilation.}
 \label{fig:goodcomp}
-\vspace{-.2cm}
 \end{figure}
 
 \section{Startup Time}
 \label{sec:startup}
 
 The data presented thus far in the paper has all been collected after the VM has
-started executing the user program. The period between a VM being initially
+started executing the user program. The period between a VM being
 invoked and it executing the first line of the user program is the VM's \emph{startup} time,
-and is an important component in understanding a VM's real-world performance.
+and is an important part of a VM's real-world performance.
 
 A small modification to \krun enables us to measure startup. We prepend each VM
 execution command with a small C wrapper, which prints out wall-clock time
@@ -1046,9 +1045,7 @@ slowest VM (JRuby+Truffle) is around 1000x slower, to startup.
 While we have designed our experiment as carefully as possible, we do not
 pretend to have controlled every possibly confounding variable. It
 is inevitable that there are further confounding variables that
-we are not aware of, some of which may be controllable, although many may not.
-It is possible that confounding variables we are not aware of have
-coloured our results.
+we are not aware of, which may have coloured our results.
 
 We have tried to gain a partial understanding of the effects of different
 hardware on benchmarks by using machines with the same OS but
@@ -1194,16 +1191,16 @@ small parts of VMs are being benchmarked effectively: we are increasingly of the
 opinion that benchmarking quality and quantity are tightly related, and that VMs
 need more benchmarks.
 
-\textbf{Transparency:} Three of this paper's authors have contributed
-substantial code to the PyPy project; and one is an OpenBSD developer. The
-King's group has received several funding gifts from Oracle Labs.
-
 \textbf{Acknowledgements:} We are particularly grateful to Vincent Knight
-who helped put together the team that made this paper. Chris Seaton
-helped us integrate JRuby+Truffle into our experiment. We also thank (in alphabetical order) Dave Dice, Kenny
+who helped put together the team behind this paper. Chris Seaton
+helped integrate JRuby+Truffle into our experiment. We also thank (in alphabetical order) Dave Dice, Kenny
 Gross, Tim Harris, Dave Ungar, Mario Wolczko for comments and suggestions; any
 errors and infelicities are our own. This research was funded by the EPSRC
 Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
+
+\textbf{Transparency:} Three of this paper's authors have contributed
+to the PyPy project, and one is an OpenBSD developer. The
+King's group has received several funding gifts from Oracle Labs.
 
 \bibliographystyle{plain}
 \bibliography{bib}

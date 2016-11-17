@@ -753,9 +753,10 @@ which is \inconsistent(8\warmup, 2\flatc). Manual investigation of the individua
 may show that there is considerable difference between the warmup and flat
 process executions and that it is clearly `bad'. However, if the
 warmups are small in magnitude (and thus are not far from being
-classified as flat) some may consider it `good' whilst some will consider it `neutral',
-on the basis that they should all be consistent. To avoid such subjectivity,
-we consider inconsistent benchmarks to be either (obviously) `bad' or `neutral'.
+classified as flat) some may consider it `good'. To avoid such subjectivity, we
+consider an inconsistent benchmark to be: `bad', if any of its process executions
+is \nosteadystate or \slowdown; or `neutral' if its process executions are
+all \warmup or \flatc.
 
 \subsection{Timings}
 

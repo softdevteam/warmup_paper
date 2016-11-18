@@ -361,7 +361,7 @@ the performance of file routines in libraries and the kernel in measurements,
 which can become a significant part of the eventual measure.
 
 To avoid this, we modified the benchmarks to calculate a checksum
-during each in-process iteration. At the end of each in-process iteration
+during each in-process iteration. At the end of each in-process iteration \laurie{i think this should be `process execution'?}
 the checksum is compared to a predetermined value; if the comparison fails then
 the incorrect checksum is written to \texttt{stdout}. Using this idiom
 means that optimisers can't remove the main benchmark code even though

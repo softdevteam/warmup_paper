@@ -15,8 +15,8 @@ BENCHER6_DATA=bencher6_warmup_07.json.bz2
 # changepoint_example
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${EXPORT} --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher6:richards:Hotspot:default-java:2 ${BENCHER6_DATA}
 
-# new_warmup_no_migrate FIXME: Only want core cycles for processor 1 here.
-${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 ${BENCHER5_DATA}
+# new_warmup_no_migrate
+${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 1 --export-size 4,10 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 ${BENCHER5_DATA}
 
 # new_inconsistent
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${EXPORT} --wallclock-only -o examples/new_inconsistent.pdf -b bencher5:fasta:PyPy:default-python:6 -b bencher5:fasta:PyPy:default-python:7 ${BENCHER5_DATA}
@@ -33,8 +33,8 @@ ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_no_s
 # new_slowdown
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_slowdown.pdf -b bencher5:richards:Hotspot:default-java:1 ${BENCHER5_DATA}
 
-# new_cyclic  FIXME: Only want core counts for processor 2.
-${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 ${BENCHER5_DATA}
+# new_cyclic
+${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 2 --export-size 4,10 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 ${BENCHER5_DATA}
 
 
 #

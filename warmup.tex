@@ -363,9 +363,9 @@ which can become a significant part of the eventual measure.
 To avoid this, we modified the benchmarks to calculate a checksum
 during each in-process iteration. At the end of each in-process iteration
 the checksum is compared to a predetermined value; if the comparison fails then
-the incorrect checksum is written to \texttt{stdout}. Using this idiom
-lessens the chances that an optimiser can remove the main benchmark
-code even though no output is produced. We also use this mechanism to give some assurance
+the incorrect checksum is written to \texttt{stdout}. This idiom
+lowers the chances that an optimiser can remove the main benchmark
+code, even though no output is produced. We also use this mechanism to give some assurance
 that each language variant is performing the same work, as we use a single
 checksum value for each benchmark, irrespective of language.
 

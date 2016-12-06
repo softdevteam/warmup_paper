@@ -1,4 +1,3 @@
-PREBIB=./prebib
 PDFLATEX=pdflatex -synctex=1
 
 .SUFFIXES: .tex .ps .dia .pdf .svg
@@ -13,8 +12,6 @@ TABLES= dacapo.table octane.table startup.table \
 	bencher3.table bencher5.table bencher6.table
 
 CODE =
-
-BIBDB = bib.bib
 
 BASE_CLEANFILES =	aux bbl blg dvi log ps pdf toc out snm nav vrb \
 			vtc synctex.gz
@@ -34,12 +31,20 @@ clean-sigplan:
 	for i in ${BASE_CLEANFILES}; do rm -f ${LATEX_SIGPLAN}.$${i}; done
 	rm -f ${OTHER_CLEANFILES}
 
-${BIBDB}: ${PREBIB} softdev.bib
-	${PREBIB} softdev.bib > ${BIBDB}
+bib.bib: softdevbib/softdev.bib
+	softdevbib/bin/prebib softdevbib/softdev.bib > bib.bib
+
+softdevbib-update: softdevbib
+	cd softdevbib && git pull
+
+softdevbib/softdev.bib: softdevbib
+
+softdevbib:
+	git clone https://github.com/softdevteam/softdevbib.git
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
-		${DIAGRAMS} ${CODE} ${BIBDB} ${TABLES} summary_macros.tex
+		${DIAGRAMS} ${CODE} bib.bib ${TABLES} summary_macros.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex

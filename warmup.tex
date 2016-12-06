@@ -683,7 +683,7 @@ determine when the times taken by in-process iterations have become faster
 within a process execution. Put another way, we expect to see a number of in-process
 executions taking time $t$ to be followed by a number at time $t'$. In order to
 automatically determine when this occurs, we use statistical changepoint analysis
-(see~\cite{EckleyFearnheadKillick2011} for an introduction). Formally, a
+(see~\cite{eckley11analysis} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
 between two changepoints is a \emph{changepoint segment}. There are various
@@ -703,10 +703,10 @@ blob denotes a solitary outlier, which was discounted by the changepoint analysi
 \end{figure}
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
-\texttt{changepoint} package~\cite{R:changepoint}, passing $15\log{n}$ (where
+\texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
-algorithm~\citep{Killick2012}, which can detect arbitrary numbers of changepoints; it
+algorithm~\citep{killick12optimal}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
 of each segment. For the particular, somewhat noisy, data we obtain, the
 algorithm is slightly over-sensitive to changes in the variance, particularly

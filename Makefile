@@ -15,9 +15,9 @@ CODE =
 
 BASE_CLEANFILES =	aux bbl blg dvi log ps pdf toc out snm nav vrb \
 			vtc synctex.gz
-OTHER_CLEANFILES =	${BIBDB} texput.log
+OTHER_CLEANFILES =	bib.bib texput.log
 
-all: ${LATEX_SIGPLAN}.pdf
+all: ${LATEX_SIGPLAN}.pdf bib.bib
 
 .svg.pdf:
 	inkscape --export-pdf=$@ $<

@@ -758,9 +758,11 @@ consider an inconsistent benchmark to be: `bad', if any of its process execution
 is \nosteadystate or \slowdown; or `neutral' if its process executions are
 all \warmup or \flatc.
 
+
 \subsection{Timings}
 
-For benchmarks which reach a steady state (\flatc, \warmup, or \slowdown)
+For benchmarks which reach a steady state (i.e.~are \flatc, \warmup, or
+\slowdown; or are inconsistent but only contain \flatc, \warmup, or \slowdown)
 we report the number of iterations and the time in seconds to reach the steady state,
 as well as the performance of the steady state itself in seconds (defined as
 the final changepoint segment's mean). For the latter two measures, we report the median time

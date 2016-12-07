@@ -1,10 +1,25 @@
 
 {
-\begin{tabular}{lp{.5em}p{5pt}crrrp{.5em}p{5pt}crrr}
+\begin{tabular}{ll@{\hspace{0cm}}lp{5pt}r@{\hspace{0cm}}r@{\hspace{0cm}}r@{\hspace{0cm}}l@{\hspace{.3cm}}lp{5pt}r@{\hspace{0cm}}r@{\hspace{0cm}}r}
 \toprule
 \multicolumn{1}{c}{\multirow{2}{*}{}}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}\\&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)}&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)} \\
 \midrule
-C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\binarytrees}}&\multicolumn{1}{l}{\nosteadystate}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\nbody}}&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\flatc, $1$\slowdown)}\\[-3pt] 
+C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\binarytrees}}&\multicolumn{1}{l}{\nosteadystate}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\nbody}}&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\flatc, $1$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{1255} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{46.32} \\[-6pt]
+\scriptscriptstyle{\pm92.640}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.36854} \\[-6pt]
+\scriptscriptstyle{\pm0.000021}
+\end{array}
+$\\[-3pt] 
 Graal&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{12} \\[-6pt]
@@ -12,13 +27,13 @@ Graal&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{2.78} \\[-6pt]
-\scriptscriptstyle{\pm1.047}
+\scriptstyle{2.77} \\[-6pt]
+\scriptscriptstyle{\pm1.040}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.17329} \\[-6pt]
-\scriptscriptstyle{\pm0.001097}
+\scriptstyle{0.17328} \\[-6pt]
+\scriptscriptstyle{\pm0.001095}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -28,7 +43,7 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warm
 $&$
 \begin{array}{rr}
 \scriptstyle{0.75} \\[-6pt]
-\scriptscriptstyle{\pm0.036}
+\scriptscriptstyle{\pm0.035}
 \end{array}
 $&$
 \begin{array}{rr}
@@ -44,12 +59,12 @@ HHVM&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\w
 $&$
 \begin{array}{rr}
 \scriptstyle{151.71} \\[-6pt]
-\scriptscriptstyle{\pm24.233}
+\scriptscriptstyle{\pm24.228}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{2.06641} \\[-6pt]
-\scriptscriptstyle{\pm0.002518}
+\scriptstyle{2.06642} \\[-6pt]
+\scriptscriptstyle{\pm0.002485}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -59,12 +74,12 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warm
 $&$
 \begin{array}{rr}
 \scriptstyle{905.10} \\[-6pt]
-\scriptscriptstyle{\pm2.404}
+\scriptscriptstyle{\pm2.412}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{2.71942} \\[-6pt]
-\scriptscriptstyle{\pm0.000306}
+\scriptscriptstyle{\pm0.000305}
 \end{array}
 $\\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
@@ -75,12 +90,12 @@ HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}
 $&$
 \begin{array}{rr}
 \scriptstyle{1.12} \\[-6pt]
-\scriptscriptstyle{\pm1.296}
+\scriptscriptstyle{\pm1.323}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.17220} \\[-6pt]
-\scriptscriptstyle{\pm0.000601}
+\scriptscriptstyle{\pm0.000602}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -98,7 +113,22 @@ $&$
 \scriptscriptstyle{\pm0.000007}
 \end{array}
 $\\[-3pt] 
-JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\warmup, $3$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($7$\warmup, $3$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{312} \\[-6pt]
+\scriptscriptstyle{\pm345}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{658.11} \\[-6pt]
+\scriptscriptstyle{\pm730.278}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{2.10145} \\[-6pt]
+\scriptscriptstyle{\pm0.013160}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{68} \\[-6pt]
 \scriptscriptstyle{\pm0}
@@ -106,35 +136,75 @@ JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn
 $&$
 \begin{array}{rr}
 \scriptstyle{19.93} \\[-6pt]
-\scriptscriptstyle{\pm0.161}
+\scriptscriptstyle{\pm0.160}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.23255} \\[-6pt]
-\scriptscriptstyle{\pm0.000603}
+\scriptscriptstyle{\pm0.000612}
 \end{array}
 $\\[-3pt] 
-LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\flatc, $4$\slowdown, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($5$\flatc, $4$\slowdown, $1$\warmup)}&$
+\begin{array}{rr}
+\scriptstyle{211} \\[-6pt]
+\scriptscriptstyle{\pm365}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{155.49} \\[-6pt]
+\scriptscriptstyle{\pm282.973}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.48451} \\[-6pt]
+\scriptscriptstyle{\pm0.000662}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.26651} \\[-6pt]
 \scriptscriptstyle{\pm0.000046}
 \end{array}
 $\\[-3pt] 
-PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($6$\nosteadystate, $4$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($6$\nosteadystate, $4$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
 \begin{array}{rr}
-\scriptstyle{1.63684} \\[-6pt]
-\scriptscriptstyle{\pm0.000594}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+\begin{array}{rr}
+\scriptstyle{1.63683} \\[-6pt]
+\scriptscriptstyle{\pm0.000596}
 \end{array}
 $\\[-3pt] 
-V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&$
 \begin{array}{rr}
-\scriptstyle{366} \\[-6pt]
-\scriptscriptstyle{\pm12}
+\scriptstyle{53} \\[-6pt]
+\scriptscriptstyle{\pm104}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{92.20} \\[-6pt]
-\scriptscriptstyle{\pm3.156}
+\scriptstyle{23.45} \\[-6pt]
+\scriptscriptstyle{\pm46.002}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.43854} \\[-6pt]
+\scriptscriptstyle{\pm0.001492}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+\begin{array}{rr}
+\scriptstyle{366} \\[-6pt]
+\scriptscriptstyle{\pm13}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{92.23} \\[-6pt]
+\scriptscriptstyle{\pm3.194}
 \end{array}
 $&$
 \begin{array}{rr}
@@ -143,18 +213,43 @@ $&$
 \end{array}
 $\\ 
 \midrule
-C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\fannkuch}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\fannkuch}}&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.37885} \\[-6pt]
-\scriptscriptstyle{\pm0.000073}
+\scriptscriptstyle{\pm0.000071}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\richards}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\richards}}&\multicolumn{1}{l}{\flatc}&$
 \begin{array}{rr}
-\scriptstyle{0.68768} \\[-6pt]
-\scriptscriptstyle{\pm0.000340}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+\begin{array}{rr}
+\scriptstyle{0.68769} \\[-6pt]
+\scriptscriptstyle{\pm0.000342}
 \end{array}
 $\\[-3pt] 
-Graal&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\warmup, $2$\slowdown, $1$\nosteadystate)}\\[-3pt] 
+Graal&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{120} \\[-6pt]
+\scriptscriptstyle{\pm239}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{41.50} \\[-6pt]
+\scriptscriptstyle{\pm81.757}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.33425} \\[-6pt]
+\scriptscriptstyle{\pm0.001519}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($7$\warmup, $2$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 HHVM&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{9} \\[-6pt]
@@ -167,24 +262,24 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.32396} \\[-6pt]
-\scriptscriptstyle{\pm0.000415}
+\scriptstyle{1.32397} \\[-6pt]
+\scriptscriptstyle{\pm0.000422}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
-HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\nosteadystate, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
+HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\nosteadystate, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
 \begin{array}{rr}
 \scriptstyle{201} \\[-6pt]
 \scriptscriptstyle{\pm1}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{46.25} \\[-6pt]
-\scriptscriptstyle{\pm1.040}
+\scriptstyle{46.24} \\[-6pt]
+\scriptscriptstyle{\pm1.037}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.24374} \\[-6pt]
-\scriptscriptstyle{\pm0.003678}
+\scriptstyle{0.24369} \\[-6pt]
+\scriptscriptstyle{\pm0.003690}
 \end{array}
 $\\[-3pt] 
 JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
@@ -195,26 +290,66 @@ JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn
 $&$
 \begin{array}{rr}
 \scriptstyle{928.46} \\[-6pt]
-\scriptscriptstyle{\pm6.095}
+\scriptscriptstyle{\pm5.946}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.05923} \\[-6pt]
-\scriptscriptstyle{\pm0.009511}
+\scriptstyle{1.05919} \\[-6pt]
+\scriptscriptstyle{\pm0.009617}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\slowdown, $3$\warmup)}\\[-3pt] 
-LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($7$\slowdown, $3$\warmup)}&$
 \begin{array}{rr}
-\scriptstyle{0.50777} \\[-6pt]
-\scriptscriptstyle{\pm0.000048}
+\scriptstyle{394} \\[-6pt]
+\scriptscriptstyle{\pm302}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+$&$
 \begin{array}{rr}
-\scriptstyle{2.60442} \\[-6pt]
-\scriptscriptstyle{\pm0.000459}
+\scriptstyle{390.16} \\[-6pt]
+\scriptscriptstyle{\pm286.676}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.98174} \\[-6pt]
+\scriptscriptstyle{\pm0.008459}
 \end{array}
 $\\[-3pt] 
-PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\flatc, $2$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+\begin{array}{rr}
+\scriptstyle{0.50777} \\[-6pt]
+\scriptscriptstyle{\pm0.000047}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+\begin{array}{rr}
+\scriptstyle{2.60442} \\[-6pt]
+\scriptscriptstyle{\pm0.000445}
+\end{array}
+$\\[-3pt] 
+PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($8$\flatc, $2$\warmup)}&$
+\begin{array}{rr}
+\scriptstyle{1} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.30} \\[-6pt]
+\scriptscriptstyle{\pm0.447}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.46751} \\[-6pt]
+\scriptscriptstyle{\pm0.004467}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{3} \\[-6pt]
 \scriptscriptstyle{\pm4}
@@ -227,22 +362,62 @@ $&$
 $&$
 \begin{array}{rr}
 \scriptstyle{0.88289} \\[-6pt]
-\scriptscriptstyle{\pm0.000215}
+\scriptscriptstyle{\pm0.000219}
 \end{array}
 $\\[-3pt] 
-V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.27360} \\[-6pt]
 \scriptscriptstyle{\pm0.000030}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($5$\warmup, $5$\slowdown)}\\ 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($5$\warmup, $5$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{440} \\[-6pt]
+\scriptscriptstyle{\pm402}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{208.43} \\[-6pt]
+\scriptscriptstyle{\pm190.217}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.47047} \\[-6pt]
+\scriptscriptstyle{\pm0.006989}
+\end{array}
+$\\ 
 \midrule
-C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\fasta}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\fasta}}&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.06649} \\[-6pt]
 \scriptscriptstyle{\pm0.000040}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\spectralnorm}}&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\warmup, $3$\flatc)}\\[-3pt] 
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{10}{*}{\rotatebox[origin=c]{90}{\spectralnorm}}&\multicolumn{1}{l}{\inconsistent \scriptsize($7$\warmup, $3$\flatc)}&$
+\begin{array}{rr}
+\scriptstyle{1} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.38} \\[-6pt]
+\scriptscriptstyle{\pm0.238}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.47527} \\[-6pt]
+\scriptscriptstyle{\pm0.003642}
+\end{array}
+$\\[-3pt] 
 Graal&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{3} \\[-6pt]
@@ -251,12 +426,12 @@ Graal&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\
 $&$
 \begin{array}{rr}
 \scriptstyle{0.62} \\[-6pt]
-\scriptscriptstyle{\pm0.221}
+\scriptscriptstyle{\pm0.219}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.13348} \\[-6pt]
-\scriptscriptstyle{\pm0.000214}
+\scriptscriptstyle{\pm0.000216}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
 \begin{array}{rr}
@@ -265,45 +440,130 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slow
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{6.08} \\[-6pt]
-\scriptscriptstyle{\pm0.247}
+\scriptstyle{6.09} \\[-6pt]
+\scriptscriptstyle{\pm0.244}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.93004} \\[-6pt]
-\scriptscriptstyle{\pm0.000024}
+\scriptscriptstyle{\pm0.000023}
 \end{array}
 $\\[-3pt] 
-HHVM&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+HHVM&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{55} \\[-6pt]
+\scriptscriptstyle{\pm77}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{43.12} \\[-6pt]
+\scriptscriptstyle{\pm57.259}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.73026} \\[-6pt]
+\scriptscriptstyle{\pm0.000829}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
 \scriptstyle{355} \\[-6pt]
-\scriptscriptstyle{\pm402}
+\scriptscriptstyle{\pm392}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{596.22} \\[-6pt]
-\scriptscriptstyle{\pm579.975}
+\scriptscriptstyle{\pm580.848}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{1.48467} \\[-6pt]
-\scriptscriptstyle{\pm0.000291}
+\scriptscriptstyle{\pm0.000292}
 \end{array}
 $\\[-3pt] 
-HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($8$\warmup, $2$\flatc)}\\[-3pt] 
-JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($7$\slowdown, $3$\warmup)}\\[-3pt] 
-LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\warmup, $1$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{63} \\[-6pt]
+\scriptscriptstyle{\pm118}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{6.36} \\[-6pt]
+\scriptscriptstyle{\pm11.731}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.10103} \\[-6pt]
+\scriptscriptstyle{\pm0.000295}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($8$\warmup, $2$\flatc)}&$
+\begin{array}{rr}
+\scriptstyle{6} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{2.94} \\[-6pt]
+\scriptscriptstyle{\pm1.164}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.55295} \\[-6pt]
+\scriptscriptstyle{\pm0.000021}
+\end{array}
+$\\[-3pt] 
+JRuby+Truffle&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($7$\slowdown, $3$\warmup)}&$
+\begin{array}{rr}
+\scriptstyle{908} \\[-6pt]
+\scriptscriptstyle{\pm200}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{860.62} \\[-6pt]
+\scriptscriptstyle{\pm188.680}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.94391} \\[-6pt]
+\scriptscriptstyle{\pm0.004785}
+\end{array}
+$\\[-3pt] 
+LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.29931} \\[-6pt]
-\scriptscriptstyle{\pm0.000750}
+\scriptscriptstyle{\pm0.000744}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+\begin{array}{rr}
+\scriptstyle{0} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.42033} \\[-6pt]
 \scriptscriptstyle{\pm0.000026}
 \end{array}
 $\\[-3pt] 
-PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\nosteadystate}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{4}{l}{\inconsistent \scriptsize($9$\flatc, $1$\warmup)}\\[-3pt] 
+PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\nosteadystate}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\inconsistent \scriptsize($9$\flatc, $1$\warmup)}&$
+\begin{array}{rr}
+\scriptstyle{3} \\[-6pt]
+\scriptscriptstyle{\pm0}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.14} \\[-6pt]
+\scriptscriptstyle{\pm0.283}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.46663} \\[-6pt]
+\scriptscriptstyle{\pm0.000045}
+\end{array}
+$\\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\slowdown}&$
 \begin{array}{rr}
 \scriptstyle{523} \\[-6pt]
@@ -317,7 +577,7 @@ $&$
 $&$
 \begin{array}{rr}
 \scriptstyle{1.03610} \\[-6pt]
-\scriptscriptstyle{\pm0.000318}
+\scriptscriptstyle{\pm0.000315}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}

@@ -23,6 +23,6 @@ ${EXPERIMENT_REPO}/bin/table_classification_summaries_others -s 2 -o dacapo.tabl
 ${EXPERIMENT_REPO}/bin/table_startup_results -o startup.table ${STARTUP_DATA}
 
 # Generate bencherN.table files
-${EXPERIMENT_REPO}/bin/table_classification_summaries_main -s 2 -o bencher3.table ${BENCHER3_DATA}
-${EXPERIMENT_REPO}/bin/table_classification_summaries_main -s 2 -o bencher5.table ${BENCHER5_DATA}
-${EXPERIMENT_REPO}/bin/table_classification_summaries_main -s 2 -o bencher6.table ${BENCHER6_DATA}
+${EXPERIMENT_REPO}/bin/table_classification_summaries_main -o bencher3.table ${BENCHER3_DATA}
+${EXPERIMENT_REPO}/bin/table_classification_summaries_main -o bencher5.table ${BENCHER5_DATA}
+${EXPERIMENT_REPO}/bin/table_classification_summaries_main -o bencher6.table ${BENCHER6_DATA}

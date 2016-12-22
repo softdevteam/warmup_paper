@@ -8,8 +8,8 @@ EXPERIMENT_REPO=../warmup_experiment/
 BENCHER3_DATA=bencher3_warmup_07.json.bz2
 BENCHER5_DATA=bencher5_warmup_07.json.bz2
 BENCHER6_DATA=bencher6_warmup_07.json.bz2
-OCTANE_DATA=octane.v8.json.bz2 octane.spidermonkey.json.bz2
-DACAPO_DATA=dacapo.graal.json.bz2 dacapo.hotspot.json.bz2
+OCTANE_DATA="octane_v8.json.bz2 octane_spidermonkey.json.bz2"
+DACAPO_DATA="dacapo_graal.json.bz2 dacapo_hotspot.json.bz2"
 STARTUP_DATA=startup.json.bz2
 
 

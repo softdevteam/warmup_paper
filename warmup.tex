@@ -318,11 +318,11 @@ force a collection after each iteration).
 User programs that are deliberately non-deterministic programs are unlikely to
 warm-up in the traditional fashion.
 We therefore wish to guarantee that our benchmarks are,
-to the extent controllable by the user, deterministic: that they
-take the same path through the Control Flow Graph (CFG)
-on all process executions and in-process iterations.\footnote{Note that non-determinism
-beyond that controllable by the user (i.e.~non-determinism in low-level parts of
-the VM) is part of what we need to test for Hypothesis H1.}
+to the extent controllable by the user, deterministic, taking
+the same path through the Control Flow Graph (CFG)
+on all process executions and in-process iterations. We make no attempt to
+control non-determinism within the VM, which is part of what we need to test for
+Hypothesis H1.
 
 To check whether the benchmarks were deterministic at the user-level, we created
 versions with \texttt{print} statements at all possible points of CFG
@@ -424,7 +424,7 @@ than on physical cores alone.
 \label{krun}
 
 Many confounding variables occur shortly before, and during the running of,
-benchmarks. In order to control as many of these as possible, we wrote
+benchmarks~\cite{kalibera05precision}. In order to control as many of these as possible, we wrote
 \krun, a new benchmark runner. \krun itself is a `supervisor'
 which, given a configuration file specifying VMs, benchmarks (etc.) configures
 a Linux or OpenBSD system, runs benchmarks, and collects the results. Individual VMs and benchmarks

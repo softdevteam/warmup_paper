@@ -1079,21 +1079,21 @@ substantially impact performance. There is also the perennial problem as to the
 degree to which an implementation of a benchmark should respect other
 language's implementations or be idiomatic (the latter being likely to
 run faster). From our perspective, this possibility is somewhat less important,
-since we are more interested in the warmup patterns of reasonable programs,
+since we are interested in the warmup patterns of reasonable programs,
 whether they be the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
 this complaint could arguably be directed at the unmodified benchmarks too.
 
 Although we have minimised the number of system calls that our in-process
 iterations runners make, we cannot escape them entirely. For example,
-on both Linux and OpenBSD, \texttt{clock\_gettime()} (which we use to obtain
+on both Linux and OpenBSD \texttt{clock\_gettime()} (which we use to obtain
 monotonic wall-clock time) contains what is effectively a spin-lock,
 meaning that there is no guarantee that it returns within a fixed bound.
 %\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the
 %OpenBSD source code and \texttt{getrawmonotonic} in
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
-In practise, \texttt{clock\_gettime} returns far quicker than the granularity
-of any of our benchmarks, so this is a minor worry at most. \label{aperf/mperf error} The situation
+Fortunately, in practise, \texttt{clock\_gettime} returns far quicker than the granularity
+of any of our benchmarks. \label{aperf/mperf error} The situation
 on Linux is complicated by our reading of core cycle, APERF, and MPERF
 counters via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
@@ -1136,7 +1136,7 @@ In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have
 created a system that shows warmup effects that few people will ever see in
 practise. However, our judgement is that this is preferable to running on a
-noisy system that is likely to introduce substantial noise into our readings.
+system that is likely to introduce substantial noise into our readings.
 
 
 \section{Related work}
@@ -1146,7 +1146,7 @@ patterns. Whilst running benchmarks on HotSpot, Gil et
 al.~\cite{gil11microbenchmark} observed inconsistent process executions
 (e.g.~recursiveErgodic), and benchmarks that we could classify as no
 steady state (listBubbleSort) and slowdown (arrayBubbleSort). By running a
-larger number of (somewhat larger) benchmarks on a number of VMs, and executing
+greater number of (somewhat larger) benchmarks on a number of VMs, and executing
 them in a more tightly controlled execution environment, our results can be seen
 as significantly strengthening Gil et al.'s observations. Our work also adds an
 automated approach to identifying when warmup has occurred.
@@ -1168,7 +1168,7 @@ to have helped give the study of warmup a firmer base.
 
 Although we are fairly experienced in designing and implementing
 experiments, the experiment in this paper took far more time than we expected
---- about 2 full person years. In part this is because there is limited precedent for such detailed
+--- over 2 full person years. In part this is because there is limited precedent for such detailed
 experiments. Investigating possible confounding variables, understanding how to
 control them, and implementing the necessary checks, all took time. In many
 cases, we had to implement small programs or systems to understand a variable's
@@ -1180,24 +1180,24 @@ in terms of producing a reliable experiment. The large number of partly
 inter-locking combinations means that we estimate that untangling this will
 require 3--6 months of experimental running time.
 
-Our results have suggested to us some potentially useful advice for VM
+Our results suggest to us some tentative guidelines for VM
 developers and users. First, simply running benchmarks for a larger number of
-in-process iterations is a simple way of understanding a VM's long-term
+in-process iterations helps understanding of a VM's long-term
 performance stability. Second, as a community, we need to accept that a steady
 state of peak performance is not guaranteed to exist. Third, the significant
 differences in warmup time between VMs strongly suggest that VM benchmarking
 should always include warmup time. Fourth, we suspect that some of the odd
 results we have seen result from over-training VM heuristics on small sets of
-benchmarks. The approach taken by the machine-learning community may apply
+benchmarks. The machine-learning community's approach may apply
 equally well to VMs: using a training set to devise heuristics, and then
 benchmarking the resulting system(s) on a separate validation system. Fifth, we suspect
-that the general reliance on small suites of benchmarks means that only
+that a reliance on small suites of benchmarks means that only
 small parts of VMs are being benchmarked effectively: we are increasingly of the
 opinion that benchmarking quality and quantity are tightly related, and that VMs
 need more benchmarks.
 
 \textbf{Acknowledgements:} We are particularly grateful to Vincent Knight
-who helped put together the team behind this paper. Chris Seaton
+who helped put together this paper's team. Chris Seaton
 helped integrate JRuby+Truffle into our experiment. We also thank (in alphabetical order) Dave Dice, Kenny
 Gross, Tim Harris, Dave Ungar, Mario Wolczko for comments and suggestions; any
 errors and infelicities are our own. This research was funded by the EPSRC

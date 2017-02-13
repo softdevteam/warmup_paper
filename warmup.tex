@@ -139,15 +139,15 @@ Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thoug
 to execute programs in two phases: first the \emph{warmup} phase determines
 which parts of a program would most benefit from dynamic compilation and JIT
 compiles them into machine code; after
-compilation has occurred, the program is said to be at \emph{peak performance}.
+compilation has occurred, the program is said to be at a steady state of peak performance.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
-performance. In this paper we first run a number of small,
-deterministic benchmarks on a variety of well known VMs, before introducing
-a rigorous statistical model for determining when warmup has occurred.
-Across 3 benchmarking machines only \mintwo--\maxtwo\% of (VM, benchmark) pairs conform to
-the traditional view of warmup and none of the
-VMs consistently warms up.
+performance. We introduce a new model for determining when warmup has completed based
+on changepoint analysis. Using this, we show that even when run in the
+most controlled of circumstances, small, deterministic, widely studied
+microbenchmarks often fail to reach a steady state of peak performance on a
+variety of common VMs: across 3 benchmarking machines only \mintwo--\maxtwo\% of
+(VM, benchmark) pairs consistently reach a steady state of peak performance.
 \end{abstract}
 
 \section{Introduction}
@@ -159,60 +159,73 @@ machine code at run-time. Since it takes time to determine which parts of the
 program are hot, and then compile them, programs which are JIT compiled are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
-fast afterwards, when a steady state of \emph{peak performance} is said to have been reached
+fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached
 (see Figure~\ref{fig:trad} for a simplified view of this).
 This traditional view underlies most benchmarking of JIT compiled VMs, which
 usually require running benchmarks several times within a single VM process,
 discarding any timing data collected before warmup is complete, and
 reporting only peak performance figures.
 
-The fundamental aim of this paper is to test the following hypothesis, which captures a constrained
-notion of the traditional view of warmup:
+The fundamental aim of this paper is to test, in the most idealised of settings, the following hypothesis:
 \begin{description}
-  \item[\hypone] Small, deterministic programs exhibit traditional warmup behaviour.
+  \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
 \end{description}
-We present a carefully designed
-experiment where a number of simple benchmarks are run on seven
-VMs and GCC for a large number of \emph{in-process iterations} and repeated using fresh
-\emph{process executions} (i.e.~each process execution runs multiple in-process
-iterations). We also introduce the first automated approach to determining
-\emph{when} warmup has completed, based on statistical changepoint analysis.
+We deliberately chose widely studied microbenchmarks, and ran them in a heavily
+controlled environment, designed to minimise measurement noise. By doing so, we
+maximised the chances that our experiment would validate Hypothesis H1. Instead
+we encountered many benchmarks which slowdown, never hit a steady
+state, or which perform inconsistently across different process
+executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
+combination) of (VM, benchmark) pairs consistently reach a steady state of peak
+performance. Of the seven VMs we looked at, none consistently reaches a steady
+state of peak performance.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=.475\textwidth]{img/picturebook_warmup}
-\caption{The traditional view of warmup: a program starts slowly executing in
-an interpreter; once hot parts of the program are identified, they are
-translated by the JIT compiler to machine code; at this point warmup
-is said to have completed, and a steady state of peak performance reached.}
-\label{fig:trad}
-\end{figure}
+These results are significantly worse than reported in previous works, and
+suggest that much real-world VM benchmarking is likely to be partly or wholly
+misleading. This has real-world consequences as microbenchmarks similar to those
+in this paper are often used to determine the efficacy of VM optimisations:
+ineffective, and possibly deleterious, optimisations may have been included in
+VMs as a result.
 
-While our results show that some benchmarks on some VMs run as per the traditional
-view, many surprising cases exist: some benchmarks slowdown rather than
-warmup; some never hit a steady state; and some perform very differently over
-different process executions. Of the seven
-VMs we looked at, none consistently warms up.
 
-Our results clearly invalidate Hypothesis H1, showing that the traditional
-view of warmup is no longer valid (and, perhaps, that it may not have held in
-the past). This is of importance to both VM developers and users:
-much prior VM benchmarking is likely to be partly misleading: and it is
-likely to have allowed some ineffective, and perhaps some deleterious,
-optimisations to be included in production VMs.
+\subsection{Overview of the Methodology}
 
-\vspace{10pt}
+We present a carefully designed experiment where benchmarks are run for 2000
+\emph{in-process iterations} and repeated using 30 fresh \emph{process
+executions} (i.e.~each process execution runs multiple in-process iterations).
+The \krun tool we wrote controls a large number of confounding benchmarking
+variables, reducing the chances that external factors explain our results. For
+example, \krun reboots machines before each process execution, turns off network
+cards and stops userland daemons before benchmarking, and ensures that the
+machine's temperature is consistent before each process execution is run.
 
-\noindent In order to test Hypothesis H1, we first present a carefully designed
-experiment (Section~\ref{sec:methodology}). We then introduce a new
-statistical method for automatically classifying benchmarks' warmup style, and present steady-state
-in-process iteration times (when possible) based upon the classifications
-(Section~\ref{sec:stats}). After presenting the results from our
-main experiment (Section~\ref{sec:results}), we run a smaller experiment to understand whether JIT
-compilation and Garbage Collection (GC) are responsible for unusual warmup patterns
-(Section~\ref{sec:deepdive}). As a useful side bonus of our main experiment,
-we present data for VM \emph{startup} time: how long it takes until a VM can
-start executing any user code (Section~\ref{sec:startup}).
+Traditional VM benchmarking uses simple heuristics to guess when warmup
+has completed. \kalibera convincingly show the limitations of such approaches
+\cite{kalibera13rigorous}, suggesting instead a manual approach to determining
+if and when warmup has completed. While this is a significant improvement on
+previous heuristics, it is time-consuming and prone to error. We first show how
+changepoint analysis can be used to automate the classification of process
+executions, allowing us to reliably classify large numbers of process
+executions. We then present summary statistics which allow us to gain insight
+into the large amount of data our experiment produces.
+
+In order to try and understand our data, we take two VMs and separate out the
+effects of garbage collection and JIT compilation. This only explains part of
+the odd effects we see. Neither we, nor the several VM teams we have spoken to,
+have any easy explanations for the remaining data.
+
+
+\subsection{Summary}
+
+In summary, this paper's contributions are as follows:
+\begin{enumerate}
+    \item We show that, even in the most idealised setting, simple benchmarks
+often fail to warmup.
+    \item We present a methodology for automatically classifying VM benchmark
+data on a par with the most sophisticated manual approach.
+    \item We show that while some instances of off behaviour are explained by
+the `obvious' factors of garbage collection and JIT compilation, many are not.
+\end{enumerate}
 
 We present supporting material in the Appendix: we show that our
 statistical method can be applied to the DaCapo and Octane benchmark suites,

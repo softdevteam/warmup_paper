@@ -1,4 +1,6 @@
-\documentclass[preprint,numbers,10pt]{sigplanconf}
+\documentclass[acmlarge]{acmart}\settopmatter{printfolios=true}
+% Uncomment the line below to blind for reviewing (will rm acknowledgements):
+% \documentclass[acmlarge,review,anonymous]{acmart}\settopmatter{printfolios=true}
 
 \usepackage[utf8]{inputenc}
 % the following standard packages may be helpful, but are not required
@@ -114,17 +116,48 @@ $\begin{array}{rr}
 
 \SDShowCommentTags{default}  %final
 
+% \acmConference[PL'17]{ACM SIGPLAN Conference on Programming Languages}{January 01--03, 2017}{New York, NY, USA}
+% \acmYear{2017}
+% \acmISBN{978-x-xxxx-xxxx-x/YY/MM}
+% \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+% \startPage{1}
+% \setcopyright{none}  %% Use 'none' for review submission
+%\setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+%\setcopyright{rightsretained}
+%\copyrightyear{2017}  %% If different from \acmYear
+
+
+
 \begin{document}
 
 \title{Virtual Machine Warmup Blows Hot and Cold}
 
-\authorinfo{Edd Barrett}{King's College London}{\href{http://eddbarrett.co.uk/}{http://eddbarrett.co.uk/}}
-\authorinfo{Carl Friedrich Bolz}{King's College London}{\href{http://cfbolz.de/}{http://cfbolz.de/}}
-\authorinfo{Rebecca Killick}{Lancaster University}{\href{http://www.lancs.ac.uk/~killick/}{http://www.lancs.ac.uk/\~{}killick/}}
-\authorinfo{Sarah Mount}{King's College London}{\href{http://snim2.org/}{http://snim2.org/}}
-\authorinfo{Laurence Tratt}{King's College London}{\href{http://tratt.net/laurie}{http://tratt.net/laurie/}}
-
-\maketitle
+\author{Edd Barrett}
+\orcid{0000-0001-7644-0748}
+\affiliation{
+  \institution{King's College London}
+}
+\author{Carl Friedrich Bolz}
+\orcid{0000-0003-4562-1356}
+\affiliation{
+  \institution{King's College London}
+}
+\author{Rebecca Killick}
+\orcid{0000-0003-0583-3960}
+\affiliation{
+  \institution{Lancaster University}
+}
+\author{Sarah Mount}
+\orcid{0000-0001-7575-8420}
+\affiliation{
+  \institution{King's College London}
+}
+\author{Laurence Tratt}
+\orcid{0000-0002-5258-3805}
+\affiliation{
+  \institution{King's College London}
+}
 
 \FPeval{\bthreeresult}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
 \FPeval{\bfiveresult}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
@@ -149,6 +182,23 @@ microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs: across 3 benchmarking machines only \mintwo--\maxtwo\% of
 (VM, benchmark) pairs consistently reach a steady state of peak performance.
 \end{abstract}
+
+\keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
+
+%% 2012 ACM Computing Classification System (CSS) concepts
+%% Generate at 'http://dl.acm.org/ccs/ccs.cfm'.
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10011007.10010940.10011003.10011002</concept_id>
+<concept_desc>Software and its engineering~Software performance</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[300]{Software and its engineering~Software performance}
+\maketitle
 
 \section{Introduction}
 \label{sec:intro}
@@ -1209,18 +1259,21 @@ small parts of VMs are being benchmarked effectively: we are increasingly of the
 opinion that benchmarking quality and quantity are tightly related, and that VMs
 need more benchmarks.
 
-\textbf{Acknowledgements:} We are particularly grateful to Vincent Knight
+\begin{acks}
+We are particularly grateful to Vincent Knight
 who helped put together this paper's team. Chris Seaton
 helped integrate JRuby+Truffle into our experiment. We also thank (in alphabetical order) Dave Dice, Kenny
 Gross, Tim Harris, Dave Ungar, Mario Wolczko for comments and suggestions; any
 errors and infelicities are our own. This research was funded by the EPSRC
 Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
-
 \textbf{Transparency:} Three of this paper's authors have contributed
 to the PyPy project, and one is an OpenBSD developer. The
 King's group has received several funding gifts from Oracle Labs.
+\end{acks}
 
-\bibliographystyle{plain}
+
+\bibliographystyle{ACM-Reference-Format}
+%\citestyle{acmauthoryear}   %% For author/year citations
 \bibliography{bib}
 
 \clearpage

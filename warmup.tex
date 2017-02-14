@@ -215,7 +215,7 @@ This traditional view underlies most benchmarking of JIT compiled VMs, which
 usually require running benchmarks several times within a single VM process,
 discarding any timing data collected before warmup is complete, and
 reporting only peak performance figures.
-
+\sarah{fig:trad has gone!}
 The fundamental aim of this paper is to test, in the most idealised of settings, the following hypothesis:
 \begin{description}
   \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
@@ -294,16 +294,7 @@ in this paper, can be downloaded from:
 \section{Background}
 \label{sec:warmup}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=.475\textwidth]{img/picturebook_warmup}
-\caption{The traditional view of warmup: a program starts slowly executing in
-an interpreter; once hot parts of the program are identified, they are
-translated by the JIT compiler to machine code; at this point warmup
-is said to have completed, and a steady state of peak performance reached.}
-\label{fig:trad}
-\end{figure}
-
+\sarah{fig:trad has gone!}
 Figure~\ref{fig:trad} shows the traditional view of warmup.
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are

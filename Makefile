@@ -15,7 +15,7 @@ CODE =
 
 BASE_CLEANFILES =	aux bbl blg dvi log ps pdf toc out snm nav vrb \
 			vtc synctex.gz
-OTHER_CLEANFILES =	bib.bib texput.log
+OTHER_CLEANFILES =	bib.bib texput.log warmup_paper.pdf warmup_appendix.pdf
 
 all: ${LATEX_SIGPLAN}.pdf bib.bib
 

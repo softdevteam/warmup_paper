@@ -992,9 +992,10 @@ were low enough for us to classify them as `inactive', and we have thus elided t
 \vspace{-.4cm}
 \end{figure*}
 
-\begin{figure}[t]
+\begin{figure}[!tbp]
 \centering
-\includegraphics[width=.45\textwidth]{examples/new_miscomp.pdf}
+\begin{minipage}[b]{0.45\textwidth}
+\includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
 \caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
 turned on. Although these additional measures add overhead, in this
 case they make no observable difference to the main run-sequence graph. They
@@ -1003,6 +1004,13 @@ that may explain the drop in performance. Note that the
 regular GC spikes have only a small effect on the time of in-process
 iterations.}
 \label{fig:examples:slowdown1}
+\end{minipage}
+\hfill
+\begin{minipage}[b]{0.45\textwidth}
+\includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
+\caption{Cycles in wall-clock times and core-cycle counts.}
+\label{fig:examples:cycles}
+\end{minipage}
 \end{figure}
 
 Core-cycle plots help us understand how VMs use, and how the OS schedules,
@@ -1018,13 +1026,6 @@ in-process iterations whilst JIT compilation occurs.
 
 
 \subsection{Cyclic data}
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=.45\textwidth]{examples/new_cyclic.pdf}
-\caption{Cycles in wall-clock times and core-cycle counts.}
-\label{fig:examples:cycles}
-\end{figure}
 
 We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to

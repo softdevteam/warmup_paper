@@ -92,6 +92,36 @@
        0.9 0.0
        /%
 \end{sparkline}\xspace}
+\DeclareRobustCommand{\goodinconsistent}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.1 0.4
+       0.9 0.4
+       /%
+\spark 0.1 0.2
+       0.9 0.2
+       /%
+\spark 0.2 0.3
+       0.4 0.0
+       0.8 0.6
+       /%
+\end{sparkline}\xspace}
+\DeclareRobustCommand{\badinconsistent}{%
+\setlength{\sparklinethickness}{0.4pt}%
+\begin{sparkline}{1.5}
+\spark 0.1 0.4
+       0.9 0.4
+       /%
+\spark 0.1 0.2
+       0.9 0.2
+       /%
+\spark 0.3 0.6
+       0.7 0.0
+       /%
+\spark 0.3 0.0
+       0.7 0.6
+       /%
+\end{sparkline}\xspace}
 
 \input{outlier_summaries.tex}
 \input{summary_macros.tex}
@@ -772,55 +802,97 @@ $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
 algorithm~\citep{killick12optimal}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
-of each segment. For the particular, somewhat noisy, data we obtain, the
-algorithm is slightly over-sensitive to changes in the variance, particularly
-for very fast in-process iterations. Although we use a microsecond timer, our experience
-is that time deltas under 0.001s are at the mercy of the non-determinism
-inherent in a real machine and OS. We therefore merge consecutive sequences of segments (from
-left-to-right) whose confidence intervals (calculated using the inter-quartile
-range) overlap, and/or whose means are within 0.001s of each other.
-Figure~\ref{fig:changepoint} shows an example of a run-sequence plot with
-outliers, changepoints, and changepoint segments superimposed upon it.
+of each segment.
+
 
 
 \subsection{Classifications}
 
-Building atop changepoint analysis, we can then define useful classifications of
-time-series data from VM benchmarks.
+\begin{figure}[t]
+\begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
+classification algorithm for an individual process execution.}]
+BOUND_PROPORTION = 0.001 # Proportion (i.e. 0.1%)
+ABSOLUTE_DELTA   = 0.001 # Time in seconds
+STEADY_STATE_LEN = 500   # Number of in-process iterations to be considered a steady state
 
-First, we define classifications for individual process executions. A process
-execution with no changepoints is classified as
-\emph{flat} (\flatc). Since all our benchmarks run for 2000 in-process
-iterations we (somewhat arbitrarily) define that a process execution reaches a
-steady-state if the last 500 in-process iterations are part of a single
-changepoint segment. A process execution with a changepoint in its last
-500 in-process iterations is classified as \emph{no steady state}
-(\nosteadystate). A steady-state process execution whose final segment:
-is the fastest execution time of all segments is classified as \emph{warmup}
-(\warmup); is not the fastest execution time of all segments is classified as
-\emph{slowdown} (\slowdown).
+# Given a list of Segments -- each of which has "mean" and "end" attributes, the latter its absolute ending
+# position in the sequence of in-process iterations -- return a string classifying the run-sequence plot.
+def classify(rsp):
+  lower_bound = min(rsp[len(rsp) - 1].mean * (1 - BOUND_PROPORTION), rsp[len(rsp) - 1].mean - ABSOLUTE_DELTA)
+  upper_bound = max(rsp[len(rsp) - 1].mean * (1 + BOUND_PROPORTION), rsp[len(rsp) - 1].mean + ABSOLUTE_DELTA)
+  cls = "flat"
+  i = len(rsp) - 2
+  while i > -1:
+    cur_seg = rsp[i]
+    if cur_seg.mean >= lower_bound and cur_seg.mean <= upper_bound:
+      continue
+    elif cur_seg.end > len(rsp) - STEADY_STATE_LEN:
+      cls = "no steady state"
+      break
+    elif cur_seg.mean < lower_bound:
+      cls = "slowdown"
+      break
+    assert(cur_seg.mean > upper_bound)
+    cls = "warmup"
+    i -= 1
+  return cls
+\end{lstlisting}
+\vspace{-.75cm}
+\end{figure}
 
-Second, we define classifications for a (VM, benchmark) pair as follows:
+Building atop changepoint analysis, we can then define useful classifications
+for time-series data from VM benchmarks.
+
+Before we can do so, we must
+acknowledge the constraints that changepoint analysis works under: it has
+no way of knowing what constitutes the `noise floor' in our problem domain; nor can it
+guarantee to find identical means for very similar segments separated from
+one another. To understand the `noise floor' issue, it
+is helpful to take an extreme example. Consider a long sequence of in-process
+iterations all timed at 0.1001 seconds, followed by another long sequence timed
+at 0.1002 seconds. A changepoint will be detected in the transition between the
+two sequences, resulting in two changepoint segments. However, we know that in practise such a tiny absolute timing
+delta is as likely to be the result of non-determinism inherent in a real
+machine or OS as it is to be due to a benchmark or VM, and that it would be
+better to consider them as being equal. It is tempting to merge such segments
+together, but this fails to deal with separated segments. Consider a
+benchmark which, after changepoint analysis has three segments: the first with a
+mean of 1.0001 seconds, the second 0.2 seconds (perhaps whilst a JIT compiler is
+in action), the third 1.0002 seconds. From our perspective, the first and second
+segments are best considered as being equivalent, even though they are separated by a
+segment which is clearly different. Our classification algorithm solves these
+problems by allowing a tolerance when comparing two segments' means: we consider
+two segments $s_i$ and $s_j$ (where $j > i$) to be equivalent if $s_i$'s mean is
+within 0.1\% or 0.001s (whichever is greater) of $s_j$'s mean.
+
+With that in mind, we can define a simple classification algorithm for a process
+execution, based on the special nature of the final changepoint segment. Since all our benchmarks run
+for 2000 in-process iterations we (somewhat arbitrarily) define that a process
+execution reaches a steady-state if all segments which cover the last 500
+in-process iterations are considered equal to the final segment. If
+not, we classify the process execution as \emph{no steady state} (\nosteadystate).
+If a steady state is reached, we are then interested as to whether: all
+segments are considered equal, leading to a classification of \emph{flat} (\flatc);
+at least one segment is faster than the final segment leading to a classification
+of \emph{slowdown} (\slowdown). If a steady state benchmark is not flat or a
+slowdown, then by definition at least one segment must be slower than the final
+segment, leading to a classification of \emph{warmup} (\warmup). An executable
+version of the underlying algorithm is shown in Figure~\ref{lst:classification}.
+We consider benchmarks whose behaviour is either flat or warmup
+as `good' (flat benchmarks may be unobservably fast warmup), while
+benchmarks which are either slowdown or no steady state are `bad'.
+
+Based on this, we can then classify a (VM, benchmark) pair as follows:
 if its process executions all share the same classification (e.g.~warmup) then
 we classify the pair the same way (in this example, warmup); otherwise we classify the pair as
-\emph{inconsistent} (\inconsistent).
-
-Informally, we suggest that benchmarks whose behaviour is either flat or warmup
-are `good' (flat benchmarks may be unobservably fast warmup), while
-benchmarks which are either slowdown or no steady state are `bad'.
-Inconsistent benchmarks are sometimes easily judged through the classification
-of their process executions, which we report in brackets. A
-benchmark which is \inconsistent(6\slowdown, 4\nosteadystate) (i.e.~inconsistent,
-with 6 process executions classified as slowdown, 4 as no steady state) is clearly `bad'.
-However, there are some more subjective cases. For example, consider a benchmark
-which is \inconsistent(8\warmup, 2\flatc). Manual investigation of the individual process execution's data
-may show that there is considerable difference between the warmup and flat
-process executions and that it is clearly `bad'. However, if the
-warmups are small in magnitude (and thus are not far from being
-classified as flat) some may consider it `good'. To avoid such subjectivity, we
-consider an inconsistent benchmark to be: `bad', if any of its process executions
-is \nosteadystate or \slowdown; or `neutral' if its process executions are
-all \warmup or \flatc.
+\emph{inconsistent}. There are then two sub-categories of inconsistent
+benchmarks: `good' inconsistency (\goodinconsistent) is where all a (VM, benchmark) pair's process
+executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
+when one more process executions are no steady state or slowdown. Good inconsistency
+occurs because some benchmarks are on the edge of our ability to detect warmup
+vs.~flat execution; even minor measurement variation can cause a change between
+these two good classifications. Bad inconsistency is always more troubling: it
+means that, at least sometimes, users will experience bad performance.
 
 
 \subsection{Timings}

@@ -239,13 +239,12 @@ machine code at run-time. Since it takes time to determine which parts of the
 program are hot, and then compile them, programs which are JIT compiled are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
-fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached
-(see Figure~\ref{fig:trad} for a simplified view of this).
+fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached.
 This traditional view underlies most benchmarking of JIT compiled VMs, which
 usually require running benchmarks several times within a single VM process,
 discarding any timing data collected before warmup is complete, and
 reporting only peak performance figures.
-\sarah{fig:trad has gone!}
+
 The fundamental aim of this paper is to test, in the most idealised of settings, the following hypothesis:
 \begin{description}
   \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
@@ -260,10 +259,11 @@ combination) of (VM, benchmark) pairs consistently reach a steady state of peak
 performance. Of the seven VMs we looked at, none consistently reaches a steady
 state of peak performance.
 
-These results are significantly worse than reported in previous works, and
-suggest that much real-world VM benchmarking is likely to be partly or wholly
+These results are significantly worse than reported in previous works, and worse
+than expected by VM teams we have spoken to. They suggest
+that much real-world VM benchmarking is likely to be partly or wholly
 misleading. This has real-world consequences as microbenchmarks similar to those
-in this paper are often used to determine the efficacy of VM optimisations:
+in this paper are often used to gauge the efficacy of VM optimisations:
 ineffective, and possibly deleterious, optimisations may have been included in
 VMs as a result.
 
@@ -273,26 +273,33 @@ VMs as a result.
 We present a carefully designed experiment where benchmarks are run for 2000
 \emph{in-process iterations} and repeated using 30 fresh \emph{process
 executions} (i.e.~each process execution runs multiple in-process iterations).
-The \krun tool we wrote controls a large number of confounding benchmarking
-variables, reducing the chances that external factors explain our results. For
-example, \krun reboots machines before each process execution, turns off network
-cards and stops userland daemons before benchmarking, and ensures that the
+In order to reduce the influence of external factors, we wrote a new
+benchmarking tool \krun to control a large number of confounding variables.
+For example, \krun reboots machines before each process execution, turns off network
+cards and stops userland daemons, and ensures that the
 machine's temperature is consistent before each process execution is run.
+We run on different machines and operating systems, and are able to rule out
+this having a significant effect on the results we observe.
 
 Traditional VM benchmarking uses simple heuristics to guess when warmup
-has completed. \kalibera convincingly show the limitations of such approaches
+has completed (see e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations of such approaches
 \cite{kalibera13rigorous}, suggesting instead a manual approach to determining
-if and when warmup has completed. While this is a significant improvement on
-previous heuristics, it is time-consuming and prone to error. We first show how
-changepoint analysis can be used to automate the classification of process
-executions, allowing us to reliably classify large numbers of process
-executions. We then present summary statistics which allow us to gain insight
-into the large amount of data our experiment produces.
+if and when a steady state has completed. While this is a significant improvement on
+previous heuristics, it is time-consuming, prone to human inconsistency, and gives no
+indication as to whether the steady state is in fact a warmup or not. We
+introduce a new approach to analysing VM benchmarking data. We first show how
+changepoint analysis~\cite{eckley11analysis} can be used to automatically determine if and when
+a benchmark has hit a steady state. We then build on the changepoint analysis
+to introduce an additional classification
+to determine if the steady state is flat (no detectable change in performance
+over the benchmark), warmup, or slowdown (a decrease in performance over
+the benchmark). This allows us to process large numbers of benchmarks and
+present detailed summary statistics.
 
-In order to try and understand our data, we take two VMs and separate out the
-effects of garbage collection and JIT compilation. This only explains part of
-the odd effects we see. Neither we, nor the several VM teams we have spoken to,
-have any easy explanations for the remaining data.
+Finally, in an attempt to see if there are easy explanations for the odd
+effects we see, we take two VMs and separate out the
+effects of garbage collection and JIT compilation. While this explains
+some of the effects we see, it does not explain others.
 
 
 \subsection{Summary}
@@ -301,8 +308,11 @@ In summary, this paper's contributions are as follows:
 \begin{enumerate}
     \item We show that, even in the most idealised setting, simple benchmarks
 often fail to warmup.
-    \item We present a methodology for automatically classifying VM benchmark
-data on a par with the most sophisticated manual approach.
+    \item We present the first automated methodology for classifying VM
+benchmark data that accurately determines if and when a steady state has been
+reached.
+    \item We present the first classification of different classes of
+steady state behaviour (warmup, slowdown, flat).
     \item We show that while some instances of off behaviour are explained by
 the `obvious' factors of garbage collection and JIT compilation, many are not.
 \end{enumerate}
@@ -324,8 +334,6 @@ in this paper, can be downloaded from:
 \section{Background}
 \label{sec:warmup}
 
-\sarah{fig:trad has gone!}
-Figure~\ref{fig:trad} shows the traditional view of warmup.
 When a program begins running on a JIT compiled VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are dynamically compiled into machine code; and subsequent
@@ -341,31 +349,44 @@ While the length of the warmup period
 is dependent on the program and JIT compiler, all JIT compiling
 VMs assume this performance model holds true~\cite{kalibera13rigorous}.
 
-Benchmarking of JIT compiled VMs typically focusses on peak
-performance, partly due to an assumption that
-warmup is both fast and inconsequential to users.
+Benchmarking of JIT compiled VMs typically focusses on reporting
+steady state numbers, partly due to an assumption that
+warmup is both fast and inconsequential to users, partly that
+the steady state is also the same as peak performance.
 The methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
-The first $n$ in-process iterations (typically a small value such as 5)
+The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
-that period, whether or not it has actually done so.
+that period. Often $n$ is a fixed number (often around 5), with little or no confirmation
+that warmup has completed or not. Heuristics such as
+those presented by Georges et al.~\cite{georges07statistically} perform
+basic analysis of a process execution's data before determining
+a per-process execution value of $n$.
 
-A more sophisticated VM benchmarking methodology
-was developed by \kalibera~\cite{kalibera12quantifying,kalibera13rigorous}. After
-a specific VM / benchmark combination has been run for a small number of
-process executions, a human must determine at which in-process iteration warmup
-has occurred. A larger number of VM process executions are then
-run, and the previously determined cut-off point applied to each process's
-iterations. The \kalibera methodology observes that some benchmarks do not
-obviously warm up; and that others follow cyclic patterns post-warmup
-(e.g.~in-process iteration $m$ is slow, $m+1$ is fast, for all even values of $m > n$). In
-the latter case, the \kalibera methodology requires a consistent in-process iteration in
-the cycle (ideally the first post-warmup iteration) be picked for all process
-executions, and used for statistical analysis.
+\kalibera introduced what we believe to be the most sophisticated VM benchmarking methodology
+yet developed~\cite{kalibera12quantifying,kalibera13rigorous}.
+In essence, after a specific VM / benchmark combination has been run for a small number of
+process executions, a human must determine at which in-process iteration the
+steady state is reached. Significantly, \kalibera note that a steady
+state does not always exist, stating that no statistics can be produced in
+such cases. When a steady state does exist, a larger number of process executions are then
+run; the previously determined cut-off point is applied to each process's
+iterations; and detailed statistics produced. As part of this, \kalibera
+convincingly show the limitations of simpler heuristics such as
+Georges et al.'s.
 
-Despite its many advances, the \kalibera methodology's reliance on human
-expertise means that it cannot provide a fully repeatable way of determining
-when warmup has completed. Because of this
+The \kalibera methodology is a significant advance on previous work,
+and an important inspiration for our work. However, it has
+limitations, most deriving from the fact that it has to rely on a manual
+inspection of data to determine if and when a steady state is reached. Because
+this is time-consuming, it is only practical to applied it to a small number
+of initial process executions: the cut-off point that is determined from those
+is then applied to all future process executions, even though there is no
+guarantee that they all reach a steady state by that point. Beyond the
+special treatment of `cyclic' data (when in-process iterations behave in a
+predictable pattern), there is also no attempt to classify the steady state
+performance relative to what comes before it. These two points mean that,
+despite \kalibera's advances,
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
 

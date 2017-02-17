@@ -832,22 +832,23 @@ of each segment.
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
 classification algorithm for an individual process execution.}]
-BOUND_PROPORTION = 0.001 # Proportion (i.e. 0.1%)
-ABSOLUTE_DELTA   = 0.001 # Time in seconds
-STEADY_STATE_LEN = 500   # Number of in-process iterations to be considered a steady state
+BOUND_PROPORTION = 0.001 # Proportion (i.e. 0.1%) of final segment to be used as a bound
+ABSOLUTE_DELTA   = 0.001 # Time in seconds to be used as a bound
+STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a steady state
 
-# Given a list of Segments -- each of which has "mean" and "end" attributes, the latter its absolute ending
-# position in the sequence of in-process iterations -- return a string classifying the run-sequence plot.
-def classify(rsp):
-  lower_bound = min(rsp[len(rsp) - 1].mean * (1 - BOUND_PROPORTION), rsp[len(rsp) - 1].mean - ABSOLUTE_DELTA)
-  upper_bound = max(rsp[len(rsp) - 1].mean * (1 + BOUND_PROPORTION), rsp[len(rsp) - 1].mean + ABSOLUTE_DELTA)
+# Given an ordered list of Segments -- each of which has "mean" and "end" attributes, the latter its absolute
+# ending position in the sequence of in-process iterations -- return a string classifying the run sequence.
+def classify(seq):
+  lower_bound = min(seq[len(seq) - 1].mean * (1 - BOUND_PROPORTION), seq[len(seq) - 1].mean - ABSOLUTE_DELTA)
+  upper_bound = max(seq[len(seq) - 1].mean * (1 + BOUND_PROPORTION), seq[len(seq) - 1].mean + ABSOLUTE_DELTA)
   cls = "flat"
-  i = len(rsp) - 2
+  i = len(seq) - 2
   while i > -1:
-    cur_seg = rsp[i]
+    cur_seg = seq[i]
+    i -= 1
     if cur_seg.mean >= lower_bound and cur_seg.mean <= upper_bound:
       continue
-    elif cur_seg.end > len(rsp) - STEADY_STATE_LEN:
+    elif cur_seg.end > len(seq) - STEADY_STATE_LEN:
       cls = "no steady state"
       break
     elif cur_seg.mean < lower_bound:
@@ -855,23 +856,16 @@ def classify(rsp):
       break
     assert(cur_seg.mean > upper_bound)
     cls = "warmup"
-    i -= 1
   return cls
 \end{lstlisting}
 \vspace{-.75cm}
 \end{figure}
 
 \edd{isn't this an infinite loop if any segment we try is in bounds? i is only decremented in the warmup case. Let's use a for loop?}
-\edd{comments on the algorithm: All presentational nitpicks.}
-\edd{having seen the variable name ABSOLUTE\_DELTA, I wonder if BOUND\_PROPORTION should be RELATIVE\_DELTA?}
-\sarah{A proportion and a delta are different things...}
-\edd{``i.e. 0.1\%'' of what? Final seg, right?}
-\edd{``Number of in-process iterations to be considered a steady state'' but must be at the end of the pexec}
-\edd{``Given an *ordered* list of Segments *"rsp"*'' -- what does ``rsp'' stand for by the way? Why not something really obvious like ``segs''}
-\edd{``continue'' Add comment: ``segment is equivalent to the final segment''}
+\laurie{python's for loop 'range' thing isn't well understood, so i'd prefer not to use it. you're right that i made an infinite loop though -- }
 
 \sarah{The argument is a run sequence, but not really run-sequence plot, I would call the variable 'seq' rather than 'rsp'.}
-\sarah{If this is pseudocode you might as well use 'class' for the string variable.}
+\sarah{If this is pseudocode you might as well use 'class' for the string variable.}\laurie{i'd like it still to be executable in python}
 
 Building atop changepoint analysis, we can then define useful classifications
 for time-series data from VM benchmarks.
@@ -880,55 +874,52 @@ Before we can do so, we must
 acknowledge the constraints that changepoint analysis works under: it has
 no way of knowing what constitutes the `noise floor' in our problem domain; nor can it
 guarantee to find identical means for very similar segments separated from
-one another.
-\sarah{Confusing, maybe "separated by another, distinct, segment." or some such.}
+one another by a segment with a clearly distinct mean.
 To understand the `noise floor' issue, it
 is helpful to take an extreme example. Consider a long sequence of in-process
 iterations all timed at 0.1001 seconds, followed by another long sequence timed
 at 0.1002 seconds. A changepoint will be detected in the transition between the
-two sequences, resulting in two changepoint segments. However, we know that in practise such a tiny absolute timing
-\sarah{GB spelling is "in practice"}
+two sequences, resulting in two changepoint segments. However, we know that in practice such a tiny absolute timing
 delta is as likely to be the result of non-determinism inherent in a real
 machine or OS as it is to be due to a benchmark or VM, and that it would be
 better to consider them as being equal. It is tempting to merge such segments
 together, but this fails to deal with separated segments. Consider a
 benchmark which, after changepoint analysis has three segments: the first with a
 mean of 1.0001 seconds, the second 0.2 seconds (perhaps whilst a JIT compiler is
-in action), the third 1.0002 seconds. From our perspective, the first and second
+in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
-segment which is clearly different. Our classification algorithm solves these
-problems by allowing a tolerance when comparing two segments' means
-\edd{that solves one of the two problems. We should brielfy mention how we
-allow segments to be ``separated''}: we consider
-two segments $s_i$ and $s_j$ (where $j > i$) to be equivalent if $s_i$'s mean is
-within 0.1\% or 0.001s (whichever is greater) of $s_j$'s mean.
-\edd{something like: Note that $j - i$ may be $>1$ meaning that equivalent
-segments may be separated by other segments}.
+segment which is clearly different. We therefore allow a small tolerance
+when comparing a segment $s_i$ against the final segment $s_f$: if $s_i$'s
+mean is within 0.1\% or 0.001s (whichever is greater) of $s_j$'s mean,
+we consider the two equivalent. The reason for these two types of tolerance
+is as follows. In short running benchmarks, a small number of external events can add an absolute
+level of noise: in our experience readings often vary by a
+little under 0.001s. In long running benchmarks, any individual external
+event adds a relatively small relative amount of noise, but the cumulative
+effect of many external events can add up, which we account for by allowing
+a proportion of the running time.
 
 With that in mind, we can define a simple classification algorithm for a process
 execution, based on the special nature of the final changepoint segment. Since all our benchmarks run
 for 2000 in-process iterations we (somewhat arbitrarily) define that a process
 execution reaches a steady-state if all segments which cover the last 500
-in-process iterations are considered equal \edd{you used the word ``equivalent'' earlier, which I think captures our intention better than ``equal''} to the final segment. If
+in-process iterations are considered equivalent to the final segment. If
 not, we classify the process execution as \emph{no steady state} (\nosteadystate).
 If a steady state is reached, we are then interested as to whether: all
-segments are considered equal, leading to a classification of \emph{flat} (\flatc);
-\sarah{equivalent, not equal, again.}
+segments are considered equivalent, leading to a classification of \emph{flat} (\flatc);
 at least one segment is faster than the final segment leading to a classification
 of \emph{slowdown} (\slowdown). If a steady state benchmark is not flat or a
-slowdown, then by definition at least one segment must be slower than the final
-segment, leading to a classification of \emph{warmup} (\warmup)
-\edd{I don't think that is strong enough. The final set of equivalent segments
-must be the fastest. Just becuase one earlier segment is slower doesn't mean
-the final segments are the fastest, right?}. An executable \sarah{pseudocode?}
-version of the underlying algorithm is shown in Figure~\ref{lst:classification}.
+slowdown, then by definition the final segment must be faster than
+at least one preceding segment, leading to a classification of \emph{warmup} (\warmup).
+Figure~\ref{lst:classification} shows an implementation of this algorithm.
 We consider benchmarks whose behaviour is either flat or warmup
 as `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are either slowdown or no steady state are `bad'.
 
 Based on this, we can then classify a (VM, benchmark)
 \edd{Let's use tuple syntax, as it's hard to differentiate tuples from
-bracketted prose. E.g. $\langle$VM, benchmark$\rangle$} pair as follows:
+bracketted prose. E.g. $\langle$VM, benchmark$\rangle$}\laurie{be my guest -- but note you'll need
+to update the entire paper!} pair as follows:
 if its process executions all share the same classification (e.g.~warmup) then
 we classify the pair the same way (in this example, warmup); otherwise we classify the pair as
 \emph{inconsistent}. There are then two sub-categories of inconsistent
@@ -938,8 +929,7 @@ when one more process executions are no steady state or slowdown. Good inconsist
 occurs because some benchmarks are on the edge of our ability to detect warmup
 vs.~flat execution; even minor measurement variation can cause a change between
 these two good classifications. Bad inconsistency is always more troubling: it
-means that, at least sometimes, users will experience bad performance \edd{s/performance/warmup behaviour/?}.
-\sarah{In the PDF it is difficult to see the tick in the good inconsistent symbol, maybe just use the old inconsistent symbol for good, and the cross for bad?}
+means that, at least sometimes, users will experience poor performance.
 
 \subsection{Timings}
 

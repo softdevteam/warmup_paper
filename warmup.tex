@@ -861,6 +861,15 @@ def classify(rsp):
 \vspace{-.75cm}
 \end{figure}
 
+\edd{isn't this an infinite loop if any segment we try is in bounds? i is only decremented in the warmup case. Let's use a for loop?}
+\edd{comments on the algorithm: All presentational nitpicks.}
+\edd{having seen the variable name ABSOLUTE\_DELTA, I wonder if BOUND\_PROPORTION should be RELATIVE\_DELTA?}
+\edd{``i.e. 0.1\%'' of what? Final seg, right?}
+\edd{``Number of in-process iterations to be considered a steady state'' but must be at the end of the pexec}
+\edd{``Given an *ordered* list of Segments *"rsp"*'' -- what does ``rsp'' stand for by the way? Why not something really obvious like ``segs''}
+\edd{``continue'' Add comment: ``segment is equivalent to the final segment''}
+
+
 Building atop changepoint analysis, we can then define useful classifications
 for time-series data from VM benchmarks.
 

@@ -880,11 +880,14 @@ Before we can do so, we must
 acknowledge the constraints that changepoint analysis works under: it has
 no way of knowing what constitutes the `noise floor' in our problem domain; nor can it
 guarantee to find identical means for very similar segments separated from
-one another. To understand the `noise floor' issue, it
+one another.
+\sarah{Confusing, maybe "separated by another, distinct, segment." or some such.}
+To understand the `noise floor' issue, it
 is helpful to take an extreme example. Consider a long sequence of in-process
 iterations all timed at 0.1001 seconds, followed by another long sequence timed
 at 0.1002 seconds. A changepoint will be detected in the transition between the
 two sequences, resulting in two changepoint segments. However, we know that in practise such a tiny absolute timing
+\sarah{GB spelling is "in practice"}
 delta is as likely to be the result of non-determinism inherent in a real
 machine or OS as it is to be due to a benchmark or VM, and that it would be
 better to consider them as being equal. It is tempting to merge such segments
@@ -910,13 +913,14 @@ in-process iterations are considered equal \edd{you used the word ``equivalent''
 not, we classify the process execution as \emph{no steady state} (\nosteadystate).
 If a steady state is reached, we are then interested as to whether: all
 segments are considered equal, leading to a classification of \emph{flat} (\flatc);
+\sarah{equivalent, not equal, again.}
 at least one segment is faster than the final segment leading to a classification
 of \emph{slowdown} (\slowdown). If a steady state benchmark is not flat or a
 slowdown, then by definition at least one segment must be slower than the final
 segment, leading to a classification of \emph{warmup} (\warmup)
 \edd{I don't think that is strong enough. The final set of equivalent segments
 must be the fastest. Just becuase one earlier segment is slower doesn't mean
-the final segments are the fastest, right?}. An executable
+the final segments are the fastest, right?}. An executable \sarah{pseudocode?}
 version of the underlying algorithm is shown in Figure~\ref{lst:classification}.
 We consider benchmarks whose behaviour is either flat or warmup
 as `good' (flat benchmarks may be unobservably fast warmup), while

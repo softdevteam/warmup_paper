@@ -864,11 +864,14 @@ def classify(rsp):
 \edd{isn't this an infinite loop if any segment we try is in bounds? i is only decremented in the warmup case. Let's use a for loop?}
 \edd{comments on the algorithm: All presentational nitpicks.}
 \edd{having seen the variable name ABSOLUTE\_DELTA, I wonder if BOUND\_PROPORTION should be RELATIVE\_DELTA?}
+\sarah{A proportion and a delta are different things...}
 \edd{``i.e. 0.1\%'' of what? Final seg, right?}
 \edd{``Number of in-process iterations to be considered a steady state'' but must be at the end of the pexec}
 \edd{``Given an *ordered* list of Segments *"rsp"*'' -- what does ``rsp'' stand for by the way? Why not something really obvious like ``segs''}
 \edd{``continue'' Add comment: ``segment is equivalent to the final segment''}
 
+\sarah{The argument is a run sequence, but not really run-sequence plot, I would call the variable 'seq' rather than 'rsp'.}
+\sarah{If this is pseudocode you might as well use 'class' for the string variable.}
 
 Building atop changepoint analysis, we can then define useful classifications
 for time-series data from VM benchmarks.
@@ -932,7 +935,7 @@ occurs because some benchmarks are on the edge of our ability to detect warmup
 vs.~flat execution; even minor measurement variation can cause a change between
 these two good classifications. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience bad performance \edd{s/performance/warmup behaviour/?}.
-
+\sarah{In the PDF it is difficult to see the tick in the good inconsistent symbol, maybe just use the old inconsistent symbol for good, and the cross for bad?}
 
 \subsection{Timings}
 

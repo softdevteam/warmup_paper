@@ -95,31 +95,29 @@
 \DeclareRobustCommand{\goodinconsistent}{%
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
+\spark 0.1 0.8
+       0.5 0.8
+       0.5 0.0
+       0.9 0.0
+       /%
 \spark 0.1 0.4
        0.9 0.4
-       /%
-\spark 0.1 0.2
-       0.9 0.2
-       /%
-\spark 0.2 0.3
-       0.4 0.0
-       0.8 0.6
        /%
 \end{sparkline}\xspace}
 \DeclareRobustCommand{\badinconsistent}{%
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
-\spark 0.1 0.4
-       0.9 0.4
+\spark 0.1 0.25
+       0.26 0.55
+       0.42 0.25
+       0.58 0.55
+       0.74 0.25
+       0.90 0.55
        /%
-\spark 0.1 0.2
-       0.9 0.2
-       /%
-\spark 0.3 0.6
-       0.7 0.0
-       /%
-\spark 0.3 0.0
-       0.7 0.6
+\spark 0.1 0.0
+       0.5 0.0
+       0.5 0.8
+       0.9 0.8
        /%
 \end{sparkline}\xspace}
 
@@ -925,7 +923,7 @@ we classify the pair the same way (in this example, warmup); otherwise we classi
 \emph{inconsistent}. There are then two sub-categories of inconsistent
 benchmarks: `good' inconsistency (\goodinconsistent) is where all a (VM, benchmark) pair's process
 executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
-when one more process executions are no steady state or slowdown. Good inconsistency
+when one or more process executions are no steady state or slowdown. Good inconsistency
 occurs because some benchmarks are on the edge of our ability to detect warmup
 vs.~flat execution; even minor measurement variation can cause a change between
 these two good classifications. Bad inconsistency is always more troubling: it

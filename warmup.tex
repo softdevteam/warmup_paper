@@ -42,6 +42,8 @@
 \newcommand{\bencherfive}{Linux$_\mathrm{4790}$\xspace}
 \newcommand{\benchersix}{OpenBSD$_\mathrm{4790}$\xspace}
 \newcommand{\bencherseven}{Linux$_\mathrm{E3-1240v5}$\xspace}
+\newcommand{\vmbpair}{$\langle$VM, benchmark$\rangle$\xspace}
+\newcommand{\mvmbtrip}{$\langle$machine, VM, benchmark$\rangle$\xspace}
 
 \DeclareRobustCommand{\flatc}{%
 \setlength{\sparklinethickness}{0.4pt}%
@@ -205,7 +207,7 @@ on changepoint analysis. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs: across 3 benchmarking machines only \mintwo--\maxtwo\% of
-(VM, benchmark) pairs consistently reach a steady state of peak performance.
+\vmbpair pairs consistently reach a steady state of peak performance.
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -250,7 +252,7 @@ maximised the chances that our experiment would validate Hypothesis H1. Instead
 we encountered many benchmarks which slowdown, never hit a steady
 state, or which perform inconsistently across different process
 executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
-combination) of (VM, benchmark) pairs consistently reach a steady state of peak
+combination) of \vmbpair pairs consistently reach a steady state of peak
 performance. Of the seven VMs we studied, none consistently reached a steady
 state of peak performance.
 
@@ -607,8 +609,8 @@ bias~\cite{mytkowicz09surprising}. The diversity of VMs and platforms
 in our setup makes it impossible to set a unified environment size across all VMs and
 benchmarks. However, the \texttt{krun} user does not
 vary its environment (we recorded the environment seen by each process
-execution and verified their size), and we designed the experiment such that, for a particular (machine, VM,
-benchmark) triple the additional environment used to configure the VM is of constant
+execution and verified their size), and we designed the experiment such that, for a particular \mvmbtrip
+triple the additional environment used to configure the VM is of constant
 size.
 
 
@@ -915,14 +917,12 @@ We consider benchmarks whose behaviour is either flat or warmup
 as `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are either slowdown or no steady state are `bad'.
 
-Based on this, we can then classify a (VM, benchmark)
-\edd{Let's use tuple syntax, as it's hard to differentiate tuples from
-bracketted prose. E.g. $\langle$VM, benchmark$\rangle$}\laurie{be my guest -- but note you'll need
-to update the entire paper!} pair as follows:
+Based on this, we can then classify a \vmbpair
+pair as follows:
 if its process executions all share the same classification (e.g.~warmup) then
 we classify the pair the same way (in this example, warmup); otherwise we classify the pair as
 \emph{inconsistent}. There are then two sub-categories of inconsistent
-benchmarks: `good' inconsistency (\goodinconsistent) is where all a (VM, benchmark) pair's process
+benchmarks: `good' inconsistency (\goodinconsistent) is where all a \vmbpair pair's process
 executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
 when one or more process executions are no steady state or slowdown. Good inconsistency
 occurs because some benchmarks are on the edge of our ability to detect warmup
@@ -950,7 +950,7 @@ with 10000 iterations, sampling with replacement).
 \toprule
 Class.         & \bencherthree & \bencherfive & \benchersix \\
 \midrule
-               & \multicolumn{3}{c}{(VM, benchmark) pairs} \\
+               & \multicolumn{3}{c}{\vmbpair pairs} \\
 \flatc         & \bencherthreevmbenchpairsflatpercentage\% & \bencherfivevmbenchpairsflatpercentage\% & \benchersixvmbenchpairsflatpercentage\% \\
 \warmup        & \bencherthreevmbenchpairswarmuppercentage\% & \bencherfivevmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% \\
 \slowdown      & \bencherthreevmbenchpairsslowdownpercentage\% & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% \\
@@ -994,11 +994,11 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
 Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
-iterations. Table~\ref{tab:summarystats} summarises the (VM, benchmark) pairs
+iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherthree
 as a representative example,
 \FPeval{\result}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
-\result\% of (VM, benchmark) pairs and
+\result\% of \vmbpair pairs and
 \FPeval{\result}{round(\bencherthreeflatpercentage+\bencherthreewarmuppercentage,1)}%
 \result\% of process executions have `good' warmup (\flatc, \warmup) (for comparison, \bencherfive
 is
@@ -1009,14 +1009,14 @@ is
 \FPeval{\result}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
 \result\% and
 \FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
-\result\% respectively, though the latter runs fewer benchmarks). Fewer (VM, benchmark) pairs than process executions have `good'
-warmup because some inconsistent (VM, benchmark) pairs have some `good' warmup
+\result\% respectively, though the latter runs fewer benchmarks). Fewer \vmbpair pairs than process executions have `good'
+warmup because some inconsistent \vmbpair pairs have some `good' warmup
 process executions. On \bencherthree
-\bencherthreevmbenchpairsslowdownpercentage\% of (VM, benchmark) pairs slowdown
+\bencherthreevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
 and \bencherthreevmbenchpairsinconsistentpercentage\% are inconsistent
 (with over two thirds of those being obviously `bad'); \bencherfive and
 \benchersix are broadly similar. Taking \bencherthree as an example,
-one third of its (VM, benchmark) pairs are `bad', clearly invalidating
+one third of its \vmbpair pairs are `bad', clearly invalidating
 Hypothesis H1.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherthree
@@ -1085,7 +1085,7 @@ were low enough for us to classify them as `inactive', and we have thus elided t
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=.8\textwidth]{examples/new_inconsistent.pdf}
-\caption{An example of inconsistent process executions for the same (machine, VM, benchmark) triple.}
+\caption{An example of inconsistent process executions for the same \mvmbtrip triple.}
 \label{fig:examples:inconsistent}
 \vspace{-.4cm}
 \end{figure*}
@@ -1130,7 +1130,7 @@ would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process
 execution from each benchmark run on \bencherthree, removed the first 1500
 in-process iterations, and generated an autocorrelation plot for the remainder
-(in similar fashion to \kalibera). 4 (VM, benchmark) pairs showed what we have come to
+(in similar fashion to \kalibera). 4 \vmbpair pairs showed what we have come to
 call `fully cyclic' behaviour, where all in-process iterations repeat in a
 predictable pattern; 8 showed `partially cyclic' behaviour, where
 most iterations are noise around a mean, but every $n$ iterations there is a
@@ -1141,7 +1141,7 @@ Figure~\ref{fig:examples:cycles}), our automated analysis handles the situation
 appropriately (classifying Figure~\ref{fig:examples:cycles} as no steady state).
 However, changepoint analysis cannot currently identify small cycle periods in
 fully cyclic data. Since this only happens for 2
-of 47 (VM, benchmark) pairs, both of which have a small absolute difference between the
+of 47 \vmbpair pairs, both of which have a small absolute difference between the
 cycle's elements, we consider this a minor worry.
 
 
@@ -1446,11 +1446,11 @@ Table~\ref{tab:dacapo} shows the full DaCapo results. Graal and HotSpot both
 perform similarly. The luindex benchmark is consistently a slowdown on Graal,
 and mostly a slowdown on HotSpot. Jython is notably inconsistent on both VMs. In
 summary, even on this most carefully designed of benchmark suites, only 70\%
-of (VM, benchmark) pairs have `good' warmup.
+of \vmbpair pairs have `good' warmup.
 
 Table~\ref{tab:octane} shows the full Octane results. These are notably less
 consistent than the DaCapo results, with SpiderMonkey being somewhat less
-consistent than V8. In summary, only 45.8\% of (VM, benchmark) pairs have `good'
+consistent than V8. In summary, only 45.8\% of \vmbpair pairs have `good'
 warmup.
 
 As these results show, our automated statistical method produces satisfying

@@ -264,31 +264,35 @@ deleterious.
 
 
 \subsection{Overview of the Methodology}
+\edd{not sure it's worth using subsections in the intro}
 
 We present a carefully designed experiment where benchmarks are run for 2000
 \emph{in-process iterations} and repeated using 30 fresh \emph{process
 executions} (i.e.~each process execution runs multiple in-process iterations).
 In order to reduce the influence of external factors, we wrote a new
-benchmarking tool \krun to control a large number of confounding variables.
+benchmarking tool, \krun, to control a large number of confounding variables.
 For example, \krun reboots machines before each process execution, turns off network
 cards and stops userland daemons, and ensures that the
 machine's temperature is consistent before each process execution is run.
 We run on different machines and operating systems, and are able to rule out
 this having a significant effect on the results we observe.
 
+\edd{the flow between this para and the previous is quite abrupt.}
 Traditional VM benchmarking uses simple heuristics to guess when warmup
 has completed (see e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations of such approaches
 \cite{kalibera13rigorous}, suggesting instead a manual approach to determining
 if and when a steady state has completed. While this is a significant improvement on
 previous heuristics, it is time-consuming, prone to human inconsistency, and gives no
-indication as to whether the steady state is in fact a warmup or not. We
+indication as to whether the steady state is indicative warmup or not
+(regardless of whether the in-process iterations of the steady state are the
+fastest). We
 introduce a new approach to analysing VM benchmarking data. We first show how
 changepoint analysis~\cite{eckley11analysis} can be used to automatically determine if and when
 a benchmark has hit a steady state. We then build on the changepoint analysis
 to introduce an additional classification
 to determine if the steady state is flat (no detectable change in performance
 over the benchmark), warmup, or slowdown (a decrease in performance over
-the benchmark). This allows us to process large numbers of benchmarks and
+the benchmark). This allows us to process our large data-set and
 present detailed summary statistics.
 
 Finally, in an attempt to see if there are easy explanations for the odd
@@ -301,14 +305,14 @@ some of the effects we see, it does not explain others.
 
 In summary, this paper's contributions are as follows:
 \begin{enumerate}
-    \item We show that, even in the most idealised setting, simple benchmarks
+    \item We show that, even in the most idealised setting\edd{too strong? Ideally, we would have used a system without p-states, and we would have been able to pin properly, ...}, simple benchmarks
 often fail to warmup.
     \item We present the first automated methodology for classifying VM
 benchmark data that accurately determines if and when a steady state has been
 reached.
-    \item We present the first classification of different classes of
+    \item We present the first analysis to identify different classes of
 steady state behaviour (warmup, slowdown, flat).
-    \item We show that while some instances of off behaviour are explained by
+    \item We show that, while some instances of ``odd'' behaviour are explained by
 the `obvious' factors of garbage collection and JIT compilation, many are not.
 \end{enumerate}
 

@@ -235,9 +235,9 @@ program are hot, and then compile them, programs which are JIT compiled are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached.
-This traditional view underlies most benchmarking of JIT compiled VMs, which
-usually require running benchmarks several times within a single VM process,
-discarding any timing data collected before warmup is complete, and
+This traditional view underlies most benchmarking of JIT compiled VMs.
+Usually benchmarks are run many times within a single VM process, and
+timing data collected before warmup is complete is discarded, therefore
 reporting only peak performance figures.
 
 The fundamental aim of this paper is to test, in the most idealised of settings, the following hypothesis:
@@ -251,16 +251,16 @@ we encountered many benchmarks which slowdown, never hit a steady
 state, or which perform inconsistently across different process
 executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
 combination) of (VM, benchmark) pairs consistently reach a steady state of peak
-performance. Of the seven VMs we looked at, none consistently reaches a steady
+performance. Of the seven VMs we studied, none consistently reached a steady
 state of peak performance.
 
 These results are significantly worse than reported in previous works, and worse
-than expected by VM teams we have spoken to. They suggest
+than expected by VM teams we have spoken to\edd{Although true, too anecdotal?}. Our results suggest
 that much real-world VM benchmarking is likely to be partly or wholly
-misleading. This has real-world consequences as microbenchmarks similar to those
-in this paper are often used to gauge the efficacy of VM optimisations:
-ineffective, and possibly deleterious, optimisations may have been included in
-VMs as a result.
+misleading. This has real-world consequences, as microbenchmarks similar to those
+in this paper are often used to gauge the efficacy of VM optimisations. In
+light of our findings, such optimisations may ineffective and possibly
+deleterious.
 
 
 \subsection{Overview of the Methodology}

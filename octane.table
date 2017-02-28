@@ -4,46 +4,41 @@
 \toprule
 \multicolumn{1}{c}{\multirow{2}{*}{}}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}\\&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)}&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)} \\
 \midrule
-Boyer&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{17}{*}{\rotatebox[origin=c]{90}{Spidermonkey}}&\multicolumn{1}{l}{\flatc}&$
+Boyer&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{17}{*}{\rotatebox[origin=c]{90}{Spidermonkey}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{0} \\[-6pt]
-\scriptscriptstyle{\pm0}
-\end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
-\begin{array}{rr}
-\scriptstyle{1.72407} \\[-6pt]
-\scriptscriptstyle{\pm0.001510}
+\scriptstyle{1.72406} \\[-6pt]
+\scriptscriptstyle{\pm0.001509}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{17}{*}{\rotatebox[origin=c]{90}{V8}}&\multicolumn{1}{l}{\goodinconsistent \scriptsize($9$\warmup, $1$\flatc)}&$
 \begin{array}{rr}
 \scriptstyle{6} \\[-6pt]
-\scriptscriptstyle{\pm6}
+\scriptscriptstyle{\pm5}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{5.29} \\[-6pt]
-\scriptscriptstyle{\pm5.433}
+\scriptstyle{5.48} \\[-6pt]
+\scriptscriptstyle{\pm5.430}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.05001} \\[-6pt]
-\scriptscriptstyle{\pm0.005009}
+\scriptstyle{1.04995} \\[-6pt]
+\scriptscriptstyle{\pm0.005047}
 \end{array}
 $\\[-3pt] 
 Decrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($5$\flatc, $3$\slowdown, $2$\warmup)}&$
 \begin{array}{rr}
-\scriptstyle{373} \\[-6pt]
-\scriptscriptstyle{\pm468}
+\scriptstyle{363} \\[-6pt]
+\scriptscriptstyle{\pm463}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{276.77} \\[-6pt]
-\scriptscriptstyle{\pm341.394}
+\scriptstyle{267.43} \\[-6pt]
+\scriptscriptstyle{\pm338.338}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.73904} \\[-6pt]
-\scriptscriptstyle{\pm0.001940}
+\scriptstyle{0.73905} \\[-6pt]
+\scriptscriptstyle{\pm0.001954}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -52,13 +47,13 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warm
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{4.98} \\[-6pt]
-\scriptscriptstyle{\pm1.162}
+\scriptstyle{4.97} \\[-6pt]
+\scriptscriptstyle{\pm1.189}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.78870} \\[-6pt]
-\scriptscriptstyle{\pm0.005268}
+\scriptstyle{0.78868} \\[-6pt]
+\scriptscriptstyle{\pm0.005284}
 \end{array}
 $\\ 
 DeltaBlue&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($9$\flatc, $1$\slowdown)}&$
@@ -73,19 +68,14 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.40566} \\[-6pt]
-\scriptscriptstyle{\pm0.002226}
+\scriptstyle{0.40564} \\[-6pt]
+\scriptscriptstyle{\pm0.002214}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($4$\flatc, $3$\slowdown, $2$\warmup, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
-Earley&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+Earley&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{0} \\[-6pt]
-\scriptscriptstyle{\pm0}
-\end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
-\begin{array}{rr}
-\scriptstyle{1.05912} \\[-6pt]
-\scriptscriptstyle{\pm0.002122}
+\scriptstyle{1.05913} \\[-6pt]
+\scriptscriptstyle{\pm0.002166}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -100,7 +90,7 @@ $&$
 $&$
 \begin{array}{rr}
 \scriptstyle{1.15329} \\[-6pt]
-\scriptscriptstyle{\pm0.001852}
+\scriptscriptstyle{\pm0.001821}
 \end{array}
 $\\ 
 Encrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($8$\warmup, $2$\flatc)}&$
@@ -111,12 +101,12 @@ Encrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.80} \\[-6pt]
-\scriptscriptstyle{\pm0.426}
+\scriptscriptstyle{\pm0.394}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.69225} \\[-6pt]
-\scriptscriptstyle{\pm0.001955}
+\scriptscriptstyle{\pm0.001909}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -126,12 +116,12 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warm
 $&$
 \begin{array}{rr}
 \scriptstyle{1.59} \\[-6pt]
-\scriptscriptstyle{\pm1.137}
+\scriptscriptstyle{\pm1.098}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.78313} \\[-6pt]
-\scriptscriptstyle{\pm0.000791}
+\scriptstyle{0.78314} \\[-6pt]
+\scriptscriptstyle{\pm0.000808}
 \end{array}
 $\\ 
 NavierStokes&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
@@ -142,12 +132,12 @@ NavierStokes&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{
 $&$
 \begin{array}{rr}
 \scriptstyle{5.65} \\[-6pt]
-\scriptscriptstyle{\pm5.627}
+\scriptscriptstyle{\pm5.588}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.78489} \\[-6pt]
-\scriptscriptstyle{\pm0.000054}
+\scriptscriptstyle{\pm0.000053}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($7$\warmup, $3$\flatc)}&$
 \begin{array}{rr}
@@ -157,28 +147,28 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\good
 $&$
 \begin{array}{rr}
 \scriptstyle{2.16} \\[-6pt]
-\scriptscriptstyle{\pm1.183}
+\scriptscriptstyle{\pm1.177}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.96573} \\[-6pt]
-\scriptscriptstyle{\pm0.002407}
+\scriptstyle{0.96574} \\[-6pt]
+\scriptscriptstyle{\pm0.002472}
 \end{array}
 $\\ 
 PdfJS&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($8$\warmup, $1$\nosteadystate, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($8$\slowdown, $1$\flatc, $1$\warmup)}&$
 \begin{array}{rr}
-\scriptstyle{326} \\[-6pt]
-\scriptscriptstyle{\pm249}
+\scriptstyle{324} \\[-6pt]
+\scriptscriptstyle{\pm246}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{194.15} \\[-6pt]
-\scriptscriptstyle{\pm157.569}
+\scriptstyle{193.47} \\[-6pt]
+\scriptscriptstyle{\pm156.199}
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.67768} \\[-6pt]
-\scriptscriptstyle{\pm0.009681}
+\scriptstyle{0.67761} \\[-6pt]
+\scriptscriptstyle{\pm0.009794}
 \end{array}
 $\\ 
 RayTrace&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($8$\nosteadystate, $2$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
@@ -194,7 +184,7 @@ $&$
 $&$
 \begin{array}{rr}
 \scriptstyle{0.52512} \\[-6pt]
-\scriptscriptstyle{\pm0.000980}
+\scriptscriptstyle{\pm0.000953}
 \end{array}
 $\\ 
 RegExp&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($9$\flatc, $1$\warmup)}&$
@@ -209,8 +199,8 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.92605} \\[-6pt]
-\scriptscriptstyle{\pm0.010520}
+\scriptstyle{0.92602} \\[-6pt]
+\scriptscriptstyle{\pm0.010408}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($9$\flatc, $1$\slowdown)}&$
 \begin{array}{rr}
@@ -224,8 +214,8 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{0.81857} \\[-6pt]
-\scriptscriptstyle{\pm0.011792}
+\scriptstyle{0.81850} \\[-6pt]
+\scriptscriptstyle{\pm0.011564}
 \end{array}
 $\\ 
 Richards&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($9$\warmup, $1$\flatc)}&$
@@ -236,12 +226,12 @@ Richards&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l
 $&$
 \begin{array}{rr}
 \scriptstyle{138.68} \\[-6pt]
-\scriptscriptstyle{\pm275.345}
+\scriptscriptstyle{\pm275.383}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.75815} \\[-6pt]
-\scriptscriptstyle{\pm0.000338}
+\scriptscriptstyle{\pm0.000353}
 \end{array}
 $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{rr}
@@ -251,33 +241,23 @@ $&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warm
 $&$
 \begin{array}{rr}
 \scriptstyle{1.64} \\[-6pt]
-\scriptscriptstyle{\pm1.070}
+\scriptscriptstyle{\pm1.107}
 \end{array}
 $&$
 \begin{array}{rr}
 \scriptstyle{0.81127} \\[-6pt]
-\scriptscriptstyle{\pm0.000466}
+\scriptscriptstyle{\pm0.000469}
 \end{array}
 $\\ 
-Splay&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
-\begin{array}{rr}
-\scriptstyle{0} \\[-6pt]
-\scriptscriptstyle{\pm0}
-\end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+Splay&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
 \scriptstyle{0.51990} \\[-6pt]
-\scriptscriptstyle{\pm0.001278}
+\scriptscriptstyle{\pm0.001272}
 \end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&$
+$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{rr}
-\scriptstyle{0} \\[-6pt]
-\scriptscriptstyle{\pm0}
-\end{array}
-$&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
-\begin{array}{rr}
-\scriptstyle{0.46195} \\[-6pt]
-\scriptscriptstyle{\pm0.002528}
+\scriptstyle{0.46196} \\[-6pt]
+\scriptscriptstyle{\pm0.002562}
 \end{array}
 $\\ 
 Typescript&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($6$\warmup, $3$\flatc, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($5$\flatc, $5$\warmup)}&$
@@ -292,8 +272,8 @@ $&$
 \end{array}
 $&$
 \begin{array}{rr}
-\scriptstyle{1.65901} \\[-6pt]
-\scriptscriptstyle{\pm0.005976}
+\scriptstyle{1.65905} \\[-6pt]
+\scriptscriptstyle{\pm0.005871}
 \end{array}
 $\\ 
 

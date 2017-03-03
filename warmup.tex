@@ -955,7 +955,8 @@ Class.         & \bencherthree & \bencherfive & \benchersix \\
 \warmup        & \bencherthreevmbenchpairswarmuppercentage\% & \bencherfivevmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% \\
 \slowdown      & \bencherthreevmbenchpairsslowdownpercentage\% & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% \\
 \nosteadystate & \bencherthreevmbenchpairsnosteadystatepercentage\% & \bencherfivevmbenchpairsnosteadystatepercentage\% & \benchersixvmbenchpairsnosteadystatepercentage\% \\
-\inconsistent  & \bencherthreevmbenchpairsinconsistentpercentage\% & \bencherfivevmbenchpairsinconsistentpercentage\% & \benchersixvmbenchpairsinconsistentpercentage\% \\
+\goodinconsistent  & \bencherthreevmbenchpairsgoodinconsistentpercentage\% & \bencherfivevmbenchpairsgoodinconsistentpercentage\% & \benchersixvmbenchpairsgoodinconsistentpercentage\% \\
+\badinconsistent  & \bencherthreevmbenchpairsbadinconsistentpercentage\% & \bencherfivevmbenchpairsbadinconsistentpercentage\% & \benchersixvmbenchpairsbadinconsistentpercentage\% \\
 \midrule
                & \multicolumn{3}{c}{Process executions} \\
 \flatc         & \bencherthreeflatpercentage\%          & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% \\
@@ -1013,7 +1014,7 @@ is
 warmup because some inconsistent \vmbpair pairs have some `good' warmup
 process executions. On \bencherthree
 \bencherthreevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
-and \bencherthreevmbenchpairsinconsistentpercentage\% are inconsistent
+and \sarah{was: \\bencherthreevmbenchpairsinconsistentpercentage\%} are inconsistent
 (with over two thirds of those being obviously `bad'); \bencherfive and
 \benchersix are broadly similar. Taking \bencherthree as an example,
 one third of its \vmbpair pairs are `bad', clearly invalidating

@@ -843,6 +843,7 @@ STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a st
 # Given an ordered list of Segments -- each of which has "mean" and "end" attributes, the latter its absolute
 # ending position in the sequence of in-process iterations -- return a string classifying the run sequence.
 def classify(seq):
+  assert len(seq) > 0
   lower_bound = min(seq[len(seq) - 1].mean * (1 - BOUND_PROPORTION), seq[len(seq) - 1].mean - ABSOLUTE_DELTA)
   upper_bound = max(seq[len(seq) - 1].mean * (1 + BOUND_PROPORTION), seq[len(seq) - 1].mean + ABSOLUTE_DELTA)
   cls = "flat"
@@ -864,12 +865,6 @@ def classify(seq):
 \end{lstlisting}
 \vspace{-.75cm}
 \end{figure}
-
-\edd{isn't this an infinite loop if any segment we try is in bounds? i is only decremented in the warmup case. Let's use a for loop?}
-\laurie{python's for loop 'range' thing isn't well understood, so i'd prefer not to use it. you're right that i made an infinite loop though -- }
-
-\sarah{The argument is a run sequence, but not really run-sequence plot, I would call the variable 'seq' rather than 'rsp'.}
-\sarah{If this is pseudocode you might as well use 'class' for the string variable.}\laurie{i'd like it still to be executable in python}
 
 Building atop changepoint analysis, we can then define useful classifications
 for time-series data from VM benchmarks.

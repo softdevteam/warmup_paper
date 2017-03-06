@@ -9,7 +9,7 @@ LATEX_COMMON =
 DIAGRAMS = img/picturebook_warmup.pdf
 
 TABLES= dacapo.table octane.table startup.table \
-	bencher3.table bencher5.table bencher6.table
+	bencher5.table bencher6.table bencher7.table
 
 CODE =
 
@@ -49,5 +49,5 @@ ${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
-	pdfsplit -o warmup_paper.pdf 0:19 warmup.pdf
-	pdfsplit -o warmup_appendix.pdf 19: warmup.pdf
+	pdfsplit -o warmup_paper.pdf 0:20 warmup.pdf
+	pdfsplit -o warmup_appendix.pdf 20: warmup.pdf

@@ -187,12 +187,13 @@ $\begin{array}{rr}
   \institution{King's College London}
 }
 
-\FPeval{\bthreeresult}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
+\sarah{Macros below needs some checking}
 \FPeval{\bfiveresult}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
 \FPeval{\bsixresult}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
-\FPeval{\minone}{min(\bthreeresult, \bfiveresult)}
+\FPeval{\bsevenresult}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
+\FPeval{\minone}{min(\bfiveresult, \bsevenresult)}
 \FPeval{\mintwo}{min(\minone, \bsixresult)}
-\FPeval{\maxone}{max(\bthreeresult, \bfiveresult)}
+\FPeval{\maxone}{max(\bfiveresult, \bsevenresult)}
 \FPeval{\maxtwo}{max(\maxone, \bsixresult)}
 
 \begin{abstract}
@@ -332,7 +333,7 @@ The repeatable experiment we designed, as well as the specific results used
 in this paper, can be downloaded from:
 \vspace{-.5em}
 \begin{center}
-\url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.7/}
+\url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.8/}
 \end{center}
 
 
@@ -520,6 +521,7 @@ We deliberately use the word `moderately', since significant changes of hardware
 (e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) imply that
 significantly different parts of the VMs will be used (see Section~\ref{sec:threats}).
 
+\sarah{bencher 3 is now bencher7 in the v0.8 data}
 In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
 4GHz, 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
 3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, a quad-core i7-4790
@@ -821,6 +823,7 @@ execution of Richards on HotSpot from \benchersix). This shows two changepoints
 blob denotes a solitary outlier, which was discounted by the changepoint analysis.}
 \label{fig:changepoint}
 \end{figure}
+\sarah{Changepoint example from v0.7 data.}
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
@@ -947,21 +950,21 @@ with 10000 iterations, sampling with replacement).
 \begin{center}
 \begin{tabular}{lccc}
 \toprule
-Class.         & \bencherthree & \bencherfive & \benchersix \\
+Class.         & \bencherfive & \benchersix & \bencherseven \\
 \midrule
                & \multicolumn{3}{c}{\vmbpair pairs} \\
-\flatc         & \bencherthreevmbenchpairsflatpercentage\% & \bencherfivevmbenchpairsflatpercentage\% & \benchersixvmbenchpairsflatpercentage\% \\
-\warmup        & \bencherthreevmbenchpairswarmuppercentage\% & \bencherfivevmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% \\
-\slowdown      & \bencherthreevmbenchpairsslowdownpercentage\% & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% \\
-\nosteadystate & \bencherthreevmbenchpairsnosteadystatepercentage\% & \bencherfivevmbenchpairsnosteadystatepercentage\% & \benchersixvmbenchpairsnosteadystatepercentage\% \\
-\goodinconsistent  & \bencherthreevmbenchpairsgoodinconsistentpercentage\% & \bencherfivevmbenchpairsgoodinconsistentpercentage\% & \benchersixvmbenchpairsgoodinconsistentpercentage\% \\
-\badinconsistent  & \bencherthreevmbenchpairsbadinconsistentpercentage\% & \bencherfivevmbenchpairsbadinconsistentpercentage\% & \benchersixvmbenchpairsbadinconsistentpercentage\% \\
+\flatc         & \bencherfivevmbenchpairsflatpercentage\% & \benchersixvmbenchpairsflatpercentage\% & \benchersevenvmbenchpairsflatpercentage\% \\
+\warmup        & \bencherfivevmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% & \benchersevenvmbenchpairswarmuppercentage\% \\
+\slowdown      & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% & \benchersevenvmbenchpairsslowdownpercentage\% \\
+\nosteadystate & \bencherfivevmbenchpairsnosteadystatepercentage\% & \benchersixvmbenchpairsnosteadystatepercentage\% & \benchersevenvmbenchpairsnosteadystatepercentage\% \\
+\goodinconsistent  & \bencherfivevmbenchpairsgoodinconsistentpercentage\% & \benchersixvmbenchpairsgoodinconsistentpercentage\% & \benchersevenvmbenchpairsgoodinconsistentpercentage\% \\
+\badinconsistent  & \bencherfivevmbenchpairsbadinconsistentpercentage\% & \benchersixvmbenchpairsbadinconsistentpercentage\% & \benchersevenvmbenchpairsbadinconsistentpercentage\% \\
 \midrule
                & \multicolumn{3}{c}{Process executions} \\
-\flatc         & \bencherthreeflatpercentage\%          & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% \\
-\warmup        & \bencherthreewarmuppercentage\%        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% \\
-\slowdown      & \bencherthreeslowdownpercentage\%      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% \\
-\nosteadystate & \bencherthreenosteadystatepercentage\% & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% \\
+\flatc         & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% & \benchersevenflatpercentage\% \\
+\warmup        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% & \benchersevenwarmuppercentage\% \\
+\slowdown      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% & \benchersevenslowdownpercentage\% \\
+\nosteadystate & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% & \benchersevennosteadystatepercentage\% \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -973,8 +976,8 @@ Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 
 \begin{table*}[t]
 \centering
-\input{bencher3.table}
-\caption{Benchmark results for \bencherthree. For processes which reach a steady
+\input{bencher7.table}
+\caption{Benchmark results for \bencherseven. For processes which reach a steady
 state: \emph{steady iter (\#)} is the median in-process iteration that the steady
 state was reached at; \emph{steady iter (s)} is the wall-clock time since the
 beginning of the process execution that the steady state was reached;
@@ -993,27 +996,29 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 %  Num process execs: 122 * 10 = 1220
 %  Num in-process iters: 1220 * 2000 = 2,440,000
 
+\sarah{the next few paragraphs compile but need re-writing for the new data.}
 Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
-and process executions for each benchmarking machine. Taking \bencherthree
+and process executions for each benchmarking machine. Taking \bencherfive
 as a representative example,
-\FPeval{\result}{round(\bencherthreevmbenchpairsflatpercentage+\bencherthreevmbenchpairswarmuppercentage,1)}%
-\result\% of \vmbpair pairs and
-\FPeval{\result}{round(\bencherthreeflatpercentage+\bencherthreewarmuppercentage,1)}%
-\result\% of process executions have `good' warmup (\flatc, \warmup) (for comparison, \bencherfive
-is
 \FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
-\result\% and
+\result\% of \vmbpair pairs and
 \FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
+\result\% of process executions have `good' warmup (\flatc, \warmup) (for comparison, \bencherseven
+is
+\FPeval{\result}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
+\result\% and
+\FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage,1)}%
 \result\% respectively and \benchersix is
 \FPeval{\result}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
 \result\% and
 \FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
-\result\% respectively, though the latter runs fewer benchmarks). Fewer \vmbpair pairs than process executions have `good'
+\result\% respectively, though the latter runs fewer benchmarks).
+Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good' warmup
-process executions. On \bencherthree
-\bencherthreevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
-and \sarah{was: \\bencherthreevmbenchpairsinconsistentpercentage\%} are inconsistent
+process executions. On \bencherfive
+\bencherfivevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
+and \sarah{was: \\bencherfivevmbenchpairsinconsistentpercentage\%} are inconsistent
 (with over two thirds of those being obviously `bad'); \bencherfive and
 \benchersix are broadly similar. Taking \bencherthree as an example,
 one third of its \vmbpair pairs are `bad', clearly invalidating
@@ -1027,12 +1032,12 @@ percent different. \benchersix (running OpenBSD, but on the same hardware as
 is unable to run benchmarks on Graal, HHVM, and JRuby+Truffle (see
 Section~\ref{openbsd porting}): of the benchmarks it can run, most behave
 similarly, with the notable exception of LuaJIT, whose benchmarks are more often
-classified as non-flat (see Table~\ref{tab:bencher6results} in the Appendix).
+classified as non-flat (see Tables~\ref{tab:bencher5results} and ~\ref{tab:bencher6results} in the Appendix).
 With that in mind, we believe that our results are a fairly clear validation of
 Hypothesis H2.
 
 Looking at one machine's data brings out further detail. For
-example, Table~\ref{tab:mainresults} (with data from \bencherthree)
+example, Table~\ref{tab:mainresults} (with data from \bencherseven)
 enables to make us several observations. Of the 6 benchmarks, only \nbody comes
 close to `good' warmup behaviour on all
 VMs on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
@@ -1050,6 +1055,7 @@ steady-state code.
 
 
 \subsection{Warmup Plots}
+\sarah{Plots are still v0.7}
 
 To understand why we see so many unexpected cases, we created a series of plots
 for process executions. All
@@ -1069,7 +1075,8 @@ HHVM (process execution 4 of 10 run on \bencherthree). The run-sequence plot
 (bottom) shows that warmup completed by in-process iteration \#134. The
 core-cycle plot (top) shows that the main benchmark computation
 occurred almost entirely on core 1: cores 0, 2 and 3 Cycle Counts (CC)
-were low enough for us to classify them as `inactive', and we have thus elided them.}
+were low enough for us to classify them as `inactive', and we have thus elided them.
+\sarah{example from v0.7 data}}
 \label{fig:examples:trad}
 \vspace{-.2cm}
 \end{figure}
@@ -1184,6 +1191,7 @@ cycles are not correlated with GC (of which there is none) or JIT compilation.}
 
 \section{Startup Time}
 \label{sec:startup}
+\sarah{startup table is still v0.7}
 
 The data presented thus far in the paper has all been collected after the VM has
 started executing the user program. The period between a VM being
@@ -1462,6 +1470,7 @@ there is CFG non-determinism in many of these benchmarks; however, their larger
 code-bases may give VMs the ability to `spread out' VM costs, making smaller
 blips less likely.
 
+\sarah{da capo and octane tables are still v0.7 data.}
 
 \begin{table*}[htp]
 \centering
@@ -1489,22 +1498,24 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \begin{table*}[t]
 \centering
 \input{bencher5.table}
-\captionof{table}{Benchmark results for \bencherfive.}
+\caption{Benchmark results for \bencherfive.}
 \label{tab:bencher5results}
 \end{table*}
 
 \begin{table*}[t]
 \centering
 \input{bencher6.table}
-\caption{Benchmark results for \benchersix.}
+\captionof{table}{Benchmark results for \benchersix.}
 \label{tab:bencher6results}
 \end{table*}
+
 
 \clearpage
 \onecolumn
 
 \section{Curated Plots}
 \label{sec:curatedplots}
+\sarah{Curated plots are still v0.7 data.}
 
 \noindent The remainder of this appendix shows curated plots: we have selected
 4 interesting plots from each classification, to give readers a sense of

@@ -1408,7 +1408,7 @@ document.
 
 \section{Applying the Statistical Method to Existing Benchmark Suites}
 \label{sec:existing}
-
+\sarah{Needs updating for v0.8}
 The statistical method presented in Section~\ref{sec:stats} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\cite{octane}
@@ -1450,13 +1450,14 @@ replicate the running order of Octane's original runner. Since Octane runs all
 benchmarks in a single process execution, this could affect the performance of
 later benchmarks in the suite.
 
+\sarah{the Octane and DaCapo vmb pair percentages should probably be auto-generated.}
 Table~\ref{tab:dacapo} shows the full DaCapo results. Graal and HotSpot both
 perform similarly. The luindex benchmark is consistently a slowdown on Graal,
 and mostly a slowdown on HotSpot. Jython is notably inconsistent on both VMs. In
 summary, even on this most carefully designed of benchmark suites, only 70\%
 of \vmbpair pairs have `good' warmup.
 
-Table~\ref{tab:octane} shows the full Octane results. These are notably less
+Tables~\ref{tab:octaneb5}--\ref{tab:octaneb7} show the full Octane results. These are notably less
 consistent than the DaCapo results, with SpiderMonkey being somewhat less
 consistent than V8. In summary, only 45.8\% of \vmbpair pairs have `good'
 warmup.
@@ -1470,7 +1471,7 @@ there is CFG non-determinism in many of these benchmarks; however, their larger
 code-bases may give VMs the ability to `spread out' VM costs, making smaller
 blips less likely.
 
-\sarah{da capo and octane tables are still v0.7 data.}
+\sarah{da capo tables are still v0.7 data.}
 
 \begin{table*}[htp]
 \centering
@@ -1480,11 +1481,25 @@ blips less likely.
 \end{table*}
 
 
-\begin{table*}[hbp]
+\begin{table*}[htp]
 \centering
-\input{octane.table}
-\caption{Octane results.}
-\label{tab:octane}
+\input{bencher5_octane.table}
+\caption{Octane results for \bencherfive.}
+\label{tab:octaneb5}
+\end{table*}
+
+\begin{table*}[htp]
+\centering
+\input{bencher6_octane.table}
+\caption{Octane results for \benchersix.}
+\label{tab:octaneb6}
+\end{table*}
+
+\begin{table*}[htp]
+\centering
+\input{bencher7_octane.table}
+\caption{Octane results for \bencherseven.}
+\label{tab:octaneb7}
 \end{table*}
 
 \section{Further Results}

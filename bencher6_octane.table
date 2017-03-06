@@ -1,0 +1,87 @@
+
+{
+\begin{tabular}{ll@{\hspace{0cm}}lp{5pt}r@{\hspace{0cm}}r@{\hspace{0cm}}r@{\hspace{0cm}}l@{\hspace{.3cm}}lp{5pt}r@{\hspace{0cm}}r@{\hspace{0cm}}r}
+\toprule
+\multicolumn{1}{c}{\multirow{2}{*}{}}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}\\&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)} \\
+\midrule
+Boyer&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{17}{*}{\rotatebox[origin=c]{90}{V8}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($16$\warmup, $14$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+Decrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($18$\nosteadystate, $10$\warmup, $2$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+DeltaBlue&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+Earley&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($25$\nosteadystate, $4$\slowdown, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+Encrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($21$\warmup, $8$\flatc, $1$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{261} \\[-6pt]
+\scriptscriptstyle{\pm264}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{196.56} \\[-6pt]
+\scriptscriptstyle{\pm199.346}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.78887} \\[-6pt]
+\scriptscriptstyle{\pm0.001187}
+\end{array}
+$\\ 
+NavierStokes&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($28$\warmup, $2$\flatc)}&$
+\begin{array}{rr}
+\scriptstyle{58} \\[-6pt]
+\scriptscriptstyle{\pm54}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{50.69} \\[-6pt]
+\scriptscriptstyle{\pm46.380}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{0.88978} \\[-6pt]
+\scriptscriptstyle{\pm0.001028}
+\end{array}
+$\\ 
+PdfJS&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($21$\warmup, $6$\slowdown, $3$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+RayTrace&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+RegExp&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($23$\flatc, $4$\warmup, $3$\slowdown)}&$
+\begin{array}{rr}
+\scriptstyle{258} \\[-6pt]
+\scriptscriptstyle{\pm391}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{64.49} \\[-6pt]
+\scriptscriptstyle{\pm115.208}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.06089} \\[-6pt]
+\scriptscriptstyle{\pm0.023993}
+\end{array}
+$\\ 
+Richards&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\nosteadystate}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
+Splay&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
+\begin{array}{rr}
+\scriptstyle{0.56888} \\[-6pt]
+\scriptscriptstyle{\pm0.001716}
+\end{array}
+$\\ 
+Typescript&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
+\begin{array}{rr}
+\scriptstyle{2} \\[-6pt]
+\scriptscriptstyle{\pm1}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{3.40} \\[-6pt]
+\scriptscriptstyle{\pm0.394}
+\end{array}
+$&$
+\begin{array}{rr}
+\scriptstyle{1.99902} \\[-6pt]
+\scriptscriptstyle{\pm0.009072}
+\end{array}
+$\\ 
+
+\bottomrule
+\end{tabular}
+}

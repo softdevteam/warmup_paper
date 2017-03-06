@@ -8,7 +8,8 @@ LATEX_COMMON =
 
 DIAGRAMS = img/picturebook_warmup.pdf
 
-TABLES= dacapo.table octane.table startup.table \
+TABLES= dacapo.table startup.table \
+	bencher5_octane.table bencher6_octane.table bencher7_octane.table \
 	bencher5.table bencher6.table bencher7.table
 
 CODE =

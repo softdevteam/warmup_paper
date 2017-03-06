@@ -239,10 +239,10 @@ JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached.
 This traditional view underlies most benchmarking of JIT compiled VMs.
 Usually benchmarks are run many times within a single VM process, and
-timing data collected before warmup is complete is discarded, therefore
+time-series data collected before warmup is complete is discarded, therefore
 reporting only peak performance figures.
 
-The fundamental aim of this paper is to test, in the most idealised of settings, the following hypothesis:
+The fundamental aim of this paper is to test, in a highly idealised setting, the following hypothesis:
 \begin{description}
   \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
 \end{description}
@@ -252,12 +252,12 @@ maximised the chances that our experiment would validate Hypothesis H1. Instead
 we encountered many benchmarks which slowdown, never hit a steady
 state, or which perform inconsistently across different process
 executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
-combination) of \vmbpair pairs \edd{I wonder if we should be saying ``\mvmbtrip triples`` (as we have done in a couple of other places) to make it clear that it's ``this vm, this benchmark, on this machine''} consistently reach a steady state of peak
+combination) of \vmbpair pairs consistently reach a steady state of peak
 performance. Of the seven VMs we studied, none consistently reached a steady
 state of peak performance.
 
 These results are significantly worse than reported in previous works, and worse
-than expected by VM teams we have spoken to\edd{Although true, too anecdotal?}. Our results suggest
+than expected by VM teams we have spoken to\edd{Although true, too anecdotal?}\laurie{yes, but i don't want another reviewer to say ``everyone knows this'', when we know that statement to be untrue. i'm open to other ways of tackling this though!}. Our results suggest
 that much real-world VM benchmarking is likely to be partly or wholly
 misleading. This has real-world consequences, as microbenchmarks similar to those
 in this paper are often used to gauge the efficacy of VM optimisations. In
@@ -266,36 +266,39 @@ deleterious.
 
 
 \subsection{Overview of the Methodology}
-\edd{not sure it's worth using subsections in the intro}
 
 We present a carefully designed experiment where benchmarks are run for 2000
 \emph{in-process iterations} and repeated using 30 fresh \emph{process
 executions} (i.e.~each process execution runs multiple in-process iterations).
-In order to reduce the influence of external factors, we wrote a new
-benchmarking tool, \krun, to control a large number of confounding variables.
-For example, \krun reboots machines before each process execution, turns off network
-cards and stops userland daemons, and ensures that the
-machine's temperature is consistent before each process execution is run.
-We run on different machines and operating systems, and are able to rule out
-this having a significant effect on the results we observe.
+We then present a novel approach to automatically classifying
+different styles of warmup.
 
-\edd{the flow between this para and the previous is quite abrupt.}
-Traditional VM benchmarking uses simple heuristics to guess when warmup
-has completed (see e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations of such approaches
-\cite{kalibera13rigorous}, suggesting instead a manual approach to determining
-if and when a steady state has completed. While this is a significant improvement on
+In order to reduce the influence of external factors, we wrote a new
+benchmarking tool, \krun, to control as many confounding variables as practical.
+For example, \krun reboots machines before each process execution, turns off or stops network
+cards and userland daemons, and ensures that the
+machine's temperature is consistent before each process execution is run.
+We run on different machines and operating systems; whilst different
+operating systems, in particular, make some difference to the results we observe,
+we are able to rule them out as being a significant factor.
+
+With the time-series data produced by \krun, we then encounter the issue of
+producing useful and reliable summary statistics. Traditional VM benchmarking
+uses simple heuristics to guess when warmup has completed (see
+e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations of such approaches
+\cite{kalibera13rigorous}, presenting instead a manual approach to determining
+if and when a steady state has been reached. While this is a significant improvement on
 previous heuristics, it is time-consuming, prone to human inconsistency, and gives no
-indication as to whether the steady state is indicative warmup or not
-(regardless of whether the in-process iterations of the steady state are the
-fastest). We
-introduce a new approach to analysing VM benchmarking data. We first show how
-changepoint analysis~\cite{eckley11analysis} can be used to automatically determine if and when
-a benchmark has hit a steady state. We then build on the changepoint analysis
-to introduce an additional classification
-to determine if the steady state is flat (no detectable change in performance
-over the benchmark), warmup, or slowdown (a decrease in performance over
-the benchmark). This allows us to process our large data-set and
-present detailed summary statistics.
+indication as to whether the steady state represents peak performance of not.
+We introduce a new approach to analysing VM benchmarking data. We first use
+changepoint analysis~\cite{eckley11analysis} to automate the detection
+of shifts in the nature of time-series data (e.g.~when a benchmark switches
+from `slow' to `fast' modes after JIT compilation). We then use the changepoint
+segments that this analysis produces to automatically classify process executions as:
+no steady state; flat (no detectable change in performance
+over the benchmark), warmup, or slowdown (a decrease in performance over time).
+Although simple, these classifications allow us to tease apart unexpected
+performance patterns that previous methodologies have conflated.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the
@@ -307,12 +310,12 @@ some of the effects we see, it does not explain others.
 
 In summary, this paper's contributions are as follows:
 \begin{enumerate}
-    \item We show that, even in the most idealised setting\edd{too strong? Ideally, we would have used a system without p-states, and we would have been able to pin properly, ...}, simple benchmarks
+    \item We show that, even in a highly idealised setting, simple benchmarks
 often fail to warmup.
-    \item We present the first automated methodology for classifying VM
-benchmark data that accurately determines if and when a steady state has been
+    \item We present the first automated approach to analysing VM
+time-series data that can automatically determine if and when a steady state has been
 reached.
-    \item We present the first analysis to identify different classes of
+    \item We present the first classification of different styles of
 steady state behaviour (warmup, slowdown, flat).
     \item We show that, while some instances of ``odd'' behaviour are explained by
 the `obvious' factors of garbage collection and JIT compilation, many are not.

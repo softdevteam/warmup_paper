@@ -848,8 +848,9 @@ STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a st
 # ending position in the sequence of in-process iterations -- return a string classifying the run sequence.
 def classify(seq):
   assert len(seq) > 0
-  lower_bound = min(seq[len(seq) - 1].mean * (1 - BOUND_PROPORTION), seq[len(seq) - 1].mean - ABSOLUTE_DELTA)
-  upper_bound = max(seq[len(seq) - 1].mean * (1 + BOUND_PROPORTION), seq[len(seq) - 1].mean + ABSOLUTE_DELTA)
+  last_seg = seq[len(seq) - 1]
+  lower_bound = min(last_seg.mean * (1 - BOUND_PROPORTION), last_seg.mean - ABSOLUTE_DELTA)
+  upper_bound = max(last_seg.mean * (1 + BOUND_PROPORTION), last_seg.mean + ABSOLUTE_DELTA)
   cls = "flat"
   i = len(seq) - 2
   while i > -1:

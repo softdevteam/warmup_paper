@@ -259,11 +259,11 @@ performance. Of the seven VMs we studied, none consistently reached a steady
 state of peak performance.
 
 These results are significantly worse than reported in previous works, and worse
-than expected by VM teams we have spoken to\edd{Although true, too anecdotal?}\laurie{yes, but i don't want another reviewer to say ``everyone knows this'', when we know that statement to be untrue. i'm open to other ways of tackling this though!}. Our results suggest
+than expected by VM teams we have spoken to. Our results suggest
 that much real-world VM benchmarking is likely to be partly or wholly
 misleading. This has real-world consequences, as microbenchmarks similar to those
 in this paper are often used to gauge the efficacy of VM optimisations. In
-light of our findings, such optimisations may ineffective and possibly
+light of our findings, such optimisations may be ineffective and possibly
 deleterious.
 
 
@@ -280,7 +280,7 @@ benchmarking tool, \krun, to control as many confounding variables as practical.
 For example, \krun reboots machines before each process execution, turns off or stops network
 cards and userland daemons, and ensures that the
 machine's temperature is consistent before each process execution is run.
-We run on different machines and operating systems; whilst different
+We ran our experiment on different machines and operating systems; whilst different
 operating systems, in particular, make some difference to the results we observe,
 we are able to rule them out as being a significant factor.
 
@@ -293,6 +293,26 @@ e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations
 if and when a steady state has been reached. While this is a significant improvement on
 previous heuristics, it is time-consuming, prone to human inconsistency, and gives no
 indication as to whether the steady state represents peak performance of not.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
+\hspace{\fill}
+\includegraphics[width=.45\textwidth]{examples/changepoint_example.pdf}
+\caption{Two examples of run-sequence plots from our experiment, augmented
+with the results of changepoint analysis. The LHS plot
+shows an example of `traditional' warmup plot (in this case \nbody on HHVM);
+the RHS plot shows an example of slowdown (\richards on HotSpot). Changepoints
+are the vertical red lines, and denote a `shift' in the nature of the time-series
+data; changepoint segments are the horizontal red lines between changepoints; red circles are `outliers'
+which the changepoint analysis discounts when finding changepoints. We use the changepoint
+segments are used to automatically classify plots' warmup style (in this example, warmup and
+slowdown respectively).
+\sarah{Changepoint example from v0.7 data.}
+}
+\label{fig:changepoint}
+\end{figure}
+
 We introduce a new approach to analysing VM benchmarking data. We first use
 changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time-series data (e.g.~when a benchmark switches
@@ -300,13 +320,15 @@ from `slow' to `fast' modes after JIT compilation). We then use the changepoint
 segments that this analysis produces to automatically classify process executions as:
 no steady state; flat (no detectable change in performance
 over the benchmark), warmup, or slowdown (a decrease in performance over time).
-Although simple, these classifications allow us to tease apart unexpected
+Figure \ref{fig:changepoint} shows an example of how changepoint analysis
+can automatically classify both `good' and `bad' warmup styles.
+Although simple, these classifications allow us to tease apart
 performance patterns that previous methodologies have conflated.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the
 effects of garbage collection and JIT compilation. While this explains
-some of the effects we see, it does not explain others.
+some of the effects we see, it does not explain many others.
 
 
 \subsection{Summary}
@@ -320,7 +342,7 @@ time-series data that can automatically determine if and when a steady state has
 reached.
     \item We present the first classification of different styles of
 steady state behaviour (warmup, slowdown, flat).
-    \item We show that, while some instances of ``odd'' behaviour are explained by
+    \item We show that, while some instances of `odd' behaviour are explained by
 the `obvious' factors of garbage collection and JIT compilation, many are not.
 \end{enumerate}
 
@@ -813,18 +835,6 @@ between two changepoints is a \emph{changepoint segment}. There are various
 ways that one can determine when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
 iterations.
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=.45\textwidth]{examples/changepoint_example.pdf}
-\caption{An example of changepoint analysis on a run-sequence plot (a process
-execution of Richards on HotSpot from \benchersix). This shows two changepoints
-(the vertical red lines): one soon after startup; and another around iteration
-200. The horizontal red lines are the means of the changepoint segments. The red
-blob denotes a solitary outlier, which was discounted by the changepoint analysis.}
-\label{fig:changepoint}
-\end{figure}
-\sarah{Changepoint example from v0.7 data.}
 
 In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where

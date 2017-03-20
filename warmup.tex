@@ -284,7 +284,6 @@ We ran our experiment on different machines and operating systems; whilst differ
 operating systems, in particular, make some difference to the results we observe,
 we are able to rule them out as being a significant factor.
 
-\sarah{It would be good to emphasise that changepoints are a relatively new innovation and signal to the reader that this is an important contribution.}
 With the time-series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
 uses simple heuristics to guess when warmup has completed (see
@@ -313,8 +312,8 @@ slowdown respectively).
 \label{fig:changepoint}
 \end{figure}
 
-We introduce a new approach to analysing VM benchmarking data. We first use
-changepoint analysis~\cite{eckley11analysis} to automate the detection
+We introduce a new approach to analysing VM benchmarking data. We use the
+recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time-series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). We then use the changepoint
 segments that this analysis produces to automatically classify process executions as:
@@ -323,7 +322,7 @@ over the benchmark), warmup, or slowdown (a decrease in performance over time).
 Figure \ref{fig:changepoint} shows an example of how changepoint analysis
 can automatically classify both `good' and `bad' warmup styles.
 Although simple, these classifications allow us to tease apart
-performance patterns that previous methodologies have conflated.
+unexpected performance patterns that previous methodologies have conflated.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the

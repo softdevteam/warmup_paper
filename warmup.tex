@@ -241,7 +241,7 @@ JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached.
 This traditional view underlies most benchmarking of JIT compiled VMs.
 Usually benchmarks are run many times within a single VM process, and
-time-series data collected before warmup is complete is discarded, therefore
+time series data collected before warmup is complete is discarded, therefore
 reporting only peak performance figures.
 
 The fundamental aim of this paper is to test, in a highly idealised setting, the following hypothesis:
@@ -284,7 +284,7 @@ We ran our experiment on different machines and operating systems; whilst differ
 operating systems, in particular, make some difference to the results we observe,
 we are able to rule them out as being a significant factor.
 
-With the time-series data produced by \krun, we then encounter the issue of
+With the time series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
 uses simple heuristics to guess when warmup has completed (see
 e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations of such approaches
@@ -302,7 +302,7 @@ indication as to whether the steady state represents peak performance of not.
 with the results of changepoint analysis. The LHS plot
 shows an example of `traditional' warmup plot (in this case \nbody on HHVM);
 the RHS plot shows an example of slowdown (\richards on HotSpot). Changepoints
-are the vertical red lines, and denote a `shift' in the nature of the time-series
+are the vertical red lines, and denote a `shift' in the nature of the time series
 data; changepoint segments are the horizontal red lines between changepoints; red circles are `outliers'
 which the changepoint analysis discounts when finding changepoints. We use the changepoint
 segments are used to automatically classify plots' warmup style (in this example, warmup and
@@ -314,7 +314,7 @@ slowdown respectively).
 
 We introduce a new approach to analysing VM benchmarking data. We use the
 recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
-of shifts in the nature of time-series data (e.g.~when a benchmark switches
+of shifts in the nature of time series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). We then use the changepoint
 segments that this analysis produces to automatically classify process executions as:
 no steady state; flat (no detectable change in performance
@@ -337,7 +337,7 @@ In summary, this paper's contributions are as follows:
     \item We show that, even in a highly idealised setting, simple benchmarks
 often fail to warmup.
     \item We present the first automated approach to analysing VM
-time-series data that can automatically determine if and when a steady state has been
+time series data that can automatically determine if and when a steady state has been
 reached.
     \item We present the first classification of different styles of
 steady state behaviour (warmup, slowdown, flat).
@@ -388,7 +388,7 @@ are then discarded, on the basis that warmup \emph{should} have completed in
 that period. Often $n$ is a fixed number (often around 5), with little or no confirmation
 that warmup has completed or not. Heuristics such as
 those of Georges et al.~\cite{georges07statistically} automatically analyse
-a process execution's time-series data before returning a value of $n$.
+a process execution's time series data before returning a value of $n$.
 
 \kalibera introduced what we believe to be the most sophisticated VM benchmarking methodology
 yet developed~\cite{kalibera12quantifying,kalibera13rigorous}. After
@@ -407,7 +407,7 @@ and is an important inspiration for our work. However, the reliance
 on manually identifying when warmup is complete has ramifications. Most
 obviously, humans are prone to error and disagreement when performing
 such identifications. However, more significantly, the time required
-to manually examine the time-series data means that it is only practical to apply it to a small number
+to manually examine the time series data means that it is only practical to apply it to a small number
 of initial process executions: the cut-off point that is determined from those
 is then applied to all future process executions, even though there is no
 guarantee that they all reach a steady state by that point. Beyond the
@@ -569,7 +569,7 @@ than on physical cores alone.
 
 Many confounding variables occur shortly before, and during the running of,
 benchmarks~\cite{kalibera05precision}. In order to control as many of these as possible, we wrote
-\krun, a new benchmark runner. \krun itself is a `supervisor'
+\krun\footnote{The `K' in Krun is a respectful tip of the hat to \kalibera.}, a new benchmark runner. \krun itself is a `supervisor'
 which, given a configuration file specifying VMs, benchmarks (etc.) configures
 a Linux or OpenBSD system, runs benchmarks, and collects the results. Individual VMs and benchmarks
 are then wrapped, or altered, to report data back to \krun in an appropriate format.
@@ -670,7 +670,7 @@ benchmark performance mid-process execution. Although
 \texttt{perf} cannot be completely disabled, \krun sets it to sample at most
 once per second, minimising interruptions.
 
-Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
+\laurie{i think this is no longer true, right?} Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
 a sensible security precaution for everyday use, it introduces obvious
 non-determinism between process executions.\footnote{The Stabilizer
 system~\cite{curtsinger13stabilizer} is an intriguing approach for obtaining reliable
@@ -758,7 +758,6 @@ void krun_measure(int mdata_idx) {
   }
 }
 \end{lstlisting}
-\vspace{-.75cm}
 \end{figure}
 
 \begin{figure}[t]
@@ -781,7 +780,7 @@ on user-level libraries: not all of the VMs in our experiment give us access to
 the appropriate monotonic timer. We therefore
 implemented a small C library (\texttt{libkruntime.so}) which exposes these
 measures (see Listing~\ref{lst:krun-measure} for an example). When possible
-(all VMs apart from JRuby+Truffle, HHVM and V8), we used a language's FFI to dynamically load this library
+(all VMs apart from JRuby+Truffle, HHVM, and V8), we used a language's FFI to dynamically load this library
 in; in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
 Core-cycle, APERF, and MPERF counts are 64-bit unsigned integers; since
@@ -804,10 +803,10 @@ first automated method for identifying warmup.
 
 \subsection{Outliers}
 
-As is common with analyses of time series data, we first identify outliers
-(i.e.~in-process iterations with much larger/smaller times than their near
-neighbours) so that our later analysis can ignore them. In our case, the
-intuition is that such outliers are likely to be the result of JIT compilation,
+As is common with analyses of time series data, we first identify
+\emph{outliers}---i.e.~in-process iterations with much larger/smaller times than their near
+neighbours--- so that changepoint analysis knows to ignore them. In our case, the
+expectation is that such outliers are likely to be the result of JIT compilation,
 GC, or of other processes interrupting benchmarks. We use Tukey's
 method~\cite{tukey1977exploratory}, conservatively defining an outlier as one that, within a
 sliding window of 200 in-process iterations, lies outside the median $\pm
@@ -823,10 +822,15 @@ any single process execution being \result\% of in-process iterations.
 \subsection{Changepoint Analysis}
 
 Intuitively, in order to uncover if/when warmup has completed, we need to
-determine when the times taken by in-process iterations have become faster
-within a process execution. Put another way, we expect to see a number of in-process
-executions taking time $t$ to be followed by a number at time $t'$. In order to
-automatically determine when this occurs, we use statistical changepoint analysis
+determine when in-process iteration timings have `shifted' in nature (i.e.~become
+faster or slower). For example, for traditional warmup, we might expect to see a
+number of in-process executions taking time $t$ to be followed by a number at
+time $t'$ (where $t' < t$). Automating the detection of such `shifts' is
+tricky: simple heuristics suffer from both false positives and negatives; and
+`I know it when I see it' manual detection is time-consuming and prone to human
+error.
+
+We therefore use the recently introduced concept of changepoint analysis
 (see~\cite{eckley11analysis} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
@@ -841,26 +845,26 @@ $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
 algorithm~\citep{killick12optimal}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
-of each segment.
-
+of each segment. \laurie{Figure XXX shows an example. Should we use Figure 1 or does that
+cause too much backpage flipping?}
 
 
 \subsection{Classifications}
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
-classification algorithm for an individual process execution.}]
-BOUND_PROPORTION = 0.001 # Proportion (i.e. 0.1%) of final segment to be used as a bound
+classification algorithm for an individual process execution. Given an ordered
+list of Segments -- each of which has "mean", "variance", and "end" attributes, the latter
+its absolute ending position in the sequence of in-process iterations --
+this function returns a string classifying the run sequence's warmup style.}]
 ABSOLUTE_DELTA   = 0.001 # Time in seconds to be used as a bound
 STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a steady state
 
-# Given an ordered list of Segments -- each of which has "mean" and "end" attributes, the latter its absolute
-# ending position in the sequence of in-process iterations -- return a string classifying the run sequence.
 def classify(seq):
   assert len(seq) > 0
   last_seg = seq[len(seq) - 1]
-  lower_bound = min(last_seg.mean * (1 - BOUND_PROPORTION), last_seg.mean - ABSOLUTE_DELTA)
-  upper_bound = max(last_seg.mean * (1 + BOUND_PROPORTION), last_seg.mean + ABSOLUTE_DELTA)
+  lower_bound = last_seg.mean - max(last_seg.variance, ABSOLUTE_DELTA)
+  upper_bound = last_seg.mean + max(last_seg.variance, ABSOLUTE_DELTA)
   cls = "flat"
   i = len(seq) - 2
   while i > -1:
@@ -882,7 +886,7 @@ def classify(seq):
 \end{figure}
 
 Building atop changepoint analysis, we can then define useful classifications
-for time-series data from VM benchmarks.
+for time series data from VM benchmarks.
 
 Before we can do so, we must
 acknowledge the constraints that changepoint analysis works under: it has
@@ -899,19 +903,19 @@ machine or OS as it is to be due to a benchmark or VM, and that it would be
 better to consider them as being equal. It is tempting to merge such segments
 together, but this fails to deal with separated segments. Consider a
 benchmark which, after changepoint analysis has three segments: the first with a
-mean of 1.0001 seconds, the second 0.2 seconds (perhaps whilst a JIT compiler is
+mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
 segment which is clearly different. We therefore allow a small tolerance
 when comparing a segment $s_i$ against the final segment $s_f$: if $s_i$'s
-mean is within 0.1\% or 0.001s (whichever is greater) of $s_j$'s mean,
-we consider the two equivalent. The reason for these two types of tolerance
+mean is within $s_f$'s mean $\pm$ $s_f$'s variance or 0.001s (whichever
+is greater), we consider the two equivalent. The reason for these two types of tolerance
 is as follows. In short running benchmarks, a small number of external events can add an absolute
 level of noise: in our experience readings often vary by a
 little under 0.001s. In long running benchmarks, any individual external
 event adds a relatively small relative amount of noise, but the cumulative
-effect of many external events can add up, which we account for by allowing
-a proportion of the running time.
+effect of many external events can add up, which a changepoint's variance
+tends to naturally account for.
 
 With that in mind, we can define a simple classification algorithm for a process
 execution, based on the special nature of the final changepoint segment. Since all our benchmarks run
@@ -949,7 +953,7 @@ For benchmarks which reach a steady state (i.e.~are \flatc, \warmup, or
 \slowdown; or are inconsistent but only contain \flatc, \warmup, or \slowdown)
 we report the number of iterations and the time in seconds to reach the steady state,
 as well as the performance of the steady state itself in seconds (defined as
-the final changepoint segment's mean). For the latter two measures, we report the median time
+the final changepoint segment's mean). \laurie{this needs updating} For the latter two measures, we report the median time
 over all 10 process executions, and report 99\% confidence intervals (bootstrapped
 with 10000 iterations, sampling with replacement).
 
@@ -1369,7 +1373,7 @@ few people will have the time or energy to institute all the controls that we
 implemented. An open question is which of the controls are the most significant
 in terms of producing a reliable experiment. The large number of partly
 inter-locking combinations means that we estimate that untangling this will
-require 3--6 months of experimental running time.
+require significant additional running time (at least many months).
 
 Our results suggest to us some tentative guidelines for VM
 developers and users. First, simply running benchmarks for a larger number of
@@ -1394,6 +1398,7 @@ helped integrate JRuby+Truffle into our experiment. We also thank (in alphabetic
 Gross, Tim Harris, Ben Titzer, Dave Ungar, and Mario Wolczko for comments and suggestions; any
 errors and infelicities are our own. This research was funded by the EPSRC
 Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
+
 \textbf{Transparency:} Three of this paper's authors have contributed
 to the PyPy project, and one is an OpenBSD developer. The
 King's group has received several funding gifts from Oracle Labs.

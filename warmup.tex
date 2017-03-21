@@ -318,7 +318,7 @@ of shifts in the nature of time-series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). We then use the changepoint
 segments that this analysis produces to automatically classify process executions as:
 no steady state; flat (no detectable change in performance
-over the benchmark), warmup, or slowdown (a decrease in performance over time).
+over the benchmark); warmup; or slowdown (a decrease in performance over time).
 Figure \ref{fig:changepoint} shows an example of how changepoint analysis
 can automatically classify both `good' and `bad' warmup styles.
 Although simple, these classifications allow us to tease apart
@@ -387,27 +387,27 @@ The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
 that period. Often $n$ is a fixed number (often around 5), with little or no confirmation
 that warmup has completed or not. Heuristics such as
-those presented by Georges et al.~\cite{georges07statistically} perform
-basic analysis of a process execution's data before determining
-a per-process execution value of $n$.
+those of Georges et al.~\cite{georges07statistically} automatically analyse
+a process execution's time-series data before returning a value of $n$.
 
 \kalibera introduced what we believe to be the most sophisticated VM benchmarking methodology
-yet developed~\cite{kalibera12quantifying,kalibera13rigorous}.
-In essence, after a specific VM / benchmark combination has been run for a small number of
+yet developed~\cite{kalibera12quantifying,kalibera13rigorous}. After
+showing that simple heuristics such as Georges et al.'s often fail to accurately
+pinpoint when warmup has completed, \kalibera then present an alternative manual
+process. In essence, after a specific VM / benchmark combination has been run for a small number of
 process executions, a human must determine at which in-process iteration the
 steady state is reached. Significantly, \kalibera note that a steady
 state does not always exist, stating that no statistics can be produced in
 such cases. When a steady state does exist, a larger number of process executions are then
 run; the previously determined cut-off point is applied to each process's
-iterations; and detailed statistics produced. As part of this, \kalibera
-convincingly show the limitations of simpler heuristics such as
-Georges et al.'s.
+iterations; and detailed statistics produced.
 
 The \kalibera methodology is a significant advance on previous work,
-and an important inspiration for our work. However, it has
-limitations, most deriving from the fact that it has to rely on a manual
-inspection of data to determine if and when a steady state is reached. Because
-this is time-consuming, it is only practical to applied it to a small number
+and is an important inspiration for our work. However, the reliance
+on manually identifying when warmup is complete has ramifications. Most
+obviously, humans are prone to error and disagreement when performing
+such identifications. However, more significantly, the time required
+to manually examine the time-series data means that it is only practical to apply it to a small number
 of initial process executions: the cut-off point that is determined from those
 is then applied to all future process executions, even though there is no
 guarantee that they all reach a steady state by that point. Beyond the
@@ -1391,7 +1391,7 @@ need more benchmarks.
 We are particularly grateful to Vincent Knight
 who helped put together this paper's team. Chris Seaton
 helped integrate JRuby+Truffle into our experiment. We also thank (in alphabetical order) Dave Dice, Kenny
-Gross, Tim Harris, Dave Ungar, Mario Wolczko for comments and suggestions; any
+Gross, Tim Harris, Ben Titzer, Dave Ungar, and Mario Wolczko for comments and suggestions; any
 errors and infelicities are our own. This research was funded by the EPSRC
 Cooler (EP/K01790X/1) grant and Lecture (EP/L02344X/1) fellowship.
 \textbf{Transparency:} Three of this paper's authors have contributed

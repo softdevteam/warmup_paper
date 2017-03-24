@@ -870,7 +870,7 @@ def classify(seq):
   while i > -1:
     cur_seg = seq[i]
     i -= 1
-    if cur_seg.mean >= lower_bound and cur_seg.mean <= upper_bound:
+    if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
       continue
     elif cur_seg.end > len(seq) - STEADY_STATE_LEN:
       cls = "no steady state"

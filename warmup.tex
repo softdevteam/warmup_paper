@@ -19,6 +19,7 @@
 \usepackage{caption}
 \usepackage{fp}
 
+\usepackage{adjustbox}
 \usepackage{graphicx}
 \usepackage{softdev}
 \usepackage{amsmath}
@@ -989,9 +990,12 @@ Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 \label{tab:summarystats}
 \end{table}
 
-\begin{table*}[t]
+\begin{table*}[hptb]
 \centering
+% Fudge factor of 5 rather than 2 here to leave room for the caption.
+\begin{adjustbox}{totalheight=\textheight-5\baselineskip}
 \input{bencher7.table}
+\end{adjustbox}
 \caption{Benchmark results for \bencherseven. For processes which reach a steady
 state: \emph{steady iter (\#)} is the median in-process iteration that the steady
 state was reached at; \emph{steady iter (s)} is the wall-clock time since the
@@ -1528,14 +1532,18 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 
 \begin{table*}[t]
 \centering
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
 \input{bencher5.table}
+\end{adjustbox}
 \caption{Benchmark results for \bencherfive.}
 \label{tab:bencher5results}
 \end{table*}
 
 \begin{table*}[t]
 \centering
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
 \input{bencher6.table}
+\end{adjustbox}
 \captionof{table}{Benchmark results for \benchersix.}
 \label{tab:bencher6results}
 \end{table*}

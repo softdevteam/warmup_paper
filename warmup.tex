@@ -1504,13 +1504,16 @@ blips less likely.
 
 \begin{table*}[htp]
 \centering
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
 \input{bencher5_octane.table}
+\end{adjustbox}
 \caption{Octane results for \bencherfive.}
 \label{tab:octaneb5}
 \end{table*}
 
 \begin{table*}[htp]
 \centering
+% Doesn't need an adjustbox.
 \input{bencher6_octane.table}
 \caption{Octane results for \benchersix.}
 \label{tab:octaneb6}
@@ -1518,7 +1521,9 @@ blips less likely.
 
 \begin{table*}[htp]
 \centering
+\begin{adjustbox}{totalheight=\textheight-2\baselineskip}
 \input{bencher7_octane.table}
+\end{adjustbox}
 \caption{Octane results for \bencherseven.}
 \label{tab:octaneb7}
 \end{table*}

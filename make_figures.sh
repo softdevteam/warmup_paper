@@ -4,19 +4,26 @@
 EXPORT=4,4
 
 EXPERIMENT_REPO=../warmup_experiment/
-BENCHER3_DATA=bencher3_warmup_07.json.bz2
-BENCHER5_DATA=bencher5_warmup_07.json.bz2
-BENCHER6_DATA=bencher6_warmup_07.json.bz2
+BENCHER5_DATA=annotated_results/warmup_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2
+BENCHER6_DATA=annotated_results/warmup_results_0_8_openbsd1_i7_4790_outliers_w200_changepoints.json.bz2
+BENCHER7_DATA=annotated_results/warmup_results_0_8_linux3_e3_1240_outliers_w200_changepoints.json.bz2
+
+# Use this for side-by-side plots, then adjust the height manually until it
+# looks ok. Make sure the cell width in tex is .49\textwidth.
+WIDTH_2COL=5
 
 #
 # In paper examples.
 #
 
-# changepoint_example
-${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${EXPORT} --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher6:richards:Hotspot:default-java:2 ${BENCHER6_DATA}
-
 # new_warmup_no_migrate
-${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 1 --export-size 4,10 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 ${BENCHER5_DATA}
+${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 3 --export-size ${WIDTH_2COL},5 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 --no-zoom --no-inset --with-changepoint-means ${BENCHER5_DATA} --with-outliers
+
+# changepoint_example
+${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher7:richards:Hotspot:default-java:14 ${BENCHER7_DATA} --core-cycles 0,1,2 --inset-xlimits 0,9
+
+# XXX everthing below needs to be re-done for the 0.8 data.
+exit 0
 
 # new_inconsistent
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${EXPORT} --wallclock-only -o examples/new_inconsistent.pdf -b bencher5:fasta:PyPy:default-python:6 -b bencher5:fasta:PyPy:default-python:7 ${BENCHER5_DATA}

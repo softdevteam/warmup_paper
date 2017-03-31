@@ -8,6 +8,10 @@ LATEX_COMMON =
 
 DIAGRAMS = img/picturebook_warmup.pdf
 
+# diagrams from make_figures.sh
+DIAGRAMS +=	examples/new_warmup_no_migrate.pdf \
+		examples/changepoint_example.pdf
+
 TABLES= dacapo.table startup.table \
 	bencher5_octane.table bencher6_octane.table bencher7_octane.table \
 	bencher5.table bencher6.table bencher7.table

@@ -9,7 +9,9 @@ LATEX_COMMON =
 DIAGRAMS = 	img/picturebook_warmup.pdf \
 		examples/new_warmup_no_migrate.pdf \
 		examples/changepoint_example.pdf \
-		examples/new_no_steady.pdf
+		examples/new_no_steady.pdf \
+		examples/new_inconsistent.pdf \
+		examples/new_cyclic.pdf
 
 TABLES= dacapo.table startup.table \
 	bencher5_octane.table bencher6_octane.table bencher7_octane.table \
@@ -77,8 +79,17 @@ WIDTH_2COL=5
 examples/new_warmup_no_migrate.pdf: ${ANN_RESULTS}
 	${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 3 --export-size ${WIDTH_2COL},5 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 --no-zoom --no-inset --with-changepoint-means ${BENCHER5_DATA} --with-outliers
 
-examples/changepoint_example.pdf : ${ANN_RESULTS}
+examples/changepoint_example.pdf: ${ANN_RESULTS}
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher7:richards:Hotspot:default-java:14 ${BENCHER7_DATA} --core-cycles 0,1,2 --inset-xlimits 0,9
 
-examples/new_no_steady.pdf:
+examples/new_no_steady.pdf: ${ANN_RESULTS}
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_no_steady.pdf -b bencher5:binarytrees:V8:default-javascript:23 ${BENCHER5_DATA} --no-zoom --with-outliers
+
+
+examples/new_inconsistent.pdf: ${ANN_RESULTS}
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 6,4 --no-zoom -o examples/new_inconsistent.pdf -b bencher6:fannkuch_redux:LuaJIT:default-lua:24 -b bencher6:fannkuch_redux:LuaJIT:default-lua:9 --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
+
+examples/new_cyclic.pdf: ${ANN_RESULTS}
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},10 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 --no-zoom --inset-xlimits 600,999 --core-cycles 1 --with-changepoint-means --with-outliers ${BENCHER5_DATA}
+
+

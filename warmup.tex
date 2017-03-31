@@ -1098,7 +1098,7 @@ an example of inconsistent process executions.
 
 \begin{figure*}[t!]
 \centering
-\includegraphics[width=.8\textwidth]{examples/new_inconsistent.pdf}
+\includegraphics[width=\textwidth]{examples/new_inconsistent.pdf}
 \caption{An example of inconsistent process executions for the same \mvmbtrip triple.}
 \label{fig:examples:inconsistent}
 \vspace{-.4cm}
@@ -1106,7 +1106,7 @@ an example of inconsistent process executions.
 
 \begin{figure}[!tbp]
 \centering
-\begin{minipage}[b]{0.45\textwidth}
+\begin{minipage}[b]{0.49\textwidth}
 \includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
 \caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
 turned on. Although these additional measures add overhead, in this
@@ -1114,11 +1114,11 @@ case they make no observable difference to the main run-sequence graph. They
 allow us to observe that the slowdown is correlated with two immediately preceding JIT compilation events
 that may explain the drop in performance. Note that the
 regular GC spikes have only a small effect on the time of in-process
-iterations.}
+iterations. \edd{XXX this is 0.7 data}}
 \label{fig:examples:slowdown1}
 \end{minipage}
 \hfill
-\begin{minipage}[b]{0.45\textwidth}
+\begin{minipage}[b]{0.49\textwidth}
 \includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
 \caption{Cycles in wall-clock times and core-cycle counts.}
 \label{fig:examples:cycles}

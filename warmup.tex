@@ -848,7 +848,7 @@ $n$ is the time series length minus the number of outliers) to the
 algorithm~\citep{killick12optimal}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
 of each segment. \laurie{Figure XXX shows an example. Should we use Figure 1 or does that
-cause too much backpage flipping?}
+cause too much backpage flipping?}\edd{I'm going to include changepoint means on all plots, so it's probably not worth pointing out examples}
 
 
 \subsection{Classifications}
@@ -1089,24 +1089,11 @@ an example of inconsistent process executions.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=.45\textwidth]{examples/new_warmup_no_migrate.pdf}
-\caption{An example of traditional warmup behaviour with the n-body benchmark on
-HHVM (process execution 4 of 10 run on \bencherthree). The run-sequence plot
-(bottom) shows that warmup completed by in-process iteration \#134. The
-core-cycle plot (top) shows that the main benchmark computation
-occurred almost entirely on core 1: cores 0, 2 and 3 Cycle Counts (CC)
-were low enough for us to classify them as `inactive', and we have thus elided them.
-\sarah{example from v0.7 data}}
-\label{fig:examples:trad}
-\vspace{-.2cm}
-\end{figure}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=.45\textwidth]{examples/new_no_steady.pdf}
+\includegraphics[width=.49\textwidth]{examples/new_no_steady.pdf}
 \caption{No steady state. There is a small behavioural shift around iteration
-950, where the VM migrates from (tickless) core 1 to (ticked) core 0.}
+950, where the VM migrates from (tickless) core 1 to (ticked) core 0.\edd{revise caption}}
 \label{fig:examples:nosteadystate}
+\edd{XXX add another figure here to save/utilise space}
 \end{figure}
 
 \begin{figure*}[t!]

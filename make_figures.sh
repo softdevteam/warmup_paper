@@ -1,4 +1,6 @@
 #!/bin/bash
+# XXX Refactoring in progress.
+# XXX if you edit this file, please move the figure into a make target.
 
 # Export size, suitable for --wallclock-only.
 EXPORT=4,4
@@ -16,15 +18,6 @@ WIDTH_2COL=5
 # In paper examples.
 #
 
-# new_warmup_no_migrate
-${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 3 --export-size ${WIDTH_2COL},5 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 --no-zoom --no-inset --with-changepoint-means ${BENCHER5_DATA} --with-outliers
-
-# changepoint_example
-${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher7:richards:Hotspot:default-java:14 ${BENCHER7_DATA} --core-cycles 0,1,2 --inset-xlimits 0,9
-
-# XXX everthing below needs to be re-done for the 0.8 data.
-exit 0
-
 # new_inconsistent
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${EXPORT} --wallclock-only -o examples/new_inconsistent.pdf -b bencher5:fasta:PyPy:default-python:6 -b bencher5:fasta:PyPy:default-python:7 ${BENCHER5_DATA}
 
@@ -33,9 +26,6 @@ ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_misc
 
 # new_good_comp
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_good_comp.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:1 ${BENCHER5_DATA}
-
-# new_no_steady
-${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_no_steady.pdf -b bencher5:binarytrees:PyPy:default-python:0 ${BENCHER5_DATA}
 
 # new_slowdown
 ${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 4,10 -o examples/new_slowdown.pdf -b bencher5:richards:Hotspot:default-java:1 ${BENCHER5_DATA}

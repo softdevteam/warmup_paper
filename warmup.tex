@@ -847,10 +847,10 @@ any single process execution being \result\% of in-process iterations.
 
 Intuitively, in order to uncover if/when warmup has completed, we need to
 determine when in-process iteration timings have `shifted' in nature (i.e.~become
-faster or slower). For example, for traditional warmup, we might expect to see a
+faster or slower). For example, for traditional warmup, we would expect to see a
 number of in-process executions taking time $t$ to be followed by a number at
 time $t'$ (where $t' < t$). Automating the detection of such `shifts' is
-tricky: simple heuristics suffer from both false positives and negatives; and
+tricky: simple heuristics suffer from both false positives and negatives~\cite{kalibera13rigorous}; and
 `I know it when I see it' manual detection is time-consuming and prone to human
 error.
 
@@ -869,45 +869,12 @@ $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
 algorithm~\citep{killick12optimal}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
-of each segment. \laurie{Figure XXX shows an example. Should we use Figure 1 or does that
-cause too much backpage flipping?}\edd{I'm going to include changepoint means on all plots, so it's probably not worth pointing out examples}
+of each segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
+changepoint segments in our context.
 
 
 \subsection{Classifications}
-
-\begin{figure}[t]
-\begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
-classification algorithm for an individual process execution. Given an ordered
-list of Segments -- each of which has "mean", "variance", and "end" attributes, the latter
-its absolute ending position in the sequence of in-process iterations --
-this function returns a string classifying the run sequence's warmup style.}]
-ABSOLUTE_DELTA   = 0.001 # Time in seconds to be used as a bound
-STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a steady state
-
-def classify(seq):
-  assert len(seq) > 0
-  last_seg = seq[len(seq) - 1]
-  lower_bound = last_seg.mean - max(last_seg.variance, ABSOLUTE_DELTA)
-  upper_bound = last_seg.mean + max(last_seg.variance, ABSOLUTE_DELTA)
-  cls = "flat"
-  i = len(seq) - 2
-  while i > -1:
-    cur_seg = seq[i]
-    i -= 1
-    if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
-      continue
-    elif cur_seg.end > len(seq) - STEADY_STATE_LEN:
-      cls = "no steady state"
-      break
-    elif cur_seg.mean < lower_bound:
-      cls = "slowdown"
-      break
-    assert(cur_seg.mean > upper_bound)
-    cls = "warmup"
-  return cls
-\end{lstlisting}
-\vspace{-.75cm}
-\end{figure}
+\label{sec:classifications}
 
 Building atop changepoint analysis, we can then define useful classifications
 for time series data from VM benchmarks.
@@ -931,8 +898,8 @@ mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
 segment which is clearly different. We therefore allow a small tolerance
-when comparing a segment $s_i$ against the final segment $s_f$: if $s_i$'s
-mean is within $s_f$'s mean $\pm$ $s_f$'s variance or 0.001s (whichever
+when comparing a segment $s_i$ against the final segment $s_f$: if the mean of $s_i$
+is within the mean of $s_f$ $\pm$ $s_f$'s variance or 0.001s (whichever
 is greater), we consider the two equivalent. The reason for these two types of tolerance
 is as follows. In short running benchmarks, a small number of external events can add an absolute
 level of noise: in our experience readings often vary by a
@@ -940,6 +907,40 @@ little under 0.001s. In long running benchmarks, any individual external
 event adds a relatively small relative amount of noise, but the cumulative
 effect of many external events can add up, which a changepoint's variance
 tends to naturally account for.
+
+\begin{figure}[t]
+\begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
+classification algorithm for an individual process execution. Given an ordered
+list of Segments -- each of which has "mean", "variance", and "end" attributes, the latter
+its absolute ending position in the sequence of in-process iterations --
+this function returns a string classifying the run sequence's warmup style.}]
+ABSOLUTE_DELTA   = 0.001 # Time in seconds to be used as a bound
+STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a steady state
+
+def classify(seq):
+  assert(len(seq) > 0)
+  last_seg = seq[len(seq) - 1]
+  lower_bound = last_seg.mean - max(last_seg.variance, ABSOLUTE_DELTA)
+  upper_bound = last_seg.mean + max(last_seg.variance, ABSOLUTE_DELTA)
+  cls = "flat"
+  i = len(seq) - 2
+  while i > -1:
+    cur_seg = seq[i]
+    i -= 1
+    if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
+      continue
+    elif cur_seg.end > len(seq) - STEADY_STATE_LEN:
+      cls = "no steady state"
+      break
+    elif cur_seg.mean < lower_bound:
+      cls = "slowdown"
+      break
+    assert(cur_seg.mean > upper_bound)
+    cls = "warmup"
+  return cls
+\end{lstlisting}
+\vspace{-.75cm}
+\end{figure}
 
 With that in mind, we can define a simple classification algorithm for a process
 execution, based on the special nature of the final changepoint segment. Since all our benchmarks run
@@ -958,8 +959,7 @@ We consider benchmarks whose behaviour is either flat or warmup
 as `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are either slowdown or no steady state are `bad'.
 
-Based on this, we can then classify a \vmbpair
-pair as follows:
+Based on this, we can then classify a \vmbpair pair as follows:
 if its process executions all share the same classification (e.g.~warmup) then
 we classify the pair the same way (in this example, warmup); otherwise we classify the pair as
 \emph{inconsistent}. There are then two sub-categories of inconsistent

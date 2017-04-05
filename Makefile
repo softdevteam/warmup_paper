@@ -25,7 +25,9 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		category_examples/slowdown/slowdown2.pdf \
 		category_examples/slowdown/slowdown3.pdf \
 		category_examples/nosteadystate/nosteadystate0.pdf \
-		category_examples/nosteadystate/nosteadystate1.pdf
+		category_examples/nosteadystate/nosteadystate1.pdf \
+		category_examples/nosteadystate/nosteadystate2.pdf \
+		category_examples/nosteadystate/nosteadystate3.pdf
 DIAGRAMS +=	${PLOTS}
 
 TABLES= dacapo.table startup.table \
@@ -161,4 +163,8 @@ category_examples/nosteadystate/nosteadystate0.pdf: ${ANN_RESULTS}
 category_examples/nosteadystate/nosteadystate1.pdf: ${ANN_RESULTS}
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate1.pdf -b bencher7:richards:LuaJIT:default-lua:3 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
-# XXX two more
+category_examples/nosteadystate/nosteadystate2.pdf: ${ANN_RESULTS}
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate2.pdf -b bencher5:binarytrees:HHVM:default-php:2 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
+
+category_examples/nosteadystate/nosteadystate3.pdf: ${ANN_RESULTS}
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate3.pdf -b bencher5:fasta:PyPy:default-python:18 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}

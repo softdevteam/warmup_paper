@@ -14,39 +14,39 @@ DeltaBlue&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
-\definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.97
-\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.10 0.03
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
 \sparkspike 0.40 0.00
-\sparkspike 0.50 0.00
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.50 0.87
+\definecolor{sparkspikecolor}{named}{black}
 \sparkspike 0.60 0.00
-\sparkspike 0.70 0.00
+\sparkspike 0.70 0.03
 \sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
-\sparkspike 1.00 0.03
+\sparkspike 1.00 0.07
 \sparkbottomline
 \end{sparkline}}
 &$
 \begin{array}{r}
 \scriptstyle{0.94} \\[-6pt]
-\scriptscriptstyle{(0.922, 2.358)}
+\scriptscriptstyle{(0.920, 1.917)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
-\definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.97
-\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.10 0.03
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
-\sparkspike 0.40 0.00
-\sparkspike 0.50 0.00
-\sparkspike 0.60 0.00
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.40 0.73
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.50 0.13
+\sparkspike 0.60 0.03
 \sparkspike 0.70 0.00
 \sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
-\sparkspike 1.00 0.03
+\sparkspike 1.00 0.07
 \sparkbottomline
 \end{sparkline}}
 &$
@@ -137,44 +137,44 @@ $
 \end{sparkline}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($19$\warmup, $9$\flatc, $2$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{5} \\[-6pt]
-\scriptscriptstyle{(2, 1692)}
+\scriptstyle{2} \\[-6pt]
+\scriptscriptstyle{(1, 40)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.77
+\sparkspike 0.10 0.87
 \definecolor{sparkspikecolor}{named}{black}
-\sparkspike 0.20 0.03
+\sparkspike 0.20 0.07
 \sparkspike 0.30 0.00
-\sparkspike 0.40 0.03
+\sparkspike 0.40 0.00
 \sparkspike 0.50 0.00
-\sparkspike 0.60 0.03
+\sparkspike 0.60 0.00
 \sparkspike 0.70 0.03
 \sparkspike 0.80 0.00
-\sparkspike 0.90 0.03
-\sparkspike 1.00 0.07
+\sparkspike 0.90 0.00
+\sparkspike 1.00 0.03
 \sparkbottomline
 \end{sparkline}}
 &$
 \begin{array}{r}
-\scriptstyle{3.18} \\[-6pt]
-\scriptscriptstyle{(0.807, 1340.395)}
+\scriptstyle{0.81} \\[-6pt]
+\scriptscriptstyle{(0.000, 30.462)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.77
+\sparkspike 0.10 0.87
 \definecolor{sparkspikecolor}{named}{black}
-\sparkspike 0.20 0.03
+\sparkspike 0.20 0.07
 \sparkspike 0.30 0.00
-\sparkspike 0.40 0.03
+\sparkspike 0.40 0.00
 \sparkspike 0.50 0.00
-\sparkspike 0.60 0.03
+\sparkspike 0.60 0.00
 \sparkspike 0.70 0.03
 \sparkspike 0.80 0.00
-\sparkspike 0.90 0.03
-\sparkspike 1.00 0.07
+\sparkspike 0.90 0.00
+\sparkspike 1.00 0.03
 \sparkbottomline
 \end{sparkline}}
 &$
@@ -265,12 +265,12 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($25$\warmup, $5$\flatc)}&$
 \begin{array}{r}
 \scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 33)}
+\scriptscriptstyle{(1, 5)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.93
+\sparkspike 0.10 0.97
 \definecolor{sparkspikecolor}{named}{black}
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -278,7 +278,7 @@ $
 \sparkspike 0.50 0.00
 \sparkspike 0.60 0.00
 \sparkspike 0.70 0.00
-\sparkspike 0.80 0.03
+\sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
@@ -286,12 +286,12 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.91} \\[-6pt]
-\scriptscriptstyle{(0.899, 28.649)}
+\scriptscriptstyle{(0.000, 3.282)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.93
+\sparkspike 0.10 0.97
 \definecolor{sparkspikecolor}{named}{black}
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -299,7 +299,7 @@ $
 \sparkspike 0.50 0.00
 \sparkspike 0.60 0.00
 \sparkspike 0.70 0.00
-\sparkspike 0.80 0.03
+\sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline

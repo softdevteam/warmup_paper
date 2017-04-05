@@ -206,38 +206,38 @@ $
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.67
+\sparkspike 0.10 0.60
 \definecolor{sparkspikecolor}{named}{black}
-\sparkspike 0.20 0.03
-\sparkspike 0.30 0.07
-\sparkspike 0.40 0.03
-\sparkspike 0.50 0.07
-\sparkspike 0.60 0.00
+\sparkspike 0.20 0.13
+\sparkspike 0.30 0.00
+\sparkspike 0.40 0.07
+\sparkspike 0.50 0.03
+\sparkspike 0.60 0.07
 \sparkspike 0.70 0.00
-\sparkspike 0.80 0.10
+\sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
-\sparkspike 1.00 0.03
+\sparkspike 1.00 0.10
 \sparkbottomline
 \end{sparkline}}
 &$
 \begin{array}{r}
 \scriptstyle{0.81} \\[-6pt]
-\scriptscriptstyle{(0.806, 12.591)}
+\scriptscriptstyle{(0.805, 12.230)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.67
+\sparkspike 0.10 0.60
 \definecolor{sparkspikecolor}{named}{black}
-\sparkspike 0.20 0.07
-\sparkspike 0.30 0.07
+\sparkspike 0.20 0.13
+\sparkspike 0.30 0.00
 \sparkspike 0.40 0.07
-\sparkspike 0.50 0.00
-\sparkspike 0.60 0.00
-\sparkspike 0.70 0.03
-\sparkspike 0.80 0.07
+\sparkspike 0.50 0.03
+\sparkspike 0.60 0.07
+\sparkspike 0.70 0.00
+\sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
-\sparkspike 1.00 0.03
+\sparkspike 1.00 0.10
 \sparkbottomline
 \end{sparkline}}
 &$
@@ -328,43 +328,43 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($28$\warmup, $2$\flatc)}&$
 \begin{array}{r}
 \scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 5)}
+\scriptscriptstyle{(2, 4)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
-\definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.87
-\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.10 0.07
 \sparkspike 0.20 0.00
-\sparkspike 0.30 0.00
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.30 0.87
+\definecolor{sparkspikecolor}{named}{black}
 \sparkspike 0.40 0.00
 \sparkspike 0.50 0.00
 \sparkspike 0.60 0.00
 \sparkspike 0.70 0.00
-\sparkspike 0.80 0.10
+\sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
-\sparkspike 1.00 0.03
+\sparkspike 1.00 0.07
 \sparkbottomline
 \end{sparkline}}
 &$
 \begin{array}{r}
 \scriptstyle{0.98} \\[-6pt]
-\scriptscriptstyle{(0.972, 3.887)}
+\scriptscriptstyle{(0.437, 2.588)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
-\definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.87
-\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.10 0.07
 \sparkspike 0.20 0.00
-\sparkspike 0.30 0.00
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.30 0.87
+\definecolor{sparkspikecolor}{named}{black}
 \sparkspike 0.40 0.00
 \sparkspike 0.50 0.00
 \sparkspike 0.60 0.00
 \sparkspike 0.70 0.00
-\sparkspike 0.80 0.10
+\sparkspike 0.80 0.00
 \sparkspike 0.90 0.00
-\sparkspike 1.00 0.03
+\sparkspike 1.00 0.07
 \sparkbottomline
 \end{sparkline}}
 &$

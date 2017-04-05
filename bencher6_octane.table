@@ -11,44 +11,44 @@ DeltaBlue&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{
 Earley&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($25$\nosteadystate, $4$\slowdown, $1$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 Encrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($21$\warmup, $8$\flatc, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{41} \\[-6pt]
-\scriptscriptstyle{(2, 1828)}
+\scriptstyle{5} \\[-6pt]
+\scriptscriptstyle{(1, 90)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.83
+\sparkspike 0.10 0.60
 \definecolor{sparkspikecolor}{named}{black}
-\sparkspike 0.20 0.00
-\sparkspike 0.30 0.03
+\sparkspike 0.20 0.03
+\sparkspike 0.30 0.07
 \sparkspike 0.40 0.00
 \sparkspike 0.50 0.03
 \sparkspike 0.60 0.00
-\sparkspike 0.70 0.00
+\sparkspike 0.70 0.10
 \sparkspike 0.80 0.00
-\sparkspike 0.90 0.00
-\sparkspike 1.00 0.10
+\sparkspike 0.90 0.13
+\sparkspike 1.00 0.03
 \sparkbottomline
 \end{sparkline}}
 &$
 \begin{array}{r}
-\scriptstyle{31.61} \\[-6pt]
-\scriptscriptstyle{(0.812, 1439.387)}
+\scriptstyle{3.17} \\[-6pt]
+\scriptscriptstyle{(0.000, 70.168)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
-\sparkspike 0.10 0.83
+\sparkspike 0.10 0.60
 \definecolor{sparkspikecolor}{named}{black}
-\sparkspike 0.20 0.00
-\sparkspike 0.30 0.03
+\sparkspike 0.20 0.03
+\sparkspike 0.30 0.07
 \sparkspike 0.40 0.00
 \sparkspike 0.50 0.03
 \sparkspike 0.60 0.00
-\sparkspike 0.70 0.00
-\sparkspike 0.80 0.00
-\sparkspike 0.90 0.00
-\sparkspike 1.00 0.10
+\sparkspike 0.70 0.07
+\sparkspike 0.80 0.03
+\sparkspike 0.90 0.10
+\sparkspike 1.00 0.07
 \sparkbottomline
 \end{sparkline}}
 &$
@@ -75,7 +75,7 @@ $
 \\ 
 NavierStokes&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($28$\warmup, $2$\flatc)}&$
 \begin{array}{r}
-\scriptstyle{54} \\[-6pt]
+\scriptstyle{33} \\[-6pt]
 \scriptscriptstyle{(2, 102)}
 \end{array}
 $
@@ -96,8 +96,8 @@ $
 \end{sparkline}}
 &$
 \begin{array}{r}
-\scriptstyle{47.15} \\[-6pt]
-\scriptscriptstyle{(0.908, 89.626)}
+\scriptstyle{28.10} \\[-6pt]
+\scriptscriptstyle{(0.407, 89.626)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\begin{sparkline}{3}

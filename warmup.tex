@@ -206,8 +206,10 @@ compiles them into machine code; after
 compilation has occurred, the program is said to be at a steady state of peak performance.
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
-performance. We introduce a new model for determining when warmup has completed based
-on changepoint analysis. Using this, we show that even when run in the
+performance. We introduce a new automated approach to determining when warmup has completed -- based
+on changepoint analysis -- which allows us to classify if a program
+has reached a steady states and, if so, whether that represents peak
+performance or not. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs: across 3 benchmarking machines only \mintwo--\maxtwo\% of
@@ -250,7 +252,9 @@ The fundamental aim of this paper is to test, in a highly idealised setting, the
 \begin{description}
   \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
 \end{description}
-We deliberately chose widely studied microbenchmarks, and ran them in a heavily
+In order to address this hypothesis, we had to develop a new approach to
+automatically analysing large quantities of VM data. We deliberately chose
+widely studied microbenchmarks, and ran them in a heavily
 controlled environment, designed to minimise measurement noise. By doing so, we
 maximised the chances that our experiment would validate Hypothesis H1. Instead
 we encountered many benchmarks which slowdown, never hit a steady
@@ -263,10 +267,16 @@ state of peak performance.
 These results are significantly worse than reported in previous works, and worse
 than expected by VM teams we have spoken to. Our results suggest
 that much real-world VM benchmarking is likely to be partly or wholly
-misleading. This has real-world consequences, as microbenchmarks similar to those
-in this paper are often used to gauge the efficacy of VM optimisations. In
-light of our findings, such optimisations may be ineffective and possibly
-deleterious.
+misleading. This has two real-world consequences. Most obviously, microbenchmarks similar to those
+in this paper are often used in isolation to gauge the efficacy of VM optimisations;
+our findings suggest that some such optimisations may be ineffective or even
+deleterious. More subtly, it suggests that large programs which appear to have
+fairly predictable performance may have significant sub-parts which are behaving
+unpredictably, but which, in large numbers, tend to be lost in the noise. Put
+another way, it may be that we are being misled as to the ultimate performance
+`ceiling' of large programs due to the effects we observe on microbenchmarks
+(i.e.~we may be unduly pessimistic about the possible performance of large
+programs).
 
 
 \subsection{Overview of the Methodology}
@@ -339,7 +349,7 @@ some of the effects we see, it does not explain many others.
 
 In summary, this paper's contributions are as follows:
 \begin{enumerate}
-    \item We show that, even in a highly idealised setting, simple benchmarks
+    \item We show that, even in a highly idealised setting, widely studied benchmarks
 often fail to warmup.
     \item We present the first automated approach to analysing VM
 time series data that can automatically determine if and when a steady state has been

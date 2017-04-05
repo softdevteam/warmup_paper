@@ -281,8 +281,6 @@ programs).
 
 \subsection{Overview of the Methodology}
 
-\edd{XXX check all blurbs and captions, as the figures have changed}
-
 We present a carefully designed experiment where benchmarks are run for 2000
 \emph{in-process iterations} and repeated using 30 fresh \emph{process
 executions} (i.e.~each process execution runs multiple in-process iterations).
@@ -352,7 +350,7 @@ unexpected performance patterns that previous methodologies have conflated.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the
-effects of garbage collection and JIT compilation. While this explains
+effects of Garbage Collection (GC) and JIT compilation. While this explains
 some of the effects we see, it does not explain many others.
 
 
@@ -368,7 +366,7 @@ reached.
     \item We present the first classification of different styles of
 steady state behaviour (warmup, slowdown, flat).
     \item We show that, while some instances of `odd' behaviour are explained by
-the `obvious' factors of garbage collection and JIT compilation, many are not.
+the `obvious' factors of GC and JIT compilation, many are not.
 \end{enumerate}
 
 We present supporting material in the Appendix: we show that our
@@ -450,11 +448,12 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 
 To test Hypothesis H1, we designed an experiment which uses a suite of
 micro-benchmarks: each is run with 2000 in-process iterations and repeated
-using 10 process executions. We have carefully designed our
+using 30 process executions. We have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical. In this section we detail: the benchmarks we used and the modifications we
 applied; the VMs we benchmarked; the machines we used for benchmarking; and the
-\krun system we developed to run benchmarks.
+\krun system we developed to run benchmarks. The results from the experiment
+can be seen in Section~\ref{sec:results}.
 
 
 \subsection{The Micro-benchmarks}
@@ -514,7 +513,7 @@ way that we could observe. We
 solved this by adding an empty static method to each benchmark, which our
 extra classes then call via a static initialiser, guaranteeing that
 the main benchmark class is eagerly loaded. Note that we do not attempt to eagerly
-load other classes: lazy loading is an inherent part of the JVM specification,
+load other classes: lazy loading is an inherent to the JVM specification,
 and part of what we need to measure.
 
 
@@ -569,11 +568,10 @@ We deliberately use the word `moderately', since significant changes of hardware
 (e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) imply that
 significantly different parts of the VMs will be used (see Section~\ref{sec:threats}).
 
-\sarah{bencher 3 is now bencher7 in the v0.8 data}
-In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherthree}, a quad-core i7-4790K
-4GHz, 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
+In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherseven}, a Xeon E3-1240 v5 3.5GHz,
+24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
 3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, a quad-core i7-4790
-3.6GHz, 32GB of RAM, running OpenBSD 5.8. \bencherthree and \bencherfive
+3.6GHz, 32GB of RAM, running OpenBSD 5.8. \bencherseven and \bencherfive
 have the same OS (with the same updates etc.) but different hardware; \bencherfive
 and \benchersix have the same hardware (to the extent we can determine)
 but different operating systems.
@@ -839,7 +837,7 @@ sliding window of 200 in-process iterations, lies outside the median $\pm
 3*(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warm-up iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
-iterations. Of the \totaliterations\xspace in-process
+iterations. \laurie{check for 0.8}Of the \totaliterations\xspace in-process
 iterations, \totaloutlierspercentage\% are classified as outliers, with the most for
 \FPeval{\result}{round(2000.0 / \maximumoutliers, 1)}%
 any single process execution being \result\% of in-process iterations.
@@ -1064,15 +1062,15 @@ process executions. On \bencherfive
 \bencherfivevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
 and \sarah{was: \\bencherfivevmbenchpairsinconsistentpercentage\%} are inconsistent
 (with over two thirds of those being obviously `bad'); \bencherfive and
-\benchersix are broadly similar. Taking \bencherthree as an example,
+\benchersix are broadly similar. Taking \bencherseven as an example,
 one third of its \vmbpair pairs are `bad', clearly invalidating
 Hypothesis H1.
 
-Table~\ref{tab:summarystats} clearly shows that the results from \bencherthree
+Table~\ref{tab:summarystats} clearly shows that the results from \bencherseven
 and \bencherfive (both running Linux but on moderately different hardware) are
 comparable, with the relative proportions of all measures being only a few
 percent different. \benchersix (running OpenBSD, but on the same hardware as
-\bencherthree) is somewhat different. This is in large part because it
+\bencherseven) is somewhat different. This is in large part because it
 is unable to run benchmarks on Graal, HHVM, and JRuby+Truffle (see
 Section~\ref{openbsd porting}): of the benchmarks it can run, most behave
 similarly, with the notable exception of LuaJIT, whose benchmarks are more often
@@ -1163,6 +1161,7 @@ in-process iterations whilst JIT compilation occurs.
 
 \subsection{Cyclic data}
 
+\laurie{edd: we need to update this section}
 We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process
@@ -1240,7 +1239,7 @@ executions (for startup, in-process executions are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
 time).
 
-Table~\ref{fig:startup} shows startup times from both \bencherthree and \benchersix. Since
+Table~\ref{fig:startup} shows startup times from both \bencherseven and \benchersix. Since
 \krun reboots before each process execution, these are measures of a `cold'
 start and thus partly reflect disk speed etc. (though both machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:

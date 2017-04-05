@@ -302,15 +302,17 @@ indication as to whether the steady state represents peak performance of not.
 \includegraphics[width=.49\textwidth]{examples/new_warmup_no_migrate.pdf}
 \hspace{\fill}
 \includegraphics[width=.49\textwidth]{examples/changepoint_example.pdf}
-\caption{Two examples of run-sequence plots from our experiment, augmented
+\caption{\laurie{i don't think we want to introduce cycle counts for these early examples if we can avoid it: it's just one more thing to explain to readers} \laurie{also, for simplicities sake, let's use an example where the steady state is a single segment (like the LHS example above, but not like the RHS)} \laurie{it would also be good to use insets in both the LHS and RHS for consistency} Two examples of run-sequence plots from our experiment, augmented
 with the results of changepoint analysis. The LHS plot
-shows an example of `traditional' warmup plot (in this case \nbody on HHVM);
+shows an example of `traditional' warmup (in this case \nbody on HHVM);
 the RHS plot shows an example of slowdown (\richards on HotSpot). Changepoints
 are the vertical red lines, and denote a `shift' in the nature of the time series
 data; changepoint segments are the horizontal red lines between changepoints; red circles are `outliers'
 which the changepoint analysis discounts when finding changepoints. We use the changepoint
-segments are used to automatically classify plots' warmup style (in this example, warmup and
-slowdown respectively).
+segments to determine if and when a steady state has been reached and,
+if so, to classify the plots' warmup style (in this example, warmup and
+slowdown respectively). As an additional visual aid, the steady state iteration
+timings are plotted in black; those preceding the steady state are plotted in grey.
 }
 \label{fig:changepoint}
 \end{figure}

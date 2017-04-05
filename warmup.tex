@@ -971,15 +971,45 @@ vs.~flat execution and we prefer to assume that we are at fault rather
 than the VM. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience poor performance.
 
+
 \subsection{Timings}
 
-For benchmarks which reach a steady state (i.e.~are \flatc, \warmup, or
-\slowdown; or are inconsistent but only contain \flatc, \warmup, or \slowdown)
-we report the number of iterations and the time in seconds to reach the steady state,
-as well as the performance of the steady state itself in seconds (defined as
-the final changepoint segment's mean). \laurie{this needs updating} For the latter two measures, we report the median time
-over all 10 process executions, and report 99\% confidence intervals (bootstrapped
-with 10000 iterations, sampling with replacement).
+For benchmarks whose process executions all which reach a steady state (i.e.~are
+any combination of \flatc, \warmup, or \slowdown) we report the number of
+iterations (`steady iter (\#)') and the time in seconds (`steady iter (s)') to
+reach the steady state, as well as the performance of the steady state itself in
+seconds (`steady perf (s)').
+
+Steady iter (\#) and steady iter (s) allow one to understand how long it takes
+a benchmark to reach a steady state, and are made possible by our use of changepoint
+analysis. Flat process executions by definition have a steady iter (\#) of 1 and
+a steady iter (s) of 0; we elide these details for benchmarks
+which are consistently flat. Benchmarks which contain a mix of flat and non-flat
+process executions then often end up with a variety of distributions (e.g.~if 15
+process executions are flat and 15 are warmup, one ends up with, at best, a
+binominal distribution) which makes reporting standard confidence intervals
+impossible. We therefore use Inter-Quartile Ranges (IQRs) to give an indication of the
+spread of values, reporting the 5\% and 95\% percentiles \laurie{nearest or
+linear or ...?}. Non-overlapping IQRs imply a meaningful difference in the steady iter (\#) or
+(s) values of a benchmark run on two VMs; however, since the IQRs are often
+widely spread, we are often unable to make such comparisons. To give a more
+nuanced view than IQRs can report we also provide thumbnail histograms.
+
+Steady perf (s) roughly corresponds to the `normal' performance number reported
+in most VM papers. In our case, the steady state is composed of one or more
+segments (see Section~\ref{sec:classifications}). We report means and
+\laurie{95\% or 99\%? i think we can do the latter?} confidence intervals
+calculated via \laurie{XXX rounds of} bootstrapping. We use standard
+bootstrapping, which assumes that the timings within each segment are
+independent. Although timings within segments are not always independent (see
+Section~\ref{sec:cyclic}), `large' degrees of independence lead to
+non-equivalent segments, meaning that at worst we can only bootstrap data with
+`small' degrees of independence. We are therefore fairly safe in bootstrapping
+such data. However, since the values in different segments are clearly not
+independent, we sample values within, and never across, segments (e.g.~if a
+steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
+$B$ to produce $B'$; we then union $A'$ and $B'$ to produce a new bootstrapped
+steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 
 
 \section{Results}
@@ -1160,6 +1190,7 @@ in-process iterations whilst JIT compilation occurs.
 
 
 \subsection{Cyclic data}
+\label{sec:cyclic}
 
 \laurie{edd: we need to update this section}
 We suspected that enough benchmarks

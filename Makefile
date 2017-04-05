@@ -66,7 +66,7 @@ softdevbib:
 	git clone https://github.com/softdevteam/softdevbib.git
 
 TEXMFHOME="../../share/texmf"
-${LATEX_SIGPLAN}.pdf: ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
+${LATEX_SIGPLAN}.pdf: ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 		${CODE} bib.bib ${TABLES} summary_macros.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
@@ -91,80 +91,77 @@ EXPERIMENT_REPO=../warmup_experiment
 BENCHER5_DATA=annotated_results/warmup_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2
 BENCHER6_DATA=annotated_results/warmup_results_0_8_openbsd1_i7_4790_outliers_w200_changepoints.json.bz2
 BENCHER7_DATA=annotated_results/warmup_results_0_8_linux3_e3_1240_outliers_w200_changepoints.json.bz2
-ANN_RESULTS=${BENCHER5_DATA} ${BENCHER6_DATA} ${BENCHER7_DATA}
 
 # Use this for side-by-side plots, then adjust the height manually until it
 # looks ok. Make sure the cell width in tex is .49\textwidth.
 WIDTH_2COL=5
 
 # Plots in the main paper body
-examples/new_warmup_no_migrate.pdf: ${ANN_RESULTS}
-	${EXPERIMENT_REPO}/bin/plot_krun_results --core-cycles 3 --export-size ${WIDTH_2COL},5 -o examples/new_warmup_no_migrate.pdf -b bencher5:nbody:HHVM:default-php:3 --no-zoom --no-inset --with-changepoint-means ${BENCHER5_DATA} --with-outliers
+examples/new_warmup_no_migrate.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_warmup_no_migrate.pdf -b bencher5:binarytrees:Hotspot:default-java:4 --wallclock-only --with-changepoint-means --with-outliers --inset-xlimits 0,10 ${BENCHER5_DATA}
 
-examples/changepoint_example.pdf: ${ANN_RESULTS}
-	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher7:richards:Hotspot:default-java:14 ${BENCHER7_DATA} --core-cycles 0,1,2 --inset-xlimits 0,9
+examples/changepoint_example.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 --with-changepoint-means --with-outliers -o examples/changepoint_example.pdf -b bencher7:richards:Hotspot:default-java:14 ${BENCHER7_DATA} --wallclock-only --inset-xlimits 0,10
 
-examples/new_no_steady.pdf: ${ANN_RESULTS}
+examples/new_no_steady.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_no_steady.pdf -b bencher5:binarytrees:V8:default-javascript:23 ${BENCHER5_DATA} --no-zoom --with-outliers --with-changepoint-means
 
-examples/new_inconsistent.pdf: ${ANN_RESULTS}
+examples/new_inconsistent.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 6,4 --no-zoom -o examples/new_inconsistent.pdf -b bencher6:fannkuch_redux:LuaJIT:default-lua:24 -b bencher6:fannkuch_redux:LuaJIT:default-lua:9 --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
 
-# XXX you missed the slowdown case edd!
-
-examples/new_cyclic.pdf: ${ANN_RESULTS}
+examples/new_cyclic.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 --no-zoom --inset-xlimits 600,1000 --core-cycles 1 --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
 # Plots in the appendix
 
 # warmup
-category_examples/warmup/warmup0.pdf: ${ANN_RESULTS}
-	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/warmup/warmup0.pdf -b bencher5:binarytrees:Hotspot:default-java:4 --no-zoom --wallclock-only --with-changepoint-means --with-outliers --inset-xlimits 0,12 ${BENCHER5_DATA}
+category_examples/warmup/warmup0.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/warmup/warmup0.pdf -b bencher6:fannkuch_redux:LuaJIT:default-lua:11 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
 
-category_examples/warmup/warmup1.pdf: ${ANN_RESULTS}
+category_examples/warmup/warmup1.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/warmup/warmup1.pdf -b bencher6:fannkuch_redux:PyPy:default-python:7 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
 
-category_examples/warmup/warmup2.pdf: ${ANN_RESULTS}
+category_examples/warmup/warmup2.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/warmup/warmup2.pdf -b bencher5:fasta:V8:default-javascript:14 --inset-xlimits 0,12 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
-category_examples/warmup/warmup3.pdf: ${ANN_RESULTS}
+category_examples/warmup/warmup3.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/warmup/warmup3.pdf -b bencher7:spectralnorm:PyPy:default-python:12 --no-zoom --wallclock-only --inset-xlimits 0,30 --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
 # Flat
-category_examples/flat/flat0.pdf: ${ANN_RESULTS}
+category_examples/flat/flat0.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/flat/flat0.pdf -b bencher5:fasta:LuaJIT:default-lua:21 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
-category_examples/flat/flat1.pdf: ${ANN_RESULTS}
+category_examples/flat/flat1.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/flat/flat1.pdf -b bencher7:fasta:C:default-c:13 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
-category_examples/flat/flat2.pdf: ${ANN_RESULTS}
+category_examples/flat/flat2.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/flat/flat2.pdf -b bencher7:nbody:PyPy:default-python:5 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
-category_examples/flat/flat3.pdf: ${ANN_RESULTS}
-	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/flat/flat3.pdf -b bencher6:fannkuch_redux:LuaJIT:default-lua:11 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
+category_examples/flat/flat3.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/flat/flat3.pdf -b bencher7:nbody:V8:default-javascript:4 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
 # slowdown
-category_examples/slowdown/slowdown0.pdf: ${ANN_RESULTS}
+category_examples/slowdown/slowdown0.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/slowdown/slowdown0.pdf -b bencher6:fasta:Hotspot:default-java:29 --no-zoom --wallclock-only --with-changepoint-means --with-outliers --inset-xlimits 0,20 ${BENCHER6_DATA}
 
-category_examples/slowdown/slowdown1.pdf: ${ANN_RESULTS}
+category_examples/slowdown/slowdown1.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/slowdown/slowdown1.pdf -b bencher5:fasta:V8:default-javascript:13 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
-category_examples/slowdown/slowdown2.pdf: ${ANN_RESULTS}
+category_examples/slowdown/slowdown2.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/slowdown/slowdown2.pdf -b bencher7:richards:JRubyTruffle:default-ruby:29 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
-category_examples/slowdown/slowdown3.pdf: ${ANN_RESULTS}
+category_examples/slowdown/slowdown3.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/slowdown/slowdown3.pdf -b bencher7:spectralnorm:Graal:default-java:24 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
 # no steady state
-category_examples/nosteadystate/nosteadystate0.pdf: ${ANN_RESULTS}
+category_examples/nosteadystate/nosteadystate0.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate0.pdf -b bencher5:binarytrees:C:default-c:18 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
-category_examples/nosteadystate/nosteadystate1.pdf: ${ANN_RESULTS}
+category_examples/nosteadystate/nosteadystate1.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate1.pdf -b bencher7:richards:LuaJIT:default-lua:3 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
-category_examples/nosteadystate/nosteadystate2.pdf: ${ANN_RESULTS}
+category_examples/nosteadystate/nosteadystate2.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate2.pdf -b bencher5:binarytrees:HHVM:default-php:2 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
-category_examples/nosteadystate/nosteadystate3.pdf: ${ANN_RESULTS}
+category_examples/nosteadystate/nosteadystate3.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate3.pdf -b bencher5:fasta:PyPy:default-python:18 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}

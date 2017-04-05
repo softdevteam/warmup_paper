@@ -135,6 +135,17 @@ $\begin{array}{rr}
 \end{array}$
 }
 
+%
+% Set sparkline values for histograms.
+%
+\setlength\sparkspikewidth{1pt}
+\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\definecolor{sparkbottomlinecolor}{gray}{0.8}
+% Older versions of sparklines do not expose bottomlinethickness
+\renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
+  \color{sparkbottomlinecolor}%
+  \pgfline{\pgfxy(0,0)}{\pgfxy(#1,0)}\color{sparklinecolor}}
+
 \lstset{
     basicstyle=\tt\scriptsize,
     xleftmargin=2em,

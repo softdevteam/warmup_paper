@@ -48,18 +48,18 @@
 \newcommand{\mvmbtrip}{$\langle$machine, VM, benchmark$\rangle$\xspace}
 
 \DeclareRobustCommand{\flatc}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.35
        0.9 0.35
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 
 \DeclareRobustCommand{\nosteadystate}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.2
@@ -69,11 +69,11 @@
        0.74 0.2
        0.90 0.5
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 \DeclareRobustCommand{\warmup}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.8
@@ -81,11 +81,11 @@
        0.5 0.0
        0.9 0.0
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 \DeclareRobustCommand{\slowdown}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.0
@@ -93,11 +93,11 @@
        0.5 0.8
        0.9 0.8
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 \DeclareRobustCommand{\inconsistent}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.4
@@ -109,11 +109,11 @@
 \spark 0.1 0.6
        0.9 0.0
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 \DeclareRobustCommand{\badinconsistent}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.4
@@ -128,11 +128,11 @@
 \spark 0.1 0.0
        0.9 0.6
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 \DeclareRobustCommand{\goodinconsistent}{%
-\renewcommand{\sparklineheight}{1.75}  % 1.75 by default.
+\renewcommand{\sparklineheight}{1.75}% 1.75 by default.
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
 \spark 0.1 0.4
@@ -141,8 +141,8 @@
 \spark 0.1 0.2
        0.9 0.2
        /%
-\end{sparkline}\xspace
-\renewcommand{\sparklineheight}{2.75}  % 1.75 by default.
+\end{sparkline}\xspace%
+\renewcommand{\sparklineheight}{2.75}% 1.75 by default.
 }
 
 \input{outlier_summaries.tex}
@@ -1079,7 +1079,7 @@ Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 \begin{table*}[hptb]
 \vspace{1cm}
 % Fudge factor of 5 rather than 2 here to leave room for the caption.
-\begin{adjustbox}{totalheight=11.5cm}
+\begin{adjustbox}{totalheight=12.1cm}
 \input{bencher7.table}
 \end{adjustbox}
 \caption{Benchmark results for \bencherseven. For processes which reach a steady

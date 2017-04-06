@@ -27,7 +27,7 @@
 \usepackage{mdwlist}
 \usepackage{pifont}
 \usepackage{xspace}
-
+\usepackage{pdflscape}
 \usepackage{sparklines}
 
 \newcommand{\kalibera}{Kalibera \& Jones\xspace}
@@ -1075,10 +1075,11 @@ Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 \label{tab:summarystats}
 \end{table}
 
+\begin{landscape}
 \begin{table*}[hptb]
-\centering
+\vspace{1cm}
 % Fudge factor of 5 rather than 2 here to leave room for the caption.
-\begin{adjustbox}{totalheight=\textheight-5\baselineskip}
+\begin{adjustbox}{totalheight=11.5cm}
 \input{bencher7.table}
 \end{adjustbox}
 \caption{Benchmark results for \bencherseven. For processes which reach a steady
@@ -1091,6 +1092,7 @@ constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slow
 2 of the process executions were slowdown, and 8 warmup.}
 \label{tab:mainresults}
 \end{table*}
+\end{landscape}
 
 % v0.7 calculations: Excluding the empty benchmark we have:
 %  Linux: 6 benchmarks, 8 VMs == 48 benchmarks *but* we skip 2

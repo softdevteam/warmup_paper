@@ -1391,6 +1391,16 @@ created a system that shows warmup effects that few people will ever see in
 practise. However, our judgement is that this is preferable to running on a
 system that is likely to introduce substantial noise into our readings.
 
+Current changepoint analysis algorithms -- including the PELT algorithm we use
+-- assume that the time-series data is independent, which our in-process
+iteration timings are clearly not. In practise, this does not appear to be an
+issue: we manually inspected a large number of benchmarks and found that the
+changepoints identified were rarely much worse, and in the vast majority of
+cases better than, our initial manual attempts. Given the large number of
+plots to analyse \laurie{can we quantify this?}, it is extremely unlikely that
+we would have been able to do anywhere near as good a job manually as
+changepoint analysis does automatically.
+
 
 \section{Related work}
 

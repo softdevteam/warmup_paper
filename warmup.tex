@@ -325,24 +325,24 @@ indication as to whether the steady state represents peak performance of not.
 \includegraphics[width=.49\textwidth]{examples/new_warmup_no_migrate.pdf}
 \hspace{\fill}
 \includegraphics[width=.49\textwidth]{examples/changepoint_example.pdf}
-\caption{Two examples of run-sequence plots from our experiment, augmented
+\caption{Two example run-sequence plots from our results, augmented
 with the results of changepoint analysis. The LHS plot
 shows an example of `traditional' warmup (in this case \nbody on HHVM);
 the RHS plot shows an example of slowdown (\richards on HotSpot). The
-label at the top shows the benchmark (e.g.~\binarytrees), the VM (e.g.~HotSpot),
-the machine (e.g.~\bencherseven), the process execution number (e.g.~5),
-and the classification (e.g.~warmup). The `main'
-plot at the bottom always shows the complete data (i.e.~all 2000
-in-process iterations, and a $y$ axis which allows the timings for all those
-in-process iterations to be seen). Because this often obscures the finer
+plot titles show: the benchmark (e.g.~\binarytrees); the VM (e.g.~HotSpot),
+the machine (e.g.~\bencherseven); the process execution number (e.g.~5);
+and the automatic classification (e.g.~warmup). The `main'
+plot at the bottom always shows the in-process iteration number (indexed from 1) versus the corresponding wallclock times for all 2000
+in-process iterations.
+Because this often obscures the finer
 details, we also show two additional visualisations of the data: the top plot
 shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the bulk of the
-in-process timing data is located; the inset plot allows us to examine a handful
+in-process timing data is located; the smaller inset plot allows us to examine a handful
 of in-process iteration timings (typically, though not always, the first $n$,
 allowing us to see the `warmup curve' if/when it exists). Changepoints
-are the vertical red lines, and denote a `shift' in the nature of the time series
-data; changepoint segments are the horizontal red lines between changepoints; red circles are `outliers'
-which the changepoint analysis discounts when finding changepoints. We use the changepoint
+are indicated by vertical red lines and denote a `shift' performance behaviour;
+changepoint segments are indicated by horizontal red lines between changepoints; and red circles indicate `outliers'
+(which the changepoint analysis discounts). We use the changepoint
 segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, the steady state iteration
@@ -376,7 +376,7 @@ In summary, this paper's contributions are as follows:
 \begin{enumerate}
     \item We show that, even in a highly idealised setting, widely studied benchmarks
 often fail to warmup.
-    \item We present the first automated approach to analysing VM
+    \item We present the first automated approach to analysing benchmarking
 time series data that can automatically determine if and when a steady state has been
 reached.
     \item We present the first classification of different styles of
@@ -394,6 +394,7 @@ separate document contains the complete plots of all data from all machines.
 The repeatable experiment we designed, as well as the specific results used
 in this paper, can be downloaded from:
 \vspace{-.5em}
+\edd{urls are usually in typewriter, not sure why this one is not.}
 \begin{center}
 \url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.8/}
 \end{center}

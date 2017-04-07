@@ -706,7 +706,7 @@ benchmark performance mid-process execution. Although
 \texttt{perf} cannot be completely disabled, \krun sets it to sample at most
 once per second, minimising interruptions.
 
-\laurie{i think this is no longer true, right?} Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
+\laurie{i think this is no longer true, right?}\edd{Correct. We use ASLR mode 2, which is full ASLR} Finally, \krun disables Address Space Layout Randomisation (ASLR). While ASLR is
 a sensible security precaution for everyday use, it introduces obvious
 non-determinism between process executions.\footnote{The Stabilizer
 system~\cite{curtsinger13stabilizer} is an intriguing approach for obtaining reliable
@@ -980,7 +980,7 @@ executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
 when one or more process executions are no steady state or slowdown. Good inconsistency
 can occur because some benchmarks are on the edge of our ability to detect warmup
 vs.~flat execution and we prefer to assume that we are at fault rather
-than the VM \laurie{edd: it would be good to experiment with adding an example of two pexecs from the same (VM, benchmark, machine) triple where one pexec is warmup and the other flat}. Bad inconsistency is always more troubling: it
+than the VM \laurie{edd: it would be good to experiment with adding an example of two pexecs from the same (VM, benchmark, machine) triple where one pexec is warmup and the other flat}\edd{Sure, I'll add one once I'm done with instr plots (and assuming there is such an example (probably is)}. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience poor performance.
 
 
@@ -1139,7 +1139,6 @@ steady-state code.
 
 
 \subsection{Warmup Plots}
-\sarah{Plots are still v0.7}
 
 To understand why we see so many unexpected cases, we created a series of plots
 for process executions. All
@@ -1204,7 +1203,7 @@ in-process iterations whilst JIT compilation occurs.
 \subsection{Cyclic data}
 \label{sec:cyclic}
 
-\laurie{edd: we need to update this section}
+\laurie{edd: we need to update this section}\edd{I know :)}
 We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process
@@ -1397,7 +1396,7 @@ iteration timings are clearly not. In practise, this does not appear to be an
 issue: we manually inspected a large number of benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
-plots to analyse \laurie{can we quantify this?}, it is extremely unlikely that
+plots to analyse \laurie{can we quantify this?}\edd{Something like "4192 plots" in brackets? I'll count up the pexecs at some point}, it is extremely unlikely that
 we would have been able to do anywhere near as good a job manually as
 changepoint analysis does automatically.
 

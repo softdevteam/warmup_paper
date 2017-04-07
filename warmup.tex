@@ -1263,7 +1263,7 @@ cycles are not correlated with GC (of which there is none) or JIT compilation.\e
 
 \section{Startup Time}
 \label{sec:startup}
-\sarah{startup table is still v0.7}
+\sarah{startup table is now v0.8 and uses IQRs, text may need updating.}
 
 The data presented thus far in the paper has all been collected after the VM has
 started executing the user program. The period between a VM being
@@ -1281,7 +1281,7 @@ executions (for startup, in-process executions are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
 time).
 
-Table~\ref{fig:startup} shows startup times from both \bencherseven and \benchersix. Since
+Table~\ref{fig:startup} shows startup times from both \bencherfive and \benchersix. Since
 \krun reboots before each process execution, these are measures of a `cold'
 start and thus partly reflect disk speed etc. (though both machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
@@ -1291,7 +1291,7 @@ slowest VM (JRuby+Truffle) is around 1000x slower, to startup.
 \begin{table}[t]
 \centering
 \input{startup.table}
-\caption{VM startup time (in seconds with 99\% confidence intervals).}
+\caption{VM startup time (in seconds with IQRs).}
 \label{fig:startup}
 \end{table}
 

@@ -1,80 +1,324 @@
+
+{
+\setlength\sparkspikewidth{1pt}
+\definecolor{sparkbottomlinecolor}{gray}{0.8}
+% Older versions of sparklines do not expose bottomlinethickness
+\renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
+  \color{sparkbottomlinecolor}%
+  \pgfline{\pgfxy(0,0)}{\pgfxy(#1,0)}\color{sparklinecolor}}
+
 \begin{tabular}{lrr}
 \toprule
-& \bencherthree & \benchersix \\
+\multicolumn{1}{c}{\multirow{2}{*}{VM}}&\multicolumn{2}{c}{Machine}\\&\multicolumn{1}{c}{\footnotesize \bencherfive}&\multicolumn{1}{c}{\footnotesize \benchersix} \\
 \midrule
 C&$
-\begin{array}{rr}
-\scriptstyle{0.00213} \\[-6pt]
-\scriptscriptstyle{\pm0.000005}
+\begin{array}{r}
+\scriptstyle{0.00072} \\[-6pt]
+\scriptscriptstyle{(0.000655, 0.000902)}
 \end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.00110} \\[-6pt]
-\scriptscriptstyle{\pm0.000004}
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.01
+\sparkspike 0.20 0.04
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.30 0.82
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.40 0.12
+\sparkspike 0.50 0.00
+\sparkspike 0.60 0.00
+\sparkspike 0.70 0.00
+\sparkspike 0.80 0.00
+\sparkspike 0.90 0.00
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&$
+\begin{array}{r}
+\scriptstyle{0.00093} \\[-6pt]
+\scriptscriptstyle{(0.000866, 0.000949)}
 \end{array}
-$\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.03
+\sparkspike 0.20 0.04
+\sparkspike 0.30 0.02
+\sparkspike 0.40 0.01
+\sparkspike 0.50 0.03
+\sparkspike 0.60 0.09
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.70 0.34
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.80 0.30
+\sparkspike 0.90 0.13
+\sparkspike 1.00 0.03
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+\\ 
 Graal&$
-\begin{array}{rr}
-\scriptstyle{0.24744} \\[-6pt]
-\scriptscriptstyle{\pm0.000339}
+\begin{array}{r}
+\scriptstyle{0.34824} \\[-6pt]
+\scriptscriptstyle{(0.346253, 0.349887)}
 \end{array}
-$&\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.07
+\sparkspike 0.20 0.17
+\sparkspike 0.30 0.17
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.40 0.17
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.50 0.27
+\sparkspike 0.60 0.12
+\sparkspike 0.70 0.03
+\sparkspike 0.80 0.01
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&\\ 
 HHVM&$
-\begin{array}{rr}
-\scriptstyle{0.78364} \\[-6pt]
-\scriptscriptstyle{\pm0.001834}
+\begin{array}{r}
+\scriptstyle{0.75293} \\[-6pt]
+\scriptscriptstyle{(0.737549, 0.773275)}
 \end{array}
-$&\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.02
+\sparkspike 0.20 0.01
+\sparkspike 0.30 0.16
+\sparkspike 0.40 0.23
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.50 0.41
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.60 0.08
+\sparkspike 0.70 0.06
+\sparkspike 0.80 0.03
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&\\ 
 Hotspot&$
-\begin{array}{rr}
-\scriptstyle{0.10655} \\[-6pt]
-\scriptscriptstyle{\pm0.000411}
+\begin{array}{r}
+\scriptstyle{0.14611} \\[-6pt]
+\scriptscriptstyle{(0.144071, 0.158710)}
 \end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.19041} \\[-6pt]
-\scriptscriptstyle{\pm0.000148}
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.25
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.20 0.46
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.30 0.16
+\sparkspike 0.40 0.04
+\sparkspike 0.50 0.00
+\sparkspike 0.60 0.01
+\sparkspike 0.70 0.01
+\sparkspike 0.80 0.01
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.04
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&$
+\begin{array}{r}
+\scriptstyle{0.17980} \\[-6pt]
+\scriptscriptstyle{(0.178230, 0.182307)}
 \end{array}
-$\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.07
+\sparkspike 0.20 0.19
+\sparkspike 0.30 0.23
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.40 0.19
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.50 0.15
+\sparkspike 0.60 0.08
+\sparkspike 0.70 0.05
+\sparkspike 0.80 0.03
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+\\ 
 JRubyTruffle&$
-\begin{array}{rr}
-\scriptstyle{2.21071} \\[-6pt]
-\scriptscriptstyle{\pm0.007821}
+\begin{array}{r}
+\scriptstyle{2.65965} \\[-6pt]
+\scriptscriptstyle{(2.556882, 2.771373)}
 \end{array}
-$&\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.07
+\sparkspike 0.20 0.11
+\sparkspike 0.30 0.17
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.40 0.28
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.50 0.14
+\sparkspike 0.60 0.10
+\sparkspike 0.70 0.10
+\sparkspike 0.80 0.01
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&\\ 
 LuaJIT&$
-\begin{array}{rr}
-\scriptstyle{0.00432} \\[-6pt]
-\scriptscriptstyle{\pm0.000013}
+\begin{array}{r}
+\scriptstyle{0.00358} \\[-6pt]
+\scriptscriptstyle{(0.003375, 0.004584)}
 \end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.00673} \\[-6pt]
-\scriptscriptstyle{\pm0.000004}
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.10 0.99
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.20 0.00
+\sparkspike 0.30 0.00
+\sparkspike 0.40 0.00
+\sparkspike 0.50 0.00
+\sparkspike 0.60 0.00
+\sparkspike 0.70 0.00
+\sparkspike 0.80 0.00
+\sparkspike 0.90 0.00
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&$
+\begin{array}{r}
+\scriptstyle{0.00423} \\[-6pt]
+\scriptscriptstyle{(0.004186, 0.004280)}
 \end{array}
-$\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.01
+\sparkspike 0.20 0.06
+\sparkspike 0.30 0.14
+\sparkspike 0.40 0.12
+\sparkspike 0.50 0.15
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.60 0.13
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.70 0.15
+\sparkspike 0.80 0.12
+\sparkspike 0.90 0.08
+\sparkspike 1.00 0.04
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+\\ 
 PyPy&$
-\begin{array}{rr}
-\scriptstyle{0.21710} \\[-6pt]
-\scriptscriptstyle{\pm0.000563}
+\begin{array}{r}
+\scriptstyle{0.43905} \\[-6pt]
+\scriptscriptstyle{(0.434765, 0.450953)}
 \end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.82526} \\[-6pt]
-\scriptscriptstyle{\pm0.000235}
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.30
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.20 0.36
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.30 0.23
+\sparkspike 0.40 0.04
+\sparkspike 0.50 0.02
+\sparkspike 0.60 0.01
+\sparkspike 0.70 0.01
+\sparkspike 0.80 0.01
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&$
+\begin{array}{r}
+\scriptstyle{0.78644} \\[-6pt]
+\scriptscriptstyle{(0.782475, 0.791690)}
 \end{array}
-$\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.01
+\sparkspike 0.20 0.06
+\sparkspike 0.30 0.15
+\sparkspike 0.40 0.20
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.50 0.28
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.60 0.16
+\sparkspike 0.70 0.07
+\sparkspike 0.80 0.04
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+\\ 
 V8&$
-\begin{array}{rr}
-\scriptstyle{0.03702} \\[-6pt]
-\scriptscriptstyle{\pm0.000097}
+\begin{array}{r}
+\scriptstyle{0.08703} \\[-6pt]
+\scriptscriptstyle{(0.086048, 0.089636)}
 \end{array}
-$&$
-\begin{array}{rr}
-\scriptstyle{0.09607} \\[-6pt]
-\scriptscriptstyle{\pm0.000048}
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.21
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.20 0.43
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.30 0.25
+\sparkspike 0.40 0.04
+\sparkspike 0.50 0.02
+\sparkspike 0.60 0.01
+\sparkspike 0.70 0.01
+\sparkspike 0.80 0.01
+\sparkspike 0.90 0.01
+\sparkspike 1.00 0.01
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+&$
+\begin{array}{r}
+\scriptstyle{0.12020} \\[-6pt]
+\scriptscriptstyle{(0.119554, 0.121094)}
 \end{array}
-$\\ 
+$
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
+\sparkspike 0.10 0.04
+\sparkspike 0.20 0.07
+\sparkspike 0.30 0.14
+\sparkspike 0.40 0.21
+\definecolor{sparkspikecolor}{named}{red}
+\sparkspike 0.50 0.14
+\definecolor{sparkspikecolor}{named}{black}
+\sparkspike 0.60 0.17
+\sparkspike 0.70 0.10
+\sparkspike 0.80 0.06
+\sparkspike 0.90 0.06
+\sparkspike 1.00 0.02
+\sparkbottomline
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
+\\ 
 
 \bottomrule
 \end{tabular}
+}

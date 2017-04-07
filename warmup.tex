@@ -225,7 +225,7 @@ performance or not. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Across 3 benchmarking machines we found that only \mintwo--\maxtwo\% of
-\vmbpair pairs consistently reach a steady state of peak performance.
+\vmbpair pairs consistently reach a steady state of peak performance.\edd{Should this really be machine, bench, vm \emph{triples}? Otherwise we would have one summary figure for all machines, right? Presumably we have a summary range because the summaries are per-machine.}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -250,22 +250,25 @@ variety of common VMs. Across 3 benchmarking machines we found that only \mintwo
 
 Many modern languages are implemented as Virtual Machines (VMs) which use a
 Just-In-Time (JIT) compiler to translate `hot' parts of a program into efficient
-machine code at run-time. Since it takes time to determine which parts of the
-program are hot, and then compile them, programs which are JIT compiled are
+machine code at run-time. Since it takes time to identify and JIT compile
+the ``hot'' parts of a program, VMs using a JIT compiler are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached.
 This traditional view underlies most benchmarking of JIT compiled VMs.
 Usually benchmarks are run many times within a single VM process, and
-time series data collected before warmup is complete is discarded, therefore
+data collected before warmup is complete is discarded, therefore
 reporting only peak performance figures.
 
 The fundamental aim of this paper is to test, in a highly idealised setting, the following hypothesis:
 \begin{description}
   \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
 \end{description}
-In order to address this hypothesis, we had to develop a new approach to
-automatically analysing large quantities of VM data. We deliberately chose
+
+\edd{Should another hypothesis be that the steady state is the fastest state?}
+
+To test this hypothesis, we developed a new approach for
+automatically analysing large quantities of benchmarking data. We deliberately chose
 widely studied microbenchmarks, and ran them in a heavily
 controlled environment, designed to minimise measurement noise. By doing so, we
 maximised the chances that our experiment would validate Hypothesis H1. Instead
@@ -284,11 +287,11 @@ in this paper are often used in isolation to gauge the efficacy of VM optimisati
 our findings suggest that some such optimisations may be ineffective or even
 deleterious. More subtly, it suggests that large programs which appear to have
 fairly predictable performance may have significant sub-parts which are behaving
-unpredictably, but which, in large numbers, tend to be lost in the noise. Put
+unpredictably, but which, in large numbers, tend to be lost in the noise\edd{I don't understand the previous sentence}. Put
 another way, it may be that we are being misled as to the ultimate performance
 `ceiling' of large programs due to the effects we observe on microbenchmarks
 (i.e.~we may be unduly pessimistic about the possible performance of large
-programs).
+programs)\edd{I think this is not worth mentioning. The field generally accepts that microbenchmarks are already not representative of large programs.}.\edd{A more compelling second point is that once you know that the steady state may not be reached, it becomes much more difficult to even measure anything anymore}.
 
 
 \subsection{Overview of the Methodology}
@@ -306,7 +309,7 @@ cards and userland daemons, and ensures that the
 machine's temperature is consistent before each process execution is run.
 We ran our experiment on different machines and operating systems; whilst different
 operating systems, in particular, make some difference to the results we observe,
-we are able to rule them out as being a significant factor.
+we are able to rule them out as being a significant factor\edd{Let's not mix the findings in with the methodology?}.
 
 With the time series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
@@ -351,14 +354,15 @@ timings are plotted in black; those preceding the steady state are plotted in gr
 We introduce a new approach to analysing VM benchmarking data. We use the
 recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time series data (e.g.~when a benchmark switches
-from `slow' to `fast' modes after JIT compilation). We then use the changepoint
-segments that this analysis produces to automatically classify process executions as:
+from `slow' to `fast' modes after JIT compilation). The analysis groups consecutive samples
+with similar mean and variation into distinct ``segments''
+which we then use to automatically classify each process execution as either:
 no steady state; flat (no detectable change in performance
 over the benchmark); warmup; or slowdown (a decrease in performance over time).
 Figure \ref{fig:changepoint} shows an example of how changepoint analysis
 can automatically classify both `good' and `bad' warmup styles.
 Although simple, these classifications allow us to tease apart
-unexpected performance patterns that previous methodologies have conflated.
+unexpected performance patterns that previous methodologies cannot.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the

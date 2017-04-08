@@ -225,7 +225,7 @@ performance or not. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Across 3 benchmarking machines we found that only \mintwo--\maxtwo\% of
-\vmbpair pairs consistently reach a steady state of peak performance.\edd{Should this really be machine, bench, vm \emph{triples}? Otherwise we would have one summary figure for all machines, right? Presumably we have a summary range because the summaries are per-machine.}
+\vmbpair pairs consistently reach a steady state of peak performance.\edd{Should this really be machine, bench, vm \emph{triples}? Otherwise we would have one summary figure for all machines, right? Presumably we have a summary range because the summaries are per-machine.}\laurie{this is implied by `across 3 machines' IMHO, and i fear that `triples' just sounds confusing at this point. We could be clearer perhaps by adding ``(depending on the machine)'' after the fractions?}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -251,7 +251,7 @@ variety of common VMs. Across 3 benchmarking machines we found that only \mintwo
 Many modern languages are implemented as Virtual Machines (VMs) which use a
 Just-In-Time (JIT) compiler to translate `hot' parts of a program into efficient
 machine code at run-time. Since it takes time to identify and JIT compile
-the ``hot'' parts of a program, VMs using a JIT compiler are
+the `hot' parts of a program, VMs using a JIT compiler are
 said to be subject to a \emph{warmup} phase. The traditional view of
 JIT compiled VMs is that program execution is slow during the warmup phase, and
 fast afterwards, when a \emph{steady state} of \emph{peak performance} is said to have been reached.
@@ -266,6 +266,7 @@ The fundamental aim of this paper is to test, in a highly idealised setting, the
 \end{description}
 
 \edd{Should another hypothesis be that the steady state is the fastest state?}
+\laurie{that is implied by ``steady state of peak performance'' (perhaps if we did this again we'd split the hypotheses apart, but we tested what we tested)}
 
 To test this hypothesis, we developed a new approach for
 automatically analysing large quantities of benchmarking data. We deliberately chose
@@ -280,18 +281,13 @@ performance. Of the seven VMs we studied, none consistently reached a steady
 state of peak performance.
 
 These results are significantly worse than reported in previous works, and worse
-than expected by VM teams we have spoken to. Our results suggest
-that much real-world VM benchmarking is likely to be partly or wholly
-misleading. This has two real-world consequences. Most obviously, microbenchmarks similar to those
-in this paper are often used in isolation to gauge the efficacy of VM optimisations;
-our findings suggest that some such optimisations may be ineffective or even
-deleterious. More subtly, it suggests that large programs which appear to have
-fairly predictable performance may have significant sub-parts which are behaving
-unpredictably, but which, in large numbers, tend to be lost in the noise\edd{I don't understand the previous sentence}. Put
-another way, it may be that we are being misled as to the ultimate performance
-`ceiling' of large programs due to the effects we observe on microbenchmarks
-(i.e.~we may be unduly pessimistic about the possible performance of large
-programs)\edd{I think this is not worth mentioning. The field generally accepts that microbenchmarks are already not representative of large programs.}.\edd{A more compelling second point is that once you know that the steady state may not be reached, it becomes much more difficult to even measure anything anymore}.
+than expected by the several VM teams we have spoken to. Our results suggest
+that much real-world VM benchmarking, which nearly all relies on assuming
+that benchmarks do reach a steady state of peak performance, is likely to be partly or wholly
+misleading. Since microbenchmarks similar to those in this paper are often used
+in isolation to gauge the efficacy of VM optimisations, our results suggest that
+ineffective, or deleterious, optimisations may have been incorrectly judged as
+improving performance and included in VMs.
 
 
 \subsection{Overview of the Methodology}
@@ -307,9 +303,8 @@ benchmarking tool, \krun, to control as many confounding variables as practical.
 For example, \krun reboots machines before each process execution, turns off or stops network
 cards and userland daemons, and ensures that the
 machine's temperature is consistent before each process execution is run.
-We ran our experiment on different machines and operating systems; whilst different
-operating systems, in particular, make some difference to the results we observe,
-we are able to rule them out as being a significant factor\edd{Let's not mix the findings in with the methodology?}.
+We ran our experiment on different machines and operating systems to understand
+the effect of both on benchmarks.
 
 With the time series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
@@ -331,10 +326,9 @@ shows an example of `traditional' warmup (in this case \nbody on HHVM);
 the RHS plot shows an example of slowdown (\richards on HotSpot). The
 plot titles show: the benchmark (e.g.~\binarytrees); the VM (e.g.~HotSpot),
 the machine (e.g.~\bencherseven); the process execution number (e.g.~5);
-and the automatic classification (e.g.~warmup). The `main'
-plot at the bottom always shows the in-process iteration number (indexed from 1) versus the corresponding wallclock times for all 2000
-in-process iterations.
-Because this often obscures the finer
+and the classification (e.g.~warmup). The `main' plot at the bottom always shows
+the in-process iteration number (indexed from 1) and the corresponding wallclock
+times for all 2000 in-process iterations. Because this often obscures the finer
 details, we also show two additional visualisations of the data: the top plot
 shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the bulk of the
 in-process timing data is located; the smaller inset plot allows us to examine a handful
@@ -355,7 +349,7 @@ We introduce a new approach to analysing VM benchmarking data. We use the
 recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). The analysis groups consecutive samples
-with similar mean and variation into distinct ``segments''
+with similar mean and variation into distinct segments
 which we then use to automatically classify each process execution as either:
 no steady state; flat (no detectable change in performance
 over the benchmark); warmup; or slowdown (a decrease in performance over time).
@@ -376,9 +370,9 @@ In summary, this paper's contributions are as follows:
 \begin{enumerate}
     \item We show that, even in a highly idealised setting, widely studied benchmarks
 often fail to warmup.
-    \item We present the first automated approach to analysing benchmarking
-time series data that can automatically determine if and when a steady state has been
-reached.
+    \item We present the first automated approach to analysing time series
+data from VM benchmarking that can automatically determine if and when a steady
+state has been reached.
     \item We present the first classification of different styles of
 steady state behaviour (warmup, slowdown, flat).
     \item We show that, while some instances of `odd' behaviour are explained by
@@ -1459,7 +1453,7 @@ in-process iterations helps understanding of a VM's long-term
 performance stability. Second, as a community, we need to accept that a steady
 state of peak performance is not guaranteed to exist. Third, the significant
 differences in warmup time between VMs strongly suggest that VM benchmarking
-should always include warmup time. Fourth, we suspect that some of the odd
+should always include a measure of warmup time. Fourth, we suspect that some of the odd
 results we have seen result from over-training VM heuristics on small sets of
 benchmarks. The machine-learning community's approach may apply
 equally well to VMs: using a training set to devise heuristics, and then
@@ -1617,7 +1611,13 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \caption{Benchmark results for \bencherfive.}
 \label{tab:bencher5results}
 \end{table*}
-
+More subtly, it suggests that large programs which appear to have
+fairly predictable performance may have significant sub-parts which are behaving
+unpredictably, but which, in large numbers, tend to be lost in the noise\edd{I don't understand the previous sentence}. Put
+another way, it may be that we are being misled as to the ultimate performance
+`ceiling' of large programs due to the effects we observe on microbenchmarks
+(i.e.~we may be unduly pessimistic about the possible performance of large
+programs)\edd{I think this is not worth mentioning. The field generally accepts that microbenchmarks are already not representative of large programs.}.\edd{A more compelling second point is that once you know that the steady state may not be reached, it becomes much more difficult to even measure anything anymore}.
 \begin{table*}[t]
 \centering
 \begin{adjustbox}{totalheight=\textheight-2\baselineskip}
@@ -1650,7 +1650,13 @@ complete series of plots.
 % \includegraphics[width=.45\textwidth]{category_examples/warmup/warmup4.pdf}
 
 \clearpage
-
+More subtly, it suggests that large programs which appear to have
+fairly predictable performance may have significant sub-parts which are behaving
+unpredictably, but which, in large numbers, tend to be lost in the noise\edd{I don't understand the previous sentence}. Put
+another way, it may be that we are being misled as to the ultimate performance
+`ceiling' of large programs due to the effects we observe on microbenchmarks
+(i.e.~we may be unduly pessimistic about the possible performance of large
+programs)\edd{I think this is not worth mentioning. The field generally accepts that microbenchmarks are already not representative of large programs.}.\edd{A more compelling second point is that once you know that the steady state may not be reached, it becomes much more difficult to even measure anything anymore}.
 \subsection{Examples of Flat Behaviour}
 \includegraphics[width=.49\textwidth]{category_examples/flat/flat0.pdf}
 \includegraphics[width=.49\textwidth]{category_examples/flat/flat1.pdf}

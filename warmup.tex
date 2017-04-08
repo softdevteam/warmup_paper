@@ -990,10 +990,9 @@ seconds (\emph{steady perf (s)}).
 a benchmark to reach a steady state, and are made possible by our use of changepoint
 analysis. Flat process executions by definition have a \emph{steady iter (\#)} of 1 and
 a \emph{steady iter (s)} of 0; we elide these details for benchmarks
-which are consistently flat. Benchmarks which contain a mix of flat and non-flat
-process executions then often end up with a variety of distributions (e.g.~if 15
-process executions are flat and 15 are warmup, one ends up with, at best, a
-binominal distribution) which makes reporting standard confidence intervals
+which are consistently flat. Benchmarks often end up with a variety of distributions
+for both these measures (most often, though not exclusively, seen on benchmarks
+which contain a mix of flat and non-flat classifications) which makes reporting standard confidence intervals
 misleading. We therefore use Inter-Quartile Ranges (IQRs) to give an indication of the
 spread of values, reporting the median and 5\% and 95\% percentiles (using
 linear interpolation). Non-overlapping IQRs imply a meaningful difference in the \emph{steady iter (\#)} or

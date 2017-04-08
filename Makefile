@@ -27,7 +27,8 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		category_examples/nosteadystate/nosteadystate0.pdf \
 		category_examples/nosteadystate/nosteadystate1.pdf \
 		category_examples/nosteadystate/nosteadystate2.pdf \
-		category_examples/nosteadystate/nosteadystate3.pdf
+		category_examples/nosteadystate/nosteadystate3.pdf \
+		examples/new_miscomp.pdf
 DIAGRAMS +=	${PLOTS}
 
 TABLES= dacapo.table startup.table \
@@ -91,6 +92,9 @@ EXPERIMENT_REPO=../warmup_experiment
 BENCHER5_DATA=annotated_results/warmup_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2
 BENCHER6_DATA=annotated_results/warmup_results_0_8_openbsd1_i7_4790_outliers_w200_changepoints.json.bz2
 BENCHER7_DATA=annotated_results/warmup_results_0_8_linux3_e3_1240_outliers_w200_changepoints.json.bz2
+BENCHER7_INSTR_DATA=annotated_results/instr_results_0_8_linux3_e3_1240_outliers_w200_changepoints_results.json.bz2
+# And you would have the instr data dir named:
+# instr_results_0_8_linux3_e3_1240_outliers_w200_changepoints_instr_data
 
 # Use this for side-by-side plots, then adjust the height manually until it
 # looks ok. Make sure the cell width in tex is .49\textwidth.
@@ -165,3 +169,10 @@ category_examples/nosteadystate/nosteadystate2.pdf:
 
 category_examples/nosteadystate/nosteadystate3.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate3.pdf -b bencher5:fasta:PyPy:default-python:18 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
+
+# Instrumentation plots
+# PyPy instrumentation requires an phenominal amount of memory.
+# Don't even try on 16GB or less. Works on 24GB.
+
+examples/new_miscomp.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --with-changepoint-means --with-outliers -o examples/new_miscomp.pdf ${BENCHER7_INSTR_DATA} -b bencher7:richards:Hotspot:default-java:2 --core-cycles "" --no-zoom --export-size ${WIDTH_2COL},6

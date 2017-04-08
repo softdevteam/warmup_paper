@@ -1621,13 +1621,6 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \caption{Benchmark results for \bencherfive.}
 \label{tab:bencher5results}
 \end{table*}
-More subtly, it suggests that large programs which appear to have
-fairly predictable performance may have significant sub-parts which are behaving
-unpredictably, but which, in large numbers, tend to be lost in the noise\edd{I don't understand the previous sentence}. Put
-another way, it may be that we are being misled as to the ultimate performance
-`ceiling' of large programs due to the effects we observe on microbenchmarks
-(i.e.~we may be unduly pessimistic about the possible performance of large
-programs)\edd{I think this is not worth mentioning. The field generally accepts that microbenchmarks are already not representative of large programs.}.\edd{A more compelling second point is that once you know that the steady state may not be reached, it becomes much more difficult to even measure anything anymore}.
 \begin{table*}[t]
 \centering
 \begin{adjustbox}{totalheight=\textheight-2\baselineskip}
@@ -1660,13 +1653,6 @@ complete series of plots.
 % \includegraphics[width=.45\textwidth]{category_examples/warmup/warmup4.pdf}
 
 \clearpage
-More subtly, it suggests that large programs which appear to have
-fairly predictable performance may have significant sub-parts which are behaving
-unpredictably, but which, in large numbers, tend to be lost in the noise\edd{I don't understand the previous sentence}. Put
-another way, it may be that we are being misled as to the ultimate performance
-`ceiling' of large programs due to the effects we observe on microbenchmarks
-(i.e.~we may be unduly pessimistic about the possible performance of large
-programs)\edd{I think this is not worth mentioning. The field generally accepts that microbenchmarks are already not representative of large programs.}.\edd{A more compelling second point is that once you know that the steady state may not be reached, it becomes much more difficult to even measure anything anymore}.
 \subsection{Examples of Flat Behaviour}
 \includegraphics[width=.49\textwidth]{category_examples/flat/flat0.pdf}
 \includegraphics[width=.49\textwidth]{category_examples/flat/flat1.pdf}

@@ -97,8 +97,7 @@ BENCHER7_INSTR_DATA=annotated_results/instr_results_0_8_linux3_e3_1240_outliers_
 # And you would have the instr data dir named:
 # instr_results_0_8_linux3_e3_1240_outliers_w200_changepoints_instr_data
 
-# Use this for side-by-side plots, then adjust the height manually until it
-# looks ok. Make sure the cell width in tex is .49\textwidth.
+# Use this for two separate but side-by-side plots.
 WIDTH_2COL=5
 
 # Plots in the main paper body

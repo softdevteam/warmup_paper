@@ -1152,14 +1152,14 @@ an example of inconsistent process executions.
 
 \begin{figure}[t]
 \centering
-\begin{minipage}[b]{0.49\textwidth}
+\begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_no_steady.pdf}
 \label{fig:examples:nosteadystate}
 \caption{No steady state. There is a small behavioural shift around iteration
 950, where the VM migrates from (tickless) core 1 to (ticked) core 0.\edd{revise caption}}
 \end{minipage}%
 \hfill%
-\begin{minipage}[b]{0.49\textwidth}
+\begin{minipage}[t]{0.49\textwidth}
 \includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
 \caption{Cycles in wall-clock times and core-cycle counts.\edd{Lots of space here due to long caption on the left. Either write more here, or shorten caption on the left}}
 \label{fig:examples:cycles}
@@ -1176,7 +1176,7 @@ an example of inconsistent process executions.
 
 \begin{figure}[!tbp]
 \centering
-\begin{minipage}[b]{0.49\textwidth}
+\begin{minipage}[t]{0.48\textwidth}
 \includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
 \caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
 turned on. Although these additional measures add overhead, in this
@@ -1188,7 +1188,7 @@ iterations. \edd{XXX check caption now we have 0.8 plot}}
 \label{fig:examples:slowdown1}
 \end{minipage}
 \hfill
-\begin{minipage}[b]{0.49\textwidth}
+\begin{minipage}[t]{0.495\textwidth}
 \includegraphics[width=\textwidth]{examples/new_good_comp.pdf}
 \caption{The cyclic example from Figure~\ref{fig:examples:cycles} with
 GC and JIT compilation instrumentation enabled. The additional overhead

@@ -867,9 +867,7 @@ data are different to the statistical properties of subsequent data; the data
 between two changepoints is a \emph{changepoint segment}. There are various
 ways that one can determine when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
-iterations.
-
-In order to automate this, we use the \texttt{cpt.meanvar} function in the R
+iterations. In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
@@ -904,9 +902,9 @@ mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
 segment which is clearly different. We therefore allow a small tolerance
-when comparing a segment $s_i$ against the final segment $s_f$: if the mean of $s_i$
-is within the mean of $s_f$ $\pm$ $s_f$'s variance or 0.001s (whichever
-is greater), we consider the two equivalent. The reason for these two types of tolerance
+when comparing a segment $s_i$ against the final segment $s_f$: if $\textrm{mean}(s_i)$
+is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$,
+we consider the two equivalent. The reason for these two types of tolerance
 is as follows. In short running benchmarks, a small number of external events can add an absolute
 level of noise: in our experience readings often vary by a
 little under 0.001s. In long running benchmarks, any individual external
@@ -982,26 +980,26 @@ means that, at least sometimes, users will experience poor performance.
 
 For benchmarks whose process executions all which reach a steady state (i.e.~are
 any combination of \flatc, \warmup, or \slowdown) we report the number of
-iterations (`steady iter (\#)') and the time in seconds (`steady iter (s)') to
+iterations (\emph{steady iter (\#)}) and the time in seconds (\emph{steady iter (s)}) to
 reach the steady state, as well as the performance of the steady state itself in
-seconds (`steady perf (s)').
+seconds (\emph{steady perf (s)}).
 
-Steady iter (\#) and steady iter (s) allow one to understand how long it takes
+\emph{Steady iter (\#)} and \emph{steady iter (s)} allow one to understand how long it takes
 a benchmark to reach a steady state, and are made possible by our use of changepoint
-analysis. Flat process executions by definition have a steady iter (\#) of 1 and
-a steady iter (s) of 0; we elide these details for benchmarks
+analysis. Flat process executions by definition have a \emph{steady iter (\#)} of 1 and
+a \emph{steady iter (s)} of 0; we elide these details for benchmarks
 which are consistently flat. Benchmarks which contain a mix of flat and non-flat
 process executions then often end up with a variety of distributions (e.g.~if 15
 process executions are flat and 15 are warmup, one ends up with, at best, a
 binominal distribution) which makes reporting standard confidence intervals
-impossible. We therefore use Inter-Quartile Ranges (IQRs) to give an indication of the
+misleading. We therefore use Inter-Quartile Ranges (IQRs) to give an indication of the
 spread of values, reporting the median and 5\% and 95\% percentiles (using
-linear interpolation). Non-overlapping IQRs imply a meaningful difference in the steady iter (\#) or
-(s) values of a benchmark run on two VMs; however, since the IQRs are often
+linear interpolation). Non-overlapping IQRs imply a meaningful difference in the \emph{steady iter (\#)} or
+\emph{(s)} values of a benchmark run on two VMs; however, since the IQRs are often
 widely spread, we are often unable to make such comparisons. To give a more
 nuanced view than IQRs can report we also provide thumbnail histograms.
 
-Steady perf (s) roughly corresponds to the `normal' performance number reported
+\emph{Steady perf (s)} roughly corresponds to the `normal' performance number reported
 in most VM papers. In our case, the steady state is composed of one or more
 segments (see Section~\ref{sec:classifications}). We report means and
 \laurie{95\% or 99\%? i think we can do the latter?} confidence intervals
@@ -1050,18 +1048,25 @@ Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 
 \begin{landscape}
 \begin{table*}[hptb]
-\vspace{.8cm}
+\vspace{.35cm}
 \begin{adjustbox}{totalheight=12.4cm}
 \input{bencher7.table}
 \end{adjustbox}
-\caption{Benchmark results for \bencherseven. For processes which reach a steady
-state: \emph{steady iter (\#)} is the median in-process iteration that the steady
-state was reached at; \emph{steady iter (s)} is the wall-clock time since the
-beginning of the process execution that the steady state was reached;
-\emph{steady perf (s)} is the median performance of the steady state segment
-across all process executions. We give the
-constituent classifications of inconsistent benchmarks e.g.~\inconsistent(2\slowdown, 8\warmup) means
-2 of the process executions were slowdown, and 8 warmup.}
+\caption{Benchmark results for \bencherseven. For all process executions, we
+report the classification of the benchmark and, for inconsistent benchmarks,
+their constituent classifications (e.g.~\inconsistent(2\slowdown, 8\warmup)
+means 2 of the process executions were slowdown, and 8 warmup). For processes
+which reach a steady state we report three summary statistics. \emph{Steady iter
+(\#)} is the median in-process iteration that the steady state was reached at
+and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
+the process execution that the steady state was reached; for both measures we
+report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
+performance of the steady state segment across all process executions, which we
+report with \laurie{99\%?} confidence intervals. The thumbnail histograms
+show the spread of values; the red bar shows the location of the median
+(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
+\emph{Steady perf(s)}) value. \laurie{sarah: i think we should show
+the mean (not median) bar in red on the steady perf(s) histogram. thoughts?}}
 \label{tab:mainresults}
 \end{table*}
 \end{landscape}
@@ -1258,6 +1263,9 @@ cycles are not correlated with GC (of which there is none) or JIT compilation.\e
 \section{Startup Time}
 \label{sec:startup}
 \sarah{startup table is now v0.8 and uses IQRs, text may need updating.}
+\laurie{i suspect the startup table should return to using confidence intervals especially
+since the data is, as expected, nearly all normally distributed. i like the
+adding of histograms, though i suspect the red bar should be the mean}
 
 The data presented thus far in the paper has all been collected after the VM has
 started executing the user program. The period between a VM being

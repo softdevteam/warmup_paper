@@ -1152,11 +1152,18 @@ an example of inconsistent process executions.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=.49\textwidth]{examples/new_no_steady.pdf}
+\begin{minipage}[b]{0.49\textwidth}
+\includegraphics[width=\textwidth]{examples/new_no_steady.pdf}
+\label{fig:examples:nosteadystate}
 \caption{No steady state. There is a small behavioural shift around iteration
 950, where the VM migrates from (tickless) core 1 to (ticked) core 0.\edd{revise caption}}
-\label{fig:examples:nosteadystate}
-\edd{XXX add another figure here to save/utilise space}
+\end{minipage}%
+\hfill%
+\begin{minipage}[b]{0.49\textwidth}
+\includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
+\caption{Cycles in wall-clock times and core-cycle counts.\edd{Lots of space here due to long caption on the left. Either write more here, or shorten caption on the left}}
+\label{fig:examples:cycles}
+\end{minipage}
 \end{figure}
 
 \begin{figure*}[t!]
@@ -1182,9 +1189,6 @@ iterations. \edd{XXX check caption now we have 0.8 plot}}
 \end{minipage}
 \hfill
 \begin{minipage}[b]{0.49\textwidth}
-\includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
-\caption{Cycles in wall-clock times and core-cycle counts.\edd{Lots of space here due to long caption on the left. Either write more here, or shorten caption on the left}}
-\label{fig:examples:cycles}
 \end{minipage}
 \end{figure}
 

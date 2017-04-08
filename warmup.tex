@@ -1183,19 +1183,18 @@ turned on. Although these additional measures add overhead, in this
 case they make no observable difference to the main run-sequence graph. They
 allow us to observe that the slowdown is correlated with two immediately preceding JIT compilation events
 that may explain the drop in performance. Note that the
-regular GC spikes have only a small effect on the time of in-process
-iterations. \edd{XXX check caption now we have 0.8 plot}}
+regular GC spikes have only a small effect on the wallclock times.}
 \label{fig:examples:slowdown1}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.495\textwidth}
 \includegraphics[width=\textwidth]{examples/new_good_comp.pdf}
-\caption{The cyclic example from Figure~\ref{fig:examples:cycles} with
-GC and JIT compilation instrumentation enabled. The additional overhead
-changes some of the details in the first half of the process
-execution, but the second half is unchanged. As this example shows, the
-cycles are not correlated with GC (of which there is none) or JIT
-compilation.\edd{XXX update caption, couldn't use the cyclic example sadly.}}
+\caption{PyPy benchmarks often showed a gradual `ramp up' over time. This
+particular example (run with VM instrumentation enabled) shows this behaviour
+superimposed on top of distinct state changes. Inspection of the GC plot shows
+that the wall-clock times are tightly correlated with the time spent in GC, thus
+suggesting that the benchmark is dominated by GC. This turns out to be a GC bug
+in PyPy exposed by our experiment (we have reported this upstream).}
 \label{fig:goodcomp}
 \end{minipage}
 \end{figure}

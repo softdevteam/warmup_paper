@@ -226,6 +226,7 @@ most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Across 3 benchmarking machines we found that only \mintwo--\maxtwo\% of
 \vmbpair pairs consistently reach a steady state of peak performance.\edd{Should this really be machine, bench, vm \emph{triples}? Otherwise we would have one summary figure for all machines, right? Presumably we have a summary range because the summaries are per-machine.}\laurie{this is implied by `across 3 machines' IMHO, and i fear that `triples' just sounds confusing at this point. We could be clearer perhaps by adding ``(depending on the machine)'' after the fractions?}
+\edd{yeah maybe. Or how would you find `combo` instead of triple?}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -264,9 +265,6 @@ The fundamental aim of this paper is to test, in a highly idealised setting, the
 \begin{description}
   \item[\hypone] Small, deterministic programs reach a steady state of peak performance.
 \end{description}
-
-\edd{Should another hypothesis be that the steady state is the fastest state?}
-\laurie{that is implied by ``steady state of peak performance'' (perhaps if we did this again we'd split the hypotheses apart, but we tested what we tested)}
 
 To test this hypothesis, we developed a new approach for
 automatically analysing large quantities of benchmarking data. We deliberately chose
@@ -1412,7 +1410,7 @@ iteration timings are clearly not. In practise, this does not appear to be an
 issue: we manually inspected a large number of benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
-plots to analyse \laurie{can we quantify this?}\edd{Something like "4192 plots" in brackets? I'll count up the pexecs at some point}, it is extremely unlikely that
+plots to analyse (3660 for the main part of the experiment), it is extremely unlikely that
 we would have been able to do anywhere near as good a job manually as
 changepoint analysis does automatically.
 

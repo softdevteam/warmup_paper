@@ -571,6 +571,9 @@ on every other VM put together.
 
 \subsection{Benchmarking Hardware}
 
+\edd{inconsistent machine naming: linux$_{4790}$ vs. linux$_{e3-1240v5}$. Either
+remove e3- from 1240v5 or add i7- to 4790}
+
 With regards to hardware and operating systems, we made the
 following hypothesis:
 \begin{description}
@@ -1070,23 +1073,16 @@ the mean (not median) bar in red on the steady perf(s) histogram. thoughts?}}
 \end{table*}
 \end{landscape}
 
-% v0.7 calculations: Excluding the empty benchmark we have:
-%  Linux: 6 benchmarks, 8 VMs == 48 benchmarks *but* we skip 2
-%        (fasta/JRubyTruffle and Richards/HHVM), so actually 46
-%  OpenBSD: 6 benchmark, 5 VMs = 30 benchmarks
-%  So 2*Linux + 1*OpenBSD = 2 * 46 + 1 * 30 = 122 benchmarks
-%  Num process execs: 122 * 10 = 1220
-%  Num in-process iters: 1220 * 2000 = 2,440,000
-
-\sarah{the next few paragraphs compile but need re-writing for the new data.}
+\edd{sarah: are the macros in summary\_macros.tex up to date?}
 Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherfive
 as a representative example,
 \FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
-\result\% of \vmbpair pairs and
+\result\% of \vmbpair pairs have consistently `good' warmup (all pexecs for the
+pair are either \flatc or \warmup) and
 \FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
-\result\% of process executions have `good' warmup (\flatc, \warmup) (for comparison, \bencherseven
+\result\% of all process executions have `good' warmup (for comparison, \bencherseven
 is
 \FPeval{\result}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
 \result\% and
@@ -1100,40 +1096,50 @@ Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good' warmup
 process executions. On \bencherfive
 \bencherfivevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
-and \sarah{was: \\bencherfivevmbenchpairsinconsistentpercentage\%} are inconsistent
+and \sarah{was: \\bencherfivevmbenchpairsinconsistentpercentage\%}\edd{can we
+bring that back from the dead then?} are inconsistent
 (with over two thirds of those being obviously `bad'); \bencherfive and
 \benchersix are broadly similar. Taking \bencherseven as an example,
-one third of its \vmbpair pairs are `bad', clearly invalidating
+one third \edd{sarah: can we pull a percentage from the classifer macros
+instead of `a third`?} of its \vmbpair pairs are `bad', clearly invalidating
 Hypothesis H1.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherseven
-and \bencherfive (both running Linux but on moderately different hardware) are
+and \bencherfive (both running Linux but on quite different hardware) are
 comparable, with the relative proportions of all measures being only a few
-percent different. \benchersix (running OpenBSD, but on the same hardware as
-\bencherseven) is somewhat different. This is in large part because it
+percent different. \benchersix (running a different OS to \bencherfive, but on similar hardware)
+is somewhat different. This is in large part because it
 is unable to run benchmarks on Graal, HHVM, and JRuby+Truffle (see
-Section~\ref{openbsd porting}): of the benchmarks it can run, most behave
-similarly, with the notable exception of LuaJIT, whose benchmarks are more often
+Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
+similarly, with the notable exceptions of LuaJIT, whose benchmarks are more often
 classified as non-flat (see Tables~\ref{tab:bencher5results} and ~\ref{tab:bencher6results} in the Appendix).
 With that in mind, we believe that our results are a fairly clear validation of
-Hypothesis H2.
+Hypothesis H2.\edd{Not sure about that. I think bencher7 is actually quite a
+bit different to the other benchers. It has a different CPU family, ECC RAM and
+all the extra server hardware gubbins. Are you still happy to call it
+moderately different? I'm not sure. Note that PyPy and hotspot often do
+something different on bencher7 (pairwise atleast)}
 
 Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
 enables to make us several observations. Of the 6 benchmarks, only \nbody comes
 close to `good' warmup behaviour on all
-VMs on all machines (the one C slowdown excepted): the other 5 benchmarks all have at least one VM which consistently
-slows down. Second, there appears to be a bimodal pattern for the number
+VMs (blocked only by the `bad inconsistency' case of HHVM): the other 5
+benchmarks have a much higer degree of slowdown and `bad inconsistency'.
+Second, there appears to be a bimodal pattern for the number
 of in-process iterations required to reach a steady state (when it exists): VMs
 tend either to reach it very quickly (often in 10 or fewer in-process iterations)
-or take hundreds of in-process iterations. Those that take a long time
+or take hundreds of in-process iterations\edd{I can't see that on my
+sparklines, but I need to upgrade and try again}. Those that take a long time
 to stabilise are troubling, because previous benchmarking methodologies
-will not have run them long enough to see this steady state emerge.
+will not have run the benchmarks long enough to see the steady state emerge.
 Finally, there seems to be very little
 correlation between the time it takes a VM to reach a steady state and the
 performance of that steady state: i.e.~it does not seem to be the case that VMs
 which take a long time to warmup are creating more efficient
 steady-state code.
+
+\edd{Edd has not yet read below here in the results section.}
 
 
 \subsection{Warmup Plots}
@@ -1410,7 +1416,7 @@ iteration timings are clearly not. In practise, this does not appear to be an
 issue: we manually inspected a large number of benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
-plots to analyse (3660 for the main part of the experiment), it is extremely unlikely that
+plots to analyse (\totalpexecs{} for the main part of the experiment), it is extremely unlikely that
 we would have been able to do anywhere near as good a job manually as
 changepoint analysis does automatically.
 

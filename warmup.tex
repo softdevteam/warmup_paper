@@ -334,13 +334,15 @@ shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the
 in-process timing data is located; the smaller inset plot allows us to examine a handful
 of in-process iteration timings (typically, though not always, the first $n$,
 allowing us to see the `warmup curve' if/when it exists). Changepoints
-are indicated by vertical red lines and denote a `shift' performance behaviour;
+are indicated by vertical red lines and denote a `shift' in performance behaviour;
 changepoint segments are indicated by horizontal red lines between changepoints; and red circles indicate `outliers'
 (which the changepoint analysis discounts). We use the changepoint
 segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, the steady state iteration
 timings are plotted in black; those preceding the steady state are plotted in grey.
+\laurie{shouldn't the inset in the LHS plot have black lines for the timing data
+after the changepoint since that seems to be the steady state?}
 }
 \label{fig:changepoint}
 \end{figure}

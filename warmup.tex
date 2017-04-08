@@ -226,7 +226,7 @@ most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Across 3 benchmarking machines we found that only \mintwo--\maxtwo\% of
 \vmbpair pairs consistently reach a steady state of peak performance.\edd{Should this really be machine, bench, vm \emph{triples}? Otherwise we would have one summary figure for all machines, right? Presumably we have a summary range because the summaries are per-machine.}\laurie{this is implied by `across 3 machines' IMHO, and i fear that `triples' just sounds confusing at this point. We could be clearer perhaps by adding ``(depending on the machine)'' after the fractions?}
-\edd{yeah maybe. Or how would you find `combo` instead of triple?}
+\edd{yeah maybe. Or how would you find `combo` instead of triple?}\laurie{new terminology -- vague terminology at that! -- will only make the situation worse IMHO.}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -572,7 +572,7 @@ on every other VM put together.
 \subsection{Benchmarking Hardware}
 
 \edd{inconsistent machine naming: linux$_{4790}$ vs. linux$_{e3-1240v5}$. Either
-remove e3- from 1240v5 or add i7- to 4790}
+remove e3- from 1240v5 or add i7- to 4790} \laurie{i'm not sure but i think xeon numbering is more prone to duplications. but of the two i'd prefer to remove e3}
 
 With regards to hardware and operating systems, we made the
 following hypothesis:
@@ -1007,7 +1007,7 @@ segments (see Section~\ref{sec:classifications}). We report means and
 calculated via \laurie{XXX rounds of} bootstrapping. Since the values across different segments are clearly not
 independent, we sample values within, and never across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
-$B$ to produce $B'$; we then concatenate $A'$ and $B'$ to produce a new bootstrapped
+$B$ to produce $B'$; we then union $A'$ and $B'$ to produce a new bootstrapped
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 Although timings within segments are sometimes dependent (see
 Section~\ref{sec:cyclic}), `large' degrees of dependence lead to

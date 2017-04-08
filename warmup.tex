@@ -389,11 +389,13 @@ separate document contains the complete plots of all data from all machines.
 
 The repeatable experiment we designed, as well as the specific results used
 in this paper, can be downloaded from:
-\vspace{-.5em}
-\edd{urls are usually in typewriter, not sure why this one is not.}
-\begin{center}
 \url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.8/}
-\end{center}
+
+First time readers of this paper may find it easiest to read, in order,
+Sections~\ref{sec:warmup}, \ref{sec:microbenchmarks}, \ref{sec:vms},
+\ref{sec:stats}, \ref{sec:results}, \ref{sec:startup}, \ref{sec:related}, and
+\ref{sec:conclusions} before on a second read adding
+Sections~\ref{sec:methodology} and \ref{sec:threats}.
 
 
 \section{Background}
@@ -465,11 +467,11 @@ using 30 process executions. We have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical. In this section we detail: the benchmarks we used and the modifications we
 applied; the VMs we benchmarked; the machines we used for benchmarking; and the
-\krun system we developed to run benchmarks. The results from the experiment
-can be seen in Section~\ref{sec:results}.
+\krun system we developed to run benchmarks.
 
 
 \subsection{The Micro-benchmarks}
+\label{sec:microbenchmarks}
 
 The micro-benchmarks we use are as follows: \binarytrees, \spectralnorm, \nbody,
 \fasta, and \fannkuch from the Computer Language Benchmarks Game (CLBG)~\cite{clbg}; and
@@ -552,6 +554,7 @@ checksum value for each benchmark, irrespective of language.
 
 
 \subsection{VMs under investigation}
+\label{sec:vms}
 
 We ran the benchmarks on the following language implementations: GCC \gccversion;
 Graal \graalversion (an alternative JIT compiler for HotSpot); HHVM \hhvmversion (a JIT
@@ -1417,6 +1420,7 @@ changepoint analysis does automatically.
 
 
 \section{Related work}
+\label{sec:related}
 
 There are two works we are aware of which explicitly note unusual warmup
 patterns. Whilst running benchmarks on HotSpot, Gil et
@@ -1436,7 +1440,7 @@ explanation for why.
 
 
 \section{Conclusions}
-\label{sec:conclusion}
+\label{sec:conclusions}
 
 Warmup has previously been an informally defined term~\cite{seaton15phd} and in this
 paper we have shown cases where the definition fails to hold. Through a carefully

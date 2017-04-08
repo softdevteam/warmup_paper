@@ -28,7 +28,8 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		category_examples/nosteadystate/nosteadystate1.pdf \
 		category_examples/nosteadystate/nosteadystate2.pdf \
 		category_examples/nosteadystate/nosteadystate3.pdf \
-		examples/new_miscomp.pdf
+		examples/new_miscomp.pdf \
+		examples/new_good_comp.pdf
 DIAGRAMS +=	${PLOTS}
 
 TABLES= dacapo.table startup.table \
@@ -176,3 +177,6 @@ category_examples/nosteadystate/nosteadystate3.pdf:
 
 examples/new_miscomp.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --with-changepoint-means --with-outliers -o examples/new_miscomp.pdf ${BENCHER7_INSTR_DATA} -b bencher7:richards:Hotspot:default-java:2 --core-cycles "" --no-zoom --export-size ${WIDTH_2COL},6
+
+examples/new_good_comp.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --with-changepoint-means --with-outliers -o examples/new_good_comp.pdf ${BENCHER7_INSTR_DATA} -b bencher7:fasta:PyPy:default-python:4 --core-cycles "" --no-zoom --export-size ${WIDTH_2COL},6

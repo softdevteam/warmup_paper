@@ -554,7 +554,8 @@ implementations of the same benchmark.
 
 We ran the benchmarks on the following language implementations: GCC \gccversion;
 Graal \graalversion (an alternative JIT compiler for HotSpot); HHVM \hhvmversion (a JIT
-compiling VM for PHP); JRuby+Truffle \jrubytruffleversion{};
+compiling VM for PHP); JRuby+Truffle \jrubytruffleversion{} (a JIT compiling VM
+for Ruby using Graal/Truffle);
 HotSpot \hotspotversion (the most widely used Java
 VM); LuaJIT \luajitversion (a tracing JIT compiling VM for Lua); PyPy \pypyversion (a
 meta-tracing JIT compiling VM for Python 2.7); and V8 \veightversion (a JIT
@@ -563,8 +564,9 @@ and builds fixed versions of each VM. All VMs were compiled with GCC/G++ \gccver
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
 to remove the possibility of variance through the use of different compilers.
 
-\label{openbsd porting} On OpenBSD, we skip Graal, HHVM, and JRuby+Truffle, which have not yet been
-ported to it. We skip \fasta on JRuby+Truffle as it crashes;
+\label{openbsd porting} We skip Graal, HHVM, and JRuby+Truffle on OpenBSD, as
+these VMs have not yet been ported to this platform. We skip \fasta on
+JRuby+Truffle as it crashes;
 and we skip \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together.
 

@@ -504,7 +504,7 @@ Hypothesis H1.
 
 To check whether the benchmarks were deterministic at the user-level, we created
 versions with \texttt{print} statements at all possible points of CFG
-divergence (e.g.~\texttt{if} statements' true and false branches).
+divergence (e.g. inside conditional branches).
 These versions are available in our experimental suite. We first ran the modified
 benchmarks with 2 process executions and 20 in-process iterations,
 and compared the outputs of the two processes. This was enough to show that the
@@ -514,10 +514,10 @@ fixed this by moving the random seed initialisation to the start
 of the in-process iteration main loop.
 
 In order to understand the effects of compilation non-determinism,
-we then compiled VMs and ran our modified benchmarks on two different machines.
+we then compiled the VMs and ran our modified benchmarks on two different machines.
 We then observed occasional non-determinism in Java benchmarks.
 This was due to the extra class we had added to each benchmark
-to interface between it and the benchmark runner: sometimes, the
+to interface with the benchmark runner: sometimes, the
 main benchmark class was lazily loaded after benchmark timing had started in a
 way that we could observe. We
 solved this by adding an empty static method to each benchmark, which our

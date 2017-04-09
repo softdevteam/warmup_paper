@@ -1398,18 +1398,21 @@ available cores and create a matching number of compilation threads; by reducing
 the number of available cores, we accidentally forced two of these threads to
 compete for a single core's resources.
 
-Since OpenBSD has no option for turning off Address Space Layout Randomisation
-(ASLR), we leave it enabled on Linux as well. Since virtually all real systems
-use ASLR, and since it clearly has real-world performance effects, it is part of
-what we need to measure. However, since ASLR is random we have no statistical
-guarantees that we are sampling equally across the possible memory layouts. By
-measuring 30 process executions, we lessen, though cannot remove, the chances of
-all our measurements coming from a narrow part of the overall search space.
-Ideally, we would use a system like Stabilizer~\cite{curtsinger13stabilizer} to
+Address Space Layout Randomisation (ASLR) is, from a performance perspective, a
+controversial feature. It clearly introduces significant non-determinism into
+benchmarking, and it is thus tempting to turn it off. However, this then raises
+the very real possibility that the one point in the ASLR space one is sampling
+from is not indicative of the entire space. Ideally, we would use a system like
+Stabilizer~\cite{curtsinger13stabilizer} to
 sample across the search space evenly; unfortunately, we were not able to build
 Stabilizer on a modern Linux system.\footnote{Stabilizer's authors hope to
 produce a new version which is more easily ported across OS versions, though
-with no definite timescale.}
+with no definite timescale.} We therefore ran all our experiments with ASLR on.
+Indeed, to an extent our hand was forced on this: since ASLR cannot be turned
+off on OpenBSD, comparisons with Linux would be even harder if we turned it off
+on Linux. By measuring 30 process executions, we lessened, though did not
+remove, the chances of all our measurements coming from a narrow part of the
+overall search space.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have

@@ -393,12 +393,12 @@ in this paper, can be downloaded from:
 \section{Background}
 \label{sec:warmup}
 
-When a program begins running on a JIT compiled VM, it is typically (slowly)
+When a program begins running on a JIT compiling VM, it is typically (slowly)
 interpreted; once `hot' (i.e.~frequently executed) loops or methods are
 identified, they are dynamically compiled into machine code; and subsequent
 executions of those loops or methods use (fast) machine code rather than the
 (slow) interpreter. Once machine code generation has completed, the VM is
-said to have finished warming up, and the program to be executing
+said to have finished warming up, and the program is said to be executing
 at a steady state of peak performance.\footnote{The traditional view applies equally to VMs
 that perform immediate compilation instead of using an interpreter, and to
 those VMs which have more than one layer of JIT compilation (later JIT
@@ -409,9 +409,8 @@ is dependent on the program and JIT compiler, all JIT compiling
 VMs assume this performance model holds true~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on reporting
-steady state numbers, partly due to an assumption that
-warmup is both fast and inconsequential to users, partly that
-the steady state is also the same as peak performance.
+steady state numbers, due to the assumptions that warmup is both fast and
+inconsequential to users, and that the steady state is also peak performance.
 The methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations

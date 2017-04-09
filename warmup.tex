@@ -1142,23 +1142,29 @@ for process executions. All
 plots have in-process iteration number on the $x$-axis. For $y$-axes:
 \emph{run-sequence plots} show wall-clock time; and (on Linux) \emph{core-cycle plots} show
 the processor cycle count per-core.
-The run-sequence and core-cycle plots in Figures~\ref{fig:examples:trad}, \ref{fig:examples:slowdown1},
-and \ref{fig:examples:nosteadystate} show examples of traditional warmup, slowdown,
-and no steady state respectively. Figure~\ref{fig:examples:inconsistent} shows
+For example, the plots in Figures~\ref{fig:examples:nosteadystate}
+and \ref{fig:examples:cycles} show wallclock times and core-cycles for examples
+of no steady state and cyclic data
+respectively. Figure~\ref{fig:examples:inconsistent} shows
 an example of inconsistent process executions.
 
 \begin{figure}[t]
 \centering
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_no_steady.pdf}
+\caption{No steady state. Performance is frequently changing in distinct
+phases, and this is refelcted by the outcome of the changepoint analysis. The
+changepoints sometimes coinside with the benchmark migrating between cores.
+Note that core 0 is `tickful`, and the others are `tickless'.}
 \label{fig:examples:nosteadystate}
-\caption{No steady state. There is a small behavioural shift around iteration
-950, where the VM migrates from (tickless) core 1 to (ticked) core 0.\edd{revise caption}}
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.49\textwidth}
 \includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
-\caption{Cycles in wall-clock times and core-cycle counts.\edd{Lots of space here due to long caption on the left. Either write more here, or shorten caption on the left}}
+\caption{Cycles in wall-clock times which are reflected by the core-cycle count
+for the relevant core. Although the changepoint analysis has captured the
+cycles, the change in performance is too small for the classification algorithm
+to consider this example `no steady state'.}
 \label{fig:examples:cycles}
 \end{minipage}
 \end{figure}
@@ -1199,7 +1205,7 @@ in PyPy exposed by our experiment (we have reported this upstream).}
 Core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
 cycle-count on one core, and very low (though never quite zero) values on all
-other cores. Such VMs may still be migrated between cores during a process
+other cores. VMs may migrate between cores during a process
 execution, as can be clearly seen in Figure~\ref{fig:examples:nosteadystate}.
 Although multi-threaded VMs can run JIT compilation and / or GC in parallel,
 it is typically hard to visually detect such parallelism as it tends to be

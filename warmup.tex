@@ -1137,17 +1137,16 @@ steady-state code.
 
 \subsection{Warmup Plots}
 
-To understand why we see so many unexpected cases, we created a series of plots
-for process executions. All
-plots have in-process iteration number on the $x$-axis. For $y$-axes:
-\emph{run-sequence plots} show wall-clock time; and (on Linux) \emph{core-cycle plots} show
-the processor cycle count per-core.
-For example, the plots in Figures~\ref{fig:examples:nosteadystate}
-and \ref{fig:examples:cycles} show wallclock times and core-cycles for examples
-of no steady state and cyclic data
-respectively. Figure~\ref{fig:examples:inconsistent} shows
-an example of inconsistent process executions.
-
+To understand why we see so many unexpected cases, for each process execution,
+we created a series of plots. All plots have in-process iteration number on the
+$x$-axis \emph{Run-sequence plots} show wall-clock times on the $y$-axis. The
+plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
+slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows further
+examples. On Linux we also use \emph{core-cycle plots}, which show the the
+per-core cycle count on the $y$-axis. The plots in
+Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
+examples of run-sequence plots accompanied by core-cycle plots for no steady
+state and cyclic data respectively.
 \begin{figure}[t]
 \centering
 \begin{minipage}[t]{0.485\textwidth}

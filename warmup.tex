@@ -1007,7 +1007,7 @@ segments (see Section~\ref{sec:classifications}). We report means and
 calculated via \laurie{XXX rounds of} bootstrapping. Since the values across different segments are clearly not
 independent, we sample values within, and never across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
-$B$ to produce $B'$; we then union $A'$ and $B'$ to produce a new bootstrapped
+$B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 Although timings within segments are sometimes dependent (see
 Section~\ref{sec:cyclic}), `large' degrees of dependence lead to

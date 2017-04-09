@@ -43,6 +43,7 @@
 \newcommand{\bencherthree}{Linux$_\mathrm{4790K}$\xspace}
 \newcommand{\bencherfive}{Linux$_\mathrm{4790}$\xspace}
 \newcommand{\benchersix}{OpenBSD$_\mathrm{4790}$\xspace}
+\newcommand{\benchersixdagger}{OpenBSD$_\mathrm{4790}${}$^\dagger$\xspace}
 \newcommand{\bencherseven}{Linux$_\mathrm{1240v5}$\xspace}
 \newcommand{\vmbpair}{$\langle$VM, benchmark$\rangle$\xspace}
 \newcommand{\mvmbtrip}{$\langle$machine, VM, benchmark$\rangle$\xspace}
@@ -1021,27 +1022,29 @@ within a segment since, at worst, we will only be bootstrapping data with
 \begin{center}
 \begin{tabular}{lccc}
 \toprule
-Class.         & \bencherfive & \benchersix & \bencherseven \\
+Class.         & \bencherfive & \bencherseven & \benchersixdagger \\
 \midrule
                & \multicolumn{3}{c}{\vmbpair pairs} \\
-\flatc         & \bencherfivevmbenchpairsflatpercentage\% & \benchersixvmbenchpairsflatpercentage\% & \benchersevenvmbenchpairsflatpercentage\% \\
-\warmup        & \bencherfivevmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% & \benchersevenvmbenchpairswarmuppercentage\% \\
-\slowdown      & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% & \benchersevenvmbenchpairsslowdownpercentage\% \\
-\nosteadystate & \bencherfivevmbenchpairsnosteadystatepercentage\% & \benchersixvmbenchpairsnosteadystatepercentage\% & \benchersevenvmbenchpairsnosteadystatepercentage\% \\
-\goodinconsistent  & \bencherfivevmbenchpairsgoodinconsistentpercentage\% & \benchersixvmbenchpairsgoodinconsistentpercentage\% & \benchersevenvmbenchpairsgoodinconsistentpercentage\% \\
-\badinconsistent  & \bencherfivevmbenchpairsbadinconsistentpercentage\% & \benchersixvmbenchpairsbadinconsistentpercentage\% & \benchersevenvmbenchpairsbadinconsistentpercentage\% \\
+\flatc         & \bencherfivevmbenchpairsflatpercentage\% & \benchersevenvmbenchpairsflatpercentage\% & \benchersixvmbenchpairsflatpercentage\% \\
+\warmup        & \bencherfivevmbenchpairswarmuppercentage\% & \benchersevenvmbenchpairswarmuppercentage\% & \benchersixvmbenchpairswarmuppercentage\% \\
+\slowdown      & \bencherfivevmbenchpairsslowdownpercentage\% & \benchersevenvmbenchpairsslowdownpercentage\% & \benchersixvmbenchpairsslowdownpercentage\% \\
+\nosteadystate & \bencherfivevmbenchpairsnosteadystatepercentage\% & \benchersevenvmbenchpairsnosteadystatepercentage\% & \benchersixvmbenchpairsnosteadystatepercentage\% \\
+\goodinconsistent  & \bencherfivevmbenchpairsgoodinconsistentpercentage\% & \benchersevenvmbenchpairsgoodinconsistentpercentage\% & \benchersixvmbenchpairsgoodinconsistentpercentage\% \\
+\badinconsistent  & \bencherfivevmbenchpairsbadinconsistentpercentage\% & \benchersevenvmbenchpairsbadinconsistentpercentage\% & \benchersixvmbenchpairsbadinconsistentpercentage\% \\
 \midrule
                & \multicolumn{3}{c}{Process executions} \\
-\flatc         & \bencherfiveflatpercentage\%          & \benchersixflatpercentage\% & \benchersevenflatpercentage\% \\
-\warmup        & \bencherfivewarmuppercentage\%        & \benchersixwarmuppercentage\% & \benchersevenwarmuppercentage\% \\
-\slowdown      & \bencherfiveslowdownpercentage\%      & \benchersixslowdownpercentage\% & \benchersevenslowdownpercentage\% \\
-\nosteadystate & \bencherfivenosteadystatepercentage\% & \benchersixnosteadystatepercentage\% & \benchersevennosteadystatepercentage\% \\
+\flatc         & \bencherfiveflatpercentage\%          & \benchersevenflatpercentage\% & \benchersixflatpercentage\% \\
+\warmup        & \bencherfivewarmuppercentage\%        & \benchersevenwarmuppercentage\% & \benchersixwarmuppercentage\% \\
+\slowdown      & \bencherfiveslowdownpercentage\%      & \benchersevenslowdownpercentage\% & \benchersixslowdownpercentage\% \\
+\nosteadystate & \bencherfivenosteadystatepercentage\% & \benchersevennosteadystatepercentage\% & \benchersixnosteadystatepercentage\% \\
 \bottomrule
 \end{tabular}
 \end{center}
 \caption{Relative proportions of classifiers across benchmarking machines.
 Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
-\nosteadystate: no steady state, \goodinconsistent: good inconsistent, \badinconsistent: bad inconsistent.}
+\nosteadystate: no steady state, \goodinconsistent: good inconsistent, \badinconsistent: bad inconsistent.
+$^\dagger$Note that \bencherfive and \bencherseven run the same set of benchmarks,
+but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \label{tab:summarystats}
 \end{table}
 

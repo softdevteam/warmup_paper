@@ -409,8 +409,8 @@ is dependent on the program and JIT compiler, all JIT compiling
 VMs assume this performance model holds true~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on reporting
-steady state numbers, due to the assumptions that warmup is both fast and
-inconsequential to users, and that the steady state is also peak performance.
+steady state numbers based on two assumptions: first, that warmup is both fast and
+inconsequential to users; second, that the steady state is also peak performance.
 The methodologies used are typically straightforward: benchmarks are run for a number
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
@@ -504,7 +504,7 @@ Hypothesis H1.
 
 To check whether the benchmarks were deterministic at the user-level, we created
 versions with \texttt{print} statements at all possible points of CFG
-divergence (e.g. inside conditional branches).
+divergence (e.g.~inside conditional branches).
 These versions are available in our experimental suite. We first ran the modified
 benchmarks with 2 process executions and 20 in-process iterations,
 and compared the outputs of the two processes. This was enough to show that the
@@ -540,13 +540,13 @@ which can become a significant part of the eventual measure.
 
 To avoid this, we modified the benchmarks to calculate a checksum
 during each in-process iteration. At the end of each in-process iteration
-the checksum is compared to a predetermined expected value; if the comparison fails then
+the checksum is compared to an expected value; if the comparison fails then
 the incorrect checksum is written to \texttt{stdout}. This idiom
 lowers the chances that an optimiser can remove the main benchmark
 code, even though no output is produced. We also use this mechanism to give some assurance
 that the different language implementations of a benchmark are performing
-roughly the same work, as we share the expected checksum value across all
-implementations of the same benchmark.
+roughly the same work, as the expected checksum value is the same for all
+implementations of the benchmark.
 
 
 \subsection{VMs under investigation}
@@ -564,10 +564,9 @@ and builds fixed versions of each VM. All VMs were compiled with GCC/G++ \gccver
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
 to remove the possibility of variance through the use of different compilers.
 
-\label{openbsd porting} We skip Graal, HHVM, and JRuby+Truffle on OpenBSD, as
-these VMs have not yet been ported to this platform. We skip \fasta on
-JRuby+Truffle as it crashes;
-and we skip \richards on HHVM since it takes as long as every other benchmark
+\label{openbsd porting} We skip: Graal, HHVM, and JRuby+Truffle on OpenBSD, as
+these VMs have not yet been ported to this platform; \fasta on JRuby+Truffle as
+it crashes; and \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together.
 
 
@@ -635,7 +634,7 @@ next process execution.
 The obvious way for \krun to determine which benchmark to run next is to examine
 its results file. However, this is a large file which grows over time, and
 reading it in could affect benchmarks (e.g.~due to significant memory
-fragmentation). On its initial invocation (before the first reboot) \krun
+fragmentation). When invoked for the first time, \krun
 therefore creates a simple schedule file. After each reboot this is scanned
 line-by-line for the next benchmark to run; the benchmark is run; and the schedule
 updated (without changing its size). Once the process execution is
@@ -676,9 +675,7 @@ in our setup makes it impossible to set a unified environment size across all VM
 benchmarks. However, the \texttt{krun} user does not
 vary its environment (we recorded the environment seen by each process
 execution and verified their size), and we designed the experiment such that,
-on any given machine, for each \vmbpair
-pairing the additional environment used to configure the VM is of constant
-size.
+for each machine, each \vmbpair has a consistent environment size.
 
 
 \subsubsection{Linux-specific Controls}
@@ -1113,7 +1110,7 @@ Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
 similarly, with the notable exceptions of LuaJIT, whose benchmarks are more often
 classified as non-flat (see Tables~\ref{tab:bencher5results} and
 ~\ref{tab:bencher6results} in the Appendix)\edd{PyPy and hotspot appear to be a
-little more consistent on linux machines. Would you agree?}
+little more consistent on linux machines. Would you agree?}\laurie{no. they're a *lot* more consistent! the worse thing is that, even though a few of these could be ``oh well, changepoint analysis could do better on this one i suppose'', most appear to be completely genuine things happening in the data. i have no idea why.}
 With that in mind, we believe that our results are a fairly clear validation of
 Hypothesis H2.
 
@@ -1225,7 +1222,7 @@ consider it unnecessary?}\laurie{i think we need to rethink this section a littl
 making it really hard to automate. Maybe it's ok to simply say that cycles with
 large enough deviations get classified as no steady state. Other cases could be
 `future work' since picking apart the types seems like a large undertaking to
-me.}
+me.}\laurie{that's not a good reason not to do it. we already have a basic script which applies the automatic autocorrelation doo-dah. deriving statistics from that seems plausible.}
 We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process

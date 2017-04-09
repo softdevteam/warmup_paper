@@ -43,7 +43,7 @@
 \newcommand{\bencherthree}{Linux$_\mathrm{4790K}$\xspace}
 \newcommand{\bencherfive}{Linux$_\mathrm{4790}$\xspace}
 \newcommand{\benchersix}{OpenBSD$_\mathrm{4790}$\xspace}
-\newcommand{\bencherseven}{Linux$_\mathrm{E3-1240v5}$\xspace}
+\newcommand{\bencherseven}{Linux$_\mathrm{1240v5}$\xspace}
 \newcommand{\vmbpair}{$\langle$VM, benchmark$\rangle$\xspace}
 \newcommand{\mvmbtrip}{$\langle$machine, VM, benchmark$\rangle$\xspace}
 
@@ -224,9 +224,9 @@ has reached a steady state and, if so, whether that represents peak
 performance or not. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
-variety of common VMs. Across 3 benchmarking machines we found that only \mintwo--\maxtwo\% of
-\vmbpair pairs consistently reach a steady state of peak performance.\edd{Should this really be machine, bench, vm \emph{triples}? Otherwise we would have one summary figure for all machines, right? Presumably we have a summary range because the summaries are per-machine.}\laurie{this is implied by `across 3 machines' IMHO, and i fear that `triples' just sounds confusing at this point. We could be clearer perhaps by adding ``(depending on the machine)'' after the fractions?}
-\edd{yeah maybe. Or how would you find `combo` instead of triple?}\laurie{new terminology -- vague terminology at that! -- will only make the situation worse IMHO.}
+variety of common VMs. Repeating our experiment on 3 different machines, we
+found that only \mintwo--\maxtwo\% of
+\vmbpair pairs consistently reach a steady state of peak performance.
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -570,9 +570,6 @@ on every other VM put together.
 
 
 \subsection{Benchmarking Hardware}
-
-\edd{inconsistent machine naming: linux$_{4790}$ vs. linux$_{e3-1240v5}$. Either
-remove e3- from 1240v5 or add i7- to 4790} \laurie{i'm not sure but i think xeon numbering is more prone to duplications. but of the two i'd prefer to remove e3}
 
 With regards to hardware and operating systems, we made the
 following hypothesis:
@@ -1072,7 +1069,6 @@ the mean (not median) bar in red on the steady perf(s) histogram. thoughts?}}
 \end{table*}
 \end{landscape}
 
-\edd{sarah: are the macros in summary\_macros.tex up to date?}
 Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherfive
@@ -1137,8 +1133,6 @@ correlation between the time it takes a VM to reach a steady state and the
 performance of that steady state: i.e.~it does not seem to be the case that VMs
 which take a long time to warmup are creating more efficient
 steady-state code.
-
-\edd{Edd has not yet read below here in the results section.}
 
 
 \subsection{Warmup Plots}

@@ -1039,10 +1039,9 @@ but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \input{bencher7.table}
 \end{adjustbox}
 \caption{Benchmark results for \bencherseven. For all process executions, we
-report the classification of the benchmark and, for inconsistent benchmarks,
+report the classification of the benchmark and, for good/bad inconsistent benchmarks,
 their constituent classifications (e.g.~\badinconsistent(2\slowdown, 8\warmup)
-means 2 of the process executions were slowdown, and 8 warmup, \goodinconsistent
-means the process executions were inconsistent, but contained no slowdowns or no steady states). For processes
+means 2 of the process executions were slowdown, and 8 warmup). For processes
 which reach a steady state we report three summary statistics. \emph{Steady iter
 (\#)} is the median in-process iteration that the steady state was reached at
 and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
@@ -1280,8 +1279,8 @@ Table~\ref{fig:startup} shows startup times from both \bencherfive and \benchers
 \krun reboots before each process execution, these are measures of a `cold'
 start and thus partly reflect disk speed etc. (though both machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
-taking C as a baseline, the fastest VM (LuaJIT) is around 2x slower, whilst the
-slowest VM (JRuby+Truffle) is around 1000x slower, to startup.
+taking C on Linux as a baseline, the fastest VM (LuaJIT) is 5x slower, whilst the
+slowest VM (JRuby+Truffle) is around 3500x slower, to startup.
 
 \begin{table}[t]
 \centering

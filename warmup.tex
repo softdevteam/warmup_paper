@@ -1262,11 +1262,6 @@ document it accurately.
 
 \section{Startup Time}
 \label{sec:startup}
-\sarah{startup table is now v0.8 and uses IQRs, text may need updating.}
-\laurie{i suspect the startup table should return to using confidence intervals especially
-since the data is, as expected, nearly all normally distributed. i like the
-adding of histograms, though i suspect the red bar should be the mean}
-
 The data presented thus far in the paper has all been collected after the VM has
 started executing the user program. The period between a VM being
 invoked and it executing the first line of the user program is the VM's \emph{startup} time,
@@ -1293,7 +1288,9 @@ slowest VM (JRuby+Truffle) is around 1000x slower, to startup.
 \begin{table}[t]
 \centering
 \input{startup.table}
-\caption{VM startup time (in seconds with IQRs).}
+\caption{VM startup time (in seconds with 99\% confidence intervals).
+\sarah{Startup table will be updated soon to add CIs.}
+}
 \label{fig:startup}
 \end{table}
 

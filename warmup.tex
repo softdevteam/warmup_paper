@@ -89,20 +89,6 @@
        /%
 \end{sparkline}\xspace%
 }
-\DeclareRobustCommand{\inconsistent}{%
-\setlength{\sparklinethickness}{0.4pt}%
-\begin{sparkline}{1.5}
-\spark 0.1 0.4
-       0.9 0.4
-       /%
-\spark 0.1 0.2
-       0.9 0.2
-       /%
-\spark 0.1 0.6
-       0.9 0.0
-       /%
-\end{sparkline}\xspace%
-}
 \DeclareRobustCommand{\badinconsistent}{%
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
@@ -1056,8 +1042,9 @@ but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \end{adjustbox}
 \caption{Benchmark results for \bencherseven. For all process executions, we
 report the classification of the benchmark and, for inconsistent benchmarks,
-their constituent classifications (e.g.~\inconsistent(2\slowdown, 8\warmup)
-means 2 of the process executions were slowdown, and 8 warmup). For processes
+their constituent classifications (e.g.~\badinconsistent(2\slowdown, 8\warmup)
+means 2 of the process executions were slowdown, and 8 warmup, \goodinconsistent
+means the process executions were inconsistent, but contained no slowdowns or no steady states). For processes
 which reach a steady state we report three summary statistics. \emph{Steady iter
 (\#)} is the median in-process iteration that the steady state was reached at
 and \emph{Steady iter (s)} is the median wall-clock time since the beginning of

@@ -844,7 +844,7 @@ sliding window of 200 in-process iterations, lies outside the median $\pm
 3*(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warm-up iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
-iterations. \laurie{check for 0.8}Of the \totaliterations\xspace in-process
+iterations. Of the \totaliterations\xspace in-process
 iterations, \totaloutlierspercentage\% are classified as outliers, with the most for
 \FPeval{\result}{round(2000.0 / \maximumoutliers, 1)}%
 any single process execution being \result\% of in-process iterations.
@@ -1002,8 +1002,8 @@ nuanced view than IQRs can report we also provide thumbnail histograms.
 \emph{Steady perf (s)} roughly corresponds to the `normal' performance number reported
 in most VM papers. In our case, the steady state is composed of one or more
 segments (see Section~\ref{sec:classifications}). We report means and
-\laurie{95\% or 99\%? i think we can do the latter?} confidence intervals
-calculated via \laurie{XXX rounds of} bootstrapping. Since the values across different segments are clearly not
+99\% confidence intervals
+calculated via bootstrapping (with 100,000 iterations). Since the values across different segments are clearly not
 independent, we sample values within, and never across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
 $B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
@@ -1064,11 +1064,10 @@ and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
 the process execution that the steady state was reached; for both measures we
 report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
 performance of the steady state segment across all process executions, which we
-report with \laurie{99\%?} confidence intervals. The thumbnail histograms
+report with 99\% confidence intervals. The thumbnail histograms
 show the spread of values; the red bar shows the location of the median
 (for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
-\emph{Steady perf(s)}) value. \laurie{sarah: i think we should show
-the mean (not median) bar in red on the steady perf(s) histogram. thoughts?}}
+\emph{Steady perf(s)}) value.}
 \label{tab:mainresults}
 \end{table*}
 \end{landscape}

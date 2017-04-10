@@ -1082,12 +1082,12 @@ Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good' warmup
 process executions. On \bencherfive
 \bencherfivevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
-and \sarah{was: \\bencherfivevmbenchpairsinconsistentpercentage\%}\edd{can we
-bring that back from the dead then?} are inconsistent
-(with over two thirds of those being obviously `bad'); \bencherfive and
+and
+\FPeval{\result}{round(\bencherfivevmbenchpairsgoodinconsistent+\bencherfivevmbenchpairsbadinconsistent,1)}%
+\result\% are inconsistent
+(with \bencherfivevmbenchpairsbadinconsistent\% of those being obviously `bad'); \bencherfive and
 \benchersix are broadly similar. Taking \bencherseven as an example,
-one third \edd{sarah: can we pull a percentage from the classifer macros
-instead of `a third`?} \sarah{I think this is \\benchersevenvmbenchpairsbadinconsistent}
+\benchersevenvmbenchpairsbadinconsistent\%
 of its \vmbpair pairs are `bad', clearly invalidating
 Hypothesis H1.
 

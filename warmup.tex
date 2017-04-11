@@ -47,6 +47,8 @@
 \newcommand{\bencherseven}{Linux$_\mathrm{1240v5}$\xspace}
 \newcommand{\vmbpair}{$\langle$VM, benchmark$\rangle$\xspace}
 \newcommand{\mvmbtrip}{$\langle$machine, VM, benchmark$\rangle$\xspace}
+\newcommand{\numpexecs}{30\xspace}
+\newcommand{\numiterations}{2000\xspace}
 
 \DeclareRobustCommand{\flatc}{%
 \setlength{\sparklinethickness}{0.4pt}%
@@ -274,8 +276,8 @@ improving performance and included in VMs.
 
 \subsection{Overview of the Methodology}
 
-We present a carefully designed experiment where benchmarks are run for 2000
-\emph{in-process iterations} and repeated using 30 fresh \emph{process
+We present a carefully designed experiment where benchmarks are run for \numiterations
+\emph{in-process iterations} and repeated using \numpexecs fresh \emph{process
 executions} (i.e.~each process execution runs multiple in-process iterations).
 We then present a novel approach to automatically classifying
 different styles of warmup.
@@ -310,7 +312,7 @@ plot titles show: the benchmark (e.g.~\binarytrees); the VM (e.g.~HotSpot),
 the machine (e.g.~\bencherseven); the process execution number (e.g.~5);
 and the classification (e.g.~warmup). The `main' plot at the bottom always shows
 the in-process iteration number (indexed from 1) and the corresponding wallclock
-times for all 2000 in-process iterations. Because this often obscures the finer
+times for all \numiterations in-process iterations. Because this often obscures the finer
 details, we also show two additional visualisations of the data: the top plot
 shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the bulk of the
 in-process timing data is located; the smaller inset plot allows us to examine a handful
@@ -436,8 +438,8 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 \label{sec:methodology}
 
 To test Hypothesis \hypone, we designed an experiment which uses a suite of
-micro-benchmarks: each is run with 2000 in-process iterations and repeated
-using 30 process executions. We have carefully designed our
+micro-benchmarks: each is run with \numiterations in-process iterations and repeated
+using \numpexecs process executions. We have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
 is practical. In this section we detail: the benchmarks we used and the modifications we
 applied; the VMs we benchmarked; the machines we used for benchmarking; and the
@@ -810,7 +812,7 @@ loss of precision.
 \label{sec:stats}
 
 The main data created by our experiment is the time taken by each in-process
-iteration to run. Formally, this is time series data of length 2000. In
+iteration to run. Formally, this is time series data of length \numiterations. In
 this Section we explain how we use statistical changepoint analysis to enable us to
 understand this time series data and classify the results we see, giving the
 first automated method for identifying warmup.
@@ -933,7 +935,7 @@ def classify(seq):
 
 With that in mind, we can define a simple classification algorithm for a process
 execution, based on the special nature of the final changepoint segment. Since all our benchmarks run
-for 2000 in-process iterations we (somewhat arbitrarily) define that a process
+for \numiterations in-process iterations we (somewhat arbitrarily) define that a process
 execution reaches a steady-state if all segments which cover the last 500
 in-process iterations are considered equivalent to the final segment. If
 not, we classify the process execution as \emph{no steady state} (\nosteadystate).
@@ -1385,7 +1387,7 @@ produce a new version which is more easily ported across OS versions, though
 with no definite timescale.} We therefore ran all our experiments with ASLR on.
 Indeed, to an extent our hand was forced on this: since ASLR cannot be turned
 off on OpenBSD, comparisons with Linux would be even harder if we turned it off
-on Linux. By measuring 30 process executions, we lessened, though did not
+on Linux. By measuring \numpexecs process executions, we lessened, though did not
 remove, the chances of all our measurements coming from a narrow part of the
 overall search space\edd{Can we sneak in that many languages the addresses of
 alllocations are exposed to the VM (and in some cases to the user-program), so
@@ -1504,7 +1506,7 @@ document.
 The statistical method presented in Section~\ref{sec:stats} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\cite{octane}
-(JavaScript). We ran both for 10 process executions and 2000 in-process
+(JavaScript). We ran both for 10 process executions and \numiterations in-process
 iterations without reboots, temperature control etc.: DaCapo on \bencherthree;
 and Octane on \bencherseven (a Xeon machine, with a software setup
 similar to \bencherthree).\footnote{The large amount of CPU time our
@@ -1526,13 +1528,13 @@ microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
-adequately long running benchmark. We recorded 2000 iterations of the outer benchmark; our runner
+adequately long running benchmark. We recorded \numiterations iterations of the outer benchmark; our runner
 fully resets the benchmark and the random number generator between each
 iteration. The \texttt{box2d}, \texttt{gameboy}, \texttt{mandreel} benchmarks do
 not properly reset their state between runs, leading to run-time errors we have
 not been able to fix; \texttt{typescript}'s reset function, in contrast,
 frees constant data needed by all iterations, which we were able
-to easily fix. When run for 2000 iterations, \texttt{CodeLoadClosure},
+to easily fix. When run for \numiterations iterations, \texttt{CodeLoadClosure},
 \texttt{pdfjs}, and \texttt{zlib} all fail due to memory leaks. We were able to
 easily fix \texttt{pdfjs} by emptying a global list after each iteration, but not the
 others. We therefore include 12 of Octane's benchmarks (including lightly

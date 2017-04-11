@@ -435,7 +435,7 @@ rigorous definition of the term, is an open research problem''~\cite{seaton15phd
 \section{Methodology}
 \label{sec:methodology}
 
-To test Hypothesis H1, we designed an experiment which uses a suite of
+To test Hypothesis \hypone, we designed an experiment which uses a suite of
 micro-benchmarks: each is run with 2000 in-process iterations and repeated
 using 30 process executions. We have carefully designed our
 experiment to be repeatable and to control as many potentially confounding variables as
@@ -460,7 +460,7 @@ optimised by VMs than average programs; when used as a proxy for other types
 of programs (e.g.~large programs), they tend to overstate the effectiveness of
 VM optimisations (see e.g.~\cite{ratanaworabhan09jsmeter}). In our context, this weakness is in fact a strength:
 small, deterministic, and widely examined programs are our most
-reliable means of testing Hypothesis H1. Put another way, if we were to run arbitrary programs
+reliable means of testing Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
 ``you have found the one program that exhibits unusual warmup behaviour''.
 
@@ -480,10 +480,10 @@ User programs that are deliberately non-deterministic programs are unlikely to
 warm-up in the traditional fashion.
 We therefore wish to guarantee that our benchmarks are,
 to the extent controllable by the user, deterministic, taking
-the same path through the Control Flow Graph (CFG)
+the same path through the control flow graph (CFG)
 on all process executions and in-process iterations. We make no attempt to
 control non-determinism within the VM, which is part of what we need to test for
-Hypothesis H1.
+Hypothesis \hypone.
 
 To check whether the benchmarks were deterministic at the user-level, we created
 versions with \texttt{print} statements at all possible points of CFG
@@ -564,7 +564,7 @@ We deliberately use the word `moderately', since significant changes of hardware
 (e.g.~x86 vs.~ARM) or operating system (e.g.~Linux vs.~Windows) imply that
 significantly different parts of the VMs will be used (see Section~\ref{sec:threats}).
 
-In order to test Hypothesis H2, we used three benchmarking machines: \emph{\bencherseven}, a Xeon E3-1240 v5 3.5GHz,
+In order to test Hypothesis \hyptwo, we used three benchmarking machines: \emph{\bencherseven}, a Xeon E3-1240 v5 3.5GHz,
 24GB of RAM, running Debian 8; \emph{\bencherfive}, a quad-core i7-4790
 3.6GHz, 32GB of RAM, running Debian 8; and \emph{\benchersix}, a quad-core i7-4790
 3.6GHz, 32GB of RAM, running OpenBSD 6.0. \bencherseven and \bencherfive
@@ -590,7 +590,7 @@ than on physical cores alone.
 Many confounding variables manifest shortly before, or during the running of,
 benchmarks~\cite{kalibera05precision}. In order to control as many of these as possible, we wrote
 \krun\footnote{The `K' in Krun is a respectful tip of the hat to \kalibera.}, a new benchmark runner. \krun itself is a `supervisor'
-which, given a configuration file specifying VMs, benchmarks (etc.) configures
+which, given a configuration file specifying VMs, benchmarks, etc. configures
 a Linux or OpenBSD system, runs benchmarks, and collects the results. Individual VMs and benchmarks
 are then wrapped, or altered, to report data back to \krun in an appropriate format.
 
@@ -646,11 +646,12 @@ turn off network interfaces entirely, to prevent outside sources causing unbound
 (potentially performance interfering) interrupts to be sent to the processor and kernel.
 
 In order to identify problems with the machine itself, \krun monitors the
-system's \texttt{dmesg} buffer for unexpected entries (known `safe' entries
+system \texttt{dmesg} buffer for unexpected entries (known `safe' entries
 are ignored), informing the user if any arise. We implemented this after
 noticing that one machine initially ear-marked for benchmarking occasionally
 overheated, with the only clue to this being a line in \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
+\sarah{Potential reviewer question: why did our temp check not catch the overheating?}
 
 A process's environment size can cause measurement
 bias~\cite{mytkowicz09surprising}. The diversity of VMs and platforms
@@ -692,7 +693,7 @@ once per second, minimising interruptions.
 
 \subsubsection{OpenBSD-specific Controls}
 
-Relative to Linux, OpenBSD exposes many fewer knobs to users. Nevertheless,
+Relative to Linux, OpenBSD exposes many fewer controls to user. Nevertheless,
 there are two OpenBSD specific features in \krun.
 First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
 to running benchmarks (equivalent to Linux's \texttt{performance} mode).
@@ -701,16 +702,17 @@ for example not requiring \texttt{realloc} to always reallocate memory to
 an entirely new location. The \texttt{malloc.conf} flags we use are \texttt{cfgrux}.
 
 
-\subsubsection{The Iterations Runners}
+\subsubsection{The Iteration Runners}
 
 To report timing data to \krun, we created an
-\emph{iterations runner} for each language under investigation.
+\emph{iteration runner} for each language under investigation.
 These take the name of a specific benchmark and
 the desired number of in-process iterations, run the benchmark appropriately,
 and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
 cycle, APERF, and MPERF counters.
+\sarah{Last minute: need to sweep for wallclock vs. wall-clock.}
 
 We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
@@ -725,7 +727,7 @@ proportional to the processor's current frequency. With an APERF/MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is in
 a power-saving mode; and above 1, turbo boost is being used.
 
-A deliberate design goal of the in-process iterations runners is to minimise
+A deliberate design goal of the in-process iteration runners is to minimise
 timing noise and distortion from measurements. Since system calls can have a
 significant overhead (on Linux, calling functions such as \texttt{write} can
 evict as much as two thirds of an x86's L1 cache~\cite{soares10flexsc}), we
@@ -774,7 +776,7 @@ void krun_measure(int mdata_idx) {
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
-in-process iterations runner (with core cycles etc. removed).}]
+in-process iteration runner (with core cycles etc. removed).}]
 wallclock_times = [0] * iters
 for i in xrange(iters):
     krun_measure(0)   # Start timed section

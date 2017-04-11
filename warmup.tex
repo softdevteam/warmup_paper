@@ -1388,14 +1388,9 @@ produce a new version which is more easily ported across OS versions, though
 with no definite timescale.} In previous versions of this work, we disabled
 ASLR on Linux, but since ASLR on OpenBSD cannot be turned off, this made
 comparisons difficult. We therefore ran all our experiments with ASLR on.
-Indeed, to an extent our hand was forced on this: since ASLR cannot be turned
-off on OpenBSD, comparisons with Linux would be even harder if we turned it off
-on Linux. By measuring \numpexecs process executions, we lessened, though did not
+By measuring \numpexecs process executions, we lessened, though did not
 remove, the chances of all our measurements coming from a narrow part of the
-overall search space\edd{Can we sneak in that many languages the addresses of
-alllocations are exposed to the VM (and in some cases to the user-program), so
-it's entirely possible that turning ALSR off restricts control flow through
-both?}
+overall search space.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have

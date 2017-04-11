@@ -746,8 +746,8 @@ core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
         caption={%
-\texttt{krun\_measure}: Measuring before (the \texttt{if}'s true branch) and
-after (its false branch) a benchmark. Since
+\texttt{krun\_measure}: Measuring before (the \texttt{if} true branch) and
+after (the false branch) a benchmark. Since
 wall-clock time is the most important measure, it is innermost; since
 the APERF/MPERF counters are a sanity check, they are outermost. Note that
 the APERF/MPERF counters must be read in the same order before

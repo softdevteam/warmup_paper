@@ -203,7 +203,7 @@ compilation has occurred, the program is said to be at a steady state of peak pe
 When measuring the performance of JIT compiling VMs, data collected
 during the warmup phase is generally discarded, placing the focus on peak
 performance. We introduce a new automated approach -- based
-on changepoint analysis -- which allows us to determine if a program
+on statistical changepoint analysis -- which allows us to determine if a program
 has reached a steady state and, if so, whether that represents peak
 performance or not. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
@@ -254,7 +254,7 @@ To test this hypothesis, we developed a new approach for
 automatically analysing large quantities of benchmarking data. We deliberately chose
 widely studied microbenchmarks, and ran them in a heavily
 controlled environment, designed to minimise measurement noise. By doing so, we
-maximised the chances that our experiment would validate Hypothesis H1. Instead
+maximised the chances that our experiment would validate Hypothesis \hypone. Instead
 we encountered many benchmarks which slowdown, never hit a steady
 state, or which perform inconsistently across different process
 executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
@@ -315,14 +315,16 @@ details, we also show two additional visualisations of the data: the top plot
 shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the bulk of the
 in-process timing data is located; the smaller inset plot allows us to examine a handful
 of in-process iteration timings (typically, though not always, the first $n$,
-allowing us to see the `warmup curve' if/when it exists). Changepoints
+allowing us to see the `warmup curve', if it exists). Changepoints
 are indicated by vertical red lines and denote a `shift' in performance behaviour;
-changepoint segments are indicated by horizontal red lines between changepoints; and red circles indicate `outliers'
+changepoint segments are indicated by horizontal red lines between changepoints,
+whose height shows the mean iteration time within the segment;
+and red circles indicate `outliers'
 (which the changepoint analysis discounts). We use the changepoint
 segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, the steady state iteration
-timings are plotted in black; those preceding the steady state are plotted in grey.}
+timings are plotted in black; all others are plotted in grey.}
 \label{fig:changepoint}
 \end{figure}
 
@@ -330,7 +332,7 @@ We introduce a new approach to analysing VM benchmarking data. We use the
 recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). The analysis groups consecutive samples
-with similar mean and variation into distinct segments
+with similar mean and variance into distinct segments
 which we then use to automatically classify each process execution as either:
 no steady state; flat (no detectable change in performance
 over the benchmark); warmup; or slowdown (a decrease in performance over time).

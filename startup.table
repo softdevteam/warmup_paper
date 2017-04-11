@@ -13,8 +13,8 @@
 \midrule
 C&$
 \begin{array}{r}
-\scriptstyle{0.00072} \\[-6pt]
-\scriptscriptstyle{(0.000655, 0.000902)}
+\scriptstyle{0.00075} \\[-6pt]
+\scriptscriptstyle{\pm0.000029}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -37,7 +37,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.00093} \\[-6pt]
-\scriptscriptstyle{(0.000866, 0.000949)}
+\scriptscriptstyle{\pm0.000004}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -60,8 +60,8 @@ $
 \\ 
 Graal&$
 \begin{array}{r}
-\scriptstyle{0.34824} \\[-6pt]
-\scriptscriptstyle{(0.346253, 0.349887)}
+\scriptstyle{0.34815} \\[-6pt]
+\scriptscriptstyle{\pm0.000234}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -84,8 +84,8 @@ $
 &\\ 
 HHVM&$
 \begin{array}{r}
-\scriptstyle{0.75293} \\[-6pt]
-\scriptscriptstyle{(0.737549, 0.773275)}
+\scriptstyle{0.75270} \\[-6pt]
+\scriptscriptstyle{\pm0.002043}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -108,8 +108,8 @@ $
 &\\ 
 Hotspot&$
 \begin{array}{r}
-\scriptstyle{0.14611} \\[-6pt]
-\scriptscriptstyle{(0.144071, 0.158710)}
+\scriptstyle{0.14716} \\[-6pt]
+\scriptscriptstyle{\pm0.000713}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -131,8 +131,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.17980} \\[-6pt]
-\scriptscriptstyle{(0.178230, 0.182307)}
+\scriptstyle{0.17994} \\[-6pt]
+\scriptscriptstyle{\pm0.000229}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -155,8 +155,8 @@ $
 \\ 
 JRubyTruffle&$
 \begin{array}{r}
-\scriptstyle{2.65965} \\[-6pt]
-\scriptscriptstyle{(2.556882, 2.771373)}
+\scriptstyle{2.66177} \\[-6pt]
+\scriptscriptstyle{\pm0.011825}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -179,8 +179,8 @@ $
 &\\ 
 LuaJIT&$
 \begin{array}{r}
-\scriptstyle{0.00358} \\[-6pt]
-\scriptscriptstyle{(0.003375, 0.004584)}
+\scriptstyle{0.00389} \\[-6pt]
+\scriptscriptstyle{\pm0.000445}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -203,7 +203,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.00423} \\[-6pt]
-\scriptscriptstyle{(0.004186, 0.004280)}
+\scriptscriptstyle{\pm0.000006}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -226,8 +226,8 @@ $
 \\ 
 PyPy&$
 \begin{array}{r}
-\scriptstyle{0.43905} \\[-6pt]
-\scriptscriptstyle{(0.434765, 0.450953)}
+\scriptstyle{0.44039} \\[-6pt]
+\scriptscriptstyle{\pm0.001066}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -249,8 +249,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.78644} \\[-6pt]
-\scriptscriptstyle{(0.782475, 0.791690)}
+\scriptstyle{0.78656} \\[-6pt]
+\scriptscriptstyle{\pm0.000505}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -273,8 +273,8 @@ $
 \\ 
 V8&$
 \begin{array}{r}
-\scriptstyle{0.08703} \\[-6pt]
-\scriptscriptstyle{(0.086048, 0.089636)}
+\scriptstyle{0.08727} \\[-6pt]
+\scriptscriptstyle{\pm0.000239}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -296,8 +296,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.12020} \\[-6pt]
-\scriptscriptstyle{(0.119554, 0.121094)}
+\scriptstyle{0.12026} \\[-6pt]
+\scriptscriptstyle{\pm0.000081}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}

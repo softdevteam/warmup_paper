@@ -1,16 +1,24 @@
 
 {
-\begin{tabular}{ll@{\hspace{0cm}}lp{5pt}r@{\hspace{0cm}}r@{\hspace{0cm}}r@{\hspace{0cm}}l@{\hspace{.3cm}}lp{5pt}r@{\hspace{0cm}}r@{\hspace{0cm}}r}
+\setlength\sparkspikewidth{1pt}
+\definecolor{sparkbottomlinecolor}{gray}{0.8}
+% Older versions of sparklines do not expose bottomlinethickness
+\renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
+  \color{sparkbottomlinecolor}%
+  \pgfline{\pgfxy(0,0)}{\pgfxy(#1,0)}\color{sparklinecolor}}
+
+\begin{tabular}{ll@{\hspace{0cm}}ll@{\hspace{-1cm}}r@{\hspace{0cm}}r@{\hspace{0cm}}r@{\hspace{0cm}}l@{\hspace{.3cm}}ll@{\hspace{-1cm}}r@{\hspace{0cm}}r@{\hspace{0cm}}r}
 \toprule
 \multicolumn{1}{c}{\multirow{2}{*}{}}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&&&\multicolumn{1}{c}{} &\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}&\multicolumn{1}{c}{Steady}\\&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)}&&&\multicolumn{1}{c}{Class.} &\multicolumn{1}{c}{iter (\#)} &\multicolumn{1}{c}{iter (s)}&\multicolumn{1}{c}{perf (s)} \\
 \midrule
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\binarytrees}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{5.16546} \\[-6pt]
-\scriptscriptstyle{(5.108226, 5.292207)}
+\scriptstyle{5.16553} \\[-6pt]
+\scriptscriptstyle{\pm0.112384}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.20
 \sparkspike 0.20 0.13
 \definecolor{sparkspikecolor}{named}{red}
@@ -24,7 +32,8 @@ $
 \sparkspike 0.90 0.07
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\nbody}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($13$\warmup, $8$\flatc, $6$\nosteadystate, $3$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($26$\warmup, $4$\slowdown)}&$
 \begin{array}{r}
@@ -32,7 +41,8 @@ HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}
 \scriptscriptstyle{(2, 256)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -46,14 +56,16 @@ $
 \sparkspike 0.90 0.20
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.26} \\[-6pt]
 \scriptscriptstyle{(0.259, 49.727)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -67,14 +79,16 @@ $
 \sparkspike 0.90 0.20
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.18697} \\[-6pt]
-\scriptscriptstyle{(0.185570, 0.190246)}
+\scriptstyle{0.18696} \\[-6pt]
+\scriptscriptstyle{\pm0.005325}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.13
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.20 0.37
@@ -88,14 +102,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
 \scriptstyle{2} \\[-6pt]
 \scriptscriptstyle{(2, 2)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.97
 \definecolor{sparkspikecolor}{named}{black}
@@ -109,14 +125,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.18} \\[-6pt]
 \scriptscriptstyle{(0.176, 0.179)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.97
 \definecolor{sparkspikecolor}{named}{black}
@@ -130,14 +148,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.17200} \\[-6pt]
-\scriptscriptstyle{(0.171261, 0.172467)}
+\scriptstyle{0.17201} \\[-6pt]
+\scriptscriptstyle{\pm0.000547}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.07
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -151,7 +171,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.23
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($16$\warmup, $6$\nosteadystate, $5$\flatc, $3$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($19$\flatc, $9$\warmup, $2$\slowdown)}&$
 \begin{array}{r}
@@ -159,7 +180,8 @@ LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{
 \scriptscriptstyle{(1, 372)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.70
 \definecolor{sparkspikecolor}{named}{black}
@@ -173,14 +195,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 109.132)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.70
 \definecolor{sparkspikecolor}{named}{black}
@@ -194,14 +218,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.29326} \\[-6pt]
-\scriptscriptstyle{(0.293057, 0.295261)}
+\scriptscriptstyle{\pm0.003969}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.77
 \definecolor{sparkspikecolor}{named}{black}
@@ -215,7 +241,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($21$\warmup, $8$\flatc, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($26$\flatc, $4$\warmup)}&$
 \begin{array}{r}
@@ -223,7 +250,8 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\b
 \scriptscriptstyle{(1, 25)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.87
 \definecolor{sparkspikecolor}{named}{black}
@@ -237,14 +265,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 95.879)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.87
 \definecolor{sparkspikecolor}{named}{black}
@@ -258,14 +288,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{3.97068} \\[-6pt]
-\scriptscriptstyle{(3.935147, 4.114030)}
+\scriptstyle{3.97028} \\[-6pt]
+\scriptscriptstyle{\pm0.132459}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.50
 \definecolor{sparkspikecolor}{named}{black}
@@ -279,7 +311,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($28$\warmup, $1$\flatc, $1$\slowdown)}&$
 \begin{array}{r}
@@ -287,7 +320,8 @@ V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\bad
 \scriptscriptstyle{(2, 244)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.23
 \sparkspike 0.20 0.07
 \sparkspike 0.30 0.03
@@ -301,14 +335,16 @@ $
 \sparkspike 1.00 0.60
 \definecolor{sparkspikecolor}{named}{black}
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{115.39} \\[-6pt]
 \scriptscriptstyle{(0.512, 120.764)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.23
 \sparkspike 0.20 0.07
 \sparkspike 0.30 0.03
@@ -322,14 +358,16 @@ $
 \sparkspike 1.00 0.60
 \definecolor{sparkspikecolor}{named}{black}
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.48706} \\[-6pt]
-\scriptscriptstyle{(0.486336, 0.496257)}
+\scriptscriptstyle{\pm0.005908}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.63
 \definecolor{sparkspikecolor}{named}{black}
@@ -343,14 +381,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($20$\warmup, $10$\flatc)}&$
 \begin{array}{r}
 \scriptstyle{363} \\[-6pt]
 \scriptscriptstyle{(1, 371)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.33
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -364,14 +404,16 @@ $
 \sparkspike 1.00 0.67
 \definecolor{sparkspikecolor}{named}{black}
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{101.27} \\[-6pt]
 \scriptscriptstyle{(0.000, 104.327)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.33
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -385,14 +427,16 @@ $
 \sparkspike 1.00 0.67
 \definecolor{sparkspikecolor}{named}{black}
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.27977} \\[-6pt]
-\scriptscriptstyle{(0.277996, 0.281133)}
+\scriptstyle{0.27975} \\[-6pt]
+\scriptscriptstyle{\pm0.002566}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.27
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.13
@@ -406,7 +450,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\ 
 \midrule
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\fannkuch}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\flatc, $9$\warmup, $1$\slowdown)}&$
@@ -415,7 +460,8 @@ C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebo
 \scriptscriptstyle{(1, 174)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.67
 \definecolor{sparkspikecolor}{named}{black}
@@ -429,14 +475,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 71.288)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.67
 \definecolor{sparkspikecolor}{named}{black}
@@ -450,14 +498,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.41141} \\[-6pt]
-\scriptscriptstyle{(0.411379, 0.411627)}
+\scriptscriptstyle{\pm0.004679}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.97
 \definecolor{sparkspikecolor}{named}{black}
@@ -471,14 +521,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\richards}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\flatc, $7$\warmup, $3$\slowdown)}&$
 \begin{array}{r}
 \scriptstyle{1} \\[-6pt]
 \scriptscriptstyle{(1, 91)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.67
 \definecolor{sparkspikecolor}{named}{black}
@@ -492,14 +544,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 68.378)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.67
 \definecolor{sparkspikecolor}{named}{black}
@@ -513,14 +567,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.76333} \\[-6pt]
-\scriptscriptstyle{(0.759732, 0.772136)}
+\scriptscriptstyle{\pm0.017193}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.40
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.20 0.37
@@ -534,7 +590,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\warmup, $8$\nosteadystate, $2$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($23$\flatc, $6$\warmup, $1$\slowdown)}&$
@@ -543,7 +600,8 @@ LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{
 \scriptscriptstyle{(1, 140)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.77
 \definecolor{sparkspikecolor}{named}{black}
@@ -557,14 +615,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 78.807)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.77
 \definecolor{sparkspikecolor}{named}{black}
@@ -578,14 +638,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.56569} \\[-6pt]
-\scriptscriptstyle{(0.565662, 0.565726)}
+\scriptscriptstyle{\pm0.000047}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.13
 \sparkspike 0.20 0.10
 \sparkspike 0.30 0.13
@@ -599,7 +661,8 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($25$\warmup, $3$\flatc, $1$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
@@ -607,7 +670,8 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\w
 \scriptscriptstyle{(9, 15)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.03
 \definecolor{sparkspikecolor}{named}{red}
@@ -621,14 +685,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{32.77} \\[-6pt]
 \scriptscriptstyle{(21.444, 38.444)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.03
 \definecolor{sparkspikecolor}{named}{red}
@@ -642,14 +708,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{2.69033} \\[-6pt]
-\scriptscriptstyle{(2.681639, 2.710183)}
+\scriptstyle{2.69037} \\[-6pt]
+\scriptscriptstyle{\pm0.019845}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.13
 \sparkspike 0.20 0.17
 \definecolor{sparkspikecolor}{named}{red}
@@ -663,14 +731,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
 \scriptstyle{22} \\[-6pt]
 \scriptscriptstyle{(9, 59)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.07
 \sparkspike 0.20 0.00
 \definecolor{sparkspikecolor}{named}{red}
@@ -684,14 +754,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{23.76} \\[-6pt]
 \scriptscriptstyle{(9.103, 67.611)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.07
 \sparkspike 0.20 0.03
 \definecolor{sparkspikecolor}{named}{red}
@@ -705,14 +777,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.15255} \\[-6pt]
-\scriptscriptstyle{(1.121761, 1.163743)}
+\scriptstyle{1.15254} \\[-6pt]
+\scriptscriptstyle{\pm0.022270}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.10
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -726,7 +800,8 @@ $
 \sparkspike 0.90 0.27
 \sparkspike 1.00 0.10
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($22$\flatc, $8$\warmup)}&$
 \begin{array}{r}
@@ -734,7 +809,8 @@ V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goo
 \scriptscriptstyle{(1, 81)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -748,14 +824,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 24.093)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -769,14 +847,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.30224} \\[-6pt]
-\scriptscriptstyle{(0.301770, 0.303227)}
+\scriptstyle{0.30191} \\[-6pt]
+\scriptscriptstyle{\pm0.000626}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.13
 \sparkspike 0.20 0.10
 \sparkspike 0.30 0.20
@@ -790,14 +870,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
 \scriptstyle{6} \\[-6pt]
 \scriptscriptstyle{(4, 212)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.60
 \definecolor{sparkspikecolor}{named}{black}
@@ -811,14 +893,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.10
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{2.79} \\[-6pt]
 \scriptscriptstyle{(1.677, 116.997)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.60
 \definecolor{sparkspikecolor}{named}{black}
@@ -832,14 +916,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.10
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.55274} \\[-6pt]
-\scriptscriptstyle{(0.551931, 0.554796)}
+\scriptstyle{0.55272} \\[-6pt]
+\scriptscriptstyle{\pm0.002080}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.13
 \sparkspike 0.20 0.27
 \definecolor{sparkspikecolor}{named}{red}
@@ -853,16 +939,18 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\ 
 \midrule
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\fasta}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{0.07419} \\[-6pt]
-\scriptscriptstyle{(0.074113, 0.074480)}
+\scriptstyle{0.07417} \\[-6pt]
+\scriptscriptstyle{\pm0.000154}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.33
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.20 0.20
@@ -876,7 +964,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\spectralnorm}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($13$\flatc, $8$\warmup, $7$\slowdown, $2$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($19$\warmup, $11$\slowdown)}&$
 \begin{array}{r}
@@ -884,7 +973,8 @@ HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}
 \scriptscriptstyle{(3, 595)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.50
 \definecolor{sparkspikecolor}{named}{black}
@@ -898,14 +988,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.43
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{4.71} \\[-6pt]
 \scriptscriptstyle{(0.236, 66.637)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.50
 \definecolor{sparkspikecolor}{named}{black}
@@ -919,14 +1011,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.43
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.11118} \\[-6pt]
-\scriptscriptstyle{(0.110091, 0.112470)}
+\scriptstyle{0.11119} \\[-6pt]
+\scriptscriptstyle{\pm0.001453}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.10
 \sparkspike 0.30 0.07
@@ -940,14 +1034,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
 \scriptstyle{16} \\[-6pt]
 \scriptscriptstyle{(2, 190)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.70
 \definecolor{sparkspikecolor}{named}{black}
@@ -961,14 +1057,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{7.18} \\[-6pt]
 \scriptscriptstyle{(0.490, 90.651)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.70
 \definecolor{sparkspikecolor}{named}{black}
@@ -982,14 +1080,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.47776} \\[-6pt]
-\scriptscriptstyle{(0.477752, 0.477790)}
+\scriptscriptstyle{\pm0.000043}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.33
 \definecolor{sparkspikecolor}{named}{red}
@@ -1003,7 +1103,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\flatc, $9$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
@@ -1011,7 +1112,8 @@ LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{
 \scriptscriptstyle{(1, 258)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.70
 \definecolor{sparkspikecolor}{named}{black}
@@ -1025,14 +1127,16 @@ $
 \sparkspike 0.90 0.10
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 90.784)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.70
 \definecolor{sparkspikecolor}{named}{black}
@@ -1046,14 +1150,16 @@ $
 \sparkspike 0.90 0.10
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.35222} \\[-6pt]
-\scriptscriptstyle{(0.351930, 0.354662)}
+\scriptscriptstyle{\pm0.002978}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.80
 \definecolor{sparkspikecolor}{named}{black}
@@ -1067,14 +1173,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($23$\flatc, $5$\warmup, $2$\slowdown)}&$
 \begin{array}{r}
 \scriptstyle{1} \\[-6pt]
 \scriptscriptstyle{(1, 269)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.83
 \definecolor{sparkspikecolor}{named}{black}
@@ -1088,14 +1196,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 125.922)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.83
 \definecolor{sparkspikecolor}{named}{black}
@@ -1109,14 +1219,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.07
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.46785} \\[-6pt]
-\scriptscriptstyle{(0.467779, 0.467897)}
+\scriptstyle{0.46778} \\[-6pt]
+\scriptscriptstyle{\pm0.000006}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -1130,7 +1242,8 @@ $
 \sparkspike 1.00 0.60
 \definecolor{sparkspikecolor}{named}{black}
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($24$\flatc, $5$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
@@ -1138,7 +1251,8 @@ PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\b
 \scriptscriptstyle{(1, 21)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.83
 \definecolor{sparkspikecolor}{named}{black}
@@ -1152,14 +1266,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{0.00} \\[-6pt]
 \scriptscriptstyle{(0.000, 78.830)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.83
 \definecolor{sparkspikecolor}{named}{black}
@@ -1173,14 +1289,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{4.02066} \\[-6pt]
-\scriptscriptstyle{(3.957620, 4.096945)}
+\scriptstyle{4.02069} \\[-6pt]
+\scriptscriptstyle{\pm0.076415}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.13
 \sparkspike 0.20 0.03
 \sparkspike 0.30 0.03
@@ -1194,14 +1312,16 @@ $
 \sparkspike 0.90 0.03
 \sparkspike 1.00 0.10
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($28$\warmup, $2$\slowdown)}&$
 \begin{array}{r}
 \scriptstyle{43} \\[-6pt]
 \scriptscriptstyle{(36, 188)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -1215,14 +1335,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.10
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{21.85} \\[-6pt]
 \scriptscriptstyle{(17.805, 97.475)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -1236,14 +1358,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.10
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.51949} \\[-6pt]
-\scriptscriptstyle{(0.519391, 0.519502)}
+\scriptstyle{0.51939} \\[-6pt]
+\scriptscriptstyle{\pm0.000022}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.00
 \sparkspike 0.30 0.00
@@ -1257,7 +1381,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($24$\slowdown, $6$\warmup)}&$
 \begin{array}{r}
@@ -1265,7 +1390,8 @@ V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\bad
 \scriptscriptstyle{(296, 466)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.00
 \definecolor{sparkspikecolor}{named}{red}
@@ -1279,14 +1405,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{366.11} \\[-6pt]
 \scriptscriptstyle{(342.425, 539.258)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.03
 \sparkspike 0.20 0.00
 \definecolor{sparkspikecolor}{named}{red}
@@ -1300,14 +1428,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.16093} \\[-6pt]
-\scriptscriptstyle{(1.152259, 1.179923)}
+\scriptstyle{1.16088} \\[-6pt]
+\scriptscriptstyle{\pm0.019100}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.20
 \sparkspike 0.20 0.20
 \definecolor{sparkspikecolor}{named}{red}
@@ -1321,14 +1451,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($29$\warmup, $1$\flatc)}&$
 \begin{array}{r}
 \scriptstyle{8} \\[-6pt]
 \scriptscriptstyle{(3, 134)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -1342,14 +1474,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
 \scriptstyle{3.28} \\[-6pt]
 \scriptscriptstyle{(0.942, 62.184)}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.10 0.73
 \definecolor{sparkspikecolor}{named}{black}
@@ -1363,14 +1497,16 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.46783} \\[-6pt]
-\scriptscriptstyle{(0.467791, 0.467925)}
+\scriptstyle{0.46779} \\[-6pt]
+\scriptscriptstyle{\pm0.000005}
 \end{array}
 $
-\noindent\parbox[p]{3ex}{\begin{sparkline}{3}
+\noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
+\begin{sparkline}{3}
 \sparkspike 0.10 0.30
 \definecolor{sparkspikecolor}{named}{red}
 \sparkspike 0.20 0.53
@@ -1384,7 +1520,8 @@ $
 \sparkspike 0.90 0.00
 \sparkspike 1.00 0.03
 \sparkbottomline
-\end{sparkline}}
+\end{sparkline}
+\renewcommand{\sparklineheight}{1.75}}
 \\ 
 
 \bottomrule

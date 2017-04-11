@@ -1086,7 +1086,7 @@ and
 \benchersix are broadly similar. Taking \bencherseven as an example,
 \benchersevenvmbenchpairsbadinconsistent\%
 of its \vmbpair pairs are `bad', clearly invalidating
-Hypothesis H1.
+Hypothesis H1\edd{does this macro include bad but consistent?}.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherseven
 and \bencherfive (both running Linux but on quite different hardware) are
@@ -1203,14 +1203,7 @@ in-process iterations whilst JIT compilation occurs.
 \subsection{Cyclic data}
 \label{sec:cyclic}
 
-\laurie{edd: we need to update this section}\edd{I know :)}\edd{Laurie: What do
-you think we should we do here? Do you want me to re-do this, or do we now
-consider it unnecessary?}\laurie{i think we need to rethink this section a little bit. i think we need to say something, but maybe we can automate it? however, i don't know to automate `partially cyclic'.}
-\edd{Yeah, I think the problem is that "cyclic" behaviour comes in many flavors
-making it really hard to automate. Maybe it's ok to simply say that cycles with
-large enough deviations get classified as no steady state. Other cases could be
-`future work' since picking apart the types seems like a large undertaking to
-me.}\laurie{that's not a good reason not to do it. we already have a basic script which applies the automatic autocorrelation doo-dah. deriving statistics from that seems plausible.}
+\edd{Revise once we have the correlation analysis rounded off}
 We suspected that enough benchmarks
 would exhibit cyclic behaviour (as seen in Figure~\ref{fig:examples:cycles}) to
 require special support in our automated analysis. To quantify this, we took one process
@@ -1394,7 +1387,10 @@ Indeed, to an extent our hand was forced on this: since ASLR cannot be turned
 off on OpenBSD, comparisons with Linux would be even harder if we turned it off
 on Linux. By measuring 30 process executions, we lessened, though did not
 remove, the chances of all our measurements coming from a narrow part of the
-overall search space.
+overall search space\edd{Can we sneak in that many languages the addresses of
+alllocations are exposed to the VM (and in some cases to the user-program), so
+it's entirely possible that turning ALSR off restricts control flow through
+both?}
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have

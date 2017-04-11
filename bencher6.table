@@ -13,8 +13,8 @@
 \midrule
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\binarytrees}}&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{5.16553} \\[-6pt]
-\scriptscriptstyle{\pm0.112384}
+\scriptstyle{5.16556} \\[-6pt]
+\scriptscriptstyle{\pm0.112380}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -37,8 +37,8 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\nbody}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($13$\warmup, $8$\flatc, $6$\nosteadystate, $3$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($26$\warmup, $4$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 256)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 256.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -106,8 +106,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 2)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 2.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -176,8 +176,8 @@ $
 \\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($16$\warmup, $6$\nosteadystate, $5$\flatc, $3$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($19$\flatc, $9$\warmup, $2$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 372)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 371.5)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -223,7 +223,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.29326} \\[-6pt]
-\scriptscriptstyle{\pm0.003969}
+\scriptscriptstyle{\pm0.003970}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -246,8 +246,8 @@ $
 \\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($21$\warmup, $8$\flatc, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($26$\flatc, $4$\warmup)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 25)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 25.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -292,8 +292,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{3.97028} \\[-6pt]
-\scriptscriptstyle{\pm0.132459}
+\scriptstyle{3.97055} \\[-6pt]
+\scriptscriptstyle{\pm0.132458}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -316,8 +316,8 @@ $
 \\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($28$\warmup, $1$\flatc, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{237} \\[-6pt]
-\scriptscriptstyle{(2, 244)}
+\scriptstyle{236.5} \\[-6pt]
+\scriptscriptstyle{(2.0, 243.5)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -363,7 +363,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.48706} \\[-6pt]
-\scriptscriptstyle{\pm0.005908}
+\scriptscriptstyle{\pm0.005907}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -385,8 +385,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($20$\warmup, $10$\flatc)}&$
 \begin{array}{r}
-\scriptstyle{363} \\[-6pt]
-\scriptscriptstyle{(1, 371)}
+\scriptstyle{363.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 370.5)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -432,7 +432,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.27975} \\[-6pt]
-\scriptscriptstyle{\pm0.002566}
+\scriptscriptstyle{\pm0.002567}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -456,8 +456,8 @@ $
 \midrule
 C&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\fannkuch}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\flatc, $9$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 174)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 173.4)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -525,8 +525,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\richards}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\flatc, $7$\warmup, $3$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 91)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 90.2)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -596,8 +596,8 @@ $
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\warmup, $8$\nosteadystate, $2$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($23$\flatc, $6$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 140)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 139.6)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -666,8 +666,8 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($25$\warmup, $3$\flatc, $1$\slowdown, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
-\scriptstyle{13} \\[-6pt]
-\scriptscriptstyle{(9, 15)}
+\scriptstyle{13.0} \\[-6pt]
+\scriptscriptstyle{(8.9, 15.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -713,7 +713,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{2.69037} \\[-6pt]
-\scriptscriptstyle{\pm0.019845}
+\scriptscriptstyle{\pm0.019840}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -735,8 +735,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
-\scriptstyle{22} \\[-6pt]
-\scriptscriptstyle{(9, 59)}
+\scriptstyle{21.5} \\[-6pt]
+\scriptscriptstyle{(8.8, 58.6)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -805,8 +805,8 @@ $
 \\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($22$\flatc, $8$\warmup)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 81)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 80.1)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -874,8 +874,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{6} \\[-6pt]
-\scriptscriptstyle{(4, 212)}
+\scriptstyle{6.0} \\[-6pt]
+\scriptscriptstyle{(4.0, 211.6)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -969,8 +969,8 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{6}{*}{\rotatebox[origin=c]{90}{\spectralnorm}}&\multicolumn{1}{l}{\badinconsistent \scriptsize($13$\flatc, $8$\warmup, $7$\slowdown, $2$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\[-3pt] 
 HotSpot&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($19$\warmup, $11$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{44} \\[-6pt]
-\scriptscriptstyle{(3, 595)}
+\scriptstyle{43.5} \\[-6pt]
+\scriptscriptstyle{(3.0, 595.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1038,8 +1038,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{16} \\[-6pt]
-\scriptscriptstyle{(2, 190)}
+\scriptstyle{16.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 189.7)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1108,8 +1108,8 @@ $
 \\[-3pt] 
 LuaJIT&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($20$\flatc, $9$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 258)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 257.6)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1177,8 +1177,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($23$\flatc, $5$\warmup, $2$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 269)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 268.8)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1247,8 +1247,8 @@ $
 \\[-3pt] 
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($24$\flatc, $5$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 21)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 20.5)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1293,8 +1293,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{4.02069} \\[-6pt]
-\scriptscriptstyle{\pm0.076415}
+\scriptstyle{4.02068} \\[-6pt]
+\scriptscriptstyle{\pm0.076417}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1316,8 +1316,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($28$\warmup, $2$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{43} \\[-6pt]
-\scriptscriptstyle{(36, 188)}
+\scriptstyle{43.0} \\[-6pt]
+\scriptscriptstyle{(35.3, 188.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1386,8 +1386,8 @@ $
 \\[-3pt] 
 V8&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($24$\slowdown, $6$\warmup)}&$
 \begin{array}{r}
-\scriptstyle{317} \\[-6pt]
-\scriptscriptstyle{(296, 466)}
+\scriptstyle{317.0} \\[-6pt]
+\scriptscriptstyle{(296.0, 465.8)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1433,7 +1433,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{1.16088} \\[-6pt]
-\scriptscriptstyle{\pm0.019100}
+\scriptscriptstyle{\pm0.019101}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1455,8 +1455,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($29$\warmup, $1$\flatc)}&$
 \begin{array}{r}
-\scriptstyle{8} \\[-6pt]
-\scriptscriptstyle{(3, 134)}
+\scriptstyle{8.0} \\[-6pt]
+\scriptscriptstyle{(3.0, 133.2)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}

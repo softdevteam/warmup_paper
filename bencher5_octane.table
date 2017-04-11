@@ -15,8 +15,8 @@ Boyer&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\multirow{17}{*}{\rot
 Decrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($11$\flatc, $11$\nosteadystate, $8$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($22$\warmup, $4$\flatc, $3$\nosteadystate, $1$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 DeltaBlue&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($15$\flatc, $6$\warmup, $5$\nosteadystate, $4$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($29$\warmup, $1$\flatc)}&$
 \begin{array}{r}
-\scriptstyle{3} \\[-6pt]
-\scriptscriptstyle{(3, 6)}
+\scriptstyle{3.0} \\[-6pt]
+\scriptscriptstyle{(3.0, 5.1)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -86,8 +86,8 @@ $
 Earley&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($14$\flatc, $7$\slowdown, $6$\nosteadystate, $3$\warmup)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($18$\nosteadystate, $8$\warmup, $3$\slowdown, $1$\flatc)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 Encrypt&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($21$\flatc, $8$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 4)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 4.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -133,7 +133,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.77673} \\[-6pt]
-\scriptscriptstyle{\pm0.018459}
+\scriptscriptstyle{\pm0.018460}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -155,8 +155,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($19$\warmup, $9$\flatc, $2$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(1, 40)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 39.3)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -225,8 +225,8 @@ $
 \\ 
 NavierStokes&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 24)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 23.5)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -294,8 +294,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($25$\warmup, $5$\flatc)}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(1, 5)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 4.6)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -341,7 +341,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.88885} \\[-6pt]
-\scriptscriptstyle{\pm0.004484}
+\scriptscriptstyle{\pm0.004485}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -364,8 +364,8 @@ $
 \\ 
 PdfJS&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 334)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 333.1)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -410,8 +410,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.19053} \\[-6pt]
-\scriptscriptstyle{\pm0.026960}
+\scriptstyle{1.19055} \\[-6pt]
+\scriptscriptstyle{\pm0.026955}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -435,8 +435,8 @@ $
 RayTrace&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($16$\warmup, $9$\nosteadystate, $3$\flatc, $2$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($29$\warmup, $1$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 RegExp&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($25$\flatc, $5$\warmup)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 10)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 10.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -481,7 +481,7 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.05080} \\[-6pt]
+\scriptstyle{1.05067} \\[-6pt]
 \scriptscriptstyle{\pm0.022049}
 \end{array}
 $
@@ -504,8 +504,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($22$\flatc, $7$\warmup, $1$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 244)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 243.7)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -551,7 +551,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.82839} \\[-6pt]
-\scriptscriptstyle{\pm0.025460}
+\scriptscriptstyle{\pm0.025459}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -574,8 +574,8 @@ $
 \\ 
 Richards&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($25$\warmup, $5$\slowdown)}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 1112)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 1111.3)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -620,8 +620,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.80609} \\[-6pt]
-\scriptscriptstyle{\pm0.002301}
+\scriptstyle{0.80608} \\[-6pt]
+\scriptscriptstyle{\pm0.002300}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -644,8 +644,8 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($27$\warmup, $3$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 Splay&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\goodinconsistent \scriptsize($27$\flatc, $3$\warmup)}&$
 \begin{array}{r}
-\scriptstyle{1} \\[-6pt]
-\scriptscriptstyle{(1, 203)}
+\scriptstyle{1.0} \\[-6pt]
+\scriptscriptstyle{(1.0, 202.7)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -690,8 +690,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.67068} \\[-6pt]
-\scriptscriptstyle{\pm0.018600}
+\scriptstyle{0.67071} \\[-6pt]
+\scriptscriptstyle{\pm0.018650}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -713,8 +713,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{0.52488} \\[-6pt]
-\scriptscriptstyle{\pm0.006623}
+\scriptstyle{0.52489} \\[-6pt]
+\scriptscriptstyle{\pm0.006632}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -737,8 +737,8 @@ $
 \\ 
 Typescript&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{2.26835} \\[-6pt]
-\scriptscriptstyle{\pm0.048226}
+\scriptstyle{2.26829} \\[-6pt]
+\scriptscriptstyle{\pm0.048198}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -760,8 +760,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\warmup}&$
 \begin{array}{r}
-\scriptstyle{2} \\[-6pt]
-\scriptscriptstyle{(2, 2)}
+\scriptstyle{2.0} \\[-6pt]
+\scriptscriptstyle{(2.0, 2.0)}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}
@@ -807,7 +807,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{1.88785} \\[-6pt]
-\scriptscriptstyle{\pm0.028883}
+\scriptscriptstyle{\pm0.028891}
 \end{array}
 $
 \noindent\parbox[p]{3ex}{\renewcommand{\sparklineheight}{2.75}

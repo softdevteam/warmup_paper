@@ -1055,20 +1055,19 @@ show the spread of values; the red bar shows the location of the median
 \end{table*}
 \end{landscape}
 
-\sarah{Note that Table 2 contains bencher7 data, and the text below refers to bencher5.}
 Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
-and process executions for each benchmarking machine. Taking \bencherfive
+and process executions for each benchmarking machine. Taking \bencherseven
 as a representative example,
-\FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
-\result\% of \vmbpair pairs have consistently `good' warmup (all pexecs for the
-pair are either \flatc or \warmup) and
-\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
-\result\% of all process executions have `good' warmup (for comparison, \bencherseven
-is
 \FPeval{\result}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
-\result\% and
+\result\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat
+or good inconsistent) and
 \FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage,1)}%
+\result\% of all process executions have `good' warmup (for comparison, \bencherfive
+is
+\FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
+\result\% and
+\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
 \result\% respectively and \benchersix is
 \FPeval{\result}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
 \result\% and
@@ -1076,49 +1075,51 @@ is
 \result\% respectively, though the latter runs fewer benchmarks).
 Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good' warmup
-process executions. On \bencherfive
-\bencherfivevmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown
-and
-\FPeval{\result}{round(\bencherfivevmbenchpairsgoodinconsistent+\bencherfivevmbenchpairsbadinconsistent,1)}%
-\result\% are inconsistent
-(with \bencherfivevmbenchpairsbadinconsistent\% of those being obviously `bad'); \bencherfive and
-\benchersix are broadly similar. Taking \bencherseven as an example,
-\benchersevenvmbenchpairsbadinconsistent\%
-of its \vmbpair pairs are `bad', clearly invalidating
-Hypothesis H1\edd{does this macro include bad but consistent?}.
+process executions. On \bencherseven
+\benchersevenvmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown,
+\benchersevenvmbenchpairsnosteadystatepercentage\% of \vmbpair pairs are no steady state,
+but the biggest proportion by far is `bad' inconsistent at \benchersevenvmbenchpairsbadinconsistentpercentage\%
+(\bencherfive has very similar proportions). This latter figure clearly shows a
+widespread lack of predictability: in almost half of cases, the same benchmark
+on the same VM on the same machine has more than one performance characteristic.
+It is tempting to pick one of these performance characteristics -- VM
+benchmarking sometimes reports the fastest process execution, for example -- but
+it is important to note that \emph{all} of these performance characteristics are
+valid and will be experienced by real-world users.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherseven
 and \bencherfive (both running Linux but on quite different hardware) are
 comparable, with the relative proportions of all measures being only a few
 percent different. \benchersix (running a different OS to \bencherfive, but on similar hardware)
-is somewhat different. This is in large part because it
-is unable to run benchmarks on Graal, HHVM, and JRuby+Truffle (see
-Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
-similarly, with the notable exceptions of LuaJIT, whose benchmarks are more often
-classified as non-flat (see Tables~\ref{tab:bencher5results} and
-~\ref{tab:bencher6results} in the Appendix)\edd{PyPy and hotspot appear to be a
-little more consistent on linux machines. Would you agree?}\laurie{no. they're a *lot* more consistent! the worse thing is that, even though a few of these could be ``oh well, changepoint analysis could do better on this one i suppose'', most appear to be completely genuine things happening in the data. i have no idea why.}
-With that in mind, we believe that our results are a fairly clear validation of
-Hypothesis H2.
+is however fairly different, with \benchersixvmbenchpairsbadinconsistentpercentage\%
+of \vmbpair pairs being bad inconsistent. This is partly due to the absence of
+JRuby+Truffle which, on Linux, is the most consistent VM as well as Graal and HHVM
+(see Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
+roughly similarly (as can be seen indirectly from Table~\ref{tab:summarystats}), but
+there is a more even spread of process execution classifications across \vmbpair pairs.
+Tables~\ref{tab:bencher5results} and~\ref{tab:bencher6results} in the Appendix
+contain further details. Overall, we believe that our results are a
+somewhat clear validation of Hypothesis H2.
 
 Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
-enables to make us several observations. Of the 6 benchmarks, only \nbody comes
-close to `good' warmup behaviour on all
-VMs (blocked only by the `bad inconsistency' case of HHVM): the other 5
-benchmarks have a much higer degree of slowdown and `bad inconsistency'.
-Second, there appears to be a bimodal pattern for the number
-of in-process iterations required to reach a steady state (when it exists): VMs
-tend either to reach it very quickly (often in 10 or fewer in-process iterations)
-or take hundreds of in-process iterations\edd{I can't see that on my
-sparklines, but I need to upgrade and try again}. Those that take a long time
-to stabilise are troubling, because previous benchmarking methodologies
+enables to make us several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
+come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
+inconsistent cases). Second, \binarytrees and \fasta seem to be much more often
+bad inconsistent across most VMs. This raises the question as to whether some
+aspect of these benchmarks makes inconsistent performance more likely
+(\binarytrees, for example, allocates and deallocates
+large amounts of memory, though \fasta somewhat less so \laurie{this statement needs checking; my memory of fasta is fuzzy, and it's not totally obvious from the code how much memory it allocs/deallocs}).
+Third, the overall spread of steady state iter (\#) values is uneven: VMs seem
+to mostly either reach a steady state quickly (often in 10 or fewer in-process
+iterations) or take hundreds of in-process iterations. The latter are troubling
+because previous benchmarking methodologies
 will not have run the benchmarks long enough to see the steady state emerge.
-Finally, there seems to be very little
-correlation between the time it takes a VM to reach a steady state and the
-performance of that steady state: i.e.~it does not seem to be the case that VMs
-which take a long time to warmup are creating more efficient
-steady-state code.
+Fourth, it does not seem to be the case that VMs which take a long
+time to reach a steady state have faster steady states: if anything,
+the opposite appears to be true, suggesting that users of some code
+on some VMs suffer from a `double whammy' of poor warmup and poor
+steady state performance.
 
 
 \subsection{Warmup Plots}
@@ -1379,7 +1380,9 @@ Stabilizer~\cite{curtsinger13stabilizer} to
 sample across the search space evenly; unfortunately, we were not able to build
 Stabilizer on a modern Linux system.\footnote{Stabilizer's authors hope to
 produce a new version which is more easily ported across OS versions, though
-with no definite timescale.} We therefore ran all our experiments with ASLR on.
+with no definite timescale.} In previous versions of this work, we disabled
+ASLR on Linux, but since ASLR on OpenBSD cannot be turned off, this made
+comparisons difficult. We therefore ran all our experiments with ASLR on.
 Indeed, to an extent our hand was forced on this: since ASLR cannot be turned
 off on OpenBSD, comparisons with Linux would be even harder if we turned it off
 on Linux. By measuring \numpexecs process executions, we lessened, though did not

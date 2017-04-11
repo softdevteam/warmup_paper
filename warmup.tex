@@ -1126,31 +1126,36 @@ steady state performance.
 
 To understand why we see so many unexpected cases, for each process execution,
 we created a series of plots. All plots have in-process iteration number on the
-$x$-axis \emph{Run-sequence plots} show wall-clock times on the $y$-axis. The
+$x$-axis. \emph{Run-sequence plots} show wall-clock times on the $y$-axis. The
 plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows further
-examples. On Linux we also use \emph{core-cycle plots}, which show the the
+examples. On Linux we also show \emph{core-cycle plots}, which show the
 per-core cycle count on the $y$-axis. The plots in
 Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
 examples of run-sequence plots accompanied by core-cycle plots for no steady
 state and cyclic data respectively.
+
 \begin{figure}[t]
 \centering
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_no_steady.pdf}
-\caption{No steady state. Performance is frequently changing in distinct
-phases, and this is refelcted by the outcome of the changepoint analysis. The
-changepoints sometimes coinside with the benchmark migrating between cores.
-Note that core 0 is `tickful`, and the others are `tickless'.}
+\caption{An example of a run-sequence plot with core-cycle plots (one
+for each of the 4 CPU cores; note that each shares the same $y$ axis). In this
+example we can clearly see a benchmark migrating between cores. In some
+cases this migration also aligns with a clear changepoint, though not
+in others. The continual changepoints lead to an overall classification
+of no steady state.}
 \label{fig:examples:nosteadystate}
 \end{minipage}%
 \hfill%
-\begin{minipage}[t]{0.49\textwidth}
+\begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_cyclic.pdf}
 \caption{Cycles in wall-clock times which are reflected by the core-cycle count
 for the relevant core. Although the changepoint analysis has captured the
 cycles, the change in performance is too small for the classification algorithm
-to consider this example `no steady state'.}
+to consider this example `no steady state'. \laurie{this example
+is confusing: unless you're eagle eyed the saw tooth in the CC plot
+is invisible. can we find one with clearer saw teeth?}}
 \label{fig:examples:cycles}
 \end{minipage}
 \end{figure}
@@ -1165,9 +1170,9 @@ to consider this example `no steady state'.}
 
 \begin{figure}[!tbp]
 \centering
-\begin{minipage}[t]{0.48\textwidth}
+\begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
-\caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
+\caption{\laurie{the plot doesn't have instrumentation} Slowdown at in-process iteration \#199, with GC and JIT measurements
 turned on. Although these additional measures add overhead, in this
 case they make no observable difference to the main run-sequence graph. They
 allow us to observe that the slowdown is correlated with two immediately preceding JIT compilation events
@@ -1176,9 +1181,9 @@ regular GC spikes have only a small effect on the wallclock times.}
 \label{fig:examples:slowdown1}
 \end{minipage}
 \hfill
-\begin{minipage}[t]{0.495\textwidth}
+\begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_good_comp.pdf}
-\caption{PyPy benchmarks often showed a gradual `ramp up' over time. This
+\caption{\laurie{this doesn't have instrumentation either} PyPy benchmarks often showed a gradual `ramp up' over time. This
 particular example (run with VM instrumentation enabled) shows this behaviour
 superimposed on top of distinct state changes. Inspection of the GC plot shows
 that the wall-clock times are tightly correlated with the time spent in GC, thus

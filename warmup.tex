@@ -649,9 +649,8 @@ In order to identify problems with the machine itself, \krun monitors the
 system \texttt{dmesg} buffer for unexpected entries (known `safe' entries
 are ignored), informing the user if any arise. We implemented this after
 noticing that one machine initially ear-marked for benchmarking occasionally
-overheated, with the only clue to this being a line in \texttt{dmesg}.
+overheated during benchmarking, with the only clue to this being a line in \texttt{dmesg}.
 We did not use this machine for our final benchmarking.
-\sarah{Potential reviewer question: why did our temp check not catch the overheating?}
 
 A process's environment size can cause measurement
 bias~\cite{mytkowicz09surprising}. The diversity of VMs and platforms

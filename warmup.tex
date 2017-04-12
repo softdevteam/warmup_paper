@@ -154,7 +154,8 @@ $\begin{array}{rr}
 %\setcopyright{rightsretained}
 %\copyrightyear{2017}  %% If different from \acmYear
 
-
+\bibliographystyle{ACM-Reference-Format}
+\citestyle{acmauthoryear}
 
 \begin{document}
 
@@ -290,9 +291,9 @@ the effect of both on benchmarks.
 
 With the time series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
-uses simple heuristics to guess when warmup has completed (see
-e.g.~\cite{georges07statistically}). \kalibera convincingly show the limitations of such approaches
-\cite{kalibera13rigorous}, presenting instead a manual approach to determining
+uses simple heuristics to guess when warmup has completed,
+e.g.~\cite{georges07statistically}. \citet{kalibera13rigorous} convincingly show the limitations of such approaches,
+presenting instead a manual approach to determining
 if and when a steady state has been reached. While this is a significant improvement on
 previous heuristics, it is time-consuming, prone to human inconsistency, and gives no
 indication as to whether the steady state represents peak performance of not.
@@ -400,7 +401,7 @@ The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
 that period. Often $n$ is a fixed number (often around 5), with little or no confirmation
 that warmup has completed or not. Heuristics such as
-those of Georges et al.~\cite{georges07statistically} automatically analyse
+those of~\citet{georges07statistically} automatically analyse
 a process execution's time series data before returning a value of $n$.
 
 \kalibera introduced what we believe to be the most sophisticated VM benchmarking methodology
@@ -458,7 +459,7 @@ They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
 optimised by VMs than average programs; when used as a proxy for other types
 of programs (e.g.~large programs), they tend to overstate the effectiveness of
-VM optimisations (see e.g.~\cite{ratanaworabhan09jsmeter}). In our context, this weakness is in fact a strength:
+VM optimisations, e.g.~\cite{ratanaworabhan09jsmeter}. In our context, this weakness is in fact a strength:
 small, deterministic, and widely examined programs are our most
 reliable means of testing Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
@@ -832,8 +833,8 @@ As is common with analyses of time series data, we first identify
 \emph{outliers}---i.e.~in-process iterations with much larger/smaller times than their near
 neighbours--- so that changepoint analysis knows to ignore them. In our case, the
 expectation is that such outliers are likely to be the result of JIT compilation,
-GC, or of other processes interrupting benchmarks. We use Tukey's
-method~\cite{tukey1977exploratory}, conservatively defining an outlier as one that, within a
+GC, or of other processes interrupting benchmarks. We use the method described
+by~\citet{tukey1977exploratory}, conservatively defining an outlier as one that, within a
 sliding window of 200 in-process iterations, lies outside the median $\pm
 3*(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warm-up iterations at the start of an execution as outliers (when they are
@@ -856,7 +857,7 @@ tricky: simple heuristics suffer from both false positives and negatives~\cite{k
 error.
 
 We therefore use the recently introduced concept of changepoint analysis
-(see~\cite{eckley11analysis} for an introduction). Formally, a
+(see~\citet{eckley11analysis} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
 between two changepoints is a \emph{changepoint segment}. There are various
@@ -866,7 +867,7 @@ iterations. In order to automate this, we use the \texttt{cpt.meanvar} function 
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument. This function uses the PELT
-algorithm~\citep{killick12optimal}, which can detect arbitrary numbers of changepoints; it
+algorithm~\cite{killick12optimal}, which can detect arbitrary numbers of changepoints; it
 returns changepoint locations and the mean and variance
 of each segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
@@ -1401,8 +1402,8 @@ changepoint analysis does automatically.
 \label{sec:related}
 
 There are two works we are aware of which explicitly note unusual warmup
-patterns. Whilst running benchmarks on HotSpot, Gil et
-al.~\cite{gil11microbenchmark} observed inconsistent process executions
+patterns. Whilst running benchmarks on HotSpot,~\citet{gil11microbenchmark}
+observed inconsistent process executions
 (e.g.~recursiveErgodic), and benchmarks that we could classify as no
 steady state (listBubbleSort) and slowdown (arrayBubbleSort). By running a
 greater number of (somewhat larger) benchmarks on a number of VMs, and executing
@@ -1477,8 +1478,6 @@ King's group has received several funding gifts from Oracle Labs.
 \end{acks}
 
 
-\bibliographystyle{ACM-Reference-Format}
-%\citestyle{acmauthoryear}   %% For author/year citations
 \bibliography{bib}
 
 \clearpage

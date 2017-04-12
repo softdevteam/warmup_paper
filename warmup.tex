@@ -1138,13 +1138,12 @@ steady state performance.
 
 \subsection{Warmup Plots}
 
-\sarah{I'm not sure why run-sequence is italicised here, a run-sequence plot is just a plot of time-series data and we have used the term before.}
 To understand why we see so many unexpected cases, for each process execution,
 we created a series of plots. All plots have in-process iteration number on the
-$x$-axis. \emph{Run-sequence plots} show wall-clock times on the $y$-axis. The
+$x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
 plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows further
-examples. On Linux we also use \emph{core-cycle plots}, showing the
+examples. Core-cycle plots (Linux only) show the
 core-cycle counts on the $y$-axes (one plot per-core). The plots in
 Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
 examples of run-sequence plots accompanied by core-cycle plots for no steady
@@ -1225,20 +1224,21 @@ The large number of non-warmup cases in our data led us to make the following hy
 To test this hypothesis, we made use of the debug facilities of HotSpot and PyPy to
 record the time spent performing JIT compilation and GC. Since
 recording this additional data could potentially change the results we collect,
-it is only collected when \krun is explicitly set to `instrumentation mode'. For
+it is only collected when \krun is explicitly set to `instrumentation mode'.
+This allows us to identify interesting correlations (though we make no claim
+that they prove causation). For
 example, in Figure~\ref{fig:examples:slowdown1}, there is a clear correlation
-(though we cannot be entirely sure that it is a causation) between a JIT
-compilation and a slowdown. Similarly, Figure~\ref{fig:goodcomp} shows an
-example where slowdown could be attributed to garbage collection. Note however,
-that in many cases neither JIT compilation, nor garbage collection, are
-sufficient in explaining odd behaviours. One such case is shown in
-Figure~\ref{fig:unexplained}.
+between a JIT compilation and a slowdown. Similarly, Figure~\ref{fig:goodcomp} shows an
+example where slowdown is clearly correlated to garbage collection.
+However, in many cases such as Figure~\ref{fig:unexplained} neither JIT
+compilation, nor garbage collection, are sufficient in explaining odd
+behaviours.
 
 The relatively few results we have with GC and JIT compilation events, and the lack of a clear
 message from them, means that we feel unable to validate or invalidate
 Hypothesis \hypthree. Whilst some non-warmups are plausibly explained by GC or JIT compilation events, many are not, at
-least on HotSpot and PyPy. When there is no clear explanation, we have very little idea what might be
-the cause of the unexpected behaviour. It may be that obtaining similar data
+least on HotSpot and PyPy. When there is no clear correlation, we have very little idea of
+a likely cause of the unexpected behaviour. It may be that obtaining similar data
 from other VMs may help clarify this issue, but not all VMs support this
 feature and, in our experience, those that do support it do not always
 document it accurately.

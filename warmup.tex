@@ -1117,14 +1117,8 @@ enables to make us several observations. First, of the 6 benchmarks, only \nbody
 come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
 inconsistent cases). Second, \binarytrees and \fasta seem to be much more often
 bad inconsistent across most VMs. This raises the question as to whether some
-aspect of these benchmarks makes inconsistent performance more likely
-(\binarytrees, for example, allocates and deallocates
-large amounts of memory, though \fasta somewhat less so \laurie{this statement needs checking; my memory of fasta is fuzzy, and it's not totally obvious from the code how much memory it allocs/deallocs})
-\edd{max resident set sizes when run under Cpython-2.7: fasta=15832Kb,
-binarytrees=8280Kb. Bear in mind that binarytrees is hard-coded to go to a
-depth of 12 in our benchmarks. Trees grow exponentially with depth, so there
-will likely be a depth where binarytrees would massively overtake fasta}\laurie{hmm, so my memory was wrong ;) can we quickly compare this to a couple of the other benchmarks? maybe the memory allocation of these two is both fairly high, or maybe it's pretty mundane. i'm no longer sure!}.
-\edd{spectralnorm=7316kb, richards=7588kb, fannkuch=7028kb}
+aspect of these benchmarks makes inconsistent performance more likely,
+though they share no particularly obvious characteristics.
 Third, the overall spread of steady state iter (\#) values is uneven: VMs seem
 to mostly either reach a steady state quickly (often in 10 or fewer in-process
 iterations) or take hundreds of in-process iterations. The latter are troubling

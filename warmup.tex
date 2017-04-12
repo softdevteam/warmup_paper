@@ -716,7 +716,7 @@ We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
 users, it gives no insight into multi-threaded computations: we therefore also record
-core cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
+core-cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
 what work each core is actually doing. In contrast, we use the ratio of APERF/MPERF deltas
 solely as a safety check that our wall-clock times are valid.
 The \texttt{IA32\_APERF} counter increments at a fixed
@@ -734,13 +734,13 @@ avoid in-benchmark I/O and memory allocation by storing measurements in a
 pre-allocated buffer and only writing measurements to \texttt{stdout} after all
 in-process iterations have completed (see Listing~\ref{lst:pyiter} for an
 example). However, the situation on Linux is complicated by our need to read
-core cycle and APERF/MPERF counts from Model Specific Register (MSR) file device
+core-cycle and APERF/MPERF counts from Model Specific Register (MSR) file device
 nodes,\footnote{We forked, and slightly modified, Linux's \texttt{msr} device
 driver to allow us to easily access the MSRs as a non-root user.} which are relatively
 slow (see Section~\ref{aperf/mperf error}). Since wall-clock time
 is the most important measure, we ensure that it is the innermost measure taken
 (i.e.~to the extent we control, it does not include the time taken to read
-core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
+core-cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 
 \begin{table}[t]
 \centering
@@ -794,7 +794,7 @@ and after a benchmark.}
 \hfill
 \begin{minipage}[t]{0.43\textwidth}
 \captionof{lstlisting}{An elided version of the Python
-in-process iteration runner (with core cycles etc. removed).}
+in-process iteration runner (with core-cycles etc. removed).}
 \label{lst:pyiter}
 \end{minipage}%
 \end{table}
@@ -807,7 +807,7 @@ measures (see Listing~\ref{lst:krun-measure} for an example). When possible
 (all VMs apart from JRuby+Truffle, HHVM, and V8), we used a language's FFI to dynamically load this library
 in; in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
-Core-cycle\edd{core-cycle or core cycle? Need to do a sweep}, APERF, and MPERF
+Core-cycle, APERF, and MPERF
 counts are 64-bit unsigned integers; since
 JavaScript and current versions of LuaJIT do not support
 integers, and since PHP's maximum integer size varies across OS and PHP versions, we
@@ -1143,8 +1143,8 @@ we created a series of plots. All plots have in-process iteration number on the
 $x$-axis. \emph{Run-sequence plots} show wall-clock times on the $y$-axis. The
 plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows further
-examples. On Linux we also show \emph{core-cycle plots}, which show the
-per-core cycle count on the $y$-axis. The plots in
+examples. On Linux we also use \emph{core-cycle plots}, showing the
+core-cycle counts on the $y$-axes (one plot per-core). The plots in
 Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
 examples of run-sequence plots accompanied by core-cycle plots for no steady
 state and cyclic data respectively.
@@ -1326,7 +1326,7 @@ meaning that there is no guarantee that it returns within a fixed bound.
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
 Fortunately, in practise, \texttt{clock\_gettime} returns far quicker than the granularity
 of any of our benchmarks. \label{aperf/mperf error} The situation
-on Linux is complicated by our reading of core cycle, APERF, and MPERF
+on Linux is complicated by our reading of core-cycle, APERF, and MPERF
 counters via MSR device nodes: we call \texttt{lseek} and \texttt{read}
 between each in-process iteration (we keep the files open across all
 in-process iterations to reduce the open/close overhead).

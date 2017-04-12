@@ -309,7 +309,7 @@ the RHS plot shows an example of slowdown (\richards on HotSpot). The
 plot titles show: the benchmark (e.g.~\binarytrees); the VM (e.g.~HotSpot),
 the machine (e.g.~\bencherseven); the process execution number (e.g.~5);
 and the classification (e.g.~warmup). The `main' plot at the bottom always shows
-the in-process iteration number (indexed from 1) and the corresponding wallclock
+the in-process iteration number (indexed from 1) and the corresponding wall-clock
 times for all \numiterations in-process iterations. Because this often obscures the finer
 details, we also show two additional visualisations of the data: the top plot
 shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the bulk of the
@@ -711,7 +711,6 @@ and once it has completed, print the times to \texttt{stdout} for \krun to
 capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
 cycle, APERF, and MPERF counters.
-\sarah{Last minute: need to sweep for wallclock vs. wall-clock.}
 
 We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
@@ -1189,7 +1188,7 @@ turned on. Although these additional measures add overhead, in this
 case they make no observable difference to the main run-sequence graph. They
 allow us to observe that the slowdown is correlated with two immediately preceding JIT compilation events
 that may explain the drop in performance. Note that the
-regular GC spikes have only a small effect on the wallclock times.}
+regular GC spikes have only a small effect on the wall-clock times.}
 \label{fig:examples:slowdown1}
 \end{minipage}
 \hfill

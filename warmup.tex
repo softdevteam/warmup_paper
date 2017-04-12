@@ -743,15 +743,10 @@ is the most important measure, we ensure that it is the innermost measure taken
 (i.e.~to the extent we control, it does not include the time taken to read
 core cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 
-\begin{figure}[t]
-\begin{lstlisting}[label=lst:krun-measure, xleftmargin=0cm,
-        caption={%
-\texttt{krun\_measure}: Measuring before (the \texttt{if} true branch) and
-after (the false branch) a benchmark. Since
-wall-clock time is the most important measure, it is innermost; since
-the APERF/MPERF counters are a sanity check, they are outermost. Note that
-the APERF/MPERF counters must be read in the same order before
-and after a benchmark.}]
+\begin{table}[t]
+\centering
+\begin{minipage}[t]{0.53\textwidth}
+\begin{lstlisting}[xleftmargin=0cm]
 void krun_measure(int mdata_idx) {
   struct krun_data *data = &(krun_mdata[mdata_idx]);
   if (mdata_idx == 0) { // start benchmark readings
@@ -771,22 +766,39 @@ void krun_measure(int mdata_idx) {
   }
 }
 \end{lstlisting}
-\end{figure}
-
-\begin{figure}[t]
-\begin{lstlisting}[label=lst:pyiter, caption={An elided version of the Python
-in-process iteration runner (with core cycles etc. removed).}]
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.43\textwidth}
+\begin{lstlisting}[xleftmargin=0cm]
 wallclock_times = [0] * iters
 for i in xrange(iters):
     krun_measure(0)   # Start timed section
     bench_func(param) # Call the benchmark
     krun_measure(1)   # End timed section
     wallclock_times[i] = \
-        krun_get_wallclock(1) - krun_get_wallclock(0)
+        krun_get_wallclock(1) - \
+        krun_get_wallclock(0)
 js = { "wallclock_times": wallclock_times }
 sys.stdout.write("%s\n" % json.dumps(js))
 \end{lstlisting}
-\end{figure}
+\end{minipage}%
+\\
+\begin{minipage}[t]{0.53\textwidth}
+\captionof{lstlisting}{\texttt{krun\_measure}: Measuring before (the \texttt{if} true branch) and
+after (the false branch) a benchmark. Since
+wall-clock time is the most important measure, it is innermost; since
+the APERF/MPERF counters are a sanity check, they are outermost. Note that
+the APERF/MPERF counters must be read in the same order before
+and after a benchmark.}
+\label{lst:krun-measure}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.43\textwidth}
+\captionof{lstlisting}{An elided version of the Python
+in-process iteration runner (with core cycles etc. removed).}
+\label{lst:pyiter}
+\end{minipage}%
+\end{table}
 
 The need to carefully sequence the measurements means that we cannot rely
 on user-level libraries: not all of the VMs in our experiment give us access to

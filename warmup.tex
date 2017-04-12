@@ -1518,14 +1518,7 @@ benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\cite{octane}
 (JavaScript). We ran both for \numpexecs process executions and \numiterations in-process
 iterations without reboots, temperature control etc.: DaCapo on \bencherthree;
 and Octane on \bencherseven (a Xeon machine, with a software setup
-similar to \bencherthree).\footnote{\laurie{this is incorrect, right?}\edd{we
-have a full set of octane data, but only dacapo from bencher5 and if it
-finishes in time}
-The large amount of CPU time our
-experiments require meant that we ran out of time to run Octane on \bencherthree
-before paper submission. For the final paper, we will run DaCapo and Octane on
-the same machine. Although we do not expect this to result in significant
-changes to the data, it will reduce a source of variation.}
+similar to \bencherthree).
 
 We ran DaCapo (with its default benchmark size) on Graal and HotSpot. As it already has support for
 altering the number of in-process executions, we used it without modification.

@@ -987,21 +987,13 @@ nuanced view than IQRs can report we also provide thumbnail histograms.
 in most VM papers. In our case, the steady state is composed of one or more
 segments (see Section~\ref{sec:classifications}). We report means and
 99\% confidence intervals
-calculated via bootstrapping (with 100,000 iterations). Since the values across different segments are clearly not
-independent, we sample values within, and never across, segments (e.g.~if a
+calculated via bootstrapping (with 100,000 iterations). Although we
+can assume, as a result of changepoint analysis, that values within segments are
+independent, the values across different segments are clearly not
+independent. When bootstrapping, we therefore sample values within, but never across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
 $B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
-However, we needed to check that bootstrapping within segments was safe. Of
-the \totalpexecs{} process executions from our experiment, \laurie{XXX}
-reach a steady state, comprised of \laurie{XXX} segments. \laurie{XXX}\% of
-these segments have a variance below 0.001s, at which point we consider any data
-to be noise and not worth considering for dependence. For the remaining
-segments, we ran a Durbin-Watson test statistic to determine if they were
-autocorrelated. Even with very conservative bounds (1.6 and 3.4 for lower
-and upper bounds respectively), only \laurie{XXX}\% of segments have statistically
-significant autocorrelation. Because of this very low figure, we thus
-feel safe in bootstrapping within segments.
 
 
 \section{Results}

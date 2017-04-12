@@ -517,7 +517,7 @@ load other classes: lazy loading is an inherent to the JVM specification,
 and part of what we need to measure.
 
 
-\subsection{Measuring Computation and Not File Performance}
+\subsection{Measuring Computation Rather Than File Performance}
 
 By their very nature, microbenchmarks tend to perform computations which
 can be easily optimised away. While this speaks well of
@@ -722,7 +722,7 @@ cycle, APERF, and MPERF counters.
 We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
-users, it gives no insight into multi-threaded computations: we therefore also record
+users, it gives no insight into multi-threaded computations: we therefore also record \laurie{on linux only?}
 core-cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
 what work each core is actually doing. In contrast, we use the ratio of APERF/MPERF deltas
 solely as a safety check that our wall-clock times are valid.
@@ -806,16 +806,14 @@ in-process iteration runner (with core-cycles etc. removed).}
 \end{minipage}%
 \end{table}
 
-The need to carefully sequence the measurements means that we cannot rely
-on user-level libraries: not all of the VMs in our experiment give us access to
-the appropriate monotonic timer. We therefore
-implemented a small C library (\texttt{libkruntime.so}) which exposes these
-measures (see Listing~\ref{lst:krun-measure} for an example). When possible
-(all VMs apart from JRuby+Truffle, HHVM, and V8), we used a language's FFI to dynamically load this library
-in; in the remaining cases, we linked the library directly against the VM, which
+The need to carefully sequence the measurements, and the fact that not all of
+the VMs in our experiment give us access to the appropriate monotonic timer,
+meant that we had to implement a small C library (\texttt{libkruntime.so}) to do so
+(see Listing~\ref{lst:krun-measure} for an example). When possible
+(all VMs apart from JRuby+Truffle, HHVM, and V8), we used a language's FFI to dynamically load this library;
+in the remaining cases, we linked the library directly against the VM, which
 then required us to add user-language visible functions to access them.
-Core-cycle, APERF, and MPERF
-counts are 64-bit unsigned integers; since
+Core-cycle, APERF, and MPERF counts are 64-bit unsigned integers; since
 JavaScript and current versions of LuaJIT do not support
 integers, and since PHP's maximum integer size varies across OS and PHP versions, we
 convert the 64-bit unsigned measurements to

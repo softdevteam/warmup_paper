@@ -214,7 +214,7 @@ performance or not. Using this, we show that even when run in the
 most controlled of circumstances, small, deterministic, widely studied
 microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Repeating our experiment on 3 different machines, we
-found that only \mintwo--\maxtwo\% of
+found that at most \maxtwo\% of
 \vmbpair pairs consistently reach a steady state of peak performance.
 \end{abstract}
 
@@ -265,14 +265,14 @@ state, or which perform inconsistently across different process
 executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
 combination) of \vmbpair pairs consistently reach a steady state of peak
 performance. Of the seven VMs we studied, none consistently reached a steady
-state of peak performance.
+state of peak performance. These results are much worse than reported in previous works, and worse
+than expected by the VM teams we have spoken to.
 
-These results are significantly worse than reported in previous works, and worse
-than expected by the several VM teams we have spoken to. Our results suggest
+Our results suggest
 that much real-world VM benchmarking, which nearly all relies on assuming
 that benchmarks do reach a steady state of peak performance, is likely to be partly or wholly
 misleading. Since microbenchmarks similar to those in this paper are often used
-in isolation to gauge the efficacy of VM optimisations, our results suggest that
+in isolation to gauge the efficacy of VM optimisations, it is also likely that
 ineffective, or deleterious, optimisations may have been incorrectly judged as
 improving performance and included in VMs.
 
@@ -324,12 +324,12 @@ allowing us to see the `warmup curve', if it exists). Changepoints
 are indicated by vertical red lines and denote a `shift' in performance behaviour;
 changepoint segments are indicated by horizontal red lines between changepoints,
 whose height shows the mean iteration time within the segment;
-and red circles indicate `outliers'
-(which the changepoint analysis discounts). We use the changepoint
+and red circles indicate `outliers', which the changepoint analysis discount). We use the changepoint
 segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
-slowdown respectively). As an additional visual aid, the steady state iteration
-timings are plotted in black; all others are plotted in grey.}
+slowdown respectively). As an additional visual aid, changepoint segments
+equivalent in timing to the steady state segment are plotted in black;
+all others are plotted in grey.}
 \label{fig:changepoint}
 \end{figure}
 
@@ -357,7 +357,7 @@ some of the effects we see, it does not explain many others.
 In summary, this paper's contributions are as follows:
 \begin{enumerate}
     \item We show that, even in a highly idealised setting, widely studied benchmarks
-often fail to warmup.
+often fail to hit a steady state of peak performance.
     \item We present the first automated approach to analysing time series
 data from VM benchmarking that can automatically determine if and when a steady
 state has been reached.
@@ -367,9 +367,10 @@ steady state behaviour (warmup, slowdown, flat).
 the `obvious' factors of GC and JIT compilation, many are not.
 \end{enumerate}
 
-We present supporting material in the Appendix: we show that our
-statistical method can be applied to the DaCapo and Octane benchmark suites,
-both run in a conventional manner (Appendix~\ref{sec:existing}); and we present a curated
+The statistical approach we have developed is open-source, general, and can be used
+to analyse any VM benchmarking data. In the Appendix, we show it applied
+to the DaCapo and Octane benchmark suites,
+both run in a conventional manner (Appendix~\ref{sec:existing}). We also present a curated
 series of plots of interesting data (Appendix~\ref{sec:curatedplots}). A
 separate document contains the complete plots of all data from all machines.
 
@@ -394,7 +395,7 @@ compilation is used for `very hot' portions of a program, trading slower
 compilation time for better machine code generation).}
 While the length of the warmup period
 is dependent on the program and JIT compiler, all JIT compiling
-VMs assume this performance model holds true~\cite{kalibera13rigorous}.
+VMs are based on this performance model~\cite{kalibera13rigorous}.
 
 Benchmarking of JIT compiled VMs typically focusses on reporting
 steady state numbers based on two assumptions: first, that warmup is both fast and
@@ -403,7 +404,7 @@ The methodologies used are typically straightforward: benchmarks are run for a n
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
-that period. Often $n$ is a fixed number (often around 5), with little or no confirmation
+that period. Often $n$ is a fixed number (typically around 5), with little or no confirmation
 that warmup has completed or not. Heuristics such as
 those of~\citet{georges07statistically} automatically analyse
 a process execution's time series data before returning a value of $n$.

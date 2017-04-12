@@ -1223,15 +1223,17 @@ The large number of non-warmup cases in our data led us to make the following hy
 \begin{description}
   \item[H3] Non-warmup process executions are largely due to JIT compilation or GC events.
 \end{description}
-To test this hypothesis, we made use of the fact that both HotSpot and PyPy allow
-information about the duration of JIT compilation and GC to be recorded. Since
+To test this hypothesis, we made use the debug facilities of HotSpot and PyPy to
+record the time spent performing JIT compilation and GC. Since
 recording this additional data could potentially change the results we collect,
-it is only collected when \krun is explicitly set to `instrumentation mode'. An
-example instrumentation-plot can be seen in the slowdown of
-Figure~\ref{fig:examples:slowdown1} where there is a clear correlation (though we
-cannot be entirely sure that it is a causation) between a JIT compilation and
-the slowdown. However, some other notably odd examples have no such correlation,
-as can be seen in Figure~\ref{fig:goodcomp} \laurie{this relationship is now broken: fig:goodcomp used to show an example of where weird behaviour wasn't correlated with GC/JIT, but the current fig:goodcomp shows clear correlation. we need an example that shows non-correlation. that doesn't mean that the current fig:goodcomp isn't interesting, but if we only have room for one figure, we should show the non-correlation one}.\laurie{aha, we could probably place a plot next to table 3, so we could keep all the examples.}
+it is only collected when \krun is explicitly set to `instrumentation mode'. For
+example, in Figure~\ref{fig:examples:slowdown1}, there is a clear correlation
+(though we cannot be entirely sure that it is a causation) between a JIT
+compilation and a slowdown. Similarly, Figure~\ref{fig:goodcomp} shows an
+example where slowdown could be attributed to garbage collection. Note however,
+that in many cases neither JIT compilation, nor garbage collection, are
+sufficient in explaining odd behaviours. One such case is shown in
+Figure~\ref{fig:unexplained}.
 
 The relatively few results we have with GC and JIT compilation events, and the lack of a clear
 message from them, means that we feel unable to validate or invalidate

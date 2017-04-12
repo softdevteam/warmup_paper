@@ -1244,29 +1244,33 @@ from other VMs may help clarify this issue, but not all VMs support this
 feature and, in our experience, those that do support it do not always
 document it accurately.
 
-% I can't seem to get the table and figure side-by-side, with the captions
-% intact, and with the whole thing floating. I've tried using a custom float and
-% floatrow, but they both do weird stuff. The below typesetting works, but
-% doesn't float and thus has to be placed manually. I can live with it.
-%
-\vspace{1em}
-\begin{minipage}{\textwidth}
-\begin{minipage}[c]{0.49\textwidth}
+\begin{table}[t]
+\begin{minipage}[t]{0.485\textwidth}%
+\vspace{0pt}
 \centering
-\includegraphics[width=\textwidth]{examples/unexplained_weirdness.pdf}%
-\vskip-1em
-\captionof{figure}{An example showing that performance changes cannot always be
-attributed to Just-In-Time compilation or garbage collection.}%
-\label{fig:unexplained}%
+\includegraphics[width=\textwidth]{examples/unexplained_weirdness.pdf}
 \end{minipage}
 \hfill
-\begin{minipage}[c]{0.49\textwidth}
+\begin{minipage}[t]{0.485\textwidth}
+\vspace{0pt}
 \centering
 \input{startup.table}
+\end{minipage}
+\\
+\begin{minipage}[t]{0.485\textwidth}
+\vspace{0pt}
+\centering
+\captionof{figure}{An example where performance changes do not appear to correlate with compilation or GC.}
+\label{fig:unexplained}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\vspace{0pt}
+\centering
 \captionof{table}{VM startup time (in seconds with 99\% confidence intervals).}
 \label{fig:startup}
 \end{minipage}
-\end{minipage}
+\end{table}
 
 \section{Startup Time}
 \label{sec:startup}

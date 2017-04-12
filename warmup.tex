@@ -881,30 +881,30 @@ changepoint segments in our context.
 \subsection{Classifications}
 \label{sec:classifications}
 
-Building atop changepoint analysis, we can then define useful classifications
-for time series data from VM benchmarks.
+Based on the results of changepoint analysis, we can then start to characterise
+time series data from VM benchmarks.
 
 Before we can do so, we must
 acknowledge the constraints that changepoint analysis works under: it has
 no way of knowing what constitutes the `noise floor' in our problem domain; nor can it
 guarantee to find identical means for very similar segments separated from
-one another by a segment with a clearly distinct mean.
-To understand the `noise floor' issue, it
+one another by a (possibly short) segment with a clearly distinct mean or variance.
+To understand how `noise floor' affects our analysis, it
 is helpful to take an extreme example. Consider a long sequence of in-process
 iterations all timed at 0.1001 seconds, followed by another long sequence timed
 at 0.1002 seconds. A changepoint will be detected in the transition between the
 two sequences, resulting in two changepoint segments. However, we know that in practice such a tiny absolute timing
 delta is as likely to be the result of non-determinism inherent in a real
 machine or OS as it is to be due to a benchmark or VM, and that it would be
-better to consider them as being equal. It is tempting to merge such segments
+better to consider the two segments as being equivalent. It is tempting to merge such segments
 together, but this fails to deal with separated segments. Consider a
 benchmark which, after changepoint analysis has three segments: the first with a
 mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
 segment which is clearly different. We therefore allow a small tolerance
-when comparing a segment $s_i$ against the final segment $s_f$: if $\textrm{mean}(s_i)$
-is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$,
+when comparing a segment $s_i$ against the final segment $s_n$: if $\textrm{mean}(s_i)$
+is within $\textrm{mean}(s_n) \pm \textrm{max}(\textrm{variance}(s_n), 0.001s)$,
 we consider the two equivalent. The reason for these two types of tolerance
 is as follows. In short running benchmarks, a small number of external events can add an absolute
 level of noise: in our experience readings often vary by a
@@ -917,24 +917,24 @@ tends to naturally account for.
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
 classification algorithm for an individual process execution. Given an ordered
 list of Segments -- each of which has "mean", "variance", and "end" attributes, the latter
-its absolute ending position in the sequence of in-process iterations --
+is the index of the last iteration in the segment --
 this function returns a string classifying the run sequence's warmup style.}]
-ABSOLUTE_DELTA   = 0.001 # Time in seconds to be used as a bound
-STEADY_STATE_LEN = 500   # Number of in-process iterations from the end for a steady state
+DELTA = 0.001  # Time in seconds to be used as a bound
+STEADY_STATE_LEN = 500  # We expect to reach a steady state before the last STEADY_STATE_LEN iterations
 
-def classify(seq):
-  assert(len(seq) > 0)
-  last_seg = seq[len(seq) - 1]
-  lower_bound = last_seg.mean - max(last_seg.variance, ABSOLUTE_DELTA)
-  upper_bound = last_seg.mean + max(last_seg.variance, ABSOLUTE_DELTA)
+def classify(segments):
+  assert(len(segments) > 0)
+  last_seg = segments[len(segments) - 1]
+  lower_bound = last_seg.mean - max(last_seg.variance, DELTA)
+  upper_bound = last_seg.mean + max(last_seg.variance, DELTA)
   cls = "flat"
-  i = len(seq) - 2
+  i = len(segments) - 2
   while i > -1:
-    cur_seg = seq[i]
+    cur_seg = segments[i]
     i -= 1
     if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
       continue
-    elif cur_seg.end > len(seq) - STEADY_STATE_LEN:
+    elif cur_seg.end > len(segments) - STEADY_STATE_LEN:
       cls = "no steady state"
       break
     elif cur_seg.mean < lower_bound:
@@ -993,12 +993,14 @@ a \emph{steady iter (s)} of 0; we elide these details for benchmarks
 which are consistently flat. Benchmarks often end up with a variety of distributions
 for both these measures (most often, though not exclusively, seen on benchmarks
 which contain a mix of flat and non-flat classifications) which makes reporting standard confidence intervals
-misleading. We therefore use Inter-Quartile Ranges (IQRs) to give an indication of the
+misleading. We therefore use inter-quartile ranges (IQRs) to give an indication of the
 spread of values, reporting the median and 5\% and 95\% percentiles (using
-linear interpolation). Non-overlapping IQRs imply a meaningful difference in the \emph{steady iter (\#)} or
+linear interpolation when the percentile boundaries lie between two data points).
+Non-overlapping IQRs imply a meaningful difference in the \emph{steady iter (\#)} or
 \emph{(s)} values of a benchmark run on two VMs; however, since the IQRs are often
 widely spread, we are often unable to make such comparisons. To give a more
-nuanced view than IQRs can report we also provide thumbnail histograms.
+nuanced view than IQRs can report we also provide thumbnail histograms, marking
+the histogram bin containing the median value in red.
 
 \emph{Steady perf (s)} roughly corresponds to the `normal' performance number reported
 in most VM papers. In our case, the steady state is composed of one or more

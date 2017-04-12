@@ -1285,7 +1285,7 @@ investigation, we provide a `dummy' iterations runner which simply prints out
 wall-clock time. In other words, we measure the time just before the VM is loaded
 and at the first point that a user-level program can execute code on the VM; the
 delta between the two is the startup time. For each VM we run 200 process
-executions (for startup, in-process executions are irrelevant,
+executions (for startup, in-process iterations are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
 time).
 
@@ -1364,7 +1364,7 @@ cost of reading these counters. On cores
 performing active computation, the error is small (around 1\% in our
 experience), but on inactive cores it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-In order to verify that there were no frequency changes during benchmarking,
+\laurie{edd: we need to reverify this} In order to verify that there were no frequency changes during benchmarking,
 we wrote a simple checking tool. For each in-process iteration, it first checks
 the corresponding cycle-count data: since active cores generally have
 cycle-counts in the billions, we conservatively classify inactive
@@ -1393,9 +1393,8 @@ Stabilizer~\cite{curtsinger13stabilizer} to
 sample across the search space evenly; unfortunately, we were not able to build
 Stabilizer on a modern Linux system.\footnote{Stabilizer's authors hope to
 produce a new version which is more easily ported across OS versions, though
-with no definite timescale.} In previous versions of this work, we disabled
-ASLR on Linux, but since ASLR on OpenBSD cannot be turned off, this made
-comparisons difficult. We therefore ran all our experiments with ASLR on.
+with no definite timescale.} Since ASLR cannot be turned off on OpenBSD,
+we left ASLR on Linux on, to make a comparison across the two easier.
 By measuring \numpexecs process executions, we lessened, though did not
 remove, the chances of all our measurements coming from a narrow part of the
 overall search space.

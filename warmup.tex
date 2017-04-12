@@ -722,7 +722,7 @@ cycle, APERF, and MPERF counters.
 We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
-users, it gives no insight into multi-threaded computations: we therefore also record \laurie{on linux only?}\edd{yes, becuase it needs MSR access}
+users, it gives no insight into multi-threaded computations: on Linux we therefore also record
 core-cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
 what work each core is actually doing. In contrast, we use the ratio of APERF/MPERF deltas
 solely as a safety check that our wall-clock times are valid.
@@ -972,8 +972,7 @@ executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
 when one or more process executions are no steady state or slowdown. Good inconsistency
 can occur because some benchmarks are on the edge of our ability to differentiate warmup
 from flat behavior, and we prefer to assume that we are at fault rather
-than the VM.
-inconsistency. Bad inconsistency is always more troubling: it
+than the VM. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience poor performance.
 
 
@@ -1017,7 +1016,7 @@ steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 \section{Results}
 \label{sec:results}
 
-\begin{table}
+\begin{table}[t]
 \begin{center}
 \begin{tabular}{lccc}
 \toprule
@@ -1046,30 +1045,6 @@ $^\dagger$Note that \bencherfive and \bencherseven run the same set of benchmark
 but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \label{tab:summarystats}
 \end{table}
-
-\begin{landscape}
-\begin{table*}[hptb]
-\vspace{.35cm}
-\begin{adjustbox}{scale=.845}
-\input{bencher7.table}
-\end{adjustbox}
-\caption{Benchmark results for \bencherseven. For all process executions, we
-report the classification of the benchmark and, for good/bad inconsistent benchmarks,
-their constituent classifications (e.g.~\badinconsistent(2\slowdown, 8\warmup)
-means 2 of the process executions were slowdown, and 8 warmup). For processes
-which reach a steady state we report three summary statistics. \emph{Steady iter
-(\#)} is the median in-process iteration that the steady state was reached at
-and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
-the process execution that the steady state was reached; for both measures we
-report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
-performance of the steady state segment across all process executions, which we
-report with 99\% confidence intervals. The thumbnail histograms
-show the spread of values; the red bar shows the location of the median
-(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
-\emph{Steady perf(s)}) value.}
-\label{tab:mainresults}
-\end{table*}
-\end{landscape}
 
 Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
@@ -1117,6 +1092,30 @@ Tables~\ref{tab:bencher5results} and~\ref{tab:bencher6results} in the Appendix
 contain further details. Overall, we believe that our results are a
 somewhat clear validation of Hypothesis \hyptwo.
 
+\begin{landscape}
+\begin{table*}[p]
+\vspace{.35cm}
+\begin{adjustbox}{scale=.845}
+\input{bencher7.table}
+\end{adjustbox}
+\caption{Benchmark results for \bencherseven. For all process executions, we
+report the classification of the benchmark and, for good/bad inconsistent benchmarks,
+their constituent classifications (e.g.~\badinconsistent(2\slowdown, 8\warmup)
+means 2 of the process executions were slowdown, and 8 warmup). For processes
+which reach a steady state we report three summary statistics. \emph{Steady iter
+(\#)} is the median in-process iteration that the steady state was reached at
+and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
+the process execution that the steady state was reached; for both measures we
+report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
+performance of the steady state segment across all process executions, which we
+report with 99\% confidence intervals. The thumbnail histograms
+show the spread of values; the red bar shows the location of the median
+(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
+\emph{Steady perf(s)}) value.}
+\label{tab:mainresults}
+\end{table*}
+\end{landscape}
+
 Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
 enables to make us several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
@@ -1137,15 +1136,15 @@ on some VMs suffer from a `double whammy' of poor warmup and poor
 steady state performance.
 
 
+
 \subsection{Warmup Plots}
 
 To understand why we see so many unexpected cases, for each process execution,
 we created a series of plots. All plots have in-process iteration number on the
 $x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
 plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
-slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows a case of bad inconsistency.
-Figure~\ref{fig:examples:warmup_flat} shows a case of good inconsistency.
-examples. Core-cycle plots (Linux only) show the
+slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
+Figure~\ref{fig:examples:warmup_flat} of good inconsistency. Core-cycle plots (Linux only) show the
 core-cycle counts on the $y$-axes (one plot per-core). The plots in
 Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
 examples of run-sequence plots accompanied by core-cycle plots for no steady
@@ -1177,8 +1176,9 @@ to consider this example `no steady state'.}
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{examples/new_inconsistent.pdf}
-\caption{`Bad inconsistency'. Examples of warmup and slowdown from the same
-benchmark, on the same VM, on the same machine.}
+\caption{An example of bad inconsistency: the same benchmark, on
+the same VM, on the same machine on one process execution warming
+up and the other slowing down.}
 \label{fig:examples:inconsistent}
 \vspace{-.4cm}
 \end{figure*}
@@ -1186,9 +1186,10 @@ benchmark, on the same VM, on the same machine.}
 \begin{figure*}[t]
 \centering%
 \includegraphics[width=\textwidth]{examples/warmup_flat.pdf}
-\caption{`Good inconsistency' occurs because some process executions are on the
-edge of our ability to differentiate warmup from flat behaviour. A human
-classifier might consider both of these plots to be cases of warmup.}
+\caption{An example of good inconsistency where one process execution
+is classified as warmup, the other flat. Although a human might consider
+both of these as warmup, changepoint analysis cannot determine from
+the single peak in the RHS plot that meaningful warmup has occurred.}
 \label{fig:examples:warmup_flat}
 \vspace{-.4cm}
 \end{figure*}
@@ -1378,7 +1379,7 @@ performing active computation, the error is small (around 1\% in our
 experience), but on inactive cores it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
 \laurie{edd: we need to reverify this}\edd{OK}In order \edd{We seem to say `in
-order' quite a lot. Diversify?}to verify that there were no frequency changes
+order' quite a lot. Diversify?}\laurie{i don't particularly think we need to diversify, but if you've got a good synonym, i'm all ears} to verify that there were no frequency changes
 during benchmarking,
 we wrote a simple checking tool. For each in-process iteration, it first checks
 the corresponding cycle-count data: since active cores generally have
@@ -1389,7 +1390,7 @@ experiment were within these limits, strongly suggesting that our experiment
 experienced no unexpected CPU frequency changes\edd{We don't have the code for
 this tool, so I'll probably end up re-writing it. I was hoping to have idle
 counts for all the machines at this point, but something approximate will
-probably do}.
+probably do}\laurie{i agree}.
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After

@@ -38,6 +38,7 @@
 \newcommand{\krun}{Krun\xspace}
 \newcommand{\hypone}{H1\xspace}
 \newcommand{\hyptwo}{H2\xspace}
+\newcommand{\hypthree}{H3\xspace}
 \newcommand{\binarytrees}{\emph{binary trees}\xspace}
 \newcommand{\richards}{\emph{Richards}\xspace}
 \newcommand{\spectralnorm}{\emph{spectralnorm}\xspace}
@@ -1109,14 +1110,14 @@ and \bencherfive (both running Linux but on quite different hardware) are
 comparable, with the relative proportions of all measures being only a few
 percent different. \benchersix (running a different OS to \bencherfive, but on similar hardware)
 is however fairly different, with \benchersixvmbenchpairsbadinconsistentpercentage\%
-of \vmbpair pairs being bad inconsistent. This is partly due to the absence of
+of \vmbpair pairs being `bad' inconsistent. This is partly due to the absence of
 JRuby+Truffle which, on Linux, is the most consistent VM as well as Graal and HHVM
 (see Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
 roughly similarly (as can be seen indirectly from Table~\ref{tab:summarystats}), but
 there is a more even spread of process execution classifications across \vmbpair pairs.
 Tables~\ref{tab:bencher5results} and~\ref{tab:bencher6results} in the Appendix
 contain further details. Overall, we believe that our results are a
-somewhat clear validation of Hypothesis H2.
+somewhat clear validation of Hypothesis \hyptwo.
 
 Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
@@ -1140,6 +1141,7 @@ steady state performance.
 
 \subsection{Warmup Plots}
 
+\sarah{I'm not sure why run-sequence is italicised here, a run-sequence plot is just a plot of time-series data and we have used the term before.}
 To understand why we see so many unexpected cases, for each process execution,
 we created a series of plots. All plots have in-process iteration number on the
 $x$-axis. \emph{Run-sequence plots} show wall-clock times on the $y$-axis. The
@@ -1197,7 +1199,7 @@ memory leak in PyPy, which we have reported upstream.
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
 \caption{Slowdown at in-process iteration \#199, which correlates
-with two two immediately preceding JIT compilation events
+with two immediately preceding JIT compilation events
 that may explain the drop in performance. Note that the
 regular GC spikes have only a small effect on wall-clock time.}
 \label{fig:examples:slowdown1}
@@ -1221,9 +1223,9 @@ in-process iterations whilst JIT compilation occurs.
 
 The large number of non-warmup cases in our data led us to make the following hypothesis:
 \begin{description}
-  \item[H3] Non-warmup process executions are largely due to JIT compilation or GC events.
+  \item[\hypthree] Non-warmup process executions are largely due to JIT compilation or GC events.
 \end{description}
-To test this hypothesis, we made use the debug facilities of HotSpot and PyPy to
+To test this hypothesis, we made use of the debug facilities of HotSpot and PyPy to
 record the time spent performing JIT compilation and GC. Since
 recording this additional data could potentially change the results we collect,
 it is only collected when \krun is explicitly set to `instrumentation mode'. For
@@ -1237,7 +1239,7 @@ Figure~\ref{fig:unexplained}.
 
 The relatively few results we have with GC and JIT compilation events, and the lack of a clear
 message from them, means that we feel unable to validate or invalidate
-Hypothesis H3. Whilst some non-warmups are plausibly explained by GC or JIT compilation events, many are not, at
+Hypothesis \hypthree. Whilst some non-warmups are plausibly explained by GC or JIT compilation events, many are not, at
 least on HotSpot and PyPy. When there is no clear explanation, we have very little idea what might be
 the cause of the unexpected behaviour. It may be that obtaining similar data
 from other VMs may help clarify this issue, but not all VMs support this
@@ -1294,8 +1296,8 @@ Table~\ref{fig:startup} shows startup times from both \bencherfive and \benchers
 \krun reboots before each process execution, these are measures of a `cold'
 start and thus partly reflect disk speed etc. (though both machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
-taking C on Linux as a baseline, the fastest VM (LuaJIT) is 5x slower, whilst the
-slowest VM (JRuby+Truffle) is around 3500x slower, to startup.
+taking C on Linux as a baseline, the fastest VM (LuaJIT) is $5\times$ slower, whilst the
+slowest VM (JRuby+Truffle) is around $3500\times$ slower, to startup.
 
 \section{Threats to Validity}
 \label{sec:threats}

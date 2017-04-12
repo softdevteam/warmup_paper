@@ -1172,7 +1172,7 @@ to consider this example `no steady state'.}
 \centering
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
-\caption{\laurie{the plot doesn't have instrumentation} Slowdown at in-process iteration \#199, with GC and JIT measurements
+\caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
 turned on. Although these additional measures add overhead, in this
 case they make no observable difference to the main run-sequence graph. They
 allow us to observe that the slowdown is correlated with two immediately preceding JIT compilation events
@@ -1183,7 +1183,7 @@ regular GC spikes have only a small effect on the wallclock times.}
 \hfill
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_good_comp.pdf}
-\caption{\laurie{this doesn't have instrumentation either} PyPy benchmarks often showed a gradual `ramp up' over time. This
+\caption{PyPy benchmarks often showed a gradual `ramp up' over time. This
 particular example (run with VM instrumentation enabled) shows this behaviour
 superimposed on top of distinct state changes. Inspection of the GC plot shows
 that the wall-clock times are tightly correlated with the time spent in GC, thus

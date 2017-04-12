@@ -171,7 +171,7 @@ category_examples/nosteadystate/nosteadystate3.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o category_examples/nosteadystate/nosteadystate3.pdf -b bencher5:fasta:PyPy:default-python:18 --no-zoom --wallclock-only --with-changepoint-means --with-outliers ${BENCHER5_DATA}
 
 # Instrumentation plots
-# PyPy instrumentation requires an phenominal amount of memory.
+# PyPy instrumentation requires a phenomenal amount of memory.
 # Don't even try on 16GB or less. Works on 24GB.
 
 examples/new_miscomp.pdf:

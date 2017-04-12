@@ -114,7 +114,7 @@ examples/new_inconsistent.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 6,4 --no-zoom -o examples/new_inconsistent.pdf -b bencher6:fannkuch_redux:LuaJIT:default-lua:24 -b bencher6:fannkuch_redux:LuaJIT:default-lua:9 --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
 
 examples/new_cyclic.pdf:
-	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 --no-zoom --inset-xlimits 600,1000 --core-cycles 1 --with-changepoint-means --with-outliers ${BENCHER5_DATA}
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 --no-zoom --inset-xlimits 600,1000 --core-cycles 1 --with-changepoint-means --with-outliers --cycles-ylimits 1.2270e9,1.2400e9 ${BENCHER5_DATA}
 
 # Plots in the appendix
 

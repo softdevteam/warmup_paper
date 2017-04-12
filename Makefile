@@ -29,7 +29,8 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		category_examples/nosteadystate/nosteadystate2.pdf \
 		category_examples/nosteadystate/nosteadystate3.pdf \
 		examples/new_miscomp.pdf \
-		examples/new_good_comp.pdf
+		examples/new_good_comp.pdf \
+		examples/unexplained_weirdness.pdf
 DIAGRAMS +=	${PLOTS}
 
 TABLES= dacapo.table startup.table \
@@ -115,6 +116,10 @@ examples/new_inconsistent.pdf:
 
 examples/new_cyclic.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 --no-zoom --inset-xlimits 600,1000 --core-cycles 1 --with-changepoint-means --with-outliers --cycles-ylimits 1.2270e9,1.2400e9 ${BENCHER5_DATA}
+
+
+examples/unexplained_weirdness.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/unexplained_weirdness.pdf -b bencher7:fannkuch_redux:Hotspot:default-java:3 --no-zoom --no-inset --core-cycles "" --with-changepoint-means --with-outliers ${BENCHER7_INSTR_DATA}
 
 # Plots in the appendix
 

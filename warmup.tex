@@ -18,6 +18,7 @@
 \usepackage{hyperref}
 \usepackage{caption}
 \usepackage{fp}
+\usepackage[font=small,labelfont=bf]{caption}
 
 %% \usepackage{showframe}  %% Use this for debugging margin overruns in tables.
 \usepackage{adjustbox}
@@ -29,6 +30,9 @@
 \usepackage{xspace}
 \usepackage{pdflscape}
 \usepackage{sparklines}
+\usepackage{float}
+
+\newfloat{sdfloat}{thp}{lop}
 
 \newcommand{\kalibera}{Kalibera and Jones\xspace}
 \newcommand{\krun}{Krun\xspace}
@@ -1238,6 +1242,30 @@ from other VMs may help clarify this issue, but not all VMs support this
 feature and, in our experience, those that do support it do not always
 document it accurately.
 
+% I can't seem to get the table and figure side-by-side, with the captions
+% intact, and with the whole thing floating. I've tried using a custom float and
+% floatrow, but they both do weird stuff. The below typesetting works, but
+% doesn't float and thus has to be placed manually. I can live with it.
+%
+\vspace{1em}
+\begin{minipage}{\textwidth}
+\begin{minipage}[c]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{examples/unexplained_weirdness.pdf}%
+\vskip-1em
+\captionof{figure}{An example showing that performance changes cannot always be
+attributed to Just-In-Time compilation or garbage collection.}%
+\label{fig:unexplained}%
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.49\textwidth}
+\centering
+\input{startup.table}
+\captionof{table}{VM startup time (in seconds with 99\% confidence intervals).}
+\label{fig:startup}
+\end{minipage}
+\end{minipage}
+
 \section{Startup Time}
 \label{sec:startup}
 The data presented thus far in the paper has all been collected after the VM has
@@ -1262,14 +1290,6 @@ start and thus partly reflect disk speed etc. (though both machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
 taking C on Linux as a baseline, the fastest VM (LuaJIT) is 5x slower, whilst the
 slowest VM (JRuby+Truffle) is around 3500x slower, to startup.
-
-\begin{table}[t]
-\centering
-\input{startup.table}
-\caption{VM startup time (in seconds with 99\% confidence intervals).}
-\label{fig:startup}
-\end{table}
-
 
 \section{Threats to Validity}
 \label{sec:threats}

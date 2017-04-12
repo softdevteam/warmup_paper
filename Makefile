@@ -30,6 +30,7 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		category_examples/nosteadystate/nosteadystate3.pdf \
 		examples/new_miscomp.pdf \
 		examples/new_good_comp.pdf \
+		examples/warmup_flat.pdf \
 		examples/unexplained_weirdness.pdf
 DIAGRAMS +=	${PLOTS}
 
@@ -112,7 +113,7 @@ examples/new_no_steady.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_no_steady.pdf -b bencher5:binarytrees:V8:default-javascript:23 ${BENCHER5_DATA} --no-zoom --with-outliers --with-changepoint-means
 
 examples/new_inconsistent.pdf:
-	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 6,4 --no-zoom -o examples/new_inconsistent.pdf -b bencher6:fannkuch_redux:LuaJIT:default-lua:24 -b bencher6:fannkuch_redux:LuaJIT:default-lua:9 --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA}
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 6,4 --no-zoom -o examples/new_inconsistent.pdf -b bencher7:binarytrees:V8:default-javascript:6 -b bencher7:binarytrees:V8:default-javascript:7 --wallclock-only --with-changepoint-means --with-outliers ${BENCHER7_DATA}
 
 examples/new_cyclic.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/new_cyclic.pdf -b bencher5:fannkuch_redux:Hotspot:default-java:0 --no-zoom --inset-xlimits 600,1000 --core-cycles 1 --with-changepoint-means --with-outliers --cycles-ylimits 1.2270e9,1.2400e9 ${BENCHER5_DATA}
@@ -120,6 +121,10 @@ examples/new_cyclic.pdf:
 
 examples/unexplained_weirdness.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size ${WIDTH_2COL},5 -o examples/unexplained_weirdness.pdf -b bencher7:fannkuch_redux:Hotspot:default-java:3 --no-zoom --no-inset --core-cycles "" --with-changepoint-means --with-outliers ${BENCHER7_INSTR_DATA}
+
+
+examples/warmup_flat.pdf:
+	${EXPERIMENT_REPO}/bin/plot_krun_results --export-size 6,4 --no-zoom -o examples/warmup_flat.pdf -b bencher6:binarytrees:PyPy:default-python:23 -b bencher6:binarytrees:PyPy:default-python:27 --wallclock-only --with-changepoint-means --with-outliers ${BENCHER6_DATA} --inset-xlimits 0,12
 
 # Plots in the appendix
 

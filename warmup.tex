@@ -958,7 +958,7 @@ at least one segment is faster than the final segment leading to a classificatio
 of \emph{slowdown} (\slowdown). If a steady state benchmark is not flat or a
 slowdown, then by definition the final segment must be faster than
 at least one preceding segment, leading to a classification of \emph{warmup} (\warmup).
-Figure~\ref{lst:classification} shows an implementation of this algorithm.
+Listing~\ref{lst:classification} shows an implementation of this algorithm.
 We consider benchmarks whose behaviour is either flat or warmup
 as `good' (flat benchmarks may be unobservably fast warmup), while
 benchmarks which are either slowdown or no steady state are `bad'.
@@ -970,9 +970,10 @@ we classify the pair the same way (in this example, warmup); otherwise we classi
 benchmarks: `good' inconsistency (\goodinconsistent) is where all a \vmbpair pair's process
 executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
 when one or more process executions are no steady state or slowdown. Good inconsistency
-can occur because some benchmarks are on the edge of our ability to detect warmup
-vs.~flat execution and we prefer to assume that we are at fault rather
-than the VM \laurie{edd: it would be good to experiment with adding an example of two pexecs from the same (VM, benchmark, machine) triple where one pexec is warmup and the other flat}\edd{Sure, I'll add one once I'm done with instr plots (and assuming there is such an example (probably is)}. Bad inconsistency is always more troubling: it
+can occur because some benchmarks are on the edge of our ability to differentiate warmup
+from flat behavior, and we prefer to assume that we are at fault rather
+than the VM.
+inconsistency. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience poor performance.
 
 
@@ -1142,7 +1143,8 @@ To understand why we see so many unexpected cases, for each process execution,
 we created a series of plots. All plots have in-process iteration number on the
 $x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
 plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
-slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows further
+slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows a case of bad inconsistency.
+Figure~\ref{fig:examples:warmup_flat} shows a case of good inconsistency.
 examples. Core-cycle plots (Linux only) show the
 core-cycle counts on the $y$-axes (one plot per-core). The plots in
 Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
@@ -1175,10 +1177,22 @@ to consider this example `no steady state'.}
 \begin{figure*}[t!]
 \centering
 \includegraphics[width=\textwidth]{examples/new_inconsistent.pdf}
-\caption{An example of inconsistent process executions for the same \mvmbtrip triple.\laurie{can we find ones that are more obviously inconsistent? a reader could reasonably say "well, they both have the same steady state" (unless they're eagle eyed, they might not notice that they hit the steady state at different points)}}
+\caption{`Bad inconsistency'. Examples of warmup and slowdown from the same
+benchmark, on the same VM, on the same machine.}
 \label{fig:examples:inconsistent}
 \vspace{-.4cm}
 \end{figure*}
+
+\begin{figure*}[t]
+\centering%
+\includegraphics[width=\textwidth]{examples/warmup_flat.pdf}
+\caption{`Good inconsistency' occurs because some process executions are on the
+edge of our ability to differentiate warmup from flat behaviour. A human
+classifier might consider both of these plots to be cases of warmup.}
+\label{fig:examples:warmup_flat}
+\vspace{-.4cm}
+\end{figure*}
+
 
 \begin{figure}[!tbp]
 \centering

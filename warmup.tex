@@ -1182,25 +1182,22 @@ to consider this example `no steady state'.}
 \begin{figure}[!tbp]
 \centering
 \begin{minipage}[t]{0.485\textwidth}
-\includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
-\caption{Slowdown at in-process iteration \#199, with GC and JIT measurements
-turned on. Although these additional measures add overhead, in this
-case they make no observable difference to the main run-sequence graph. They
-allow us to observe that the slowdown is correlated with two immediately preceding JIT compilation events
-that may explain the drop in performance. Note that the
-regular GC spikes have only a small effect on the wall-clock times.}
-\label{fig:examples:slowdown1}
+\includegraphics[width=\textwidth]{examples/new_good_comp.pdf}
+\caption{A run-sequence plot (bottom) with GC (top) and JIT (middle) plots.
+In this case, the benchmark's gradually increasing wall-clock time clearly
+correlates with GC. This example (along with several others) appears to show a
+memory leak in PyPy, which we have reported upstream.
+\laurie{eek: the two y axis labels of the two instrumented plots are different. one has "secs" one doesn't. can we homogenise?}}
+\label{fig:goodcomp}
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.485\textwidth}
-\includegraphics[width=\textwidth]{examples/new_good_comp.pdf}
-\caption{PyPy benchmarks often showed a gradual `ramp up' over time. This
-particular example (run with VM instrumentation enabled) shows this behaviour
-superimposed on top of distinct state changes. Inspection of the GC plot shows
-that the wall-clock times are tightly correlated with the time spent in GC, thus
-suggesting that the benchmark is dominated by GC. This turns out to be a GC bug
-in PyPy exposed by our experiment (we have reported this upstream).}
-\label{fig:goodcomp}
+\includegraphics[width=\textwidth]{examples/new_miscomp.pdf}
+\caption{Slowdown at in-process iteration \#199, which correlates
+with two two immediately preceding JIT compilation events
+that may explain the drop in performance. Note that the
+regular GC spikes have only a small effect on wall-clock time.}
+\label{fig:examples:slowdown1}
 \end{minipage}
 \end{figure}
 

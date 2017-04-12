@@ -1123,6 +1123,7 @@ large amounts of memory, though \fasta somewhat less so \laurie{this statement n
 binarytrees=8280Kb. Bear in mind that binarytrees is hard-coded to go to a
 depth of 12 in our benchmarks. Trees grow exponentially with depth, so there
 will likely be a depth where binarytrees would massively overtake fasta}\laurie{hmm, so my memory was wrong ;) can we quickly compare this to a couple of the other benchmarks? maybe the memory allocation of these two is both fairly high, or maybe it's pretty mundane. i'm no longer sure!}.
+\edd{spectralnorm=7316kb, richards=7588kb, fannkuch=7028kb}
 Third, the overall spread of steady state iter (\#) values is uneven: VMs seem
 to mostly either reach a steady state quickly (often in 10 or fewer in-process
 iterations) or take hundreds of in-process iterations. The latter are troubling

@@ -428,10 +428,9 @@ in~\cite{kalibera12quantifying,kalibera13rigorous}. After
 showing that simple heuristics such as Georges et al.'s often fail to accurately
 pinpoint when warmup has completed, \kalibera then present an alternative manual
 process. In essence, after a specific VM / benchmark combination has been run for a small number of
-process executions, a human must determine at which in-process iteration the
-steady state is reached. Significantly, \kalibera explicitly note that a steady
-state does not always exist, stating that no statistics can be produced in
-such cases. When a steady state does exist, a larger number of process executions are then
+process executions, a human must determine if a steady state is reached;
+and, if it is, at which in-process iteration the
+it is reached. When a steady state does exist, a larger number of process executions are then
 run; the previously determined cut-off point is applied to each process's
 iterations; and detailed statistics produced.
 

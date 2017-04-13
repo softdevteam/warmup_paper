@@ -1391,8 +1391,9 @@ be much more active than other (non-ticking) cores. For the 4790 processor
 (\bencherfive and \benchersix), we obtained a ticking idle count of $5*10^6$
 instructions/sec, a non-ticking idle count $3*10^5$, and (as a sanity check) an
 active count of $3.6*10^9$; for the E3-1240 processor (\bencherseven)
-\laurie{XXX} respectively. As these show, the difference between idle and active
-core instruction counts is significant: to reduce false positives, we used
+$2*10^6$, $1*10^6$, and $3.5*10^9$ respectively. As these show, the difference
+between idle and active core instruction counts is significant, at 4 orders of
+magnitude: to reduce false positives, we used
 $1.5\times$ the idle counts (ticking and non-ticking) as a safe low threshold.
 Second, we need to determine the safe distance from an APERF/MPERF ratio of 1.
 For the 4790 processor, the speedstep values either side of its expected 3.6GHz

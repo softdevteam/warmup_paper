@@ -1377,21 +1377,33 @@ APERF/MPERF ratio to check for frequency changes. Although the hoped-for
 ratio is precisely 1, there is often noticeable variation around this value due to the
 cost of reading these counters. On cores
 performing active computation, the error is small (around 1\% in our
-experience), but on inactive cores it can be relatively high (10\% or more is
+experience), but on idle cores (which are rarely truly idle, as occasional
+computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-\laurie{edd: we need to reverify this}\edd{OK}In order \edd{We seem to say `in
-order' quite a lot. Diversify?}\laurie{i don't particularly think we need to diversify, but if you've got a good synonym, i'm all ears} to verify that there were no frequency changes
-during benchmarking,
-we wrote a simple checking tool. For each in-process iteration, it first checks
-the corresponding cycle-count data: since active cores generally have
-cycle-counts in the billions, we conservatively classify inactive
-cores as those with cycle-counts in the low millions. Active cores are then
-checked for an APERF/MPERF ratio between $1 \pm 0.015$. All active cores in our
+We therefore have to be slightly more clever than simply checking for an
+APERF/MPERF ratio of 1. In order to verify that there were no frequency changes
+we therefore wrote a simple tool to check APERF/MPERF ratios. First, the tool
+needs to exclude idle cores from its check. We analysed 6 process executions of
+3 long-running single-threaded benchmarks where we observed no migration between
+cores to obtain sensible thresholds for the number of instructions on idle and
+active cores, bearing in mind that on Linux an idle core 0 (which `ticks') will
+be much more active than other (non-ticking) cores. For the 4790 processor
+(\bencherfive and \benchersix), we obtained a ticking idle count of $5*10^6$
+instructions/sec, a non-ticking idle count $3*10^5$, and (as a sanity check) an
+active count of $3.6*10^9$; for the E3-1240 processor (\bencherseven)
+\laurie{XXX} respectively. As these show, the difference between idle and active
+core instruction counts is significant: to reduce false positives, we used
+$1.5\times$ the idle counts (ticking and non-ticking) as a safe low threshold.
+Second, we need to determine the safe distance from an APERF/MPERF ratio of 1.
+For the 4790 processor, the speedstep values either side of its expected 3.6GHz
+are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
+ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
+least a 6\% difference in the APERF/MPERF ratio). Based on this, we picked a conservative
+safe APERF / MPERF ratio of $1 \pm 0.025$. The checking tool then examined
+every process execution on \bencherfive and \bencherseven, checking that every
+active core had a safe APERF/MPERF ratio. All active cores in our
 experiment were within these limits, strongly suggesting that our experiment
-experienced no unexpected CPU frequency changes\edd{We don't have the code for
-this tool, so I'll probably end up re-writing it. I was hoping to have idle
-counts for all the machines at this point, but something approximate will
-probably do}\laurie{i agree}.
+experienced no unexpected CPU frequency changes.
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After

@@ -1385,14 +1385,14 @@ APERF/MPERF ratio of 1. In order to verify that there were no frequency changes
 we therefore wrote a simple tool to check APERF/MPERF ratios. First, the tool
 needs to exclude idle cores from its check. Since a fully busy core has
 an APERF count per second proportional to a processors GHz rating (i.e.~a 3.6GHz processor
-such as \bencherfive's increments the APERF counter by $3.5*10^9$ per second),
-we define an idle core to be one whose APERF is 1000$\times$
-less than this (per second). Second, we need to determine the safe distance from an APERF/MPERF ratio of 1.
+such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second),
+we define an idle core to be one whose APERF is 1000$\times$ less than this (per
+second). Second, we need to determine the how far from an APERF/MPERF ratio of 1.
 For the 4790 processor, the speedstep values either side of its expected 3.6GHz
 are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
 ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
-least a 6\% difference in the APERF/MPERF ratio). Based on this, we picked a conservative
-safe APERF / MPERF ratio of $1 \pm 0.025$. The checking tool then examined
+least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
+safe APERF / MPERF ratio to be $1 \pm 0.025$. The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
 active core had a safe APERF/MPERF ratio. All active cores in our
 experiment were within these limits, strongly suggesting that our experiment

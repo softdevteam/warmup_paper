@@ -732,7 +732,7 @@ capture. For each in-process iteration we
 measure (on Linux and OpenBSD) the wall-clock time taken, and (Linux only) core
 cycle, APERF, and MPERF counters.
 
-We use a monotonic wall-clock timer with sub-millisec\-ond accuracy
+We use a monotonic wall-clock timer with sub-millisecond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
 users, it gives no insight into multi-threaded computations: on Linux we therefore also record
@@ -984,7 +984,7 @@ benchmarks: `good' inconsistency (\goodinconsistent) is where all a \vmbpair pai
 executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
 when one or more process executions are no steady state or slowdown. Good inconsistency
 can occur because some benchmarks are on the edge of our ability to differentiate warmup
-from flat behavior, and we prefer to assume that we are at fault rather
+from flat behaviour, and we prefer to assume that we are at fault rather
 than the VM. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience poor performance.
 

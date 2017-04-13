@@ -1383,19 +1383,11 @@ not uncommon; in artificially extreme cases, we have observed up to 200\%).
 We therefore have to be slightly more clever than simply checking for an
 APERF/MPERF ratio of 1. In order to verify that there were no frequency changes
 we therefore wrote a simple tool to check APERF/MPERF ratios. First, the tool
-needs to exclude idle cores from its check. We analysed 6 process executions of
-3 long-running single-threaded benchmarks where we observed no migration between
-cores to obtain sensible thresholds for the number of instructions on idle and
-active cores, bearing in mind that on Linux an idle core 0 (which `ticks') will
-be much more active than other (non-ticking) cores. For the 4790 processor
-(\bencherfive and \benchersix), we obtained a ticking idle count of $5*10^6$
-instructions/sec, a non-ticking idle count $3*10^5$, and (as a sanity check) an
-active count of $3.6*10^9$; for the E3-1240 processor (\bencherseven)
-$2*10^6$, $1*10^6$, and $3.5*10^9$ respectively. As these show, the difference
-between idle and active core instruction counts is significant, at 4 orders of
-magnitude: to reduce false positives, we used
-$1.5\times$ the idle counts (ticking and non-ticking) as a safe low threshold.
-Second, we need to determine the safe distance from an APERF/MPERF ratio of 1.
+needs to exclude idle cores from its check. Since a fully busy core has
+an APERF count per second proportional to a processors GHz rating (i.e.~a 3.6GHz processor
+such as \bencherfive's increments the APERF counter by $3.5*10^9$ per second),
+we define an idle core to be one whose APERF is 1000$\times$
+less than this (per second). Second, we need to determine the safe distance from an APERF/MPERF ratio of 1.
 For the 4790 processor, the speedstep values either side of its expected 3.6GHz
 are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
 ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at

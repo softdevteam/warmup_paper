@@ -488,9 +488,8 @@ and Ruby. Since most of these
 benchmarks have multiple implementations in any given language, we picked
 the versions used in~\cite{bolz14impact}, which represented the fastest
 performers at the point of that publication. We lightly modified
-the benchmarks to integrate with our benchmark runner (see Section~\ref{krun}).
-For the avoidance of doubt we did not interfere with any VM's GC (e.g.~we did not
-force a collection after each iteration).\cfbolz{I don't get the last sentence. for the avoidance of which doubt?}
+the benchmarks to integrate with our benchmark runner (see Section~\ref{krun})
+but did not e.g.~force garbage collection.
 
 
 \subsubsection{Ensuring Determinism}

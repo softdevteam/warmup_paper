@@ -1453,14 +1453,27 @@ run-sequence plots.
 \cite{kalibera13rigorous} notes the existence of what we have called cyclic behaviour, which
 causes them to classify a benchmark as not reaching an independent state and
 thus being unsuitable for bootstrapping as-is. In such instances, they require
-the user to manually pick one part of the cycle for bootstrapping, which leads to a clear potential for
-bias. As our approach automatically identifies changepoint segments, we take a
-very different approach. `Large' cycles (i.e.~where the means of segments are
-substantially different) lead to segments which are considered non-equivalent
-and lead to a classification of no steady state. `Small' cycles (i.e.~where the
-means of segments are close enough to be considered equivalent) are then
-naturally handled by bootstrapping within, but not between, segments (see
-Section~\ref{sec:timings}).
+the user to manually pick one part of the cycle (i.e.~always pick iteration $n$
+after the steady state of each process execution) for bootstrapping, which leads
+to a clear potential for bias (for one benchmark, one could pick the slow part
+of the cycle, for another the fast part). As our approach automatically
+identifies changepoint segments, we take a very different approach. Changepoint
+analysis naturally identifies `large' cycles (i.e.~where the cycles are fairly
+lengthy and/or with substantial differences between the means of the top and
+bottom of the cycle) as different segments with non-equivalent means, which then
+leads to a classification of no steady state. `Small' cycles either lead to
+different segments with equivalent means or, more often, to a single segment.
+Although we only ever bootstrap within, and never across, segments (see
+Section~\ref{sec:timings}), we are forced to assume that data within segments
+are independent. In practise, the consequences of this are limited for two
+reasons. First, over 99\% of steady state segments have a variance under 0.001s
+(with the vast majority one or more orders of magnitude smaller than that),
+which means that the confidence intervals we produce will be small no matter
+what we do. Second, if a particular segment's data is not independent, we will
+produce confidence intervals slightly larger than the `true' value; in other
+words, at worst our confidence values are an overapproximation. Overall,
+despite these limitations, we believe that our approach produces statistics
+that are more representative of a benchmark's performance.
 
 
 \section{Conclusions}

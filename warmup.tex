@@ -1405,9 +1405,19 @@ ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
 least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
 safe APERF / MPERF ratio to be $1 \pm 0.025$. The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
-active core had a safe APERF/MPERF ratio. All active cores in our
-experiment were within these limits, strongly suggesting that our experiment
-experienced no unexpected CPU frequency changes.
+active core had a safe APERF/MPERF ratio. Of the \laurie{how many iterations on
+b5 and b7 combined?}, 15 failed this check, all on \bencherseven. In each case,
+the APERF/MPERF ratio was below 1, suggesting processor throttling. Manually
+checking the core-cycle plots showed that in each case, the benchmark had
+migrated cores between, or during, the in-process iterations in question. Thus
+it is highly likely that our measurements are simply showing the effects of
+moving to an idle core that is in low-power mode, with the consequent small
+delay required to run at full speed. \laurie{Would
+it be correct to say something like ``This effect may have been lessened
+if we had turned off C-state in the bios''. can we even do that on b7? i
+think we can but i might be wrong} Fortunately, such cases are rare and
+are unlikely to have made an impact on our analysis: 14 of the 15 were marked as
+outliers by our approach, and thus played no part in changepoint analysis. 
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After

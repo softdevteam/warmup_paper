@@ -419,10 +419,9 @@ of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
 that period. Often $n$ is a fixed number (typically around 5), with little or no confirmation
-that warmup has completed or not. Heuristics such as
-those of~\citet{georges07statistically} automatically analyse
-a process execution's time series data before returning a value of $n$.
-\sarah{This is worth checking with Section 4.2 of Georges, which says (I believe) they decide they need $k$ iterations to take for the steady state, then they look through the run-sequence to find $k$ iterations for which the CoV is below a threshold. If they can find $k$ iterations below the threshold, these $k$ are taking to be the steady state and averaged to find the mean steady state performance time. So Georges do not look for an iteration number and say "we will take that iteration and all the subsequent ones to the end of the run-sequence".}
+that warmup has completed or not. More advanced heuristics such as
+that of~\citet{georges07statistically} try to find a steady state
+using simple statistical tests.
 
 The most sophisticated VM benchmarking yet developed is found
 in~\cite{kalibera12quantifying,kalibera13rigorous}. After

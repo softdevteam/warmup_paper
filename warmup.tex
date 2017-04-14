@@ -1412,12 +1412,8 @@ this check, all but 2 on \bencherseven. Fortunately, outlier detection is design
 to deal with such aberrations, and 216 (98\%) of these in-process iterations are
 detected as outliers, meaning that they do not affect changepoint analysis or
 the statistics we produced in 8 of the 10 process executions they are part of.
-The 2 in-process iterations on \bencherfive are contained in two process executions
-of \nbody on Graal, both at index 1000; both have an APERF/MPERF ratio 1.037.
-Oddly, two process executions of \nbody on JRubyTruffle (which uses Graal for
-compilation) on \bencherseven also have high APERF/MPERF ratios of 1.05 at
-iteration 1000 (though these are identified as outliers). We have no explanation
-for this, but the ratios are sufficiently below the ratio needed to indicate
+The 2 in-process iterations on \bencherfive both have an APERF/MPERF ratio 1.031
+which is sufficiently below the ratio needed to indicate
 turbo boost for us to discount them. The remaining 7 in-process iterations which are not
 detected as outliers are contained in 1 process execution of Graal running
 \fasta: manual inspection shows that these in-process iterations are fairly

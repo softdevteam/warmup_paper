@@ -1397,19 +1397,24 @@ needs to exclude idle cores from its check. Since a fully busy core has
 an APERF count per second proportional to a processors GHz rating (i.e.~a 3.6GHz processor
 such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second),
 we define an idle core to be one whose APERF is 1000$\times$ less than this (per
-second). Second, we need to determine the how far from an APERF/MPERF ratio of 1.
-For the 4790 processor, the speedstep values either side of its expected 3.6GHz
+second). Second, we need to decide an allowable tolerance around the desired APERF/MPERF ratio of 1.
+For the 4790 processor, the speedstep values either side of its base frequency of 3.6GHz
 are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
 ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
 least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
-safe APERF / MPERF ratio to be $1 \pm 0.025$. The checking tool then examined
+safe APERF / MPERF ratio to be $1 \pm 0.025$\edd{I actually used the exact
+lower and upper bounds determined specially for each machine (and thus,
+a-symetric bounds for bencher7). Bencher5: [0.944, 1.056], bencher7: [0.943, 1.114]}.
+The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
 active core had a safe APERF/MPERF ratio. Of the 5,520,000 in-process iterations
-on these two machines, 209 (0.008\%) (spread over 6 process executions) failed
+on these two machines, 209 (0.008\%) \edd{sorry, it's actually 210. I missed
+one decimal place on the bencher7 ratio, and when fixed adds one more (also an
+outlier).} (spread over 6 process executions) failed
 this check, all on \bencherseven. Manual inspection confirms that these
 iterations also have higher wall-clock times, which is further evidence that the
 processor briefly throttled itself. Fortunately, outlier detection is designed
-to deal with such aberrations, and 205 (98\%) of these in-process iterations are
+to deal with such aberrations, and 205 \edd{206, sorry}(98\%) of these in-process iterations are
 detected as outliers, meaning that they do not affect changepoint analysis and
 the statistics we produced in any way. The 4 in-process iterations which are not
 detected as outliers are contained in 1 process execution of Graal running

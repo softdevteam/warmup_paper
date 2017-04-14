@@ -309,11 +309,11 @@ the effect of both on benchmarks.
 
 With the time series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
-uses simple heuristics to guess when warmup has completed,
+uses simple analyses to guess when warmup has completed,
 e.g.~\cite{georges07statistically}. \citet{kalibera13rigorous} convincingly show the limitations of such approaches,
 presenting instead a manual approach to determining
 if and when a steady state has been reached. While this is a significant improvement on
-previous heuristics, it is time-consuming, prone to human inconsistency, and gives no
+previous methods, it is time-consuming, prone to human inconsistency, and gives no
 indication as to whether the steady state represents peak performance of not.
 
 \begin{figure}[t]
@@ -419,7 +419,7 @@ of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
 that period. Often $n$ is a fixed number (typically around 5), with little or no confirmation
-that warmup has completed or not. More advanced heuristics such as
+that warmup has completed or not. More advanced methods such as
 that of~\citet{georges07statistically} try to find a steady state
 using simple statistical tests.
 

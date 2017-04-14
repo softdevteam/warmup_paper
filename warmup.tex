@@ -1404,19 +1404,21 @@ ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
 least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
 safe APERF / MPERF ratio to be $1 \pm 0.025$. The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
-active core had a safe APERF/MPERF ratio. Of the \laurie{how many iterations on
-b5 and b7 combined?}, 15 failed this check, all on \bencherseven. In each case,
-the APERF/MPERF ratio was below 1, suggesting processor throttling. Manually
-checking the core-cycle plots showed that in each case, the benchmark had
-migrated cores between, or during, the in-process iterations in question. Thus
-it is highly likely that our measurements are simply showing the effects of
-moving to an idle core that is in low-power mode, with the consequent small
-delay required to run at full speed. \laurie{Would
-it be correct to say something like ``This effect may have been lessened
-if we had turned off C-state in the bios''. can we even do that on b7? i
-think we can but i might be wrong} Fortunately, such cases are rare and
-are unlikely to have made an impact on our analysis: 14 of the 15 were marked as
-outliers by our approach, and thus played no part in changepoint analysis. 
+active core had a safe APERF/MPERF ratio. Of the 5,520,000 in-process iterations
+on these two machines, 209 (0.008\%) (spread over 6 process executions) failed
+this check, all on \bencherseven. Manual inspection confirms that these
+iterations also have higher wall-clock times, which is further evidence that the
+processor briefly throttled itself. Fortunately, outlier detection is designed
+to deal with such aberrations, and 205 (98\%) of these in-process iterations are
+detected as outliers, meaning that they do not affect changepoint analysis and
+the statistics we produced in any way. The 4 in-process iterations which are not
+detected as outliers are contained in 1 process execution of Graal running
+\fasta: manual inspection shows that the 4 in-process iterations are fairly
+evenly spread over the (fairly noisy) process execution and that one of them led
+to a small changepoint segment that causes the process execution to be
+classified as no steady state rather than warmup. Overall, the similar figures
+for \bencherfive and \bencherseven shown in Table~\ref{tab:summarystats} are
+strong evidence of the limited effect this is likely to have had on our results.
 
 Our experiments allow the kernel to run on the same core as benchmarking code.
 We experimented extensively with CPU pinning, but eventually abandoned it. After

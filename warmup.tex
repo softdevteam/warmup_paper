@@ -852,7 +852,7 @@ when looking for meaningful performance shifts during changepoint analysis. We u
 by~\citet{tukey1977exploratory}, conservatively defining an outlier as one that, within a
 sliding window of 200 in-process iterations, lies outside the median $\pm
 3\times(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
-slow warm-up iterations at the start of an execution as outliers (when they are
+slow warmup iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
 iterations. Of the \totaliterations\xspace in-process
 iterations, \totaloutlierspercentage\% are classified as outliers, with the most for

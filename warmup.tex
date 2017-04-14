@@ -1412,9 +1412,10 @@ this check, all but 2 on \bencherseven. Fortunately, outlier detection is design
 to deal with such aberrations, and 216 (98\%) of these in-process iterations are
 detected as outliers. Since outliers do not affect changepoint analysis or
 the statistics we produced, 8 of the 10 process executions are not affected in practise.
-The 2 in-process iterations on \bencherfive both have an APERF/MPERF ratio 1.031
-which is sufficiently below the ratio needed to indicate
-turbo boost for us to discount them. The remaining 7 in-process iterations which are not
+Since the 2 in-process iterations on \bencherfive do not have noticeably different wall-clock
+times than their neighbours, and both have an APERF/MPERF ratio of 1.031
+(only marginally above our safe threshold), we do not consider them problematic.
+The remaining 7 in-process iterations which are not
 detected as outliers are contained in 1 process execution of Graal running
 \fasta: manual inspection shows that these in-process iterations are fairly
 evenly spread over the (fairly noisy) process execution and that two of them led

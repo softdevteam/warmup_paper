@@ -1474,6 +1474,19 @@ changepoint analysis does automatically.
 \section{Related work}
 \label{sec:related}
 
+\citet{georges07statistically} also present an automated method for detecting
+peak performance, which looks for in-process iterations where the Coefficient of
+Variation (CoV)\footnote{the CoV is the standard deviation divided by the mean of a sequence of measurements.}
+falls below a threshold\footnote{\citet{georges07statistically} suggest 0.01 or 0.02.}.
+They then extract a fixed number of in-process iterations as the steady state
+of the process execution, whereas our method takes as many iterations as possible,
+over a fixed minimum (500). Applying the CoV method to our data (threshold 0.01),
+we found that it detected a steady state in almost all process executions that we
+had classified as having a steady state, but also marked many of our `no steady
+state' executions as reaching peak performance (60.0\%  on \bencherseven, 76.7\%
+on \benchersix and 83.3\% on \bencherfive). This included some surprising examples,
+such as the execution in Figure~\ref{fig:examples:nosteadystate}.
+
 There are two works we are aware of which explicitly note unusual warmup
 patterns. Whilst running benchmarks on HotSpot,~\citet{gil11microbenchmark}
 observed inconsistent process executions

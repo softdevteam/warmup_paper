@@ -1401,28 +1401,30 @@ second). Second, we need to determine a sensible tolerance around the ideal APER
 For the 4790 processor, the speedstep values either side of its base frequency of 3.6GHz
 are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
 ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
-least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
-safe APERF / MPERF ratio to be $1 \pm 0.025$\edd{I actually used the exact
-lower and upper bounds determined specially for each machine (and thus,
-a-symetric bounds for bencher7). Bencher5: [0.944, 1.056], bencher7: [0.943, 1.114]}.
-The checking tool then examined
+least a 6\% difference in the APERF/MPERF ratio). Based on this, we conservatively define the
+safe APERF / MPERF ratio to be $1 \pm 0.03$. The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
 active core had a safe APERF/MPERF ratio. Of the 5,520,000 in-process iterations
-on these two machines, 210 (0.004\%)  (spread over 6 process executions) failed
-this check, all on \bencherseven. Manual inspection confirms that these
-iterations also have higher wall-clock times, which is further evidence that the
-processor briefly throttled itself. Fortunately, outlier detection is designed
-to deal with such aberrations, and 206 (98\%) of these in-process iterations are
+on these two machines, 225 (0.004\%) spread over 10 process executions failed
+this check, all but 2 on \bencherseven. Fortunately, outlier detection is designed
+to deal with such aberrations, and 216 (98\%) of these in-process iterations are
 detected as outliers, meaning that they do not affect changepoint analysis or
-the statistics we produced in the 6 process executions they are part of.
-The 4 in-process iterations which are not
+the statistics we produced in 8 of the 10 process executions they are part of.
+The 2 in-process iterations on \bencherfive are contained in two process executions
+of \nbody on Graal, both at index 1000; both have an APERF/MPERF ratio 1.037.
+Oddly, two process executions of \nbody on JRubyTruffle (which uses Graal for
+compilation) on \bencherseven also have high APERF/MPERF ratios of 1.05 at
+iteration 1000 (though these are identified as outliers). We have no explanation
+for this, but the ratios are sufficiently below the ratio needed to indicate
+turbo boost for us to discount them. The remaining 7 in-process iterations which are not
 detected as outliers are contained in 1 process execution of Graal running
-\fasta: manual inspection shows that the 4 in-process iterations are fairly
-evenly spread over the (fairly noisy) process execution and that one of them led
+\fasta: manual inspection shows that these in-process iterations are fairly
+evenly spread over the (fairly noisy) process execution and that two of them led
 to a small changepoint segment that causes the process execution to be
-classified as no steady state rather than warmup. As this \vmbpair was
-\badinconsistent(29\warmup, 1\nosteadystate), it is likely that this
-\vmbpair would otherwise have been classified as warmup (as indeed it was
+classified as no steady state rather than warmup. As this \vmbpair pair was
+\badinconsistent(29\warmup, 1\nosteadystate), it is likely that if
+the processor had run at full speed, the overall benchmark
+would have been classified as warmup (as indeed it was
 on \bencherfive). However, overall, the similar figures
 for \bencherfive and \bencherseven shown in Table~\ref{tab:summarystats} are
 strong evidence of the limited effect this is likely to have had on our results.

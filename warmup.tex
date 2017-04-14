@@ -309,7 +309,7 @@ the effect of both on benchmarks.
 
 With the time series data produced by \krun, we then encounter the issue of
 producing useful and reliable summary statistics. Traditional VM benchmarking
-uses simple analyses to guess when warmup has completed,
+uses simple heuristics to guess when warmup has completed,
 e.g.~\cite{georges07statistically}. \citet{kalibera13rigorous} convincingly show the limitations of such approaches,
 presenting instead a manual approach to determining
 if and when a steady state has been reached. While this is a significant improvement on
@@ -1397,7 +1397,7 @@ needs to exclude idle cores from its check. Since a fully busy core has
 an APERF count per second proportional to a processors GHz rating (i.e.~a 3.6GHz processor
 such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second),
 we define an idle core to be one whose APERF is 1000$\times$ less than this (per
-second). Second, we need to decide an allowable tolerance around the desired APERF/MPERF ratio of 1.
+second). Second, we need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1.
 For the 4790 processor, the speedstep values either side of its base frequency of 3.6GHz
 are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
 ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
@@ -1408,15 +1408,14 @@ a-symetric bounds for bencher7). Bencher5: [0.944, 1.056], bencher7: [0.943, 1.1
 The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
 active core had a safe APERF/MPERF ratio. Of the 5,520,000 in-process iterations
-on these two machines, 209 (0.008\%) \edd{sorry, it's actually 210. I missed
-one decimal place on the bencher7 ratio, and when fixed adds one more (also an
-outlier).} (spread over 6 process executions) failed
+on these two machines, 210 (0.004\%)  (spread over 6 process executions) failed
 this check, all on \bencherseven. Manual inspection confirms that these
 iterations also have higher wall-clock times, which is further evidence that the
 processor briefly throttled itself. Fortunately, outlier detection is designed
-to deal with such aberrations, and 205 \edd{206, sorry}(98\%) of these in-process iterations are
-detected as outliers, meaning that they do not affect changepoint analysis and
-the statistics we produced in any way. The 4 in-process iterations which are not
+to deal with such aberrations, and 206 (98\%) of these in-process iterations are
+detected as outliers, meaning that they do not affect changepoint analysis or
+the statistics we produced in the 6 process executions they are part of.
+The 4 in-process iterations which are not
 detected as outliers are contained in 1 process execution of Graal running
 \fasta: manual inspection shows that the 4 in-process iterations are fairly
 evenly spread over the (fairly noisy) process execution and that one of them led
@@ -1474,19 +1473,6 @@ changepoint analysis does automatically.
 \section{Related work}
 \label{sec:related}
 
-\citet{georges07statistically} also present an automated method for detecting
-peak performance, which looks for in-process iterations where the Coefficient of
-Variation (CoV)\footnote{the CoV is the standard deviation divided by the mean of a sequence of measurements.}
-falls below a threshold\footnote{\citet{georges07statistically} suggest 0.01 or 0.02.}.
-They then extract a fixed number of in-process iterations as the steady state
-of the process execution, whereas our method takes as many iterations as possible,
-over a fixed minimum (500). Applying the CoV method to our data (threshold 0.01),
-we found that it detected a steady state in almost all process executions that we
-had classified as having a steady state, but also marked many of our `no steady
-state' executions as reaching peak performance (60.0\%  on \bencherseven, 76.7\%
-on \benchersix and 83.3\% on \bencherfive). This included some surprising examples,
-such as the execution in Figure~\ref{fig:examples:nosteadystate}.
-
 There are two works we are aware of which explicitly note unusual warmup
 patterns. Whilst running benchmarks on HotSpot,~\citet{gil11microbenchmark}
 observed inconsistent process executions
@@ -1519,9 +1505,21 @@ reasons. First, over 99\% of steady state segments have a variance under 0.001s
 which means that the confidence intervals we produce will be small no matter
 what we do. Second, if a particular segment's data is not independent, we will
 produce confidence intervals slightly larger than the `true' value; in other
-words, at worst our confidence values are an over-approximation. Overall,
+words, at worst our confidence values are an overapproximation. Overall,
 despite these limitations, we believe that our approach produces statistics
 that are more representative of a benchmark's performance.
+
+Probably the most widely used method for detecting a steady state is that of
+\citet{georges07statistically} which looks for in-process iterations where the
+coefficient of variance (standard deviation divided by the mean of measurements
+up to that point) falls below a threshold. Using a threshold of 0.01 -- the more
+conservative of the two values suggested by Georges et al. -- we applied their
+heuristic to our data. In virtually all of the cases where we found a steady
+state, Georges et al.'s heuristic also finds a steady state. However, it also
+finds steady states for 78.1\% of the process executions we classify as no
+steady state, including Figure~\ref{fig:examples:nosteadystate}. This confirms
+the findings from \cite{kalibera13rigorous} that simple heuristics can often
+give misleading statistics for VM benchmarking.
 
 
 \section{Conclusions}

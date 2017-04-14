@@ -343,7 +343,7 @@ segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, changepoint segments
 equivalent in timing to the steady state segment are plotted in black;
-all others are plotted in grey.}
+all other segments are plotted in grey.}
 \label{fig:changepoint}
 \end{figure}
 
@@ -1365,7 +1365,7 @@ this complaint could arguably be directed at the unmodified benchmarks too.
 
 Although we have minimised the number of system calls that our in-process
 iterations runners make, we cannot escape them entirely. For example,
-on both Linux and OpenBSD \texttt{clock\_gettime()} (which we use to obtain
+on both Linux and OpenBSD \texttt{clock\_gettime} (which we use to obtain
 monotonic wall-clock time) contains what is effectively a spin-lock,
 meaning that there is no guarantee that it returns within a fixed bound.
 %\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the

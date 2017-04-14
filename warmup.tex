@@ -1410,8 +1410,8 @@ active core had a safe APERF/MPERF ratio. Of the 5,520,000 in-process iterations
 on these two machines, 225 (0.004\%) spread over 10 process executions failed
 this check, all but 2 on \bencherseven. Fortunately, outlier detection is designed
 to deal with such aberrations, and 216 (98\%) of these in-process iterations are
-detected as outliers, meaning that they do not affect changepoint analysis or
-the statistics we produced in 8 of the 10 process executions they are part of.
+detected as outliers. Since outliers do not affect changepoint analysis or
+the statistics we produced, 8 of the 10 process executions are not affected in practise.
 The 2 in-process iterations on \bencherfive both have an APERF/MPERF ratio 1.031
 which is sufficiently below the ratio needed to indicate
 turbo boost for us to discount them. The remaining 7 in-process iterations which are not

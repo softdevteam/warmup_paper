@@ -325,8 +325,8 @@ indication as to whether the steady state represents peak performance of not.
 with the results of changepoint analysis. The LHS plot
 shows an example of `traditional' warmup (in this case \nbody on HHVM);
 the RHS plot shows an example of slowdown (\richards on HotSpot). The
-plot titles show: the benchmark (e.g.~\binarytrees); the VM (e.g.~HotSpot),
-the machine (e.g.~\bencherseven); the process execution number (e.g.~5);
+plot titles show: the benchmark (e.g.~\binarytrees), the VM (e.g.~HotSpot),
+the machine (e.g.~\bencherseven), the process execution number (e.g.~5),
 and the classification (e.g.~warmup). The `main' plot at the bottom always shows
 the in-process iteration number (indexed from 1) and the corresponding wall-clock
 times for all \numiterations in-process iterations. Because this often obscures the finer
@@ -436,10 +436,10 @@ run; the previously determined cut-off point is applied to each process's
 iterations; and detailed statistics produced.
 
 The \kalibera methodology is a significant advance on previous work,
-and is an important inspiration for our work. However, the reliance
+and is an important inspiration for ours. However, the reliance
 on manually identifying when warmup is complete has ramifications. Most
 obviously, humans are prone to error and disagreement when performing
-such identifications. However, more significantly, the time required
+such identifications. More significantly, the time required
 to manually examine the time series data means that it is only practical to apply it to a small number
 of initial process executions: the cut-off point that is determined from those
 is then applied to all future process executions, even though there is no
@@ -495,11 +495,11 @@ but did not e.g.~force garbage collection.
 
 \subsubsection{Ensuring Determinism}
 
-User programs that are deliberately non-deterministic programs are unlikely to
+User programs that are deliberately non-deterministic are unlikely to
 warm-up in the traditional fashion.
 We therefore wish to guarantee that our benchmarks are,
 to the extent controllable by the user, deterministic, taking
-the same path through the control flow graph (CFG)
+the same path through the Control Flow Graph (CFG)
 on all process executions and in-process iterations. We make no attempt to
 control non-determinism within the VM, which is part of what we need to test for
 Hypothesis \hypone.
@@ -904,7 +904,7 @@ To understand how the `noise floor' affects our analysis, it
 is helpful to take an extreme example. Consider a long sequence of in-process
 iterations all timed at 0.1001 seconds, followed by another long sequence timed
 at 0.1002 seconds. A changepoint will be detected in the transition between the
-two sequences, resulting in two changepoint segments. However, we know that in practice such a tiny absolute timing
+two sequences, resulting in two changepoint segments. However, we know that in practice such a small absolute timing
 delta is as likely to be the result of non-determinism inherent in a real
 machine or OS as it is to be due to a benchmark or VM, and that it would be
 better to consider the two segments as being equivalent. It is tempting to merge such segments
@@ -1002,14 +1002,14 @@ a benchmark to reach a steady state, and are made possible by our use of changep
 analysis. Flat process executions by definition have a \emph{steady iter (\#)} of 1 and
 a \emph{steady iter (s)} of 0; we elide these details for benchmarks
 which are consistently flat. Benchmarks often end up with a variety of distributions
-for both these measures (most often, though not exclusively, seen on benchmarks
+for both these measures (often, though not exclusively, seen on benchmarks
 which contain a mix of flat and non-flat classifications) which makes reporting standard confidence intervals
 misleading. We therefore use Inter-Quartile Ranges (IQRs) to give an indication of the
 spread of values, reporting the median and 5\% and 95\% percentiles (using
 linear interpolation when the percentile boundaries lie between two data points).
 Non-overlapping IQRs imply a meaningful difference in the \emph{steady iter (\#)} or
-\emph{(s)} values of a benchmark run on two VMs; however, since the IQRs are often
-widely spread, we are often unable to prove meaningful differences. To give a more
+\emph{(s)} values of a benchmark run on two VMs; however, since IQRs are often
+widely spread, we are not always able to prove meaningful differences. To give a more
 nuanced view than IQRs can report we also provide thumbnail histograms.
 
 \emph{Steady perf (s)} roughly corresponds to the `normal' performance number reported
@@ -1017,7 +1017,7 @@ in most VM papers. In our case, the steady state is composed of one or more
 segments (see Section~\ref{sec:classifications}). We report means and
 99\% confidence intervals
 calculated via bootstrapping (with 100,000 iterations). Although we
-can assume, as a result of changepoint analysis, that values within segments are
+assume that values within segments are
 independent, the values across different segments are clearly not
 independent. When bootstrapping, we therefore sample values within, but never across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
@@ -1131,8 +1131,8 @@ steady state performance.
 \end{adjustbox}
 \caption{Benchmark results for \bencherseven. For all process executions, we
 report the classification of the benchmark and, for good/bad inconsistent benchmarks,
-their constituent classifications (e.g.~\badinconsistent(2\slowdown, 8\warmup)
-means 2 of the process executions were slowdown, and 8 warmup). For processes
+their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
+means 22 of the process executions were slowdown, and 8 warmup). For processes
 which reach a steady state we report three summary statistics. \emph{Steady iter
 (\#)} is the median in-process iteration that the steady state was reached at
 and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
@@ -1267,7 +1267,7 @@ message from them, means that we feel unable to validate or invalidate
 Hypothesis \hypthree. Whilst some non-warmups are plausibly explained by GC or JIT compilation events, many are not, at
 least on HotSpot and PyPy. When there is no clear correlation, we have very little idea of
 a likely cause of the unexpected behaviour. It may be that obtaining similar data
-from other VMs may help clarify this issue, but not all VMs support this
+from other VMs will clarify this issue, but not all VMs support this
 feature and, in our experience, those that do support it do not always
 document it accurately.
 
@@ -1419,7 +1419,7 @@ times than their neighbours, and both have an APERF/MPERF ratio of 1.031
 The remaining 7 in-process iterations which are not
 detected as outliers are contained in 1 process execution of Graal running
 \fasta: manual inspection shows that these in-process iterations are fairly
-evenly spread over the (fairly noisy) process execution and that two of them led
+evenly spread over the (somewhat noisy) process execution and that two of them led
 to a small changepoint segment that causes the process execution to be
 classified as no steady state rather than warmup. As this \vmbpair pair was
 \badinconsistent(29\warmup, 1\nosteadystate), it is likely that if

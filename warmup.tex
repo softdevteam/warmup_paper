@@ -55,6 +55,11 @@
 \newcommand{\numpexecs}{30\xspace}
 \newcommand{\numiterations}{2000\xspace}
 
+% Citation overrides. Some citations come out nasty in author/year mode.
+% Use citetalias or citepalias to use an alias.
+\defcitealias{tickless}{Linux 2016}
+\defcitealias{octane}{Google 2012}
+
 \DeclareRobustCommand{\flatc}{%
 \setlength{\sparklinethickness}{0.4pt}%
 \begin{sparkline}{1.5}
@@ -699,9 +704,7 @@ As standard, Linux interrupts (`ticks') each core
 \texttt{CONFIG\-\_HZ} times per second (usually 250) to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
-kernel~\citep*{tickless}\edd{weird cite, should we use `citepalias' bib command
-to make it say (Linux 2016) instead?}, which requires recompiling the kernel
-with the
+kernel~\citepalias{tickless}, which requires recompiling the kernel with the
 \texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set. Whilst the boot core still
 `ticks', other cores only `tick' if more than one runnable process is scheduled.
 
@@ -1612,7 +1615,7 @@ document.
 The statistical method presented in Section~\ref{sec:stats} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: the DaCapo suite for Java~\cite{dacapo06} and the Octane
-suite for JavaScript~\cite{octane}\edd{another weird citation} (JavaScript). Octane was
+suite for JavaScript~\citepalias{octane}. Octane was
 run on all three of our benchmarking machines, whereas (due to time
 constraints), Dacapo was run only on \bencherfive. For both suites we used
 \numpexecs process executions and \numiterations in-process iterations.

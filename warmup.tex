@@ -218,6 +218,11 @@ microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Repeating our experiment on 3 different machines, we
 found that at most \maxtwo\% of
 \vmbpair pairs consistently reach a steady state of peak performance.
+\edd{this is bencher5's flat and warmup percentages summed. I was expecting
+`good inconsistent' to be included too, as (perhaps confusingly) `good
+inconsistent' pexecs all consistently reach a steady state of peak performance.
+If you do decide to adjust this, look for other percentages that would need
+updating.}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -323,10 +328,10 @@ indication as to whether the steady state represents peak performance of not.
 \includegraphics[width=.49\textwidth]{examples/changepoint_example.pdf}
 \caption{Two example run-sequence plots from our results, augmented
 with the results of changepoint analysis. The LHS plot
-shows an example of `traditional' warmup (in this case \nbody on HHVM);
+shows an example of `traditional' warmup (in this case \binarytrees on HotSpot);
 the RHS plot shows an example of slowdown (\richards on HotSpot). The
 plot titles show: the benchmark (e.g.~\binarytrees), the VM (e.g.~HotSpot),
-the machine (e.g.~\bencherseven), the process execution number (e.g.~5),
+the machine (e.g.~\bencherfive), the process execution number (e.g.~5),
 and the classification (e.g.~warmup). The `main' plot at the bottom always shows
 the in-process iteration number (indexed from 1) and the corresponding wall-clock
 times for all \numiterations in-process iterations. Because this often obscures the finer
@@ -335,15 +340,16 @@ shares its $x$ axis with the bottom plot, but zooms the $y$ axis in to where the
 in-process timing data is located; the smaller inset plot allows us to examine a handful
 of in-process iteration timings (typically, though not always, the first $n$,
 allowing us to see the `warmup curve', if it exists). Changepoints
-are indicated by vertical red lines and denote a `shift' in performance behaviour;
-changepoint segments are indicated by horizontal red lines between changepoints,
+are indicated by dashed vertical red lines and denote a `shift' in performance behaviour;
+changepoint segments are indicated by dashed horizontal red lines between changepoints,
 whose height shows the mean iteration time within the segment;
 and red circles indicate `outliers', which the changepoint analysis discount). We use the changepoint
 segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, changepoint segments
-equivalent in timing to the steady state segment are plotted in black;
-all other segments are plotted in grey.}
+considered equivalent in timing to the steady state segment are plotted in black;
+all other segments are plotted in grey (see
+Section~\ref{sec:classifications} for details on segment equivalence).}
 \label{fig:changepoint}
 \end{figure}
 
@@ -351,7 +357,7 @@ We introduce a new approach to analysing VM benchmarking data. We use the
 recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). The analysis groups consecutive samples
-with similar mean and variance into distinct segments
+with a similar mean and variance into distinct segments
 which we then use to automatically classify each process execution as either:
 no steady state; flat (no detectable change in performance
 over the benchmark); warmup; or slowdown (a decrease in performance over time).
@@ -380,6 +386,7 @@ steady state behaviour (warmup, slowdown, flat).
     \item We show that, while some instances of `odd' behaviour are explained by
 the `obvious' factors of GC and JIT compilation, many are not.
 \end{enumerate}
+\edd{Did you want to mention the startup experiment as a contribution here?}
 
 The statistical approach we have developed is open-source, general, and can be used
 to analyse any VM benchmarking data. In the Appendix, we show it applied
@@ -388,7 +395,7 @@ both run in a conventional manner (Appendix~\ref{sec:existing}). We also present
 series of plots of interesting data (Appendix~\ref{sec:curatedplots}). A
 separate document contains the complete plots of all data from all machines.
 
-The repeatable experiment we designed, as well as the specific results used
+Our repeatable experiment, as well as the specific results used
 in this paper, can be downloaded from:
 %\url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.8/}
 \emph{URL blinded for review}
@@ -855,7 +862,7 @@ sliding window of 200 in-process iterations, lies outside the median $\pm
 3\times(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warmup iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
-iterations. Of the \totaliterations\xspace in-process
+iterations. Of the \totaliterations\xspace \edd{ideally the auto-generated macro would use commas to make this number easier to parse}in-process
 iterations, \totaloutlierspercentage\% are classified as outliers, with the most for
 \FPeval{\result}{round(2000.0 / \maximumoutliers, 1)}%
 any single process execution being \result\% of in-process iterations.
@@ -930,7 +937,7 @@ classification algorithm for an individual process execution. Given an ordered
 list of segments -- each of which has "mean", "variance", and "end" attributes, the latter
 being the absolute index of the last iteration in the segment --
 this function returns a string classifying the run sequence's warmup style.}]
-DELTA = 0.001  # Time in seconds to be used as a bound
+DELTA = 0.001  # Absolute time delta between `equivalent' segments
 STEADY_STATE_LEN = 500  # We expect to reach a steady state before the last STEADY_STATE_LEN iterations
 
 def classify(segs):
@@ -944,7 +951,7 @@ def classify(segs):
     cur_seg = segs[i]
     i -= 1
     if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
-      continue
+      continue  # segment equivalent
     elif cur_seg.end > len(segs) - STEADY_STATE_LEN:
       cls = "no steady state"
       break
@@ -980,7 +987,7 @@ if its process executions all share the same classification (e.g.~warmup) then
 we classify the pair the same way (in this example, warmup); otherwise we classify the pair as
 \emph{inconsistent}. There are then two sub-categories of inconsistent
 benchmarks: `good' inconsistency (\goodinconsistent) is where all a \vmbpair pair's process
-executions are either flat or warmup; `bad' inconsistency (\badinconsistent) is
+executions are either flat or warmup; and `bad' inconsistency (\badinconsistent) is
 when one or more process executions are no steady state or slowdown. Good inconsistency
 can occur because some benchmarks are on the edge of our ability to differentiate warmup
 from flat behaviour, and we prefer to assume that we are at fault rather
@@ -988,7 +995,7 @@ than the VM. Bad inconsistency is always more troubling: it
 means that, at least sometimes, users will experience poor performance.
 
 
-\subsection{Timings}
+\subsection{Steady State Timings}
 \label{sec:timings}
 
 For benchmarks whose process executions all reach a steady state (i.e.~are
@@ -1019,7 +1026,8 @@ segments (see Section~\ref{sec:classifications}). We report means and
 calculated via bootstrapping (with 100,000 iterations). Although we
 assume that values within segments are
 independent, the values across different segments are clearly not
-independent. When bootstrapping, we therefore sample values within, but never across, segments (e.g.~if a
+independent. Since independence is a prerequisite to bootstrtapping, when
+bootstrapping, we sample values within, but never across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
 $B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
@@ -1058,13 +1066,13 @@ but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \label{tab:summarystats}
 \end{table}
 
-Our experiment consists of \totalpexecs{} process executions and \totaliterations{} in-process
+Our results consist of data for \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherseven
 as a representative example,
 \FPeval{\result}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
 \result\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat
-or good inconsistent) and
+or good inconsistent\edd{or warmup too presumably!}) and
 \FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage,1)}%
 \result\% of all process executions have `good' warmup (for comparison, \bencherfive
 is
@@ -1076,9 +1084,14 @@ is
 \result\% and
 \FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
 \result\% respectively, though the latter runs fewer benchmarks).
+\edd{something seems wrong with the `good warmup' percentages in this section.
+They appear to be the sum of consistent warmup, and consistent flat, but
+earlier on we defined `good warmup' including `good inconsistent` too (although
+there is an outstanding comment on the exact definition, since it seemed to
+exclude consistent warmup).}
 Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good' warmup
-process executions. On \bencherseven
+process executions\edd{i don't understand the previous sentence. s/good/bad/ ?}. On \bencherseven
 \benchersevenvmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown,
 \benchersevenvmbenchpairsnosteadystatepercentage\% of \vmbpair pairs are no steady state,
 but the biggest proportion by far is `bad' inconsistent at \benchersevenvmbenchpairsbadinconsistentpercentage\%
@@ -1134,9 +1147,9 @@ report the classification of the benchmark and, for good/bad inconsistent benchm
 their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
 means 22 of the process executions were slowdown, and 8 warmup). For processes
 which reach a steady state we report three summary statistics. \emph{Steady iter
-(\#)} is the median in-process iteration that the steady state was reached at
-and \emph{Steady iter (s)} is the median wall-clock time since the beginning of
-the process execution that the steady state was reached; for both measures we
+(\#)} is the median in-process iteration number to reach the steady state,
+and \emph{Steady iter (s)} is the median wall-clock time (since the beginning of
+the process execution) to reach the steady state; for both measures we
 report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
 performance of the steady state segment across all process executions, which we
 report with 99\% confidence intervals. The thumbnail histograms

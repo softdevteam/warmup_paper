@@ -1610,11 +1610,11 @@ document.
 
 The statistical method presented in Section~\ref{sec:stats} is not limited to data
 produced from Krun. To demonstrate this, we have applied it to two standard
-benchmark suites: DaCapo~\cite{dacapo06} (Java) and Octane~\cite{octane}
-(JavaScript). We ran both for \numpexecs process executions and \numiterations in-process
-iterations without reboots, temperature control etc.: DaCapo on \bencherthree;
-and Octane on \bencherseven (a Xeon machine, with a software setup
-similar to \bencherthree).
+benchmark suites: the DaCapo suite for Java~\cite{dacapo06} and the Octane
+suite for JavaScript~\cite{octane}\edd{weird citation} (JavaScript). Octane was
+run on all three of our benchmarking machines, whereas (due to time
+constraints), Dacapo was run only on \bencherfive. For both suites we used
+\numpexecs process executions and \numiterations in-process iterations.
 
 We ran DaCapo (with its default benchmark size) on Graal and HotSpot. As it already has support for
 altering the number of in-process executions, we used it without modification.
@@ -1624,7 +1624,9 @@ crashes with a \texttt{Invocation\-Target\-Exception}; \texttt{eclipse},
 semi-regular hangs with Graal which led us to disable \texttt{luindex},
 \texttt{lusearch}, \texttt{tradebeans}, and \texttt{tradesoap} on Graal.
 
-We ran Octane on SpiderMonkey (\spidermonkeyversion, a JIT compiling VM for JavaScript) and V8.
+We ran Octane on the same version of V8 used in the main experiment, and (on
+Linux only, due to benchmark failures on OpenBSD) on SpiderMonkey
+(\spidermonkeyversion, a JIT compiling VM for JavaScript).
 We replaced its complex runner (which reported timings with a non-monotonic
 microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's

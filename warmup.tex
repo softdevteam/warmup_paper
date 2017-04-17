@@ -700,7 +700,7 @@ As standard, Linux interrupts (`ticks') each core
 \texttt{CONFIG\-\_HZ} times per second (usually 250) to
 decide whether to perform a context switch. To avoid these repeated
 interruptions, \krun checks that it is running on a `tickless'
-kernel~\cite{tickless}, which requires recompiling the kernel with the
+kernel~\cite{tickless}\edd{weird cite}, which requires recompiling the kernel with the
 \texttt{CONFIG\_NO\_HZ\_FULL\_ALL} option set. Whilst the boot core still
 `ticks', other cores only `tick' if more than one runnable process is scheduled.
 
@@ -1202,7 +1202,7 @@ to consider this example `no steady state'.}
 \centering
 \includegraphics[width=\textwidth]{examples/new_inconsistent.pdf}
 \caption{An example of bad inconsistency: the same benchmark, on
-the same VM, on the same machine on one process execution warming
+the same VM, on the same machine, with one process execution warming
 up and the other slowing down.}
 \label{fig:examples:inconsistent}
 \vspace{-.4cm}
@@ -1598,7 +1598,7 @@ King's group has received several funding gifts from Oracle Labs.
 
 \noindent In this appendix, we first show that our statistical method
 can be applied to well known benchmarking suites (Appendix~\ref{sec:existing})
-before showing the complete warmup data from our experiment
+before showing additional results from the main part of our experiment
 (Appendix~\ref{app:mainresults}). We
 then present a curated selection of interesting run-sequence
 plots (Appendix~\ref{sec:curatedplots}). The complete series of plots is available in a separate

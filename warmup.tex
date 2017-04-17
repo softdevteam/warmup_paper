@@ -222,7 +222,7 @@ found that at most \maxtwo\% of
 `good inconsistent' to be included too, as (perhaps confusingly) `good
 inconsistent' pexecs all consistently reach a steady state of peak performance.
 If you do decide to adjust this, look for other percentages that would need
-updating.}
+updating.}\laurie{you're right: sarah can you update the macro definitions?}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -348,17 +348,15 @@ segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, changepoint segments
 considered equivalent in timing to the steady state segment are plotted in black;
-all other segments are plotted in grey (see
-Section~\ref{sec:classifications} for details on segment equivalence).}
+all other segments are plotted in grey.}
 \label{fig:changepoint}
 \end{figure}
 
 We introduce a new approach to analysing VM benchmarking data. We use the
 recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
 of shifts in the nature of time series data (e.g.~when a benchmark switches
-from `slow' to `fast' modes after JIT compilation). The analysis groups consecutive samples
-with a similar mean and variance into distinct segments
-which we then use to automatically classify each process execution as either:
+from `slow' to `fast' modes after JIT compilation). We then use this
+information to automatically classify each process execution as either:
 no steady state; flat (no detectable change in performance
 over the benchmark); warmup; or slowdown (a decrease in performance over time).
 Figure \ref{fig:changepoint} shows an example of how changepoint analysis
@@ -386,7 +384,7 @@ steady state behaviour (warmup, slowdown, flat).
     \item We show that, while some instances of `odd' behaviour are explained by
 the `obvious' factors of GC and JIT compilation, many are not.
 \end{enumerate}
-\edd{Did you want to mention the startup experiment as a contribution here?}
+\edd{Did you want to mention the startup experiment as a contribution here?}\laurie{i'm in two minds. it doesn't feel like a major contribution, so i'm a bit nervous about muddying the story. thoughts?}
 
 The statistical approach we have developed is open-source, general, and can be used
 to analyse any VM benchmarking data. In the Appendix, we show it applied
@@ -937,7 +935,7 @@ classification algorithm for an individual process execution. Given an ordered
 list of segments -- each of which has "mean", "variance", and "end" attributes, the latter
 being the absolute index of the last iteration in the segment --
 this function returns a string classifying the run sequence's warmup style.}]
-DELTA = 0.001  # Absolute time delta between `equivalent' segments
+DELTA = 0.001  # Absolute time delta (in seconds) below which segments are always considered equivalent
 STEADY_STATE_LEN = 500  # We expect to reach a steady state before the last STEADY_STATE_LEN iterations
 
 def classify(segs):
@@ -951,7 +949,7 @@ def classify(segs):
     cur_seg = segs[i]
     i -= 1
     if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
-      continue  # segment equivalent
+      continue
     elif cur_seg.end > len(segs) - STEADY_STATE_LEN:
       cls = "no steady state"
       break
@@ -1025,9 +1023,9 @@ segments (see Section~\ref{sec:classifications}). We report means and
 99\% confidence intervals
 calculated via bootstrapping (with 100,000 iterations). Although we
 assume that values within segments are
-independent, the values across different segments are clearly not
-independent. Since independence is a prerequisite to bootstrtapping, when
-bootstrapping, we sample values within, but never across, segments (e.g.~if a
+independent (and thus can be safely bootstrapped), the values across different segments are clearly not
+independent. When bootstrapping, we therefore sample values within, but never
+across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
 $B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
@@ -1071,8 +1069,8 @@ iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherseven
 as a representative example,
 \FPeval{\result}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
-\result\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat
-or good inconsistent\edd{or warmup too presumably!}) and
+\result\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat, warmup,
+or good inconsistent\edd{or warmup too presumably!}\laurie{yes, the macros might also need updating}) and
 \FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage,1)}%
 \result\% of all process executions have `good' warmup (for comparison, \bencherfive
 is
@@ -1090,8 +1088,8 @@ earlier on we defined `good warmup' including `good inconsistent` too (although
 there is an outstanding comment on the exact definition, since it seemed to
 exclude consistent warmup).}
 Fewer \vmbpair pairs than process executions have `good'
-warmup because some inconsistent \vmbpair pairs have some `good' warmup
-process executions\edd{i don't understand the previous sentence. s/good/bad/ ?}. On \bencherseven
+warmup because some inconsistent \vmbpair pairs have some `good warmup
+process executions as well as some `bad'. On \bencherseven
 \benchersevenvmbenchpairsslowdownpercentage\% of \vmbpair pairs slowdown,
 \benchersevenvmbenchpairsnosteadystatepercentage\% of \vmbpair pairs are no steady state,
 but the biggest proportion by far is `bad' inconsistent at \benchersevenvmbenchpairsbadinconsistentpercentage\%

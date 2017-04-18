@@ -1065,14 +1065,14 @@ and process executions for each benchmarking machine. Taking \bencherseven
 as a representative example,
 \bsevenresult\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat, warmup,
 or good inconsistent) and
-\FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage+\benchersevengoodinconsistentpercentage,1)}%
+\FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage,1)}%
 \result\% of all process executions have `good' warmup (for comparison, \bencherfive
 is
 \bfiveresult\% and
-\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage+\bencherfivegoodinconsistentpercentage,1)}%
+\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
 \result\% respectively and \benchersix is
 \bsixresult\% and
-\FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage+\benchersixgoodinconsistentpercentage,1)}%
+\FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
 \result\% respectively, though the latter runs fewer benchmarks).
 Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good warmup'

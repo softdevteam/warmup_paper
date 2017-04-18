@@ -193,9 +193,9 @@ $\begin{array}{rr}
 }
 
 %%% These macros are used in the abstract and introduction.
-\FPeval{\bfiveresult}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
-\FPeval{\bsixresult}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
-\FPeval{\bsevenresult}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
+\FPeval{\bfiveresult}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage+\bencherfivevmbenchpairsgoodinconsistentpercentage,1)}%
+\FPeval{\bsixresult}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage+\benchersixvmbenchpairsgoodinconsistentpercentage,1)}%
+\FPeval{\bsevenresult}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage+\benchersevenvmbenchpairsgoodinconsistentpercentage,1)}%
 \FPeval{\minone}{min(\bfiveresult, \bsevenresult)}
 \FPeval{\mintwo}{min(\minone, \bsixresult)}
 \FPeval{\maxone}{max(\bfiveresult, \bsevenresult)}
@@ -218,11 +218,6 @@ microbenchmarks often fail to reach a steady state of peak performance on a
 variety of common VMs. Repeating our experiment on 3 different machines, we
 found that at most \maxtwo\% of
 \vmbpair pairs consistently reach a steady state of peak performance.
-\edd{this is bencher5's flat and warmup percentages summed. I was expecting
-`good inconsistent' to be included too, as (perhaps confusingly) `good
-inconsistent' pexecs all consistently reach a steady state of peak performance.
-If you do decide to adjust this, look for other percentages that would need
-updating.}\laurie{you're right: sarah can you update the macro definitions?}
 \end{abstract}
 
 \keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
@@ -859,7 +854,7 @@ sliding window of 200 in-process iterations, lies outside the median $\pm
 3\times(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warmup iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
-iterations. Of the \totaliterations\xspace \edd{ideally the auto-generated macro would use commas to make this number easier to parse}in-process
+iterations. Of the \totaliterations\xspace in-process
 iterations, \totaloutlierspercentage\% are classified as outliers, with the most for
 \FPeval{\result}{round(2000.0 / \maximumoutliers, 1)}%
 any single process execution being \result\% of in-process iterations.
@@ -1063,29 +1058,22 @@ but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \label{tab:summarystats}
 \end{table}
 
+% \bfiveresult, \bsixresult, \bsevenresult defined in preamble.
 Our results consist of data for \totalpexecs{} process executions and \totaliterations{} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherseven
 as a representative example,
-\FPeval{\result}{round(\benchersevenvmbenchpairsflatpercentage+\benchersevenvmbenchpairswarmuppercentage,1)}%
-\result\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat, warmup,
-or good inconsistent\edd{or warmup too presumably!}\laurie{yes, the macros might also need updating}) and
-\FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage,1)}%
+\bsevenresult\% of \vmbpair pairs have consistently `good' warmup (i.e.~are flat, warmup,
+or good inconsistent) and
+\FPeval{\result}{round(\benchersevenflatpercentage+\benchersevenwarmuppercentage+\benchersevengoodinconsistentpercentage,1)}%
 \result\% of all process executions have `good' warmup (for comparison, \bencherfive
 is
-\FPeval{\result}{round(\bencherfivevmbenchpairsflatpercentage+\bencherfivevmbenchpairswarmuppercentage,1)}%
-\result\% and
-\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage,1)}%
+\bfiveresult\% and
+\FPeval{\result}{round(\bencherfiveflatpercentage+\bencherfivewarmuppercentage+\bencherfivegoodinconsistentpercentage,1)}%
 \result\% respectively and \benchersix is
-\FPeval{\result}{round(\benchersixvmbenchpairsflatpercentage+\benchersixvmbenchpairswarmuppercentage,1)}%
-\result\% and
-\FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage,1)}%
+\bsixresult\% and
+\FPeval{\result}{round(\benchersixflatpercentage+\benchersixwarmuppercentage+\benchersixgoodinconsistentpercentage,1)}%
 \result\% respectively, though the latter runs fewer benchmarks).
-\edd{something seems wrong with the `good warmup' percentages in this section.
-They appear to be the sum of consistent warmup, and consistent flat, but
-earlier on we defined `good warmup' including `good inconsistent` too (although
-there is an outstanding comment on the exact definition, since it seemed to
-exclude consistent warmup).}
 Fewer \vmbpair pairs than process executions have `good'
 warmup because some inconsistent \vmbpair pairs have some `good warmup'
 process executions as well as some `bad'. On \bencherseven

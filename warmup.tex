@@ -737,8 +737,8 @@ users, it gives no insight into multi-threaded computations: on Linux we therefo
 core-cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
 what work each core is actually doing. In contrast, we use the ratio of APERF/MPERF deltas
 solely as a safety check that our wall-clock times are valid.
-The \texttt{IA32\_APERF} counter increments at a fixed
-frequency for each instruction executed; the \texttt{IA32\_MPERF} counter increments at a rate
+The \texttt{IA32\_MPERF} counter increments at a fixed
+frequency for each instruction executed; the \texttt{IA32\_APERF} counter increments at a rate
 proportional to the processor's current frequency. With an APERF/MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is in
 a power-saving mode; and above 1, turbo boost is being used.

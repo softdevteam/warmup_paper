@@ -5,11 +5,15 @@
 #
 
 EXPERIMENT_REPO=../warmup_experiment/
+
+# Results files must be annotated with classifications and outliers.
+# XXX when you next re-generate the tables, please change the filenames to ones
+# like DACAPO_DATA, with the version and window size explicit.
 BENCHER3_DATA=bencher3_warmup_07.json.bz2
 BENCHER5_DATA=bencher5_warmup_07.json.bz2
 BENCHER6_DATA=bencher6_warmup_07.json.bz2
 OCTANE_DATA="octane_v8.json.bz2 octane_spidermonkey.json.bz2"
-DACAPO_DATA="dacapo_graal.json.bz2 dacapo_hotspot.json.bz2"
+DACAPO_DATA="dacapo_graal_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2 dacapo_hotspot_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2"
 STARTUP_DATA=startup.json.bz2
 
 

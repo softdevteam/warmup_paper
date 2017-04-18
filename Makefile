@@ -6,7 +6,7 @@ LATEX_SIGPLAN = warmup
 
 LATEX_COMMON =
 
-DIAGRAMS = 	img/picturebook_warmup.pdf
+DIAGRAMS =
 PLOTS =		examples/new_warmup_no_migrate.pdf \
 		examples/changepoint_example.pdf \
 		examples/new_no_steady.pdf \

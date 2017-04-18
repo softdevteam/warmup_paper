@@ -54,6 +54,7 @@
 \newcommand{\mvmbtrip}{$\langle$machine, VM, benchmark$\rangle$\xspace}
 \newcommand{\numpexecs}{30\xspace}
 \newcommand{\numiterations}{2000\xspace}
+\newcommand{\numstartuppexecs}{200\xspace}
 
 \DeclareRobustCommand{\flatc}{%
 \setlength{\sparklinethickness}{0.4pt}%
@@ -1310,7 +1311,7 @@ before immediately executing the VM itself; and, for each language under
 investigation, we provide a `dummy' iterations runner which simply prints out
 wall-clock time. In other words, we measure the time just before the VM is loaded
 and at the first point that a user-level program can execute code on the VM; the
-delta between the two is the startup time. For each VM we run 200 process
+delta between the two is the startup time. For each VM we run \numstartuppexecs process
 executions (for startup, in-process iterations are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
 time).

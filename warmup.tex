@@ -739,7 +739,7 @@ what work each core is actually doing. In contrast, we use the ratio of APERF/MP
 solely as a safety check that our wall-clock times are valid.
 The \texttt{IA32\_APERF} counter increments at a rate proportional to the
 processor's current frequency; the \texttt{IA32\_MPERF} counter increments at a fixed
-rate proportional the CPU's base frequency. With an APERF/MPERF ratio of
+rate normalised to the CPU's base frequency. With an APERF/MPERF ratio of
 precisely 1, the processor is running at full speed; below 1 it is in
 a power-saving mode; and above 1, turbo boost is being used.
 

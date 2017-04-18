@@ -76,8 +76,6 @@ ${LATEX_SIGPLAN}.pdf: ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
-	pdfsplit -o warmup_paper.pdf 0:20 warmup.pdf
-	pdfsplit -o warmup_appendix.pdf 20: warmup.pdf
 
 #
 # Plots in main body of paper (in order of appearance in tex src).

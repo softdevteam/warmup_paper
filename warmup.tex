@@ -31,6 +31,9 @@
 \usepackage{pdflscape}
 \usepackage{sparklines}
 \usepackage{float}
+\usepackage{siunitx}
+
+\sisetup{group-separator={,}}  %%% Format long numbers with thousand commas.
 
 \newfloat{sdfloat}{thp}{lop}
 
@@ -856,7 +859,7 @@ sliding window of 200 in-process iterations, lies outside the median $\pm
 3\times(90\%\textrm{ile} - 10\%\textrm{ile})$. In order that we avoid classifying
 slow warmup iterations at the start of an execution as outliers (when they are
 in fact likely to be important warmup data), we ignore the first 200 in-process
-iterations. Of the \totaliterations\xspace in-process
+iterations. Of the \num{\totaliterations}\xspace in-process
 iterations, \totaloutlierspercentage\% are classified as outliers, with the most for
 \FPeval{\result}{round(2000.0 / \maximumoutliers, 1)}%
 any single process execution being \result\% of in-process iterations.
@@ -1407,7 +1410,8 @@ ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
 least a 6\% difference in the APERF/MPERF ratio). Based on this, we conservatively define the
 safe APERF / MPERF ratio to be $1\pm0.03$. The checking tool then examined
 every process execution on \bencherfive and \bencherseven, checking that every
-active core had a safe APERF/MPERF ratio. Of the 5,520,000 in-process iterations
+\FPeval{\result}{round(\bencherfivetotaliterations+\bencherseventotaliterations,0)}%
+active core had a safe APERF/MPERF ratio. Of the \num{\result}\xspace in-process iterations
 on these two machines, 225 (0.004\%) spread over 10 process executions failed
 this check, all but 2 on \bencherseven. Fortunately, outlier detection is designed
 to deal with such aberrations, and 216 (98\%) of these in-process iterations are

@@ -1404,7 +1404,7 @@ an APERF count per second proportional to a processors GHz rating (i.e.~a 3.6GHz
 such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second),
 we define an idle core to be one whose APERF is 1000$\times$ less than this (per
 second). Second, we need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1.
-For the 4790 processor, the speedstep \sarah{I don't think we have defined 'speedstep' yet?} values either side of its base frequency of 3.6GHz
+For the 4790 processor, the frequency values either side of its base of 3.6GHz
 are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
 ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
 least a 6\% difference in the APERF/MPERF ratio). Based on this, we conservatively define the

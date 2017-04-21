@@ -1,6 +1,6 @@
-%\documentclass[acmlarge]{acmart}\settopmatter{printfolios=true}
+\documentclass[acmlarge]{acmart}\settopmatter{printfolios=true}
 % Uncomment the line below to blind for reviewing (will rm acknowledgements):
- \documentclass[acmlarge,review,anonymous]{acmart}\settopmatter{printfolios=true}
+% \documentclass[acmlarge,review,anonymous]{acmart}\settopmatter{printfolios=true}
 
 \usepackage[utf8]{inputenc}
 % the following standard packages may be helpful, but are not required
@@ -1101,25 +1101,6 @@ Tables~\ref{tab:bencher5results} and~\ref{tab:bencher6results} in the Appendix
 contain further details. Overall, we believe that our results are a
 somewhat clear validation of Hypothesis \hyptwo.
 
-Looking at one machine's data brings out further detail. For
-example, Table~\ref{tab:mainresults} (with data from \bencherseven)
-enables to make us several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
-come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
-inconsistent cases). Second, \binarytrees and \fasta seem to be much more often
-bad inconsistent across most VMs. This raises the question as to whether some
-aspect of these benchmarks makes inconsistent performance more likely,
-though they share no particularly obvious characteristics.
-Third, the overall spread of steady state iter (\#) values is uneven: VMs seem
-to mostly either reach a steady state quickly (often in 10 or fewer in-process
-iterations) or take hundreds of in-process iterations. The latter are troubling
-because previous benchmarking methodologies
-will not have run the benchmarks long enough to see the steady state emerge.
-Fourth, it does not seem to be the case that VMs which take a long
-time to reach a steady state have faster steady states: if anything,
-the opposite appears to be true, suggesting that users of some code
-on some VMs suffer from a `double whammy' of poor warmup and poor
-steady state performance.
-
 \begin{landscape}
 \begin{table*}[p]
 \vspace{.35cm}
@@ -1144,7 +1125,24 @@ show the spread of values; the red bar shows the location of the median
 \end{table*}
 \end{landscape}
 
-
+Looking at one machine's data brings out further detail. For
+example, Table~\ref{tab:mainresults} (with data from \bencherseven)
+enables to make us several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
+come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
+inconsistent cases). Second, \binarytrees and \fasta seem to be much more often
+bad inconsistent across most VMs. This raises the question as to whether some
+aspect of these benchmarks makes inconsistent performance more likely,
+though they share no particularly obvious characteristics.
+Third, the overall spread of steady state iter (\#) values is uneven: VMs seem
+to mostly either reach a steady state quickly (often in 10 or fewer in-process
+iterations) or take hundreds of in-process iterations. The latter are troubling
+because previous benchmarking methodologies
+will not have run the benchmarks long enough to see the steady state emerge.
+Fourth, it does not seem to be the case that VMs which take a long
+time to reach a steady state have faster steady states: if anything,
+the opposite appears to be true, suggesting that users of some code
+on some VMs suffer from a `double whammy' of poor warmup and poor
+steady state performance.
 
 
 

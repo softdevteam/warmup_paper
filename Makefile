@@ -50,7 +50,7 @@ all: ${LATEX_SIGPLAN}.pdf bib.bib
 	inkscape --export-pdf=$@ $<
 
 .PHONY: clean
-clean: clean-sigplan
+clean: clean-sigplan clean-arxiv
 
 .PHONY: clean-sigplan
 clean-sigplan:
@@ -187,3 +187,27 @@ examples/new_miscomp.pdf:
 
 examples/new_good_comp.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --with-changepoint-means --with-outliers -o examples/new_good_comp.pdf ${BENCHER7_INSTR_DATA} -b bencher7:fasta:PyPy:default-python:4 --core-cycles "" --no-zoom --export-size ${WIDTH_2COL},6
+
+
+# Package up the paper for arxiv.org.
+# Note that acmart.cls is included in tex live 2016.
+ARXIV_FILES=	${DIAGRAMS} \
+		${LATEX_SIGPLAN}.tex \
+		${TABLES} \
+		softdev.sty \
+		bib.bib \
+		warmup.bbl \
+		ACM-Reference-Format.bst \
+		summary_macros.tex \
+		vm_versions.tex \
+		outlier_summaries.tex
+ARXIV_BASE=arxiv
+${ARXIV_BASE}: ${LATEX_SIGPLAN}.pdf
+	mkdir $@
+	rsync -Rav ${ARXIV_FILES} $@
+	zip -r $@.zip ${ARXIV_BASE}
+
+.PHONY: clean-arxiv
+clean-arxiv:
+	rm -rf ${ARXIV_BASE}
+	rm -rf ${ARXIV_BASE}.zip

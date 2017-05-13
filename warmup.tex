@@ -1,6 +1,6 @@
-%\documentclass[acmlarge]{acmart}\settopmatter{printfolios=true}
+\documentclass[acmlarge]{acmart}\settopmatter{printfolios=true}
 % Uncomment the line below to blind for reviewing (will rm acknowledgements):
- \documentclass[acmlarge,review,anonymous]{acmart}\settopmatter{printfolios=true}
+% \documentclass[acmlarge,review,anonymous]{acmart}\settopmatter{printfolios=true}
 
 \usepackage[utf8]{inputenc}
 % the following standard packages may be helpful, but are not required
@@ -1327,6 +1327,7 @@ from an SSD). As this data clearly shows, startup time varies significantly amon
 taking C on Linux as a baseline, the fastest VM (LuaJIT) is $5\times$ slower, whilst the
 slowest VM (JRuby+Truffle) is around $3500\times$ slower, to startup.
 
+
 \section{Threats to Validity}
 \label{sec:threats}
 
@@ -1391,24 +1392,25 @@ Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. On Linux, we use the
 APERF/MPERF ratio to check for frequency changes. Although the hoped-for
 ratio is precisely 1, there is often noticeable variation around this value due to the
-cost of reading these counters. On cores
-performing active computation, the error is small (around 1\% in our
+cost of reading these counters. On active cores the error is small (around 1\% in our
 experience), but on idle cores (which are rarely truly idle, as occasional
 computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-We therefore have to be slightly more clever than simply checking for an
-APERF/MPERF ratio of 1. In order to verify that there were no frequency changes
-we therefore wrote a simple tool to check APERF/MPERF ratios. First, the tool
-needs to exclude idle cores from its check. Since a fully busy core has
-an APERF count per second proportional to a processors GHz rating (i.e.~a 3.6GHz processor
+We first need to exclude idle cores from any checks. Since a fully busy core has
+an APERF count per second proportional to its base clock rating (i.e.~a 3.6GHz processor
 such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second),
 we define an idle core to be one whose APERF is 1000$\times$ less than this (per
-second). Second, we need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1.
-For the 4790 processor, the frequency values either side of its base of 3.6GHz
-are 3.4GHz and 3.8GHz which would lead to a 5\% difference in the APERF/MPERF
-ratio; for the 3.5GHz E3-1240 processor, 3.3GHz and 3.9GHz respectively (i.e.~at
-least a 6\% difference in the APERF/MPERF ratio). Based on this, we conservatively define the
-safe APERF / MPERF ratio to be $1\pm0.03$. The checking tool then examined
+second). We then need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1,
+taking into account the error introduced by reading these counters.
+For the 4790 processor, the frequency values either side of its 3.6GHz base
+are 3.4GHz and 3.8GHz, which would lead to a 5\% difference in the APERF/MPERF
+ratio (for the 3.5GHz E3-1240 processor, the values either side are 3.3GHz and 3.9GHz i.e.~at
+least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
+safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that very small
+portions of an in-process iteration could be subject to frequency changes yet still fall within
+this tolerance. Given the error in reading the APERF and MPERF counters, this is an
+inevitable problem; by making our tolerance relatively tight, we minimise the
+chances of missing genuine issues.} We then wrote a simple tool to examine
 every process execution on \bencherfive and \bencherseven, checking that every
 \FPeval{\result}{round(\bencherfivetotaliterations+\bencherseventotaliterations,0)}%
 active core had a safe APERF/MPERF ratio. Of the \num{\result}\xspace in-process iterations

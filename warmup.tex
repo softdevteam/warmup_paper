@@ -1030,6 +1030,31 @@ $B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 
 
+\begin{landscape}
+\begin{table*}[p]
+\vspace{.35cm}
+\begin{adjustbox}{scale=.845}
+\input{bencher7.table}
+\end{adjustbox}
+\caption{Benchmark results for \bencherseven. For all process executions, we
+report the classification of the benchmark and, for good/bad inconsistent benchmarks,
+their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
+means 22 of the process executions were slowdown, and 8 warmup). For processes
+which reach a steady state we report three summary statistics. \emph{Steady iter
+(\#)} is the median in-process iteration number to reach the steady state,
+and \emph{Steady iter (s)} is the median wall-clock time (since the beginning of
+the process execution) to reach the steady state; for both measures we
+report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
+performance of the steady state segment across all process executions, which we
+report with 99\% confidence intervals. The thumbnail histograms
+show the spread of values; the red bar shows the location of the median
+(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
+\emph{Steady perf(s)}) value.}
+\label{tab:mainresults}
+\end{table*}
+\end{landscape}
+
+
 \section{Results}
 \label{sec:results}
 
@@ -1125,33 +1150,6 @@ time to reach a steady state have faster steady states: if anything,
 the opposite appears to be true, suggesting that users of some code
 on some VMs suffer from a `double whammy' of poor warmup and poor
 steady state performance.
-
-\begin{landscape}
-\begin{table*}[p]
-\vspace{.35cm}
-\begin{adjustbox}{scale=.845}
-\input{bencher7.table}
-\end{adjustbox}
-\caption{Benchmark results for \bencherseven. For all process executions, we
-report the classification of the benchmark and, for good/bad inconsistent benchmarks,
-their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
-means 22 of the process executions were slowdown, and 8 warmup). For processes
-which reach a steady state we report three summary statistics. \emph{Steady iter
-(\#)} is the median in-process iteration number to reach the steady state,
-and \emph{Steady iter (s)} is the median wall-clock time (since the beginning of
-the process execution) to reach the steady state; for both measures we
-report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
-performance of the steady state segment across all process executions, which we
-report with 99\% confidence intervals. The thumbnail histograms
-show the spread of values; the red bar shows the location of the median
-(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
-\emph{Steady perf(s)}) value.}
-\label{tab:mainresults}
-\end{table*}
-\end{landscape}
-
-
-
 
 
 \subsection{Warmup Plots}

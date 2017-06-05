@@ -343,7 +343,7 @@ allowing us to see the `warmup curve', if it exists). Changepoints
 are indicated by dashed vertical red lines and denote a `shift' in performance behaviour;
 changepoint segments are indicated by dashed horizontal red lines between changepoints,
 whose height shows the mean iteration time within the segment;
-and red circles indicate `outliers', which the changepoint analysis discount). We use the changepoint
+and red circles indicate `outliers', which the changepoint analysis discount. We use the changepoint
 segments to determine if and when a steady state has been reached and,
 if so, to classify the plots' warmup style (in this example, warmup and
 slowdown respectively). As an additional visual aid, changepoint segments
@@ -917,16 +917,17 @@ benchmark which, after changepoint analysis has three segments: the first with a
 mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
-segment which is clearly different. We therefore allow a small tolerance
-when comparing a segment $s_i$ against the final segment $s_f$: if $\textrm{mean}(s_i)$
-is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$,
-we consider the two equivalent. The reason for these two types of tolerance
-is as follows. In short running benchmarks, a small number of external events can add an absolute
-level of noise: in our experience readings often vary by a
-little under 0.001s. In long running benchmarks, any individual external
-event adds a relatively small relative amount of noise, but the cumulative
-effect of many external events can add up, which a changepoint's variance
-tends to naturally account for.
+segment which is clearly different. We therefore need to define a suitable tolerance
+for determining if two segments are equivalent. In short running benchmarks, a
+small number of external events can add an absolute level of noise: in our
+experience readings often vary by a
+little under 0.001s. In long running benchmarks, an individual external
+event may add a relatively small amount of noise, but the cumulative
+effect of many external events can add up: fortunately, a changepoint's variance
+naturally captures this proportional notion of tolerance. We therefore combine these two notions,
+formally defining that a segment $s_i$ 
+is equivalent to the final segment $s_f$ if $\textrm{mean}(s_i)$
+is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$.
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The

@@ -1559,8 +1559,8 @@ developers and users. First, simply running benchmarks for a larger number of
 in-process iterations helps understanding of a VM's long-term
 performance stability. Second, as a community, we need to accept that a steady
 state of peak performance is not guaranteed to exist. Third, the significant
-differences in warmup time between VMs strongly suggest that VM benchmarking
-should always include a measure of warmup time. Fourth, we suspect that some of the odd
+differences in the time taken to reach a steady state strongly suggests that VM benchmarking
+should always include this measure. Fourth, we suspect that some of the odd
 results we have seen result from over-training VM heuristics on small sets of
 benchmarks. The machine-learning community's approach may apply
 equally well to VMs: using a training set to devise heuristics, and then

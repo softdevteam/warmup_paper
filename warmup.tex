@@ -427,7 +427,7 @@ that warmup has completed or not. More advanced methods such as
 that of~\citet{georges07statistically} try to find a steady state
 using simple statistical tests.
 
-The most sophisticated VM benchmarking yet developed is found
+The most sophisticated VM benchmarking analysis yet developed is found
 in~\cite{kalibera12quantifying,kalibera13rigorous}. After
 showing that simple heuristics such as Georges et al.'s often fail to accurately
 pinpoint when warmup has completed, \kalibera then present an alternative manual
@@ -435,8 +435,8 @@ process. In essence, after a specific VM / benchmark combination has been run fo
 process executions, a human must determine if a steady state is reached;
 and, if it is, at which in-process iteration
 it is reached. When a steady state does exist, a larger number of process executions are then
-run; the previously determined cut-off point is applied to each process's
-iterations; and detailed statistics produced.
+run; the previously determined cut-off point is applied to each process execution's
+in-process iterations; and detailed statistics are produced.
 
 The \kalibera methodology is a significant advance on previous work,
 and is an important inspiration for ours. However, the reliance
@@ -528,8 +528,8 @@ way that we could observe. We
 solved this by adding an empty static method to each benchmark, which our
 extra classes then call via a static initialiser, guaranteeing that
 the main benchmark class is eagerly loaded. Note that we do not attempt to eagerly
-load other classes: lazy loading is inherent to the JVM specification,
-and part of what we need to measure.
+load other classes: lazy loading is an inherent part of the JVM specification,
+and thus something that should be part of our measurements.
 
 
 \subsection{Measuring Computation Rather Than File Performance}
@@ -922,7 +922,7 @@ small number of external events can add an absolute level of noise: in our
 experience readings often vary by a
 little under 0.001s. In long running benchmarks, an individual external
 event may add a relatively small amount of noise, but the cumulative
-effect of many external events can add up: fortunately, a changepoint's variance
+effect of many external events can add up: fortunately, a changepoint segment's variance
 naturally captures this proportional notion of tolerance. We therefore combine these two notions,
 formally defining that a segment $s_i$ 
 is equivalent to the final segment $s_f$ if $\textrm{mean}(s_i)$
@@ -1154,8 +1154,8 @@ steady state performance.
 
 \subsection{Warmup Plots}
 
-To understand why we see so many unexpected cases, for each process execution,
-we created a series of plots. All plots have in-process iteration number on the
+To understand why we see so many unexpected cases
+we created two additional types of plot. All plots have in-process iteration number on the
 $x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
 plots in Figure~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
@@ -1362,7 +1362,7 @@ degree to which an implementation of a benchmark should respect other
 language's implementations or be idiomatic (the latter being likely to
 run faster). From our perspective, this possibility is somewhat less important,
 since we are interested in the warmup patterns of reasonable programs,
-whether they be the fastest possible or not. It is however possible that by
+whether they are the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
 this complaint could arguably be directed at the unmodified benchmarks too.
 

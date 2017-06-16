@@ -434,7 +434,7 @@ showing that simple heuristics such as Georges et al.'s often fail to accurately
 pinpoint when warmup has completed, \kalibera then present an alternative manual
 process. In essence, after a specific VM / benchmark combination has been run for a small number of
 process executions, a human must determine if a steady state is reached;
-and, if it is, at which in-process iteration the
+and, if it is, at which in-process iteration
 it is reached. When a steady state does exist, a larger number of process executions are then
 run; the previously determined cut-off point is applied to each process's
 iterations; and detailed statistics produced.
@@ -450,7 +450,7 @@ is then applied to all future process executions, even though there is no
 guarantee that they all reach a steady state by that point. Beyond the
 special treatment of `cyclic' data (when in-process iterations behave in a
 predictable pattern), there is also no attempt to classify the steady state
-performance relative to what comes before it. These two points mean that,
+performance relative to what comes before it. These three points mean that,
 despite \kalibera's advances,
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
@@ -529,7 +529,7 @@ way that we could observe. We
 solved this by adding an empty static method to each benchmark, which our
 extra classes then call via a static initialiser, guaranteeing that
 the main benchmark class is eagerly loaded. Note that we do not attempt to eagerly
-load other classes: lazy loading is an inherent to the JVM specification,
+load other classes: lazy loading is inherent to the JVM specification,
 and part of what we need to measure.
 
 
@@ -1135,7 +1135,7 @@ somewhat clear validation of Hypothesis \hyptwo.
 
 Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
-enables to make us several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
+enables us to make several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
 come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
 inconsistent cases). Second, \binarytrees and \fasta seem to be much more often
 bad inconsistent across most VMs. This raises the question as to whether some
@@ -1158,7 +1158,7 @@ steady state performance.
 To understand why we see so many unexpected cases, for each process execution,
 we created a series of plots. All plots have in-process iteration number on the
 $x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
-plots in Figures~\ref{fig:changepoint} show run-sequence plots for warmup and
+plots in Figure~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
 Figure~\ref{fig:examples:warmup_flat} of good inconsistency. Core-cycle plots (Linux only) show the
 core-cycle counts on the $y$-axes (one plot per-core). The plots in
@@ -1171,7 +1171,7 @@ state and cyclic data respectively.
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/new_no_steady.pdf}
 \caption{An example of a run-sequence plot with core-cycle plots (one
-for each of the 4 CPU cores; note that each shares the same $y$ axis). In this
+for each of the 4 CPU cores; note that they all have the same $y$ axis scale). In this
 example we can clearly see a benchmark migrating between cores. In some
 cases this migration also aligns with a clear changepoint, though not
 in others. The continual changepoints lead to an overall classification
@@ -1462,7 +1462,7 @@ overall search space.
 
 In controlling confounding variables, our benchmarking environment necessarily
 deviates from standard configurations. It is possible that in so doing, we have
-created a system that shows warmup effects that few people will ever see in
+created a system where benchmarks warmup (or otherwise) in a way that few will ever see in
 practise. However, our judgement is that this is preferable to running on a
 system that is likely to introduce substantial noise into our readings.
 
@@ -1533,11 +1533,10 @@ give misleading statistics for VM benchmarking.
 \section{Conclusions}
 \label{sec:conclusions}
 
-Warmup has previously been an informally defined term~\cite{seaton15phd} and in this
-paper we have shown cases where the definition fails to hold. Through a carefully
-designed experiment, and an application of a new statistical method, we hope
-to have helped give the study of warmup a firmer base. The tools we developed
-are open-source and can be used by VM developers and users to investigate the
+Warmup has previously been an informally defined term~\cite{seaton15phd}. We
+captured a restricted version of this definition in Hypothesis H1 which
+a carefully designed experiment then invalidated. The analysis
+techniques we used are open-source and can be used by VM developers and users to investigate the
 warmup behaviour of any VM and benchmark.
 
 Although we are fairly experienced in designing and implementing

@@ -1033,7 +1033,7 @@ steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 
 \begin{landscape}
 \begin{table*}[p]
-\vspace{.35cm}
+\vspace{-.35cm}
 \begin{adjustbox}{scale=.845}
 \input{bencher7.table}
 \end{adjustbox}
@@ -1530,6 +1530,62 @@ the findings from \cite{kalibera13rigorous} that simple heuristics can often
 give misleading statistics for VM benchmarking.
 
 
+\section{Suggestions for the Community}
+
+We do not claim that this paper represents the end of the road in terms of VM
+benchmarking methodologies: we hope and expect that this work will be superseded
+by better approaches in the future. However, even this current work is
+sufficient to show that there are clear problems with previous approaches to VM
+benchmarking, including those we personally have been involved with in the past. In this
+section we make some tentative suggestions to the VM developer and user
+communities based on our experience.
+
+First, our results show that many benchmarks take considerable time to reach a
+steady state; that different process executions of the same benchmark reach a
+steady state at different points; and that some process executions do not ever
+reach a steady state. We can thus no longer assume that a steady state is
+reached after a fixed number (no matter how high) of in-process iterations, or
+that one process execution tells us about the rest. Each process execution's
+data must be analysed individually to determine if, and when, a steady state is
+reached. The fully automated changepoint analysis-based approach presented in
+this paper is one possibility, and is is available to everyone in our
+open-source tools.
+
+Second, we believe that the traditional practise of presenting only steady state
+numbers is hard to defend, as it tells us too little about the real-world
+performance that users will experience. We hope that future VM experiments will
+present: a benchmark's classification (warmup, flat, slowdown, no steady state);
+and, when appropriate, the point at which the steady state was reached (using
+one or both of steady state iter (\#) or (s)) and peak performance.
+
+Third, simply running benchmarks for a larger number of in-process iterations
+helps one understand a VM's long-term performance stability. Traditional VM
+experiments often run for 5 or 10 in-process iterations. Our data clearly shows
+that, when a statistically robust analysis is desired, such short runs are
+insufficient. However, we realise that running 2000 in-process iterations may
+not always be feasible. It is an open question as to what a good number of
+in-process iterations might be. One possibility might be to mostly use smaller
+numbers of in-process iterations (e.g.~in many cases, 200 in-process iterations
+is sufficient) and occasionally to use larger numbers (e.g.~1500) to see if
+longer-term stability has been affected.
+
+Fourth, because a \vmbpair's process executions are often inconsistent, more
+than 1 process execution must be run. Again, it is an open question as to how
+many process executions are needed to uncover inconsistencies. We suspect that
+10 process executions is a reasonable, and not too onerous, figure.
+
+Fifth, we suspect that some of the odd results we have seen result from
+over-training VM heuristics on small sets of benchmarks. The machine-learning
+community's approach may apply equally well to VMs: using a training set to
+devise heuristics, and then benchmarking the resulting system(s) on a separate
+validation system.
+
+Finally, we suspect that a reliance on small suites of benchmarks means that
+only small parts of VMs are being benchmarked effectively. We are increasingly
+of the opinion that benchmarking quality and quantity are tightly related, and
+that VMs need to be run on many more benchmarks than is typically the case.
+
+
 \section{Conclusions}
 \label{sec:conclusions}
 
@@ -1553,21 +1609,6 @@ in terms of producing a reliable experiment. The large number of partly
 inter-locking combinations means that we estimate that untangling this will
 require significant additional running time (at least many months).
 
-Our results suggest to us some tentative guidelines for VM
-developers and users. First, simply running benchmarks for a larger number of
-in-process iterations helps understanding of a VM's long-term
-performance stability. Second, as a community, we need to accept that a steady
-state of peak performance is not guaranteed to exist. Third, the significant
-differences in the time taken to reach a steady state strongly suggests that VM benchmarking
-should always include this measure. Fourth, we suspect that some of the odd
-results we have seen result from over-training VM heuristics on small sets of
-benchmarks. The machine-learning community's approach may apply
-equally well to VMs: using a training set to devise heuristics, and then
-benchmarking the resulting system(s) on a separate validation system. Fifth, we suspect
-that a reliance on small suites of benchmarks means that only
-small parts of VMs are being benchmarked effectively: we are increasingly of the
-opinion that benchmarking quality and quantity are tightly related, and that VMs
-need more benchmarks.
 
 \begin{acks}
 We are particularly grateful to Vincent Knight who helped put together this

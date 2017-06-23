@@ -284,8 +284,7 @@ state, or which perform inconsistently across different process
 executions. Only \mintwo--\maxtwo\% (depending on the machine and OS
 combination) of \vmbpair pairs consistently reach a steady state of peak
 performance. Of the seven VMs we studied, none consistently reached a steady
-state of peak performance. These results are much worse than reported in previous works, and worse
-than expected by the VM teams we have spoken to.
+state of peak performance. These results are much worse than reported in previous works.
 
 Our results suggest
 that much real-world VM benchmarking, which nearly all relies on assuming
@@ -301,8 +300,7 @@ improving performance and included in VMs.
 We present a carefully designed experiment where benchmarks are run for \numiterations
 \emph{in-process iterations} and repeated using \numpexecs fresh \emph{process
 executions} (i.e.~each process execution runs multiple in-process iterations).
-We then present a novel approach to automatically classifying
-different styles of warmup.
+We then automatically analyse and classify the resulting data.
 
 In order to reduce the influence of external factors, we wrote a new
 benchmarking tool, \krun, to control as many confounding variables as practical.
@@ -352,9 +350,9 @@ all other segments are plotted in grey.}
 \label{fig:changepoint}
 \end{figure}
 
-We introduce a new approach to analysing VM benchmarking data. We use the
-recently introduced concept of changepoint analysis~\cite{eckley11analysis} to automate the detection
-of shifts in the nature of time series data (e.g.~when a benchmark switches
+We use the recently introduced concept of changepoint analysis~\cite{eckley11analysis} to
+automatically analyse VM benchmarking data. Changepoint analysis detects
+shifts in the nature of time series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). We then use this
 information to automatically classify each process execution as either:
 no steady state; flat (no detectable change in performance
@@ -601,10 +599,9 @@ mode; if the CPU deems it ineffective, or if its safe limits (e.g.~temperature) 
 turbo boost is reduced~\cite{charles09turboboost}. Turbo boost
 can thus substantially change one's
 perception of performance. Hyper-threading gives the illusion that a single
-physical core is in fact two logical cores, inter-leaving the
-execution of multiple programs or threads on a single physical core,
-leading to a less predictable performance pattern
-than on physical cores alone.
+physical core is two logical cores. Programs and threads that would
+otherwise run on separate physical cores are thus inter-leaved on
+a single core, leading to less predictable performance.
 
 
 \subsection{\krun}
@@ -612,7 +609,8 @@ than on physical cores alone.
 
 Many confounding variables manifest shortly before, or during the running of,
 benchmarks~\cite{kalibera05precision}. In order to control as many of these as possible, we wrote
-\krun\footnote{The `K' in Krun is a respectful tip of the hat to \kalibera.}, a new benchmark runner. \krun itself is a `supervisor'
+\krun\footnote{The `K' in Krun is a respectful tip of the hat to \kalibera.}.
+\krun is a `supervisor'
 which, given a configuration file specifying VMs, benchmarks, etc. configures
 a Linux or OpenBSD system, runs benchmarks, and collects the results. Individual VMs and benchmarks
 are then wrapped, or altered, to report data back to \krun in an appropriate format.
@@ -641,9 +639,9 @@ The obvious way for \krun to determine which benchmark to run next is to examine
 its results file. However, this is a large file which grows over time, and
 reading it in could affect benchmarks (e.g.~due to significant memory
 fragmentation). When invoked for the first time, \krun
-therefore creates a simple schedule file. After each reboot this is scanned
+creates a simple schedule file. After each reboot this is scanned
 line-by-line for the next benchmark to run; the benchmark is run; and the schedule
-updated (without changing its size). Once the process execution is
+updated, without changing its size. Once the process execution is
 complete, \krun can safely load the results file in and append the results data,
 knowing that the reboot that will occur shortly after will put the machine into
 a (largely) known state.
@@ -706,10 +704,10 @@ kernel~\cite{tickless}, which requires recompiling the kernel with the
 Similarly, Linux's \texttt{perf} profiler may interrupt cores up to 100,000 times a
 second. We became aware of \texttt{perf} when \krun's \texttt{dmesg} checks
 notified us that the kernel had decreased the sample-rate by
-50\% due to excessive sampling overhead. This is troubling
-from a benchmarking perspective, as the change of sample rate could change
-benchmark performance mid-process execution. Although
-\texttt{perf} cannot be completely disabled, \krun sets it to sample at most
+50\% due to excessive overhead. While frequent sampling will clearly have some performance
+impact, adaptive sampling is even more troubling: a change of sample
+rate during a process execution could notably change performance.
+Although \texttt{perf} cannot be completely disabled, \krun sets it to sample at most
 once per second, minimising interruptions.
 
 
@@ -738,7 +736,7 @@ cycle, APERF, and MPERF counters.
 We use a monotonic wall-clock timer with sub-millisecond accuracy
 (\texttt{CLOCK\_MONOTONIC\_RAW} on Linux, and \texttt{CLOCK\-\_MONOTONIC} on
 OpenBSD). Although wall-clock time is the only measure which really matters to
-users, it gives no insight into multi-threaded computations: on Linux we therefore also record
+users, it gives no insight into multi-threaded computations: on Linux we also record
 core-cycle counts using the \texttt{CPU\-\_CLK\-\_UNHALTED\-.CORE} counter to see
 what work each core is actually doing. In contrast, we use the ratio of APERF/MPERF deltas
 solely as a safety check that our wall-clock times are valid.
@@ -999,8 +997,8 @@ means that, at least sometimes, users will experience poor performance.
 For benchmarks whose process executions all reach a steady state (i.e.~are
 any combination of \flatc, \warmup, or \slowdown) we report the number of
 iterations (\emph{steady iter (\#)}) and the time in seconds (\emph{steady iter (s)}) to
-reach the steady state, as well as the performance of the steady state itself in
-seconds (\emph{steady perf (s)}).
+reach the steady state, as well as the benchmark's performance while in the steady state
+in seconds (\emph{steady perf (s)}).
 
 \emph{Steady iter (\#)} and \emph{steady iter (s)} allow one to understand how long it takes
 a benchmark to reach a steady state, and are made possible by our use of changepoint
@@ -1029,31 +1027,6 @@ across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
 $B$ to produce $B'$; we then merge $A'$ and $B'$ to produce a new (bootstrapped)
 steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
-
-
-\begin{landscape}
-\begin{table*}[p]
-\vspace{-.35cm}
-\begin{adjustbox}{scale=.845}
-\input{bencher7.table}
-\end{adjustbox}
-\caption{Benchmark results for \bencherseven. For all process executions, we
-report the classification of the benchmark and, for good/bad inconsistent benchmarks,
-their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
-means 22 of the process executions were slowdown, and 8 warmup). For processes
-which reach a steady state we report three summary statistics. \emph{Steady iter
-(\#)} is the median in-process iteration number to reach the steady state,
-and \emph{Steady iter (s)} is the median wall-clock time (since the beginning of
-the process execution) to reach the steady state; for both measures we
-report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
-performance of the steady state segment across all process executions, which we
-report with 99\% confidence intervals. The thumbnail histograms
-show the spread of values; the red bar shows the location of the median
-(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
-\emph{Steady perf(s)}) value.}
-\label{tab:mainresults}
-\end{table*}
-\end{landscape}
 
 
 \section{Results}
@@ -1152,7 +1125,6 @@ the opposite appears to be true, suggesting that users of some code
 on some VMs suffer from a `double whammy' of poor warmup and poor
 steady state performance.
 
-
 \subsection{Warmup Plots}
 
 To understand why we see so many unexpected cases
@@ -1165,6 +1137,33 @@ core-cycle counts on the $y$-axes (one plot per-core). The plots in
 Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
 examples of run-sequence plots accompanied by core-cycle plots for no steady
 state and cyclic data respectively.
+
+\begin{landscape}
+\begin{table*}[p]
+\vspace{-.35cm}
+\begin{adjustbox}{scale=.845}
+\input{bencher7.table}
+\end{adjustbox}
+\caption{Benchmark results for \bencherseven. For all process executions, we
+report the classification of the benchmark and, for good/bad inconsistent benchmarks,
+their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
+means 22 of the process executions were slowdown, and 8 warmup). For processes
+which reach a steady state we report three summary statistics. \emph{Steady iter
+(\#)} is the median in-process iteration number to reach the steady state,
+and \emph{Steady iter (s)} is the median wall-clock time (since the beginning of
+the process execution) to reach the steady state; for both measures we
+report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
+performance of the steady state segment across all process executions, which we
+report with 99\% confidence intervals. The thumbnail histograms
+show the spread of values; the red bar shows the location of the median
+(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
+\emph{Steady perf(s)}) value.}
+\label{tab:mainresults}
+\end{table*}
+\end{landscape}
+
+
+
 
 \begin{figure}[t]
 \centering
@@ -1460,10 +1459,11 @@ By measuring \numpexecs process executions, we lessened, though did not
 remove, the chances of all our measurements coming from a narrow part of the
 overall search space.
 
-In controlling confounding variables, our benchmarking environment necessarily
-deviates from standard configurations. It is possible that in so doing, we have
+In controlling confounding variables, our benchmarking environment inevitably
+deviates from standard configurations. It is possible that in so doing we have
 created a system where benchmarks warmup (or otherwise) in a way that few will ever see in
-practise. However, our judgement is that this is preferable to running on a
+practise. However, our judgement is that this is a reasonable trade-off,
+given that the alternative of a
 system that is likely to introduce substantial noise into our readings.
 
 Current changepoint analysis algorithms -- including the PELT algorithm we use

@@ -1534,32 +1534,39 @@ give misleading statistics for VM benchmarking.
 
 We do not claim that this paper represents the end of the road in terms of VM
 benchmarking methodologies: we hope and expect that this work will be superseded
-by better approaches in the future. However, even this current work is
-sufficient to show that there are clear problems with previous approaches to VM
-benchmarking, including those we personally have been involved with in the past. In this
+by better approaches in the future. However, imperfect though it is, this paper
+does clearly show problems with previous approaches to VM
+benchmarking, including those this paper's authors have been involved with in the past. In this
 section we make some tentative suggestions to the VM developer and user
 communities based on our experience.
 
-First, our results show that many benchmarks take considerable time to reach a
+First, our results undermine the previous VM benchmarking orthodoxy of benchmarks
+reaching a steady state after a fixed number of iterations. It is clear
+that many benchmarks take considerable time to reach a
 steady state; that different process executions of the same benchmark reach a
 steady state at different points; and that some process executions do not ever
-reach a steady state. We can thus no longer assume that a steady state is
-reached after a fixed number (no matter how high) of in-process iterations, or
-that one process execution tells us about the rest. Each process execution's
-data must be analysed individually to determine if, and when, a steady state is
+reach a steady state. Even were one to pick a very high number of initial in-process
+iterations to discard, there is no guarantee that the remainder
+would represent the steady state. As a corollary, our results also show that it is unsafe to assume
+that one process execution of \vmbpair pair is representative of others. Each
+process execution must be analysed individually to determine if, and when, a steady state is
 reached. The fully automated changepoint analysis-based approach presented in
-this paper is one possibility, and is is available to everyone in our
-open-source tools.
+this paper is one approach to analysing each process execution individually, and
+released as open-source.
 
 Second, we believe that the traditional practise of presenting only steady state
-numbers is hard to defend, as it tells us too little about the real-world
-performance that users will experience. We hope that future VM experiments will
+numbers is hard to defend in the face of wildly varying warmup times. There
+are several benchmarks where different VMs warmup have steady state
+performance within 2x of each other, but whose warmup is 100-1000x different.
+For some users such differences are of little importance, but they are
+significant to a majority of users. We thus hope that future VM experiments will
 present: a benchmark's classification (warmup, flat, slowdown, no steady state);
-and, when appropriate, the point at which the steady state was reached (using
+and, if it reaches a steady state, when the steady state was reached (using
 one or both of steady state iter (\#) or (s)) and peak performance.
 
-Third, simply running benchmarks for a larger number of in-process iterations
-helps one understand a VM's long-term performance stability. Traditional VM
+Third, what allowed us to spot the issues noted in this paper was simply
+running benchmarks for a longer period than previous methodologies have
+suggested was useful. Traditional VM
 experiments often run for 5 or 10 in-process iterations. Our data clearly shows
 that, when a statistically robust analysis is desired, such short runs are
 insufficient. However, we realise that running 2000 in-process iterations may
@@ -1571,8 +1578,10 @@ longer-term stability has been affected.
 
 Fourth, because a \vmbpair's process executions are often inconsistent, more
 than 1 process execution must be run. Again, it is an open question as to how
-many process executions are needed to uncover inconsistencies. We suspect that
-10 process executions is a reasonable, and not too onerous, figure.
+many process executions are needed to uncover inconsistencies. Our data suggests that
+10 process executions is a reasonable, and realistic, figure for most
+cases. As for in-process iterations, occasionally running larger numbers of
+process executions will help identify infrequent performance issues.
 
 Fifth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning
@@ -1584,6 +1593,13 @@ Finally, we suspect that a reliance on small suites of benchmarks means that
 only small parts of VMs are being benchmarked effectively. We are increasingly
 of the opinion that benchmarking quality and quantity are tightly related, and
 that VMs need to be run on many more benchmarks than is typically the case.
+However, collecting benchmarks is surprisingly difficult as there are few
+guidelines as to what makes a good or bad benchmark. For example, programs with
+non-deterministic bugs are likely to frustrate those benchmarking them at best,
+and mislead them at worst. However, non-determinism in and of itself is not
+necessarily a good reason to dismiss a program as a possible benchmark,
+especially in modern languages where semi-random hashing of data-structures is
+common.
 
 
 \section{Conclusions}

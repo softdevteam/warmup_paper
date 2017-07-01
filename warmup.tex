@@ -765,7 +765,7 @@ core-cycle or APERF/MPERF counts) as shown in Listing~\ref{lst:krun-measure}.
 
 \begin{table}[t]
 \centering
-\begin{minipage}[t]{0.53\textwidth}
+\begin{minipage}[t]{0.57\textwidth}
 \begin{lstlisting}[xleftmargin=0cm]
 void krun_measure(int mdata_idx) {
   struct krun_data *data = &(krun_mdata[mdata_idx]);
@@ -788,22 +788,27 @@ void krun_measure(int mdata_idx) {
 \end{lstlisting}
 \end{minipage}%
 \hfill
-\begin{minipage}[t]{0.43\textwidth}
+\begin{minipage}[t]{0.39\textwidth}
 \begin{lstlisting}[xleftmargin=0cm]
 wallclock_times = [0] * iters
 for i in xrange(iters):
-    krun_measure(0)   # Start timed section
-    bench_func(param) # Call the benchmark
-    krun_measure(1)   # End timed section
-    wallclock_times[i] = \
-        krun_get_wallclock(1) - \
-        krun_get_wallclock(0)
-js = { "wallclock_times": wallclock_times }
-sys.stdout.write("%s\n" % json.dumps(js))
+  # Start timed section
+  krun_measure(0)
+  # Call the benchmark
+  bench_func(param)
+  # End timed section
+  krun_measure(1)
+  wallclock_times[i] = \
+    krun_get_wallclock(1) - \
+    krun_get_wallclock(0)
+js = { "wallclock_times": \
+        wallclock_times }
+sys.stdout.write(\
+  "%s\n" % json.dumps(js))
 \end{lstlisting}
 \end{minipage}%
 \\
-\begin{minipage}[t]{0.53\textwidth}
+\begin{minipage}[t]{0.57\textwidth}
 \captionof{lstlisting}{\texttt{krun\_measure}: Measuring before (the \texttt{if} true branch) and
 after (the false branch) a benchmark. Since
 wall-clock time is the most important measure, it is innermost; since
@@ -813,7 +818,7 @@ and after a benchmark.}
 \label{lst:krun-measure}
 \end{minipage}%
 \hfill
-\begin{minipage}[t]{0.43\textwidth}
+\begin{minipage}[t]{0.39\textwidth}
 \captionof{lstlisting}{An elided version of the Python
 in-process iteration runner (with core-cycles etc. removed).}
 \label{lst:pyiter}
@@ -933,30 +938,33 @@ classification algorithm for an individual process execution. Given an ordered
 list of segments -- each of which has "mean", "variance", and "end" attributes, the latter
 being the absolute index of the last iteration in the segment --
 this function returns a string classifying the run sequence's warmup style.}]
-DELTA = 0.001  # Absolute time delta (in seconds) below which segments are always considered equivalent
-STEADY_STATE_LEN = 500  # We expect to reach a steady state before the last STEADY_STATE_LEN iterations
+DELTA = 0.001          # Absolute time delta (in seconds) below which segments are
+                       # considered equivalent.
+STEADY_STATE_LEN = 500 # How many in-process iterations from the end of the time-series
+                       # data will a non-equivalent segment trigger "no steady state"?
 
 def classify(segs):
-  assert(len(segs) > 0)
-  last_seg = segs[len(segs) - 1]
-  lower_bound = last_seg.mean - max(last_seg.variance, DELTA)
-  upper_bound = last_seg.mean + max(last_seg.variance, DELTA)
-  cls = "flat"
-  i = len(segs) - 2
-  while i > -1:
-    cur_seg = segs[i]
-    i -= 1
-    if cur_seg.mean + cur_seg.variance >= lower_bound and cur_seg.mean - cur_seg.variance <= upper_bound:
-      continue
-    elif cur_seg.end > len(segs) - STEADY_STATE_LEN:
-      cls = "no steady state"
-      break
-    elif cur_seg.mean < lower_bound:
-      cls = "slowdown"
-      break
-    assert(cur_seg.mean > upper_bound)
-    cls = "warmup"
-  return cls
+    assert(len(segs) > 0)
+    last_seg = segs[len(segs) - 1]
+    lower_bound = last_seg.mean - max(last_seg.variance, DELTA)
+    upper_bound = last_seg.mean + max(last_seg.variance, DELTA)
+    cls = "flat"
+    i = len(segs) - 2
+    while i > -1:
+        cur_seg = segs[i]
+        i -= 1
+        if cur_seg.mean + cur_seg.variance >= lower_bound \
+          and cur_seg.mean - cur_seg.variance <= upper_bound:
+            continue
+        elif cur_seg.end > len(segs) - STEADY_STATE_LEN:
+            cls = "no steady state"
+            break
+        elif cur_seg.mean < lower_bound:
+            cls = "slowdown"
+            break
+        assert(cur_seg.mean > upper_bound)
+        cls = "warmup"
+    return cls
 \end{lstlisting}
 \vspace{-.75cm}
 \end{figure}
@@ -1239,7 +1247,7 @@ execution, as can be clearly seen in Figure~\ref{fig:examples:nosteadystate}.
 Although multi-threaded VMs can run JIT compilation and / or GC in parallel,
 it is typically hard to visually detect such parallelism as it tends to be
 accompanied by frequent migration between cores.
-However, it can often easily be seen that several cores are active during the first few
+However, it can often be seen that several cores are active during the first few
 in-process iterations whilst JIT compilation occurs.
 
 
@@ -1384,7 +1392,7 @@ These calls are more involved than \texttt{clock\_gettime}:
 as well as the file system overhead, reading from a MSR device
 node triggers inter-processor interrupts to schedule an \texttt{RDMSR}
 instruction on the desired core (causing the running core to save its registers etc.).
-We are not currently aware of a practical way to lower these costs.
+We are not aware of a practical way to lower these costs.
 
 Although \krun does as much to control CPU clock speed as possible, modern CPUs
 do not always respect operating system requests. On Linux, we use the

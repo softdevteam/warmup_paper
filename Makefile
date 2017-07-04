@@ -3,6 +3,7 @@ PDFLATEX=pdflatex -synctex=1
 .SUFFIXES: .tex .ps .dia .pdf .svg
 
 LATEX_SIGPLAN = warmup
+DIFF = diff-warmup
 
 LATEX_COMMON =
 
@@ -42,7 +43,7 @@ CODE =
 
 BASE_CLEANFILES =	aux bbl blg dvi log ps pdf toc out snm nav vrb \
 			vtc synctex.gz
-OTHER_CLEANFILES =	bib.bib texput.log warmup_paper.pdf warmup_appendix.pdf
+OTHER_CLEANFILES =	bib.bib texput.log warmup_paper.pdf warmup_appendix.pdf submitted.tex ${DIFF}.tex
 
 all: ${LATEX_SIGPLAN}.pdf bib.bib
 
@@ -56,6 +57,7 @@ clean: clean-sigplan clean-arxiv
 clean-sigplan:
 	rm -rf ${DIAGRAMS:S/.pdf/.eps/}
 	for i in ${BASE_CLEANFILES}; do rm -f ${LATEX_SIGPLAN}.$${i}; done
+	for i in ${BASE_CLEANFILES}; do rm -f ${DIFF}.$${i}; done
 	rm -f ${OTHER_CLEANFILES}
 
 bib.bib: softdevbib/softdev.bib
@@ -77,6 +79,16 @@ ${LATEX_SIGPLAN}.pdf: ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 
+.PHONY: diff
+diff: ${DIFF}.pdf
+
+${DIFF}.pdf: ${LATEX_SIGPLAN}.pdf
+	git show oopsla17_submission:warmup.tex > submitted.tex
+	latexdiff submitted.tex warmup.tex > ${DIFF}.tex
+	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${DIFF}.tex
+	bibtex ${DIFF}
+	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${DIFF}.tex
+	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${DIFF}.tex
 #
 # Plots in main body of paper (in order of appearance in tex src).
 # Outputs imported into git for convenience.

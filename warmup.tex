@@ -879,7 +879,7 @@ tricky: simple heuristics suffer from both false positives and negatives~\cite{k
 `I know it when I see it' manual detection is time-consuming and prone to human
 error.
 
-We therefore use the recently introduced concept of changepoint analysis
+We therefore use the concept of changepoint analysis
 (see~\citet{eckley11analysis} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
@@ -894,6 +894,16 @@ algorithm~\cite{killick12optimal}, which can detect arbitrary numbers of changep
 returns changepoint locations and the mean and variance
 of each segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
+
+In order to solve the changepoint problem we calculate the fit of the model with fixed changepoints 
+and then minimize this over all possible changepoint locations.  This requires the calculation of 
+$2^{n-1}$ model fits.  For $n=2,000$ and 10 changepoints there are still $2.745 \times 10^{26}$ 
+solutions as to where the changepoints are.  To reduce the computational burden PELT considers 
+the data sequentially and uses dynamic programming to reduce the problem to only considering the 
+location of the last changepoint. Furthermore PELT includes an extra pruning step: once an 
+``obvious'' changepoint has occurred it is unlikely that the last changepoint locations will be 
+prior to this ``obvious'' change.  This reduces the computational cost from $\mathcal{O}(n^3)$ to 
+$\mathcal{O}(n)$.
 
 
 \subsection{Classifications}

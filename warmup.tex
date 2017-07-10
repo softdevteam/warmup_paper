@@ -1547,16 +1547,16 @@ give misleading statistics for VM benchmarking.
 One limitation of our work (described in more detail in
 Section~\ref{suggestions}) is that we have little idea of how often benchmarks
 should be run to obtain reliable statistics. There are several approaches which
-aim to dynamically determine how often benchmarks in non-JIT compiling VM
-contexts need to be run to obtain reliable statistics (see~\cite{chen16robust}
+aim to dynamically discover how often benchmarks in non-JIT compiling VM
+contexts need to be run in order to obtain reliable statistics (see~\cite{chen16robust}
 for an overview of such work). To the best of our knowledge, none of
 these techniques are warmup-aware: in their raw form they would be prone to the
 same problems as the simple warmup-aware heuristics noted above. Since all such
 techniques come with their own sets of assumptions about the nature of the data
-they expect, it may be challenging to adapt them to become warmup-aware.
+they expect, adapting them to become warmup-aware may not be trivial.
 For example, \cite{chen16robust} requires the user to specify an
 oracle which takes previous execution benchmark timings and returns the number
-of further executions needed. Given the frequency of inconsistent process
+of further executions needed. Given the unpredictable nature of inconsistent process
 executions in our results, it is unclear to us what such an oracle might look
 like.
 

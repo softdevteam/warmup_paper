@@ -1547,8 +1547,25 @@ steady state, including Figure~\ref{fig:examples:nosteadystate}. This confirms
 the findings from \cite{kalibera13rigorous} that simple heuristics can often
 give misleading statistics for VM benchmarking.
 
+One limitation of our work (described in more detail in
+Section~\ref{suggestions}) is that we have little idea of how often benchmarks
+should be run to obtain reliable statistics. There are several approaches which
+aim to dynamically determine how often benchmarks in non-JIT compiling VM
+contexts need to be run to obtain reliable statistics (see~\cite{chen16robust}
+for an overview of such work). To the best of our knowledge, none of
+these techniques is warmup aware: in their raw form they would be prone to the
+same problems as the simple warmup-aware heuristics noted above. Since all such
+techniques come with their own sets of assumptions about the nature of the data
+they expect, it may be challenging to adapt them to become warmup-aware.
+For example, \cite{chen16robust} requires the user to specify an
+oracle which takes previous execution benchmark timings and returns the number
+of further executions needed. Given the frequency of inconsistent process
+executions in our results, it is unclear to us what such an oracle might look
+like.
+
 
 \section{Suggestions for the Community}
+\label{suggestions}
 
 We do not claim that this paper represents the end of the road in terms of VM
 benchmarking methodologies: we hope and expect that this work will be superseded
@@ -1576,9 +1593,9 @@ Second, we believe that the traditional practise of presenting only steady state
 numbers is hard to defend in the face of wildly varying warmup times. There
 are several benchmarks where different VMs warmup have steady state
 performance within 2x of each other, but whose warmup is 100-1000x different.
-For some users such differences are of little importance, but they are
-significant to a majority of users. We thus hope that future VM experiments will
-present: a benchmark's classification (warmup, flat, slowdown, no steady state);
+While such differences may be of little importance to some users,
+they are important to the majority. We thus hope that future VM experiments will
+report: a benchmark's classification (warmup, flat, slowdown, no steady state);
 and, if it reaches a steady state, when the steady state was reached (using
 one or both of steady state iter (\#) or (s)) and peak performance.
 
@@ -1589,9 +1606,9 @@ experiments often run for 5 or 10 in-process iterations. Our data clearly shows
 that, when a statistically robust analysis is desired, such short runs are
 insufficient. However, we realise that running 2000 in-process iterations may
 not always be feasible. It is an open question as to what a good number of
-in-process iterations might be. One possibility might be to mostly use smaller
-numbers of in-process iterations (e.g.~in many cases, 200 in-process iterations
-is sufficient) and occasionally to use larger numbers (e.g.~1500) to see if
+in-process iterations might be. One possibility might be to use smaller
+numbers of in-process iterations (e.g.~200 in-process iterations)
+most of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 
 Fourth, because a \vmbpair's process executions are often inconsistent, more
@@ -1613,8 +1630,8 @@ of the opinion that benchmarking quality and quantity are tightly related, and
 that VMs need to be run on many more benchmarks than is typically the case.
 However, collecting benchmarks is surprisingly difficult as there are few
 guidelines as to what makes a good or bad benchmark. For example, programs with
-non-deterministic bugs are likely to frustrate those benchmarking them at best,
-and mislead them at worst. However, non-determinism in and of itself is not
+non-deterministic bugs are likely, at best, to frustrate those benchmarking them and,
+at worst, to mislead them. However, non-determinism in and of itself is not
 necessarily a good reason to dismiss a program as a possible benchmark,
 especially in modern languages where semi-random hashing of data-structures is
 common.

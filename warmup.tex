@@ -898,7 +898,7 @@ consideration of large numbers of possible changepoints. A completely naive
 approach requires an infeasible $2^{n-1}$ calculations ($2^{1999}$ in our context).
 More sophisticated changepoint analysis algorithms reduce this to $\mathcal{O}(n^3)$.
 We utilise the PELT algorithm~\cite{killick12optimal} which reduces the
-complexity to a more manageable $\mathcal{O}(n^2)$ by noting that once an
+complexity to $\mathcal{O}(n)$ by noting that once an
 ``obvious'' changepoint has been discovered, it is not worth searching behind it
 for further changepoints. Candidate segments are compared relative to their fit (defined
 as the negative log-likelihood, which is based on a model of the normal

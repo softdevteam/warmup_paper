@@ -896,21 +896,34 @@ changepoint segments in our context.
 Under the hood, we use the PELT algorithm~\cite{killick12optimal}, which can
 detect an arbitrary number of changepoints. This is a computationally challenging
 problem, requiring the calculation of $2^{n-1}$ \laurie{i think $n$ is the
-length of the time series data?} model fits.
+length of the time series data? RK: Yes it is defined in the previous paragraph} model fits.
 For $n=2,000$ and 10 changepoints there are still $2.745 \times 10^{26}$
 solutions as to where the changepoints are \laurie{not quite sure I understand
 this: I assume that what we're saying is ``even if we only wanted to find 10
 changepoints, we'd still have 10**26 solutions? but since we potentially have
-2000 changepoints, does that mean the complete search space is 2000**26?}.
+2000 changepoints, does that mean the complete search space is 2000**26?  RK: Sort of, we can't 
+detect 2000 as there has to be 2 datapoints between changes so maximum number of changes is 1000, 
+so the complete search space is 1999choose999 (n-1 choose M-1, M is max number of changes)which is 
+infinity.  I didn't think this was that informative.}.
 To reduce the computational burden PELT considers
 the data sequentially and uses dynamic programming to reduce the problem to only considering the 
 location of the last changepoint \laurie{obvious question: doesn't this still make it slow to detect
-the first changepoint if it's towards the end of the time series data?}. Furthermore PELT includes an extra pruning step: once an
+the first changepoint if it's towards the end of the time series data? The maximum order is 
+$\mathcal{O}(n^2)$ when there are no changes in the data.  In reality the order is 
+$\mathcal{O}(Ln)$ where $L$ is the maximum in the pruned list.  We have shown theoretically that 
+when you have changes occurring throughout your data this list is bounded by a constant.}. 
+Furthermore PELT includes an extra pruning step: once an
 ``obvious'' changepoint has occurred it is unlikely \laurie{does `unlikely' mean
-``could happen, but it's so rare that it's not worth considering''?} that the
+``could happen, but it's so rare that it's not worth considering''? It is a combination of penalty 
+value.  So for a specific penalty it is actually that there is 0 probability of it being a change} 
+that the
 last changepoint locations will be
 prior to this ``obvious'' change.  This reduces the computational cost from $\mathcal{O}(n^3)$ to 
-$\mathcal{O}(n)$ \laurie{i'm not sure i can quite relate this order of complexity to what came earlier}.
+$\mathcal{O}(n)$ \laurie{i'm not sure i can quite relate this order of complexity to what came 
+earlier.  RK: This could be clearer.  The above is the number of computations required if you want 
+to calculate them all.  The $\mathcal{O}(n^3)$ is the original exact algorithm (which uses one 
+version of dynamic programming).  I would have liked to have written the number of computations for 
+PELT but as it is dynamic sadly you can't.}.
 
 
 \subsection{Classifications}

@@ -889,21 +889,28 @@ for our data is to consider changes in both the mean and variance of in-process
 iterations. In order to automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
-\texttt{penalty} argument. This function uses the PELT
-algorithm~\cite{killick12optimal}, which can detect arbitrary numbers of changepoints; it
-returns changepoint locations and the mean and variance
+\texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
 of each segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
 
-In order to solve the changepoint problem we calculate the fit of the model with fixed changepoints 
-and then minimize this over all possible changepoint locations.  This requires the calculation of 
-$2^{n-1}$ model fits.  For $n=2,000$ and 10 changepoints there are still $2.745 \times 10^{26}$ 
-solutions as to where the changepoints are.  To reduce the computational burden PELT considers 
+Under the hood, we use the PELT algorithm~\cite{killick12optimal}, which can
+detect an arbitrary number of changepoints. This is a computationally challenging
+problem, requiring the calculation of $2^{n-1}$ \laurie{i think $n$ is the
+length of the time series data?} model fits.
+For $n=2,000$ and 10 changepoints there are still $2.745 \times 10^{26}$
+solutions as to where the changepoints are \laurie{not quite sure I understand
+this: I assume that what we're saying is ``even if we only wanted to find 10
+changepoints, we'd still have 10**26 solutions? but since we potentially have
+2000 changepoints, does that mean the complete search space is 2000**26?}.
+To reduce the computational burden PELT considers
 the data sequentially and uses dynamic programming to reduce the problem to only considering the 
-location of the last changepoint. Furthermore PELT includes an extra pruning step: once an 
-``obvious'' changepoint has occurred it is unlikely that the last changepoint locations will be 
+location of the last changepoint \laurie{obvious question: doesn't this still make it slow to detect
+the first changepoint if it's towards the end of the time series data?}. Furthermore PELT includes an extra pruning step: once an
+``obvious'' changepoint has occurred it is unlikely \laurie{does `unlikely' mean
+``could happen, but it's so rare that it's not worth considering''?} that the
+last changepoint locations will be
 prior to this ``obvious'' change.  This reduces the computational cost from $\mathcal{O}(n^3)$ to 
-$\mathcal{O}(n)$.
+$\mathcal{O}(n)$ \laurie{i'm not sure i can quite relate this order of complexity to what came earlier}.
 
 
 \subsection{Classifications}

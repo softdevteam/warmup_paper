@@ -937,7 +937,7 @@ little under 0.001s. In long running benchmarks, an individual external
 event may add a relatively small amount of noise, but the cumulative
 effect of many external events can add up: fortunately, a changepoint segment's variance
 naturally captures this proportional notion of tolerance. We therefore combine these two notions,
-formally defining that a segment $s_i$ 
+formally defining that a segment $s_i$
 is equivalent to the final segment $s_f$ if $\textrm{mean}(s_i)$
 is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$.
 

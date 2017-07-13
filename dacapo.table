@@ -1,6 +1,6 @@
 
 {
-\setlength\sparkspikewidth{1pt}
+\setlength\sparkspikewidth{1.5pt}
 \definecolor{sparkbottomlinecolor}{gray}{0.8}
 % Older versions of sparklines do not expose bottomlinethickness
 \renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
@@ -60,7 +60,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{1.87639} \\[-6pt]
-\scriptscriptstyle{\pm0.026370}
+\scriptscriptstyle{\pm0.026359}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -128,8 +128,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.85569} \\[-6pt]
-\scriptscriptstyle{\pm0.044816}
+\scriptstyle{1.85568} \\[-6pt]
+\scriptscriptstyle{\pm0.044805}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -222,8 +222,8 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($22$\slowdown, $8$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 h2&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{3.23267} \\[-6pt]
-\scriptscriptstyle{\pm0.078985}
+\scriptstyle{3.23273} \\[-6pt]
+\scriptscriptstyle{\pm0.079024}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -246,7 +246,7 @@ $
 &\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
 \scriptstyle{3.00628} \\[-6pt]
-\scriptscriptstyle{\pm0.103493}
+\scriptscriptstyle{\pm0.103632}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -317,8 +317,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.65194} \\[-6pt]
-\scriptscriptstyle{\pm0.006565}
+\scriptstyle{0.65195} \\[-6pt]
+\scriptscriptstyle{\pm0.006567}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -386,8 +386,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.50349} \\[-6pt]
-\scriptscriptstyle{\pm0.024071}
+\scriptstyle{0.50350} \\[-6pt]
+\scriptscriptstyle{\pm0.024075}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -456,8 +456,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.64895} \\[-6pt]
-\scriptscriptstyle{\pm0.016646}
+\scriptstyle{0.64894} \\[-6pt]
+\scriptscriptstyle{\pm0.016645}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -480,8 +480,8 @@ $
 \\ 
 sunflow&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($24$\warmup, $4$\nosteadystate, $2$\slowdown)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{1.70200} \\[-6pt]
-\scriptscriptstyle{\pm0.022761}
+\scriptstyle{1.70203} \\[-6pt]
+\scriptscriptstyle{\pm0.022747}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -550,8 +550,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{2.14286} \\[-6pt]
-\scriptscriptstyle{\pm0.063492}
+\scriptstyle{2.14287} \\[-6pt]
+\scriptscriptstyle{\pm0.063497}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -574,8 +574,8 @@ $
 \\ 
 tradesoap&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{2.70723} \\[-6pt]
-\scriptscriptstyle{\pm0.039511}
+\scriptstyle{2.70721} \\[-6pt]
+\scriptscriptstyle{\pm0.039574}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -645,7 +645,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.46849} \\[-6pt]
-\scriptscriptstyle{\pm0.011537}
+\scriptscriptstyle{\pm0.011542}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}

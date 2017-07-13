@@ -1,6 +1,6 @@
 
 {
-\setlength\sparkspikewidth{1pt}
+\setlength\sparkspikewidth{1.5pt}
 \definecolor{sparkbottomlinecolor}{gray}{0.8}
 % Older versions of sparklines do not expose bottomlinethickness
 \renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
@@ -61,7 +61,7 @@ $
 Graal&$
 \begin{array}{r}
 \scriptstyle{0.34815} \\[-6pt]
-\scriptscriptstyle{\pm0.000234}
+\scriptscriptstyle{\pm0.000233}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -85,7 +85,7 @@ $
 HHVM&$
 \begin{array}{r}
 \scriptstyle{0.75270} \\[-6pt]
-\scriptscriptstyle{\pm0.002039}
+\scriptscriptstyle{\pm0.002056}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -109,7 +109,7 @@ $
 Hotspot&$
 \begin{array}{r}
 \scriptstyle{0.14716} \\[-6pt]
-\scriptscriptstyle{\pm0.000712}
+\scriptscriptstyle{\pm0.000708}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -132,7 +132,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.17997} \\[-6pt]
-\scriptscriptstyle{\pm0.000246}
+\scriptscriptstyle{\pm0.000247}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -156,7 +156,7 @@ $
 JRubyTruffle&$
 \begin{array}{r}
 \scriptstyle{2.66179} \\[-6pt]
-\scriptscriptstyle{\pm0.011795}
+\scriptscriptstyle{\pm0.011864}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -180,7 +180,7 @@ $
 LuaJIT&$
 \begin{array}{r}
 \scriptstyle{0.00389} \\[-6pt]
-\scriptscriptstyle{\pm0.000446}
+\scriptscriptstyle{\pm0.000442}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -226,8 +226,8 @@ $
 \\ 
 PyPy&$
 \begin{array}{r}
-\scriptstyle{0.44039} \\[-6pt]
-\scriptscriptstyle{\pm0.001069}
+\scriptstyle{0.44040} \\[-6pt]
+\scriptscriptstyle{\pm0.001067}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}

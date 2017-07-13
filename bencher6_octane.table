@@ -1,6 +1,6 @@
 
 {
-\setlength\sparkspikewidth{1pt}
+\setlength\sparkspikewidth{1.5pt}
 \definecolor{sparkbottomlinecolor}{gray}{0.8}
 % Older versions of sparklines do not expose bottomlinethickness
 \renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
@@ -64,7 +64,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.78813} \\[-6pt]
-\scriptscriptstyle{\pm0.005146}
+\scriptscriptstyle{\pm0.005147}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -134,7 +134,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.88864} \\[-6pt]
-\scriptscriptstyle{\pm0.004124}
+\scriptscriptstyle{\pm0.004125}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -205,8 +205,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.03211} \\[-6pt]
-\scriptscriptstyle{\pm0.073941}
+\scriptstyle{1.03212} \\[-6pt]
+\scriptscriptstyle{\pm0.073943}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -230,8 +230,8 @@ $
 Richards&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\nosteadystate}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}\\ 
 Splay&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
-\scriptstyle{0.56816} \\[-6pt]
-\scriptscriptstyle{\pm0.009883}
+\scriptstyle{0.56815} \\[-6pt]
+\scriptscriptstyle{\pm0.009868}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -300,8 +300,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.99423} \\[-6pt]
-\scriptscriptstyle{\pm0.042914}
+\scriptstyle{1.99426} \\[-6pt]
+\scriptscriptstyle{\pm0.042858}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}

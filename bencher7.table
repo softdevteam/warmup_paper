@@ -1,6 +1,6 @@
 
 {
-\setlength\sparkspikewidth{1pt}
+\setlength\sparkspikewidth{1.5pt}
 \definecolor{sparkbottomlinecolor}{gray}{0.8}
 % Older versions of sparklines do not expose bottomlinethickness
 \renewcommand{\sparkbottomline}[1][1]{\pgfsetlinewidth{0.2pt}%
@@ -153,7 +153,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.13334} \\[-6pt]
-\scriptscriptstyle{\pm0.000044}
+\scriptscriptstyle{\pm0.000045}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -363,7 +363,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{2.05150} \\[-6pt]
-\scriptscriptstyle{\pm0.017737}
+\scriptscriptstyle{\pm0.017738}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -480,7 +480,7 @@ $
 PyPy&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\badinconsistent \scriptsize($27$\slowdown, $3$\nosteadystate)}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&&\multicolumn{1}{l}{\flatc}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&\begin{minipage}[c][\blankheight]{0pt}\end{minipage}&$
 \begin{array}{r}
 \scriptstyle{1.85835} \\[-6pt]
-\scriptscriptstyle{\pm0.012892}
+\scriptscriptstyle{\pm0.012893}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -550,7 +550,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.49237} \\[-6pt]
-\scriptscriptstyle{\pm0.003197}
+\scriptscriptstyle{\pm0.003198}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -619,7 +619,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{0.24138} \\[-6pt]
-\scriptscriptstyle{\pm0.000390}
+\scriptscriptstyle{\pm0.000389}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -692,7 +692,7 @@ $
 &$
 \begin{array}{r}
 \scriptstyle{1.35779} \\[-6pt]
-\scriptscriptstyle{\pm0.011947}
+\scriptscriptstyle{\pm0.011948}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -831,8 +831,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{1.08835} \\[-6pt]
-\scriptscriptstyle{\pm0.038581}
+\scriptstyle{1.08833} \\[-6pt]
+\scriptscriptstyle{\pm0.038580}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -900,8 +900,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.89508} \\[-6pt]
-\scriptscriptstyle{\pm0.027589}
+\scriptstyle{0.89509} \\[-6pt]
+\scriptscriptstyle{\pm0.027590}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}
@@ -1063,8 +1063,8 @@ $
 \renewcommand{\sparklineheight}{1.75}}
 &$
 \begin{array}{r}
-\scriptstyle{0.96808} \\[-6pt]
-\scriptscriptstyle{\pm0.010951}
+\scriptstyle{0.96809} \\[-6pt]
+\scriptscriptstyle{\pm0.010950}
 \end{array}
 $
 \noindent\parbox[p]{4ex}{\renewcommand{\sparklineheight}{2.75}

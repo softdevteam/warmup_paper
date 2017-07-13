@@ -94,14 +94,23 @@ ${DIFF}.pdf: ${LATEX_SIGPLAN}.pdf
 # Outputs imported into git for convenience.
 #
 
-# use this to force regeneration of plots on next build
+# Use this to force regeneration of plots on next build.
 clean-plots:
 	rm -f ${PLOTS}
+
+# Use this to force regeneration of tables on next build.
+clean-tables:
+	rm -f ${TABLES}
 
 # Not included, too large for repo.
 # clone this manually
 EXPERIMENT_REPO=../warmup_experiment
 
+BENCHER5_OCTANE_DATA=annotated_results/octane_spidermonkey_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2 annotated_results/octane_v8_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2
+BENCHER6_OCTANE_DATA=annotated_results/octane_v8_results_0_8_openbsd1_i7_4790_outliers_w200_changepoints.json.bz2
+BENCHER7_OCTANE_DATA=annotated_results/octane_spidermonkey_results_0_8_linux3_e3_1240_outliers_w200_changepoints.json.bz2 annotated_results/octane_v8_results_0_8_linux3_e3_1240_outliers_w200_changepoints.json.bz2
+DACAPO_DATA=annotated_results/dacapo_graal_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2 annotated_results/dacapo_hotspot_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2
+STARTUP_DATA=annotated_results/startup_results_0_8_linux2_i7_4790.json.bz2 annotated_results/startup_results_0_8_openbsd1_i7_4790.json.bz2
 BENCHER5_DATA=annotated_results/warmup_results_0_8_linux2_i7_4790_outliers_w200_changepoints.json.bz2
 BENCHER6_DATA=annotated_results/warmup_results_0_8_openbsd1_i7_4790_outliers_w200_changepoints.json.bz2
 BENCHER7_DATA=annotated_results/warmup_results_0_8_linux3_e3_1240_outliers_w200_changepoints.json.bz2
@@ -200,6 +209,36 @@ examples/new_miscomp.pdf:
 examples/new_good_comp.pdf:
 	${EXPERIMENT_REPO}/bin/plot_krun_results --with-changepoint-means --with-outliers -o examples/new_good_comp.pdf ${BENCHER7_INSTR_DATA} -b bencher7:fasta:PyPy:default-python:4 --core-cycles "" --no-zoom --export-size ${WIDTH_2COL},6
 
+
+# Tables.
+
+bencher5_octane.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_others -s 2 -o bencher5_octane.table ${BENCHER5_OCTANE_DATA}
+
+bencher6_octane.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_others -s 1 -o bencher6_octane.table ${BENCHER6_OCTANE_DATA}
+
+bencher7_octane.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_others -s 2 -o bencher7_octane.table ${BENCHER7_OCTANE_DATA}
+
+dacapo.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_others -s 2 -o dacapo.table ${DACAPO_DATA}
+
+startup.table:
+	${EXPERIMENT_REPO}/bin/table_startup_results -o startup.table ${STARTUP_DATA}
+
+bencher5.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_main -o bencher5.table ${BENCHER5_DATA}
+
+bencher6.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_main -o bencher6.table ${BENCHER6_DATA}
+
+bencher7.table:
+	${EXPERIMENT_REPO}/bin/table_classification_summaries_main -o bencher7.table ${BENCHER7_DATA}
+
+.PHONY: tables
+tables: bencher5.table bencher6.table bencher7.table startup.table dacapo.table bencher5_octane.table \
+	bencher6_octane.table bencher7_octane.table
 
 # Package up the paper for arxiv.org.
 # Note that acmart.cls is included in tex live 2016.

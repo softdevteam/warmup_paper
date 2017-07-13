@@ -1158,7 +1158,8 @@ state and cyclic data respectively.
 \begin{landscape}
 \begin{table*}[p]
 \vspace{-.35cm}
-\begin{adjustbox}{scale=.845}
+% If this table gets any wider, the caption falls off the edge of the page :(
+\begin{adjustbox}{scale=.85}
 \input{bencher7.table}
 \end{adjustbox}
 \caption{Benchmark results for \bencherseven. For all process executions, we
@@ -1754,7 +1755,9 @@ blips less noticeable.
 \begin{landscape}
 \begin{table*}[htp]
 \centering
+\begin{adjustbox}{scale=.9}
 \input{dacapo.table}
+\end{adjustbox}
 \caption{DaCapo results for \bencherfive.}
 \label{tab:dacapo}
 \end{table*}
@@ -1764,7 +1767,7 @@ blips less noticeable.
 \begin{landscape}
 \begin{table*}[htp]
 \centering
-\begin{adjustbox}{scale=.845}
+\begin{adjustbox}{scale=.9}
 \input{bencher5_octane.table}
 \end{adjustbox}
 \caption{Octane results for \bencherfive.}
@@ -1774,7 +1777,7 @@ blips less noticeable.
 
 \begin{table*}[htp]
 \centering
-\begin{adjustbox}{scale=.845}
+\begin{adjustbox}{scale=.9}
 \input{bencher6_octane.table}
 \end{adjustbox}
 \caption{Octane results for \benchersix.}
@@ -1784,7 +1787,7 @@ blips less noticeable.
 \begin{landscape}
 \begin{table*}[htp]
 \centering
-\begin{adjustbox}{scale=.845}
+\begin{adjustbox}{scale=.9}
 \input{bencher7_octane.table}
 \end{adjustbox}
 \caption{Octane results for \bencherseven.}
@@ -1803,7 +1806,7 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \begin{landscape}
 \begin{table*}[t]
 \centering
-\begin{adjustbox}{scale=.845}
+\begin{adjustbox}{scale=.85} % This table is BIG.
 \input{bencher5.table}
 \end{adjustbox}
 \caption{Benchmark results for \bencherfive.}
@@ -1814,7 +1817,7 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 \begin{landscape}
 \begin{table*}[t]
 \centering
-\begin{adjustbox}{scale=.845}
+\begin{adjustbox}{scale=.9}
 \input{bencher6.table}
 \end{adjustbox}
 \captionof{table}{Benchmark results for \benchersix.}

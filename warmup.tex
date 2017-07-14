@@ -899,18 +899,11 @@ approach requires an infeasible $2^{n-1}$ calculations ($2^{1999}$ in our contex
 More sophisticated changepoint analysis algorithms reduce this to $\mathcal{O}(n^3)$.
 We utilise the PELT algorithm~\cite{killick12optimal} which reduces the
 complexity to $\mathcal{O}(n)$ by noting that once an
-``obvious'' changepoint has been discovered, it is not worth searching behind it
-for further changepoints\edd{Not enough contextual discussion to know the
-meaning of ``behind''. So are we searching left to right then? Behind would be
-further to the left? Would it be enough to say it uses a heuristic to find an
-approximation?}. Candidate segments are compared relative to their fit (defined
+``obvious'' changepoint has been discovered, it is not worth including
+data before the changepoint in further searches.
+Candidate segments are compared relative to their fit (defined
 as the negative log-likelihood, which is based on a model of the normal
 distribution with changing mean and variance) and penalty (described above).
-\edd{Lots of terminology I don't understand here. Is it worth simplifying and
-referring the reader to the PELT paper? As it stands, unless the reader has
-read the other paper, the last couple of sentences make little sense.
-Alternatively you could add more detail, explaining briefly: segment fit,
-negative log likelihood, and the model.}.
 
 
 \subsection{Classifications}
@@ -1020,10 +1013,10 @@ means that, at least sometimes, users will experience poor performance.
 \label{sec:timings}
 
 For benchmarks whose process executions all reach a steady state (i.e.~are
-any combination of \flatc, \warmup, or \slowdown), we report the number of
+any combination of \flatc, \warmup, or \slowdown) we report the number of
 iterations (\emph{steady iter (\#)}) and the time in seconds (\emph{steady iter (s)}) to
-reach the steady state, as well as the in-process iteration time in seconds for
-the steady state (\emph{steady perf (s)}).
+reach the steady state, as well as the performance within the steady
+state(\emph{steady perf (s)}).
 
 \emph{Steady iter (\#)} and \emph{steady iter (s)} allow one to understand how long it takes
 a benchmark to reach a steady state, and are made possible by our use of changepoint
@@ -1556,8 +1549,7 @@ give misleading statistics for VM benchmarking.
 
 One limitation of our work (described in more detail in
 Section~\ref{suggestions}) is that we have little idea of how often benchmarks
-should be run \edd{do we mean, how many times they are repeated, not how
-often?} to obtain reliable statistics. There are several approaches which
+should be repeated to obtain reliable statistics. There are several approaches which
 aim to dynamically discover how often benchmarks in non-JIT compiling VM
 contexts need to be run in order to obtain reliable statistics (see~\cite{chen16robust}
 for an overview of such work). To the best of our knowledge, none of
@@ -1592,26 +1584,22 @@ iterations to discard, there is no guarantee that the remainder
 would represent the steady state. As a corollary, our results also show that it is unsafe to assume
 that one process execution of \vmbpair pair is representative of others. Each
 process execution must be analysed individually to determine if, and when, a steady state is
-reached. The fully automated open-source changepoint analysis-based
-\edd{changepoint analysis-based sounds clumsy, but I can't think what to
-replace it with} approach presented in
-this paper is one option for analysing each process execution individually.
+reached. The fully automated open-source changepoint analysis
+approach presented in this paper is one option for analysing each process execution individually.
 
 Second, we believe that the traditional practise of presenting only steady state
 numbers is hard to defend in the face of wildly varying warmup times. There
-are several benchmarks where different VMs achieve steady state
+are several benchmarks where different VMs have steady state
 performance within 2x of each other, but whose warmup differs by 100-1000x.
 While such differences may be of little importance to some users,
-they are important to the majority\edd{can you back that up? (not saying it is
-wrong)}. We thus hope that future VM experiments will
+they are important to many others. We thus hope that future VM experiments will
 report: a benchmark's classification (warmup, flat, slowdown, no steady state);
 and, if it reaches a steady state, when the steady state was reached (using
 one or both of steady state iter (\#) or (s)) and peak performance.
 
 Third, what allowed us to spot the issues noted in this paper was simply
-running benchmarks for a longer period than previous methodologies had
-suggested. Traditional VM
-experiments often run for 5 or 10 in-process iterations. Our data clearly shows
+running benchmarks for a longer period than suggested by previous methodologies.
+Traditional VM experiments often run for 5 or 10 in-process iterations. Our data clearly shows
 that, when a statistically robust analysis is desired, such short runs are
 insufficient. However, we realise that running 2000 in-process iterations may
 not always be feasible. It is an open question as to what a good number of
@@ -1639,10 +1627,7 @@ of the opinion that benchmarking quality and quantity are tightly related, and
 that VMs need to be run on many more benchmarks than is typically the case.
 However, collecting benchmarks is surprisingly difficult as there are few
 guidelines as to what makes a good or bad benchmark. For example, programs with
-non-deterministic bugs are likely, at best, to frustrate those benchmarking
-them \edd{There's two separate issues here: a) bugs, b) non-determinism. These
-have been mixed together and make it a little confusing. I don't want any bugs,
-non-deterministic or otherwise. Presumably you referring to dacapo bugs?} and,
+non-deterministic crashing bugs are likely, at best, to frustrate those benchmarking and,
 at worst, to mislead them. However, non-determinism in and of itself is not
 necessarily a good reason to dismiss a program as a possible benchmark,
 especially in modern languages where semi-random hashing of data-structures is

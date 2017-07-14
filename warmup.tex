@@ -952,8 +952,8 @@ is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$.
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
 classification algorithm for an individual process execution. Given an ordered
-list of segments -- each of which has "mean", "variance", and "end" attributes, the latter
-being the absolute index of the last iteration in the segment --
+list of segments (each with "mean", "variance", and "end" attributes, the latter
+being the absolute index of the last iteration in the segment)
 this function returns a string classifying the run sequence's warmup style.}]
 DELTA = 0.001          # Absolute time delta (in seconds) below which segments are
                        # considered equivalent.
@@ -1150,18 +1150,6 @@ the opposite appears to be true, suggesting that users of some code
 on some VMs suffer from a `double whammy' of poor warmup and poor
 steady state performance.
 
-\subsection{Warmup Plots}
-
-To understand why we see so many unexpected cases
-we created two additional types of plot. All plots have in-process iteration number on the
-$x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
-plots in Figure~\ref{fig:changepoint} show run-sequence plots for warmup and
-slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
-Figure~\ref{fig:examples:warmup_flat} of good inconsistency. Core-cycle plots (Linux only) show the
-core-cycle counts on the $y$-axes (one plot per-core). The plots in
-Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
-examples of run-sequence plots accompanied by core-cycle plots for no steady
-state and cyclic data respectively.
 
 \begin{landscape}
 \begin{table*}[p]
@@ -1187,8 +1175,6 @@ show the spread of values; the red bar shows the location of the median
 \label{tab:mainresults}
 \end{table*}
 \end{landscape}
-
-
 
 
 \begin{figure}[t]
@@ -1256,6 +1242,19 @@ regular GC spikes have only a small effect on wall-clock time.}
 \label{fig:examples:slowdown1}
 \end{minipage}
 \end{figure}
+
+\subsection{Warmup Plots}
+
+To understand why we see so many unexpected cases
+we created two additional types of plot. All plots have in-process iteration number on the
+$x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
+plots in Figure~\ref{fig:changepoint} show run-sequence plots for warmup and
+slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
+Figure~\ref{fig:examples:warmup_flat} of good inconsistency. Core-cycle plots (Linux only) show the
+core-cycle counts on the $y$-axes (one plot per-core). The plots in
+Figures~\ref{fig:examples:nosteadystate} and \ref{fig:examples:cycles} show
+examples of run-sequence plots accompanied by core-cycle plots for no steady
+state and cyclic data respectively.
 
 Core-cycle plots help us understand how VMs use, and how the OS schedules,
 threads. Benchmarks running on single-threaded VMs are characterised by a high
@@ -1569,8 +1568,7 @@ they expect, adapting them to become warmup-aware may not be trivial.
 For example, \cite{chen16robust} requires the user to specify an
 oracle which takes previous execution benchmark timings and returns the number
 of further executions needed. Given the unpredictable nature of inconsistent process
-executions in our results, it is unclear to us what such an oracle might look
-like.
+executions in our results, it is unclear to us what a good oracle might be.
 
 
 \section{Suggestions for the Community}

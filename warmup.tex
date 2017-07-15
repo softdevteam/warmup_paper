@@ -883,16 +883,7 @@ We therefore use the concept of changepoint analysis
 (see~\citet{eckley11analysis} for an introduction). Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
-between two changepoints is a \emph{changepoint segment}. There are various
-ways that one can determine when a changepoint has occurred, but the best fit
-for our data is to consider changes in both the mean and variance of in-process
-iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
-\texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
-$n$ is the time series length minus the number of outliers) to the
-\texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
-of each changepoint segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
-changepoint segments in our context.
-
+between two changepoints is a \emph{changepoint segment}.
 Changepoint analysis is a computationally challenging problem, requiring
 consideration of large numbers of possible changepoints. A completely naive
 approach requires an infeasible $2^{n-1}$ calculations ($2^{1999}$ in our context).
@@ -901,9 +892,15 @@ We utilise the PELT algorithm~\cite{killick12optimal} which reduces the
 complexity to $\mathcal{O}(n)$ by noting that once an
 ``obvious'' changepoint has been discovered, it is not worth including
 data before the changepoint in further searches.
-Candidate segments are compared relative to their fit (defined
-as the negative log-likelihood, which is based on a model of the normal
-distribution with changing mean and variance) and penalty (described above).
+
+There are various ways that one can determine when a changepoint has occurred, but the best fit
+for our data is to consider changes in both the mean and variance of in-process
+iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
+\texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
+$n$ is the time series length minus the number of outliers) to the
+\texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
+of each changepoint segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
+changepoint segments in our context.
 
 
 \subsection{Classifications}

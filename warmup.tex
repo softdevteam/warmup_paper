@@ -1205,8 +1205,9 @@ up and the other slowing down.}
 \includegraphics[width=\textwidth]{examples/warmup_flat.pdf}
 \caption{An example of good inconsistency where one process execution
 is classified as warmup, the other flat. Although a human might consider
-both of these as warmup, changepoint analysis cannot determine from
-the single peak in the RHS plot that meaningful warmup has occurred.}
+both of these as warmup, there is a subtle difference in the nature of the first 20--30
+in-process iterations in the LHS and RHS plots, which leads changepoint
+analysis to consider the RHS plot as a single changepoint segment.}
 \label{fig:examples:warmup_flat}
 \vspace{-.4cm}
 \end{figure*}

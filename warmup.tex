@@ -1316,6 +1316,72 @@ document it accurately.
 \end{minipage}
 \end{table}
 
+
+\subsection{How Long Did the Experiments Need To Run For?}
+\label{how long}
+
+\laurie{what i think we should try here is 3 graphs. first, we want a graph
+showing the \%same curve (i.e. $x$ axis is 150...2000 (in-process iterations);
+$y$ axis is ~70 to (exactly) 100\%. second, two jruby plots one at $n=1000$ and
+one at $n=1050$ showing the different classifications (p13 in the PDF might be
+good place to search for examples). we want the same pexec number in each case.}
+
+We chose 2000 in-process iterations as our running length in part based on our
+experience of VMs' internals. VMs have many counters which, when they exceed a
+certain threshold, cause the VM to change behaviour (e.g.~(re)compile code,
+change garbage collection strategy etc.) and we suspected that these counters
+would be set at `common for human' values. Notably we suspected that some
+counters would be set to 1000 (or, to make things look more `computer friendly',
+perhaps to 1024) meaning that we might observe VM effects at in-process iterations
+around this point. It thus made sense to run experiments substantially past that
+point so that we would be able to see the long-term effects of any such
+counters: we chose 2000 as our threshold.
+
+However, no-one wants to run benchmarks for any longer than necessary to collect
+good quality statistics and there are many attempts to dynamically adjust run
+times to minimise the length of time benchmarks are run (see e.g.~\cite{chen16robust}
+for an overview of such work in a non-JIT context). Assuming (as we must) that we ran experiments for `long
+enough', a reasonable question is whether we needed to run benchmarks for as
+long as we did. We thus performed a simple experiment on our data, running
+shorter versions of each process execution through changepoint analysis and
+seeing if this changed the overall effects. For each process execution, we
+performed changepoint analysis on the first $n$ in-process iterations where $150
+\leq n \leq 1950$ in increments of 50 (shrinking the sliding window and last
+segment sizes proportionally: i.e. at $n=1000$ the sliding window is 100 and
+last segment 250) and simply counted how many process
+executions received the same classifications as when $n=2000$. Intuitively one
+would expect the classifications to gradually change as $n$ reduces, albeit not
+monotonically (due to the very nature of changepoint analysis). Ideally one
+would pick a value of $n$ that has a good trade-off between accuracy and running
+time.
+
+As Figure \laurie{XXX} (for \laurie{bencherX}) shows, there are significant
+kinks in the data that make choosing such a value tricky. In this case, the most
+notable kink is between $n=1000$ and $n=1050$: this is almost entirely caused by
+JRuby, many of whose process executions have a distinct performance spike at,
+and generally just after, in-process iteration 1000, often causing a changepoint
+segment to be created. With $n=2000$, changepoint analysis considers the slower
+segment to be equivalent to the final segment (leading to many classifications
+of warmup). At $n=1000$ the segment is not detected at all, thus generally
+leading to a similar classification as at $n=2000$. At $n=1050$, however, the
+segment is detected, and is thus the process execution's final segment; however
+its mean and variance mean that the previous segment is generally considered
+non-equivalent leading to a classification of no steady state (or, less often,
+slowdown).
+
+What this in mind, it seems reasonably clear to us that choosing a smaller
+number of in-process iterations is largely dependent on the VM(s) in question
+and one's confidence in their predictability. If the VM(s) do not have
+semi-predictable performance spikes, then it may be possible to run many fewer
+in-process iterations; if one is unsure, then running more is the only safe
+course of action. It is therefore difficult to draw definitive conclusions from
+our data: we would have got data with only 15\% different classifications with
+650 in-process iterations, but with 21\% different classifications if we had
+chosen 1050 in-process iterations!
+
+\laurie{if we can work out the pexec situation we can also drop that in here}
+
+
 \section{Startup Time}
 \label{sec:startup}
 The data presented thus far in the paper has all been collected after the VM has
@@ -1545,21 +1611,6 @@ steady state, including Figure~\ref{fig:examples:nosteadystate}. This confirms
 the findings from \cite{kalibera13rigorous} that simple heuristics can often
 give misleading statistics for VM benchmarking.
 
-One limitation of our work (described in more detail in
-Section~\ref{suggestions}) is that we have little idea of how often benchmarks
-should be repeated to obtain reliable statistics. There are several approaches which
-aim to dynamically discover how often benchmarks in non-JIT compiling VM
-contexts need to be run in order to obtain reliable statistics (see~\cite{chen16robust}
-for an overview of such work). To the best of our knowledge, none of
-these techniques are warmup-aware: in their raw form they would be prone to the
-same problems as the simple warmup-aware heuristics noted above. Since all such
-techniques come with their own sets of assumptions about the nature of the data
-they expect, adapting them to become warmup-aware may not be trivial.
-For example, \cite{chen16robust} requires the user to specify an
-oracle which takes previous execution benchmark timings and returns the number
-of further executions needed. Given the unpredictable nature of inconsistent process
-executions in our results, it is unclear to us what a good oracle might be.
-
 
 \section{Suggestions for the Community}
 \label{suggestions}
@@ -1600,10 +1651,11 @@ running benchmarks for a longer period than suggested by previous methodologies.
 Traditional VM experiments often run for 5 or 10 in-process iterations. Our data clearly shows
 that, when a statistically robust analysis is desired, such short runs are
 insufficient. However, we realise that running 2000 in-process iterations may
-not always be feasible. It is an open question as to what a good number of
-in-process iterations might be. One possibility might be to use smaller
-numbers of in-process iterations (e.g.~200 in-process iterations)
-most of the time, while occasionally using larger numbers (e.g.~1500) to see if
+not always be feasible. Our analysis of our data in Section~\ref{how long}
+does not make it easy to suggest what a good small number of in-process
+iterations may be. However, a plausible approach would seem to be to mostly use
+smaller numbers of in-process iterations (e.g.~500 in-process iterations) most
+of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 
 Fourth, because a \vmbpair's process executions are often inconsistent, more

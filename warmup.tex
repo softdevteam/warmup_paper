@@ -1618,6 +1618,14 @@ $y$ axis is ~70 to (exactly) 100\%. second, two jruby plots one at $n=1000$ and
 one at $n=1050$ showing the different classifications (p13 in the PDF might be
 good place to search for examples). we want the same pexec number in each case.}
 
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=0.485\textwidth]{examples/truncated_same_plot.pdf}
+\caption{The percentage of classifications that match our original 2000-iteration
+experiment on \bencherseven, for a number of iteration sizes (from 150--2000).}
+\label{fig:sametruncated}
+\end{figure}
+
 What allowed us to spot the issues noted in this paper was simply running
 benchmarks for a longer period than suggested by previous methodologies.
 Traditional VM experiments often run for 5 or 10 in-process iterations. Our data
@@ -1648,7 +1656,8 @@ would expect the classifications to gradually change as $n$ reduces, albeit not
 monotonically. Ideally one would pick a value of $n$ that has a good trade-off between accuracy and running
 time.
 
-As Figure \laurie{XXX} (for \laurie{bencherX}) shows, there are significant
+
+As Figure \ref{fig:sametruncated} (for \bencherseven) shows, there are significant
 kinks in the data that make choosing such a value tricky. In this case, the most
 notable kink is between $n=1000$ and $n=1050$: this is almost entirely caused by
 JRuby, many of whose process executions have a distinct performance spike

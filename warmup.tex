@@ -1338,13 +1338,13 @@ point so that we would be able to see the long-term effects of any such
 counters: we chose 2000 as our threshold.
 
 However, no-one wants to run benchmarks for any longer than necessary to collect
-good quality statistics and there are many attempts to dynamically adjust run
+reliable statistics and there are many attempts to dynamically adjust run
 times to minimise the length of time benchmarks are run (see e.g.~\cite{chen16robust}
 for an overview of such work in a non-JIT context). Assuming (as we must) that we ran experiments for `long
 enough', a reasonable question is whether we needed to run benchmarks for as
 long as we did. We thus performed a simple experiment on our data, running
 shorter versions of each process execution through changepoint analysis and
-seeing if this changed the overall effects. For each process execution, we
+seeing if this changed the overall classifications. For each process execution, we
 performed changepoint analysis on the first $n$ in-process iterations where $150
 \leq n \leq 1950$ in increments of 50 (shrinking the sliding window and last
 segment sizes proportionally: i.e. at $n=1000$ the sliding window is 100 and

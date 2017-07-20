@@ -1612,12 +1612,6 @@ common.
 \subsection{How Long Should Experiments Be Run For?}
 \label{how long}
 
-\laurie{what i think we should try here is 3 graphs. first, we want a graph
-showing the \%same curve (i.e. $x$ axis is 150...2000 (in-process iterations);
-$y$ axis is ~70 to (exactly) 100\%. second, two jruby plots one at $n=1000$ and
-one at $n=1050$ showing the different classifications (p13 in the PDF might be
-good place to search for examples). we want the same pexec number in each case.}
-
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=0.485\textwidth]{examples/truncated_same_plot.pdf}
@@ -1670,7 +1664,27 @@ segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
 segment, it is often considered non-equivalent to the preceding segment
 leading to a classification of no steady state (or, less often,
-slowdown).
+slowdown). Figures \ref{fig:truncated1} and \ref{fig:truncated2} show
+an example of this phenomenon.
+
+\sarah{These figures look like they are different sizes, but they were generated
+with the same --export-size etc! Argh!}
+\begin{figure}[!tbp]
+\centering
+\begin{minipage}[t]{0.485\textwidth}
+\includegraphics[width=\textwidth]{examples/truncated1.pdf}
+\caption{Process execution 2 of the warmup experiment on \bencherseven,
+truncated at 1000 iterations.}
+\label{fig:truncated1}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\includegraphics[width=\textwidth]{examples/truncated2.pdf}
+\caption{Process execution 2 of the warmup experiment on \bencherseven,
+truncated at 1050 iterations.}
+\label{fig:truncated2}
+\end{minipage}
+\end{figure}
 
 What this in mind, it seems fairly clear that choosing a smaller
 number of in-process iterations is largely dependent on the VM(s) in question

@@ -1639,14 +1639,13 @@ point so that we would be able to see the long-term effects of any such
 counters.
 
 To understand if we could have achieved similar quality results with a shorter
-running time, performed changepoint analysis on each process execution's first
+running time, we performed changepoint analysis on each process execution's first
 $n$ in-process iterations and compared the classifications to that of $n=2000$.
-Advancing $n$ in increments of 50 we analysed values $150 \leq n \leq 1950$. We shrank the
-sliding window and last segment sizes proportionally i.e.~at $n=1000$ the
+Advancing $n$ in increments of 50, we analysed values $150 \leq n \leq 1950$. We shrank the
+sliding window and last segment sizes proportionally (i.e.~at $n=1000$ the
 sliding window is 100 and last segment 250). Intuitively one
 would expect the classifications to gradually change as $n$ reduces, albeit not
-monotonically (due to the very nature of changepoint analysis). Ideally one
-would pick a value of $n$ that has a good trade-off between accuracy and running
+monotonically. Ideally one would pick a value of $n$ that has a good trade-off between accuracy and running
 time.
 
 As Figure \laurie{XXX} (for \laurie{bencherX}) shows, there are significant

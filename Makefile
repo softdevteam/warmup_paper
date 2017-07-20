@@ -32,7 +32,10 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		examples/new_miscomp.pdf \
 		examples/new_good_comp.pdf \
 		examples/warmup_flat.pdf \
-		examples/unexplained_weirdness.pdf
+		examples/unexplained_weirdness.pdf \
+		examples/truncated_same_plot.pdf \
+		examples/truncated1.pdf \
+		examples/truncated2.pdf
 DIAGRAMS +=	${PLOTS}
 
 TABLES= dacapo.table startup.table \

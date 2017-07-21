@@ -1563,10 +1563,10 @@ reaching a steady state after a fixed number of iterations. It is clear
 that many benchmarks take considerable time to reach a
 steady state; that different process executions of the same benchmark reach a
 steady state at different points; and that some process executions do not ever
-reach a steady state. Even were one to pick a very high number of initial in-process
+reach a steady state. Even if one were to pick a very high number of initial in-process
 iterations to discard, there is no guarantee that the remainder
-would represent the steady state. As a corollary, our results also show that it is unsafe to assume
-that one process execution of \vmbpair pair is representative of others. Each
+would represent the steady state. As a corollary, our results also show that one cannot assume
+that one process execution of a \vmbpair pair is representative of others. Each
 process execution must be analysed individually to determine if, and when, a steady state is
 reached. The fully automated open-source changepoint analysis
 approach presented in this paper is one option for analysing each process execution individually.
@@ -1583,18 +1583,19 @@ one or both of steady state iter (\#) or (s)) and peak performance.
 
 Third, it is important to make benchmarks run long enough that any measurements
 taken are substantially above the noise floor. It is not uncommon to see
-published benchmarks that run for 0.001s or smaller: it is very easy for
-external events (e.g.~an unexpected context switch) to substantially impact such
-measurements, giving one a false impression of performance. As a rule of thumb,
-we suggest that the fastest VM should take around 1s to run a single in-process
-iteration. Sometimes other VMs run the same benchmark so slowly that this is
-impractical, at which point it may be necessary to relax this to 0.1s, but we
-strongly discourage running times lower than that.
+published benchmarks that run for 0.001s or smaller: external events such as a context switch
+can have a significant (relative) effect on such small measurements,
+giving one a false impression of performance. Because of this,
+we defined in our experiment that changepoint segments less with means less than 0.001s
+apart are equivalent. However, running in-process iterations for long periods
+of time is also somewhat undesireable. As a rule of thumb, we
+we suggest that the fastest VM should take a minimum of 0.1s, but ideally
+around 1s, to a run a single-process iteration.
 
 Fourth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning
-community's approach may apply equally well to VMs: using a training set to
-devise heuristics, and then benchmarking the resulting system(s) on a separate
+community's approach may apply equally well to VMs: this would involve
+using a training set to devise heuristics, and then benchmarking the resulting system(s) on a separate
 validation system.
 
 Fifth, we suspect that a reliance on small suites of benchmarks means that

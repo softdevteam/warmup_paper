@@ -1586,9 +1586,9 @@ taken are substantially above the noise floor. It is not uncommon to see
 published benchmarks that run for 0.001s or smaller: external events such as a context switch
 can have a significant (relative) effect on such small measurements,
 giving one a false impression of performance. Because of this,
-we defined in our experiment that changepoint segments less with means less than 0.001s
+we defined in our experiment that changepoint segments with means less than 0.001s
 apart are equivalent. However, running in-process iterations for long periods
-of time is also somewhat undesireable. As a rule of thumb, we
+of time is also somewhat undesirable. As a rule of thumb,
 we suggest that the fastest VM should take a minimum of 0.1s, but ideally
 around 1s, to a run a single-process iteration.
 
@@ -1617,13 +1617,13 @@ common.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=0.54\textwidth]{examples/truncated_same_plot.pdf}
-\caption{How our experiment would have looked if we had run fewer than
-2000 in-process iterations. We artificially truncated process
-executions (with in-process iterations from $0 \ldots n$ where $150 \leq n \leq
-1950$) and compared their classifications to the original (with $n=2000$) on
-\bencherseven. In general, lower values of $n$ lead to more process executions
-being classified differently. However, there is a very significant kink in the
-data between $1000 \leq n \leq 1050$, almost entirely caused by JRuby (see
+\caption{How the \bencherseven experiment would have looked if we had run fewer than
+2000 in-process iterations. We truncated process
+executions (taking in-process iterations from $0 \ldots n$ where $150 \leq n \leq
+1950$) and compared their classifications to the original (with $n=2000$) on.
+In general, lower values of $n$ lead to fewer process executions
+being classified the same as $n=2000$. However, there is a very significant kink in the
+data (with the trough between $1000 \leq n \leq 1050$), almost entirely caused by JRuby (see
 Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
@@ -1664,15 +1664,15 @@ We chose 2000 in-process iterations based on our experience of VMs' internals.
 VMs have many counters which, when they exceed a certain threshold, cause the VM
 to change behaviour (e.g.~(re)compile code, change garbage collection strategy
 etc.). Our experience is that these counters are often set at `common for human'
-values. Although many are typically set to small values, we suspected that some
+values. Although many are typically set to small values, we hypothesised that some
 counters would be set to 1000 (or, to make things look more `computer friendly',
-to 1024) meaning that we might observe VM effects at in-process iterations
-around this point. With that in mind, it then made sense to run benchmarks
-substantially past that point so that we would be able to see the long-term
-effects of any such counters.
+to 1024) and that we might observe VM effects at in-process iterations
+around this point. With that hypothesis in mind, it was then necessary to
+run benchmarks significantly past 1024 in-process iterations so that we would
+be able to observe any long-term effects.
 
-To understand if we could have achieved similar quality results with a shorter
-running time, we performed changepoint analysis on each process execution's first
+To understand if we could have achieved similar quality results with fewer in-process
+iterations, we performed changepoint analysis on each process execution's first
 $n$ in-process iterations and compared the classifications to that of $n=2000$.
 Advancing $n$ in increments of 50, we analysed values $150 \leq n \leq 1950$. We shrank the
 sliding window and last segment sizes proportionally (i.e.~at $n=1000$ the
@@ -1695,15 +1695,16 @@ segment, it is often considered non-equivalent to the preceding segment
 leading to a classification of no steady state (or, less often,
 slowdown). Figure \ref{fig:truncated} shows an example of this phenomenon.
 
-What this in mind, it seems fairly clear that the quality of results from a smaller
+It is thus difficult to draw definitive conclusions from our data:
+at $n=650$ only 15\% of classifications would have changed,
+but 21\% would have changed at $n=1050$.
+It is thus clear that the quality of results from a smaller
 number of in-process iterations is heavily dependent on the VM(s) in question.
 If one is confident that the the VM(s) in question do not have
 semi-predictable performance spikes, then it may be possible to run many fewer
 in-process iterations; if one is unsure, then running more is the only safe
-course of action. It is thus difficult to draw definitive conclusions from
-our data: at $n=650$ only 15\% of classifications would have changed,
-but at $n=1050$ 21\% would have. However, a reasonable compromise would seem to involve
-using smaller numbers of in-process iterations (e.g.~500 in-process iterations) most
+course of action. We suggest that in many cases a reasonable compromise might be to
+use smaller numbers (e.g.~500) of in-process iterations most
 of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 

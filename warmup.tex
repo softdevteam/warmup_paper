@@ -1616,17 +1616,46 @@ common.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=0.54\textwidth]{examples/truncated_same_plot.pdf}
-\caption{The percentage of classifications that match our original 2000-iteration
-experiment on \bencherseven, for a number of iteration sizes (from 150--2000).}
+\caption{How our experiment would have looked if we had run fewer than
+2000 in-process iterations. We artificially truncated process
+executions (with in-process iterations from $0 \ldots n$ where $150 \leq n \leq
+1950$) and compared their classifications to the original (with $n=2000$) on
+\bencherseven. In general, lower values of $n$ lead to more process executions
+being classified differently. However, there is a very significant kink in the
+data between $1000 \leq n \leq 1050$, almost entirely caused by JRuby (see
+Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
 
-What allowed us to spot the issues noted in this paper was simply running
-benchmarks for a longer period than suggested by previous methodologies.
+
+\begin{figure}[!tbp]
+\centering
+\begin{minipage}[t]{0.485\textwidth}
+\includegraphics[width=\textwidth]{examples/truncated1.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.485\textwidth}
+\includegraphics[width=\textwidth]{examples/truncated2.pdf}
+\end{minipage}
+\caption{\laurie{ah, these are unfortunate examples as the original was warmup.
+we really want a pexec where $n=1000$ has the same classification as $n=2000$
+but different at $n=1050$}Comparing the changepoints and classifications of a
+single JRuby process execution originally classified as \laurie{XXX} when
+truncated at $n = 1000$ (LHS) and $n = 1050$ (RHS). Many JRuby process
+executions have a performance spike in between in-process iterations 1000 and
+1050. \laurie{``Since the performance spike is entirely truncated at $n=1000$,
+the resulting classification remains the same as at $n=2000$. At $n=1050$,
+enough of the performance spike is present to cause a new changepoint segment
+that leads to a no steady state classification.''}}
+\label{fig:truncated}
+\end{figure}
+
+Of all the techniques we have used in this paper, the most simple was the most
+important: we simply ran benchmarks for much longer than suggested by previous methodologies.
 Traditional VM experiments often run for 5 or 10 in-process iterations. Our data
 clearly shows that, when a statistically robust analysis is desired, such short
-runs are insufficient. However, no-one wants to run benchmarks for any longer
-than necessary to collect reliable statistics. Assuming that we ran
+runs are insufficient. However, none of us wants to run benchmarks for any longer
+than necessary. Assuming that we ran
 experiments for `long enough', a reasonable question is whether we needed to run
 benchmarks for as long as we did.
 
@@ -1637,63 +1666,43 @@ etc.). Our experience is that these counters are often set at `common for human'
 values. Although many are typically set to small values, we suspected that some
 counters would be set to 1000 (or, to make things look more `computer friendly',
 to 1024) meaning that we might observe VM effects at in-process iterations
-around this point. It thus made sense to run benchmarks substantially past that
-point so that we would be able to see the long-term effects of any such
-counters.
+around this point. With that in mind, it then made sense to run benchmarks
+substantially past that point so that we would be able to see the long-term
+effects of any such counters.
 
 To understand if we could have achieved similar quality results with a shorter
 running time, we performed changepoint analysis on each process execution's first
 $n$ in-process iterations and compared the classifications to that of $n=2000$.
 Advancing $n$ in increments of 50, we analysed values $150 \leq n \leq 1950$. We shrank the
 sliding window and last segment sizes proportionally (i.e.~at $n=1000$ the
-sliding window is 100 and last segment 250). Intuitively one
-would expect the classifications to gradually change as $n$ reduces, albeit not
-monotonically. Ideally one would pick a value of $n$ that has a good trade-off between accuracy and running
-time.
-
+sliding window is 100 and last segment 250). Intuitively, one
+would expect the classifications to gradually change more and more as $n$ reduces, allowing
+one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 
 As Figure \ref{fig:sametruncated} (for \bencherseven) shows, there are significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $n=1000$ and $n=1050$: this is almost entirely caused by
+notable kink is between $n=1000$ and $n=1050$. This is almost entirely caused by
 JRuby, many of whose process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
-segment to be equivalent to the final segment (leading to many classifications
+segment to be equivalent to the final segment (generally leading to a classification
 of warmup). At $n=1000$ the segment is not detected at all, thus generally
 leading to a similar classification as at $n=2000$. At $n=1050$, however, a
 segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
 segment, it is often considered non-equivalent to the preceding segment
 leading to a classification of no steady state (or, less often,
-slowdown). Figures \ref{fig:truncated1} and \ref{fig:truncated2} show
-an example of this phenomenon.
+slowdown). Figure \ref{fig:truncated} shows an example of this phenomenon.
 
-\begin{figure}[!tbp]
-\centering
-\begin{minipage}[t]{0.485\textwidth}
-\includegraphics[width=\textwidth]{examples/truncated1.pdf}
-\caption{Process execution 2 of the warmup experiment on \bencherseven,
-truncated at 1000 iterations.}
-\label{fig:truncated1}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.485\textwidth}
-\includegraphics[width=\textwidth]{examples/truncated2.pdf}
-\caption{Process execution 2 of the warmup experiment on \bencherseven,
-truncated at 1050 iterations.}
-\label{fig:truncated2}
-\end{minipage}
-\end{figure}
-
-What this in mind, it seems fairly clear that choosing a smaller
-number of in-process iterations is largely dependent on the VM(s) in question
-and one's confidence in their predictability. If the VM(s) do not have
+What this in mind, it seems fairly clear that the quality of results from a smaller
+number of in-process iterations is heavily dependent on the VM(s) in question.
+If one is confident that the the VM(s) in question do not have
 semi-predictable performance spikes, then it may be possible to run many fewer
 in-process iterations; if one is unsure, then running more is the only safe
 course of action. It is thus difficult to draw definitive conclusions from
 our data: at $n=650$ only 15\% of classifications would have changed,
-but at $n=1050$ 21\% would have. However, a plausible approach would seem to be to use
-smaller numbers of in-process iterations (e.g.~500 in-process iterations) most
+but at $n=1050$ 21\% would have. However, a reasonable compromise would seem to involve
+using smaller numbers of in-process iterations (e.g.~500 in-process iterations) most
 of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 

@@ -350,8 +350,7 @@ all other segments are plotted in grey.}
 \label{fig:changepoint}
 \end{figure}
 
-We use the recently introduced concept\edd{Is it a concept? Feels more like a
-method or a process} of changepoint analysis~\cite{eckley11analysis} to
+We use changepoint analysis~\cite{eckley11analysis} to
 automatically analyse VM benchmarking data. Changepoint analysis detects
 shifts in the nature of time series data (e.g.~when a benchmark switches
 from `slow' to `fast' modes after JIT compilation). We then use this
@@ -880,8 +879,8 @@ tricky: simple heuristics suffer from both false positives and negatives~\cite{k
 `I know it when I see it' manual detection is time-consuming and prone to human
 error.
 
-We therefore use the concept\edd{Is it a concept?} of changepoint analysis
-(see~\citet{eckley11analysis} for an introduction). Formally, a
+Instead, we use changepoint analysis (see~\citet{eckley11analysis} for an
+introduction) to determine if and when warmup has occurred. Formally, a
 \emph{changepoint} is a point in time where the statistical properties of prior
 data are different to the statistical properties of subsequent data; the data
 between two changepoints is a \emph{changepoint segment}.
@@ -894,7 +893,7 @@ complexity to $\mathcal{O}(n)$ by noting that once an
 ``obvious'' changepoint has been discovered, it is not worth including
 data before the changepoint in further searches.
 
-There are various ways that one can define a changepoint, but the best fit
+There are various ways of defining when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
 iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
@@ -1609,6 +1608,7 @@ at worst, to mislead them. However, non-determinism in and of itself is not
 necessarily a good reason to dismiss a program as a possible benchmark,
 especially in modern languages where semi-random hashing of data-structures is
 common.
+
 
 \subsection{How Long Should Experiments Be Run For?}
 \label{how long}

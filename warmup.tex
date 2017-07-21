@@ -1588,9 +1588,13 @@ can have a significant (relative) effect on such small measurements,
 giving one a false impression of performance. Because of this,
 we defined in our experiment that changepoint segments with means less than 0.001s
 apart are equivalent. However, running in-process iterations for long periods
-of time is also somewhat undesirable. As a rule of thumb,
-we suggest that the fastest VM should take a minimum of 0.1s, but ideally
-around 1s, to a run a single-process iteration.
+of time is also somewhat undesirable. When possible, we suggest that
+the fastest in-process iterations should run for around 0.5s. However, this can
+sometimes be impractical: when benchmarking a set of VMs, the slowest VM may be
+be an order of magnitude slower than another; even within a single VM,
+in-process iterations before warmup can be one or two orders of magnitude slower
+than after warmup. In such cases we suggest the minimum acceptable time for an
+in-process iteration is 0.1s,
 
 Fourth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning

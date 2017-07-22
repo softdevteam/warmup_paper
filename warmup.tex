@@ -890,8 +890,8 @@ approach requires an infeasible $2^{n-1}$ calculations ($2^{1999}$ in our contex
 More sophisticated changepoint analysis algorithms reduce this to $\mathcal{O}(n^3)$.
 We utilise the PELT algorithm~\cite{killick12optimal} which reduces the
 complexity to $\mathcal{O}(n)$ by noting that once an
-``obvious'' changepoint has been discovered, it is not worth including
-data before the changepoint in further searches.
+`obvious' changepoint has been discovered, it is not worth including
+data before that changepoint in further searches.
 
 There are various ways of defining when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
@@ -1030,8 +1030,8 @@ Non-overlapping IQRs imply a meaningful difference in the \emph{steady iter (\#)
 widely spread, we are not always able to prove meaningful differences. To give a more
 nuanced view than IQRs can report we also provide thumbnail histograms.
 
-\emph{Steady perf (s)} roughly corresponds to the `normal' performance number reported
-in most VM papers. In our case, the steady state is composed of one or more
+\emph{Steady perf (s)} roughly corresponds to the `normal' performance number reported by
+traditional benchmarking methodologies. In our case, the steady state is composed of one or more
 segments (see Section~\ref{sec:classifications}). We report means and
 99\% confidence intervals
 calculated via bootstrapping (with 100,000 iterations). Although we
@@ -1748,6 +1748,7 @@ require significant additional running time (at least many months).
 \begin{acks}
 We are particularly grateful to Vincent Knight who helped put together this
 paper's team. Chris Seaton helped integrate JRuby+Truffle into our experiment.
+Lukas Diekmann rebooted more servers than any person should have to.
 We also thank (in alphabetical order) Dave Dice, Kenny Gross, Tim Harris, Ben
 Titzer, Mircea Trofin, Dave Ungar, and Mario Wolczko for comments and suggestions; any
 errors and infelicities are our own. This research was funded by the EPSRC

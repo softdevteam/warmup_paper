@@ -1690,13 +1690,13 @@ JRuby, many of whose process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
 segment to be equivalent to the final segment (generally leading to a classification
-of warmup). At $n=1000$ the segment is not detected at all, thus generally
+of slowdown or warmup). At $n=1000$ the segment is not detected at all, thus generally
 leading to a similar classification as at $n=2000$. At $n=1050$, however, a
 segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
-segment, it is often considered non-equivalent to the preceding segment
-leading to a classification of no steady state (or, less often,
-slowdown). Figure \ref{fig:truncated} shows an example of this phenomenon.
+segment, it is often considered non-equivalent to the preceding segment,
+which then often leads to a classification of no steady state.
+Figure \ref{fig:truncated} shows an example of this phenomenon.
 
 It is thus difficult to draw definitive conclusions from our data:
 at $n=650$ only 15\% of classifications would have changed,

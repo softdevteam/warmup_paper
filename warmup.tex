@@ -1632,6 +1632,7 @@ Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
 
+\sarah{New example, original: slowdown, 1000 trunc: slowdown, 1050 trunc: nss.}
 
 \begin{figure}[!tbp]
 \centering
@@ -1642,16 +1643,14 @@ Figure~\ref{fig:truncated}).}
 \begin{minipage}[t]{0.485\textwidth}
 \includegraphics[width=\textwidth]{examples/truncated2.pdf}
 \end{minipage}
-\caption{\laurie{ah, these are unfortunate examples as the original was warmup.
-we really want a pexec where $n=1000$ has the same classification as $n=2000$
-but different at $n=1050$}Comparing the changepoints and classifications of a
-single JRuby process execution originally classified as \laurie{XXX} when
+\caption{Comparing the changepoints and classifications of a
+single JRuby process execution originally classified as slowdown when
 truncated at $n = 1000$ (LHS) and $n = 1050$ (RHS). Many JRuby process
 executions have a performance spike in between in-process iterations 1000 and
-1050. \laurie{``Since the performance spike is entirely truncated at $n=1000$,
+1050. Since the performance spike is entirely truncated at $n=1000$,
 the resulting classification remains the same as at $n=2000$. At $n=1050$,
 enough of the performance spike is present to cause a new changepoint segment
-that leads to a no steady state classification.''}}
+that leads to a no steady state classification.}
 \label{fig:truncated}
 \end{figure}
 

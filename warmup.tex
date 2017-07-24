@@ -1632,7 +1632,7 @@ Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
 
-\sarah{New example, original: slowdown, 1000 trunc: slowdown, 1050 trunc: nss.}
+\sarah{New example, original: warmup, 1000 trunc: slowdown, 1050 trunc: nss.}
 
 \begin{figure}[!tbp]
 \centering
@@ -1644,7 +1644,7 @@ Figure~\ref{fig:truncated}).}
 \includegraphics[width=\textwidth]{examples/truncated2.pdf}
 \end{minipage}
 \caption{Comparing the changepoints and classifications of a
-single JRuby process execution originally classified as slowdown when
+single JRuby process execution originally classified as warmup when
 truncated at $n = 1000$ (LHS) and $n = 1050$ (RHS). Many JRuby process
 executions have a performance spike in between in-process iterations 1000 and
 1050. Since the performance spike is entirely truncated at $n=1000$,

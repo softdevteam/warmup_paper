@@ -1600,7 +1600,8 @@ Fourth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning
 community's approach may apply equally well to VMs: this would involve
 using a training set to devise heuristics, and then benchmarking the resulting system(s) on a separate
-validation system.
+validation system.\carl{hm, is a different system really enough? to follow what
+machine learning does it would probably have to be a second set of benchmarks.}
 
 Fifth, we suspect that a reliance on small suites of benchmarks means that
 only small parts of VMs are being benchmarked effectively. We are increasingly
@@ -1628,7 +1629,9 @@ executions (taking in-process iterations from $0 \ldots n$ where $150 \leq n \le
 In general, lower values of $n$ lead to fewer process executions
 being classified the same as $n=2000$. However, there is a very significant kink in the
 data (with the trough between $1000 \leq n \leq 1050$), almost entirely caused by JRuby (see
-Figure~\ref{fig:truncated}).}
+Figure~\ref{fig:truncated}).\carl{I found the fact that the y-axis doesn't
+start at 0\% quite misleading in this case, since it's a percentage. are things
+too hard to see otherwise?} }
 \label{fig:sametruncated}
 \end{figure}
 

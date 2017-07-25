@@ -1621,13 +1621,13 @@ common.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=0.54\textwidth]{examples/truncated_same_plot.pdf}
-\caption{How the \bencherseven experiment would have looked if we had run fewer than
+\caption{How the \bencherseven classifications would have looked if we had run fewer than
 2000 in-process iterations. We truncated process
-executions (taking in-process iterations from $0 \ldots n$ where $150 \leq n \leq
-1950$) and compared their classifications to the original (with $n=2000$).
+executions (taking in-process iterations from $0 \ldots n$ where $10 \leq n \leq
+1990$) and compared their classifications to the original (with $n=2000$).
 In general, lower values of $n$ lead to fewer process executions
 being classified the same as $n=2000$. However, there is a very significant kink in the
-data (with the trough between $1000 \leq n \leq 1050$), almost entirely caused by TruffleRuby (see
+data (with the trough between $1000 \leq n \leq 1300$), almost entirely caused by TruffleRuby (see
 Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
@@ -1675,13 +1675,13 @@ be able to observe any long-term effects.
 To understand if we could have achieved similar quality results with fewer in-process
 iterations, we performed changepoint analysis on each process execution's first
 $n$ in-process iterations and compared the classifications to that of $n=2000$.
-Advancing $n$ in increments of 50, we analysed values $150 \leq n \leq 1950$. We shrank the
+Advancing $n$ in increments of 10, we analysed values $10 \leq n \leq 1990$. We shrank the
 sliding window and last segment sizes proportionally (i.e.~at $n=1000$ the
 sliding window is 100 and last segment 250). Intuitively, one
 would expect the classifications to gradually change more and more as $n$ reduces, allowing
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 
-As Figure \ref{fig:sametruncated} (for \bencherseven) shows, there are significant
+As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
 notable kink is between $n=1000$ and $n=1050$. This is almost entirely caused by
 TruffleRuby, many of whose process executions have a distinct performance spike
@@ -1698,10 +1698,11 @@ Figure \ref{fig:truncated} shows an example of this phenomenon.
 
 It is thus difficult to draw definitive conclusions from our data:
 at $n=650$ only 15\% of classifications would have changed,
-but 21\% would have changed at $n=1050$.
-It is thus clear that the quality of results from a smaller
-number of in-process iterations is heavily dependent on the VM(s) in question.
-If one is confident that the the VM(s) in question do not have
+but 21\% would have changed at $n=1050$. It is also important to bear in mind
+that our comparison only considers classifications: we have no sensible way of
+comparing other information (e.g.~steady perf (s)) on truncated in-process
+iterations. That said, it is clear that the quality of classifications
+is heavily dependent on the VM(s) in question: if one is confident that the the VM(s) in question do not have
 semi-predictable performance spikes then it may be possible to run many fewer
 in-process iterations; if one is unsure then running more is the only safe
 course of action. We suggest that in many cases a reasonable compromise might be to

@@ -1665,11 +1665,11 @@ We chose 2000 in-process iterations based on our experience of VMs' internals.
 VMs have many counters which, when they exceed a certain threshold, cause the VM
 to change behaviour (e.g.~(re)compile code, change garbage collection strategy
 etc.). Our experience is that these counters are often set at `common for human'
-values. Although many are typically set to small values, we hypothesised that some
-counters would be set to 1000 (or, to make things look more `computer friendly',
-to 1024) and that we might observe VM effects at in-process iterations
-around this point. With that hypothesis in mind, it was then necessary to
-run benchmarks significantly past 1024 in-process iterations so that we would
+values. Although many are typically set to small values, we knew that some
+counters would be set to around 1000 (e.g.~tracing in RPython VMs such
+as PyPy occurs at 1039 iterations of a loop) and that we might observe VM effects at in-process iterations
+around this point. With that in mind, it was then necessary to
+run benchmarks significantly past 1000 in-process iterations so that we would
 be able to observe any long-term effects.
 
 To understand if we could have achieved similar quality results with fewer in-process

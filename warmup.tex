@@ -1620,7 +1620,7 @@ common.
 
 \begin{figure}[!tbp]
 \centering
-\includegraphics[width=0.54\textwidth]{examples/truncated_same_plot.pdf}
+\includegraphics[width=0.6\textwidth]{examples/truncated_same_plot.pdf}
 \caption{How the \bencherseven classifications would have looked if we had run fewer than
 2000 in-process iterations. We truncated process
 executions (taking in-process iterations from $0 \ldots n$ where $10 \leq n \leq
@@ -1683,12 +1683,12 @@ one to pick a value of $n$ that has a good trade-off between accuracy and runnin
 
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $n=1000$ and $n=1050$. This is almost entirely caused by
+notable kink is between $n=1000$ and $n=1300$. This is almost entirely caused by
 TruffleRuby, many of whose process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
 segment to be equivalent to the final segment (generally leading to a classification
-of slowdown or warmup). At $n=1000$ the segment is not detected at all, thus generally
+of slowdown or warmup). At $n=1000$ the segment is not detected at all, generally
 leading to a similar classification as at $n=2000$. At $n=1050$, however, a
 segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
@@ -1699,10 +1699,9 @@ Figure \ref{fig:truncated} shows an example of this phenomenon.
 It is thus difficult to draw definitive conclusions from our data:
 at $n=650$ only 15\% of classifications would have changed,
 but 21\% would have changed at $n=1050$. It is also important to bear in mind
-that our comparison only considers classifications: we have no sensible way of
-comparing other information (e.g.~steady perf (s)) on truncated in-process
-iterations. That said, it is clear that the quality of classifications
-is heavily dependent on the VM(s) in question: if one is confident that the the VM(s) in question do not have
+that our comparison only considers classifications (and not e.g.~steady perf(s)).
+That said, it is clear that the quality of classifications
+is heavily dependent on the VM(s) in question: if one is confident that the VM(s) in question do not have
 semi-predictable performance spikes then it may be possible to run many fewer
 in-process iterations; if one is unsure then running more is the only safe
 course of action. We suggest that in many cases a reasonable compromise might be to
@@ -1710,13 +1709,12 @@ use smaller numbers (e.g.~500) of in-process iterations most
 of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 
-\laurie{if we can work out the pexec situation we can also drop that in here}
-Fourth, because a \vmbpair's process executions are often inconsistent, more
-than 1 process execution must be run. Again, it is an open question as to how
-many process executions are needed to uncover inconsistencies. Our data suggests that
-10 process executions is a reasonable, and realistic, figure for most
-cases. As for in-process iterations, occasionally running larger numbers of
-process executions will help identify infrequent performance issues.
+The situation with the number of process executions that needs to be run
+is more complex. An informal analysis suggests that
+15 process executions is a reasonable, and realistic, figure for most
+cases, yielding similar quality data to the 30 that we ran. As for in-process
+iterations, occasionally running larger numbers of process executions will help
+identify infrequent performance issues.
 
 
 \section{Conclusions}

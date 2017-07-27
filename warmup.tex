@@ -393,7 +393,6 @@ separate document contains the complete plots of all data from all machines.
 Our repeatable experiment, as well as the specific results used
 in this paper, can be downloaded from:
 \url{https://archive.org/download/softdev_warmup_experiment_artefacts/v0.8/}
-\edd{XXX update when new data is up}
 
 
 \section{Background}
@@ -1683,7 +1682,7 @@ one to pick a value of $n$ that has a good trade-off between accuracy and runnin
 
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $n=1000$ and $n=1300$. This is almost entirely caused by
+notable kink is between $1000 \leq n \leq 1300$. This is almost entirely caused by
 TruffleRuby, many of whose process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
@@ -1712,7 +1711,7 @@ longer-term stability has been affected.
 The situation with the number of process executions that needs to be run
 is more complex. An informal analysis suggests that
 15 process executions is a reasonable, and realistic, figure for most
-cases, yielding similar quality data to the 30 that we ran. As for in-process
+cases, yielding similar quality data to the 30 that we ran. As with in-process
 iterations, occasionally running larger numbers of process executions will help
 identify infrequent performance issues.
 

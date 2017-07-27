@@ -254,7 +254,8 @@ ARXIV_FILES=	${DIAGRAMS} \
 		ACM-Reference-Format.bst \
 		summary_macros.tex \
 		vm_versions.tex \
-		outlier_summaries.tex
+		outlier_summaries.tex \
+		georges_macros.tex
 ARXIV_BASE=arxiv
 ${ARXIV_BASE}: ${LATEX_SIGPLAN}.pdf
 	mkdir $@

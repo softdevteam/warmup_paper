@@ -898,7 +898,9 @@ iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
-of each changepoint segment. Figure~\ref{fig:changepoint} shows an example of changepoints and
+of each changepoint segment. Whilst some dependence has been observed in the observations it is 
+well known that inflating the penalty as we have here allows us to use an independence 
+assumption~\cite{antoch97effect}. Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
 
 
@@ -1486,10 +1488,10 @@ practise. However, our judgement is that this is a reasonable trade-off,
 given that the alternative of a
 system that is likely to introduce substantial noise into our readings.
 
-Current changepoint analysis algorithms -- including the PELT algorithm we use
--- assume that the time-series data is independent, which our in-process
-iteration timings are clearly not. In practise, this does not appear to be an
-issue: we manually inspected a large number of benchmarks and found that the
+The changepoint analysis algorithm we use assumes that the time-series data is independent, which 
+our in-process iteration timings are not. In practise, this is not an
+issue as theory in \cite{antoch97effect} dictates that we can inflate out penalty value to 
+compensate: we manually inspected a large number of benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
 plots to analyse (\totalpexecs{} for the main part of the experiment), it is extremely unlikely that

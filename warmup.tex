@@ -1527,16 +1527,15 @@ bottom of the cycle) as different segments with non-equivalent means, which then
 leads to a classification of no steady state. `Small' cycles either lead to
 different segments with equivalent means or, more often, to a single segment.
 Although we only ever bootstrap within, and never across, segments (see
-Section~\ref{sec:timings}), we are forced to assume that data within segments
-are independent. In practise, the consequences of this are limited for two
-reasons. First, over 99\% of steady state segments have a variance under 0.001s
-(with the vast majority one or more orders of magnitude smaller than that),
-which means that the confidence intervals we produce will be small no matter
-what we do. Second, if a particular segment's data is not independent, we will
-produce confidence intervals slightly larger than the `true' value; in other
-words, at worst our confidence values are an overapproximation. Overall,
-despite these limitations, we believe that our approach produces statistics
-that are more representative of a benchmark's performance.
+Section~\ref{sec:timings}), we assume that data within segments are independent. In practise, the 
+consequences of this are limited for two reasons. First, over 99\% of steady state segments have a 
+variance under 0.001s (with the vast majority one or more orders of magnitude smaller than that),
+which means that the confidence intervals we produce will be small no matter what we do. Second, we 
+ran a simulation study with similar dependencies as observed in our segments we found that across 
+1,000 simulations only 2 had smaller confidence intervals than when the data were independent.  
+Thus we produce confidence intervals that are larger than under independence.  Overall, despite 
+these limitations, we believe that our approach produces statistics that are more representative of 
+a benchmark's performance.
 
 Probably the most widely used method for detecting a steady state is that of
 \citet{georges07statistically} which looks for in-process iterations where the

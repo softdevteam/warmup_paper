@@ -1500,16 +1500,16 @@ system that is likely to introduce substantial noise into our readings.
 
 Current changepoint analysis algorithms -- including the PELT algorithm we use
 -- assume that the time-series data is independent, which our in-process
-iteration timings are clearly not. \laurie{RK: I'm not happy with this sentence as PELT 
+iteration timings are clearly not. \rebecca{I'm not happy with this sentence as PELT 
 doesn't make the independence assumption and there are many algorithms out there that 
 do take into account the dependence - the problem is that they take too long 
 computationally.  Sorry I should have explained why I changed it in my updates.} 
+\laurie{ok. do you think you could draft a sentence that reflects this? i must admit i'm a bit confused!}
 Fortunately, it has been shown that one can
-safely use a changepoint approach that assumes independence by by using a larger
-penalty value~\cite{antoch97effect} \laurie{it would be nice if we could give the reader some 
-assurance that our penalty value is ``larger'' (than what?) RK: a common penalty used is 4logn 
-which is the Schwarz information criterion so we can use that as the ``larger than'' basis if you 
-want.}. We manually inspected a large number of
+safely use a changepoint approach that assumes independence by using a `larger'
+penalty value~\cite{antoch97effect}. As this suggests, penalties are as much an
+art as a science. A typical penalty is $4 \log n$ whereas we used $16 \log n$.
+We manually inspected a large number of
 benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
@@ -1524,18 +1524,16 @@ reasons. First, over 99\% of steady state segments have a variance under 0.001s
 (with the vast majority one or more orders of magnitude smaller than that),
 which means that the confidence intervals we produce will be small no matter
 what we do. Second, for our style of data the confidence intervals we
-produce are generally a \laurie{``small''? RK: I don't we need to quantify this.  The confidence 
-intervals are small enough that I think we are leaving ourself open if we quantify it.} over 
-approximation. We ran ran a simulation study with similar dependencies to those observed in our 
+produce are generally an over 
+approximation. We ran a simulation study with similar dependencies to those observed in our 
 segments \laurie{i think we need to give an intuition about what ``similar dependencies'' means. it 
 also seems that two simulations were run, one with dependent data and one with independent data? i'm 
 not sure how the comparison works. RK: Actually i've just looked back at the data to check what 
 the dependence is in some of the files and I can't find any series that have dependence 
 within segments (other than the bouncing ball ones), hence I don't think we even need to say 
-this.  Unless you guys have a specific example or examples?}. Across 
-1,000 simulations only 2 had smaller confidence intervals than when the data were independent
-\laurie{were the other 998 smaller or the same or a mix?, 998 had larger confidence intervals}. 
-Overall, despite
+this.  Unless you guys have a specific example or examples?}. Across 1,000
+simulations 998 had larger, and only 2 had smaller, confidence intervals than
+when the data were independent. Overall, despite
 these limitations, we believe that our approach produces statistics that are more representative of
 a benchmark's performance.
 

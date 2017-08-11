@@ -1415,16 +1415,11 @@ cost of reading these counters. On active cores the error is small (around 1\% i
 experience), but on idle cores (which are rarely truly idle, as occasional
 computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-We first need to exclude idle cores from any checks. Since a fully busy core has
-an APERF count per second proportional to its base clock rating \edd{this
-happens to be the case for our two linux machines, but in general the rate of
-increment of APERF is undefined. We need to tell readers to check the increment
-on a per-machine basis} \laurie{why don't we define the idle count in terms of
-the cycle counter then?}\edd{I think we could, but that's not what we do
-currently. If we make that change we would have to make some Krun changes and
-restart the benchers. Let me know}. (i.e.~a 3.6GHz processor
-such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second),
-we define an idle core to be one whose APERF is 1000$\times$ less than this (per
+We first need to exclude idle cores from any checks. Although formally APERF is
+an opaque value, in practise a fully busy core has
+an APERF count per second proportional to its base clock rating (i.e.~a 3.6GHz processor
+such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second).
+We therefore define an idle core to be one whose APERF is 1000$\times$ less than this (per
 second). We then need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1,
 taking into account the error introduced by reading these counters.
 For the 4790 processor, the frequency values either side of its 3.6GHz base
@@ -1437,7 +1432,10 @@ in its tolerances)}\edd{Not sure what you mean. I'm referring to the fact that
 it's kinda silly to think of the cores running at one of many discreet
 speedstep values, when the effective clock speed is on a pretty much continuous scale (i.e. any
 effective clock speed between the slowest and fastest values can be achieved by
-switching between speedstep values in-iteration)}. Based on this, we define the
+switching between speedstep values in-iteration)}\laurie{yes, that's what the footnote
+in the next sentence says. i don't think there's a perfect way of doing this,
+so i'm happy enough with what we currently have, unless you have something
+specific in mind to change it to?}. Based on this, we define the
 safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that very small
 portions of an in-process iteration could be subject to frequency changes yet still fall within
 this tolerance. Given the error in reading the APERF and MPERF counters, this is an

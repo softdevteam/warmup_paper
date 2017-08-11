@@ -890,7 +890,10 @@ More sophisticated changepoint analysis algorithms reduce this to $\mathcal{O}(n
 We utilise the PELT algorithm~\cite{killick12optimal} which reduces the
 complexity to $\mathcal{O}(n)$ by noting that once an
 `obvious' changepoint has been discovered, it is not worth including
-data before that changepoint in further searches.
+data before that changepoint in further searches. \laurie{i guess we want
+to say something like ``although PELT assumes independence, by using a large
+penalty $[$and we need to explain what `large means'!$]$, we are able to use
+it on dependent data~\cite{antoch97effect}. See Section~\ref{sec:threats} for more details.}
 
 There are various ways of defining when a changepoint has occurred, but the best fit
 for our data is to consider changes in both the mean and variance of in-process
@@ -1037,7 +1040,7 @@ segments (see Section~\ref{sec:classifications}). We report means and
 99\% confidence intervals
 calculated via bootstrapping (with 100,000 iterations). Although we
 assume that values within segments are
-independent (and thus can be safely bootstrapped), the values across different segments are clearly not
+independent (and thus can be safely bootstrapped; see Section~\ref{sec:threats}), the values across different segments are clearly not
 independent. When bootstrapping, we therefore sample values within, but never
 across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and
@@ -1488,15 +1491,32 @@ practise. However, our judgement is that this is a reasonable trade-off,
 given that the alternative of a
 system that is likely to introduce substantial noise into our readings.
 
-The changepoint analysis algorithm we use assumes that the time-series data is independent, which 
-our in-process iteration timings are not. In practise, this is not an
-issue as theory in \cite{antoch97effect} dictates that we can inflate out penalty value to 
-compensate: we manually inspected a large number of benchmarks and found that the
+Current changepoint analysis algorithms -- including the PELT algorithm we use
+-- assume that the time-series data is independent, which our in-process
+iteration timings are clearly not. Fortunately, it has been shown that one can
+safely use a changepoint approach that assumes independence by by using a larger
+penalty value~\cite{antoch97effect} \laurie{it would be nice if we could give the reader some assurance that our penalty value is ``larger'' (than what?)}. We manually inspected a large number of
+benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
 plots to analyse (\totalpexecs{} for the main part of the experiment), it is extremely unlikely that
 we would have been able to do anywhere near as good a job manually as
 changepoint analysis does automatically.
+
+Although we only ever bootstrap within, and never across, segments (see
+Section~\ref{sec:timings}), we are forced to assume that data within segments
+are independent. In practise, the consequences of this are limited for two
+reasons. First, over 99\% of steady state segments have a variance under 0.001s
+(with the vast majority one or more orders of magnitude smaller than that),
+which means that the confidence intervals we produce will be small no matter
+what we do. Second, for our style of data the confidence intervals we
+produce are generally a \laurie{``small''?} overapproximation. We ran
+ran a simulation study with similar dependencies to those observed in our segments \laurie{i think we need to give an intuition about what ``similar dependencies'' means. it also seems that two simulations were run, one with dependent data and one with independent data? i'm not sure how the comparison works}. Across 
+1,000 simulations only 2 had smaller confidence intervals than when the data were independent
+\laurie{were the other 998 smaller or the same or a mix?}. Overall, despite
+these limitations, we believe that our approach produces statistics that are more representative of
+a benchmark's performance.
+
 
 
 \section{Related work}
@@ -1526,16 +1546,6 @@ lengthy and/or with substantial differences between the means of the top and
 bottom of the cycle) as different segments with non-equivalent means, which then
 leads to a classification of no steady state. `Small' cycles either lead to
 different segments with equivalent means or, more often, to a single segment.
-Although we only ever bootstrap within, and never across, segments (see
-Section~\ref{sec:timings}), we assume that data within segments are independent. In practise, the 
-consequences of this are limited for two reasons. First, over 99\% of steady state segments have a 
-variance under 0.001s (with the vast majority one or more orders of magnitude smaller than that),
-which means that the confidence intervals we produce will be small no matter what we do. Second, we 
-ran a simulation study with similar dependencies as observed in our segments we found that across 
-1,000 simulations only 2 had smaller confidence intervals than when the data were independent.  
-Thus we produce confidence intervals that are larger than under independence.  Overall, despite 
-these limitations, we believe that our approach produces statistics that are more representative of 
-a benchmark's performance.
 
 Probably the most widely used method for detecting a steady state is that of
 \citet{georges07statistically} which looks for in-process iterations where the

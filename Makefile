@@ -76,7 +76,7 @@ softdevbib:
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
-		${CODE} bib.bib ${TABLES} summary_macros.tex
+		${CODE} bib.bib ${TABLES} summary_macros.tex vm_versions.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex

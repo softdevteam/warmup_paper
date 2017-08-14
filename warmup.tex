@@ -1416,7 +1416,7 @@ experience), but on idle cores (which are rarely truly idle, as occasional
 computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
 We first need to exclude idle cores from any checks. Although the rate of
-change of APERF is architecturally undefined~\cite{intel2017pstate}, in
+change of APERF \laurie{does it say ``rate of change'' or does it just say something like ``APERF isn't defined at all''? is mperf not defined either? it would seem odd to define one but not the other...} is architecturally undefined~\cite{intel2017pstate}, in
 practise a fully busy core increments APERF proportional to the CPU base
 frequency (e.g.~ \bencherfive's CPU increments APERF at $3.6*10^9 Hz$).
 We therefore define an idle core to be one whose APERF is 1000$\times$ less than this (per

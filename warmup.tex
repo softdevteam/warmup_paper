@@ -1415,9 +1415,10 @@ cost of reading these counters. On active cores the error is small (around 1\% i
 experience), but on idle cores (which are rarely truly idle, as occasional
 computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-We first need to exclude idle cores from any checks. Although the rate of
-change of APERF \laurie{does it say ``rate of change'' or does it just say something like ``APERF isn't defined at all''? is mperf not defined either? it would seem odd to define one but not the other...} is architecturally undefined~\cite{intel2017pstate}, in
-practise a fully busy core increments APERF proportional to the CPU base
+We first need to exclude idle cores from any checks. Formally,
+the rates at which APERF and MPERF increment are opaque with only the APERF /
+MPERF ratio being strictly defined~\cite{intel17pstate}, in
+practise on our machines a fully busy core increments APERF proportional to the CPU base
 frequency (e.g.~ \bencherfive's CPU increments APERF at $3.6*10^9 Hz$).
 We therefore define an idle core to be one whose APERF is 1000$\times$ less than this (per
 second). We then need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1,
@@ -1437,7 +1438,9 @@ in the next sentence says. i don't think there's a perfect way of doing this,
 so i'm happy enough with what we currently have, unless you have something
 specific in mind to change it to?}\edd{I think we should say, we chose 3\% as
 an acceptable tolerance and not mention the speedstep increments, since they
-have no real bearing on the ratios we can see}. Based on
+have no real bearing on the ratios we can see}\laurie{i don't agree. we (certainly i) used
+them as a guideline for how big the ratio could be before we would
+definitely be including actual speedsteps.}. Based on
 this, we define the
 safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that very small
 portions of an in-process iteration could be subject to frequency changes yet still fall within

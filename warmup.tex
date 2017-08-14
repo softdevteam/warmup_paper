@@ -1415,10 +1415,10 @@ cost of reading these counters. On active cores the error is small (around 1\% i
 experience), but on idle cores (which are rarely truly idle, as occasional
 computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-We first need to exclude idle cores from any checks. Although formally APERF is
-an opaque value, in practise a fully busy core has
-an APERF count per second proportional to its base clock rating (i.e.~a 3.6GHz processor
-such as \bencherfive's increments the APERF counter by $3.6*10^9$ per second).
+We first need to exclude idle cores from any checks. Although the rate of
+change of APERF is architecturally undefined~\cite{intel2017pstate}, in
+practise a fully busy core increments APERF proportional to the CPU base
+frequency (e.g.~ \bencherfive's CPU increments APERF at $3.6*10^9 Hz$).
 We therefore define an idle core to be one whose APERF is 1000$\times$ less than this (per
 second). We then need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1,
 taking into account the error introduced by reading these counters.
@@ -1435,7 +1435,10 @@ effective clock speed between the slowest and fastest values can be achieved by
 switching between speedstep values in-iteration)}\laurie{yes, that's what the footnote
 in the next sentence says. i don't think there's a perfect way of doing this,
 so i'm happy enough with what we currently have, unless you have something
-specific in mind to change it to?}. Based on this, we define the
+specific in mind to change it to?}\edd{I think we should say, we chose 3\% as
+an acceptable tolerance and not mention the speedstep increments, since they
+have no real bearing on the ratios we can see}. Based on
+this, we define the
 safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that very small
 portions of an in-process iteration could be subject to frequency changes yet still fall within
 this tolerance. Given the error in reading the APERF and MPERF counters, this is an

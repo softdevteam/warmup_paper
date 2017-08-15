@@ -1415,32 +1415,17 @@ cost of reading these counters. On active cores the error is small (around 1\% i
 experience), but on idle cores (which are rarely truly idle, as occasional
 computation happens on them) it can be relatively high (10\% or more is
 not uncommon; in artificially extreme cases, we have observed up to 200\%).
-We first need to exclude idle cores from any checks. Formally,
-the rates at which APERF and MPERF increment are undefined~\cite{intel17pstate}, though, in
-practise, on our machines a fully busy core increments APERF per
-clock tick (e.g.~ \bencherfive's CPU increments APERF at $3.6*10^9 Hz$).
+We first need to exclude idle cores from any checks. Formally
+the rate at which APERF increments is undefined~\cite{intel17pstate}. In
+practise, however, our machines increment APERF on a fully utilised core at the CPU base frequency
+(e.g.~ \bencherfive's CPU increments APERF at $3.6$GHz).
 We therefore define an idle core to be one whose APERF is 1000$\times$ less than this (per
 second). We then need to determine a sensible tolerance around the ideal APERF/MPERF ratio of 1,
 taking into account the error introduced by reading these counters.
 For the 4790 processor, the frequency values either side of its 3.6GHz base
 are 3.4GHz and 3.8GHz, which would lead to a 5\% difference in the APERF/MPERF
 ratio (for the 3.5GHz E3-1240 processor, the values either side are 3.3GHz and 3.9GHz i.e.~at
-least a 6\% difference in the APERF/MPERF ratio)\edd{Given what we know now, I
-think the speedstep increments are irrelevant}\laurie{for the ``perfect''
-upcoming version, maybe, but not for this version (which has to be much looser
-in its tolerances)}\edd{Not sure what you mean. I'm referring to the fact that
-it's kinda silly to think of the cores running at one of many discreet
-speedstep values, when the effective clock speed is on a pretty much continuous scale (i.e. any
-effective clock speed between the slowest and fastest values can be achieved by
-switching between speedstep values in-iteration)}\laurie{yes, that's what the footnote
-in the next sentence says. i don't think there's a perfect way of doing this,
-so i'm happy enough with what we currently have, unless you have something
-specific in mind to change it to?}\edd{I think we should say, we chose 3\% as
-an acceptable tolerance and not mention the speedstep increments, since they
-have no real bearing on the ratios we can see}\laurie{i don't agree. we (certainly i) used
-them as a guideline for how big the ratio could be before we would
-definitely be including actual speedsteps.}. Based on
-this, we define the
+least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
 safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that very small
 portions of an in-process iteration could be subject to frequency changes yet still fall within
 this tolerance. Given the error in reading the APERF and MPERF counters, this is an

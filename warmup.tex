@@ -1485,13 +1485,15 @@ practise. However, our judgement is that this is a reasonable trade-off,
 given that the alternative of a
 system that is likely to introduce substantial noise into our readings.
 
-Current changepoint analysis algorithms -- including the PELT algorithm we use
--- assume that the time-series data is independent, which our in-process
-iteration timings are clearly not. \rebecca{I'm not happy with this sentence as PELT 
+Current changepoint analysis software available typically make an assumption of independence 
+within and across changepoint segments.  The \texttt{cpt.meanvar} function we use also makes this 
+assumption of indedendence, which our in-process iteration timings are clearly not.
+\rebecca{I'm not happy with this sentence as PELT 
 doesn't make the independence assumption and there are many algorithms out there that 
 do take into account the dependence - the problem is that they take too long 
 computationally.  Sorry I should have explained why I changed it in my updates.} 
-\laurie{ok. do you think you could draft a sentence that reflects this? i must admit i'm a bit confused!}
+\laurie{ok. do you think you could draft a sentence that reflects this? i must admit i'm a bit 
+confused! RK: done.}
 Fortunately, it has been shown that one can
 safely use a changepoint approach that assumes independence by using a `larger'
 penalty value~\cite{antoch97effect}. As this suggests, penalties are as much an
@@ -1513,9 +1515,11 @@ which means that the confidence intervals we produce will be small no matter
 what we do. Second, for our style of data the confidence intervals we
 produce are generally an over 
 approximation. We ran a simulation study with similar dependencies to those observed in our 
-segments (autocorrelation at lag 1 equal to 0.134, 0 at larger lags \laurie{would
-it be clearer to say ``at lag 1 autocorrelation of 0.134 and at larger lags autocorrelation of 0''?}).
-Across 1,000 simulations the coverage of the 90\% confidence \laurie{we use 99\% CIs in the paper. does that matter?} intervals was 86\% compared to 89\% 
+segments (lag 1 autocorrelation of 0.134 and 0 at larger lags \laurie{would
+it be clearer to say ``at lag 1 autocorrelation of 0.134 and at larger lags autocorrelation of 0''? 
+RK: modified in this style but not exactly.}).
+Across 1,000 simulations the coverage of the 90\% confidence \laurie{we use 99\% CIs in the paper. 
+does that matter? RK: Yes, changed} intervals was 97\% compared to 98.4\% 
 when simulating independent data (using the same seed). This suggests that our
 confidence intervals will sometimes be under-approximates when dependence is
 present. As some form of 

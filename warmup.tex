@@ -1516,14 +1516,21 @@ which means that the confidence intervals we produce will be small no matter
 what we do. Second, for our style of data the confidence intervals we
 produce are generally an over 
 approximation. We ran a simulation study with similar dependencies to those observed in our 
-segments \laurie{i think we need to give an intuition about what ``similar dependencies'' means. it 
-also seems that two simulations were run, one with dependent data and one with independent data? i'm 
-not sure how the comparison works. RK: Actually i've just looked back at the data to check what 
-the dependence is in some of the files and I can't find any series that have dependence 
-within segments (other than the bouncing ball ones), hence I don't think we even need to say 
-this.  Unless you guys have a specific example or examples?}. Across 1,000
-simulations 998 had larger, and only 2 had smaller, confidence intervals than
-when the data were independent. Overall, despite
+segments (autocorrelation at lag 1 
+equal to 0.134, 0 at larger lags)
+%\laurie{i think we need to give an intuition about what ``similar 
+%dependencies'' means. it 
+%also seems that two simulations were run, one with dependent data and one with independent data? 
+%i'm 
+%not sure how the comparison works. RK: Actually i've just looked back at the data to check what 
+%the dependence is in some of the files and I can't find any series that have dependence 
+%within segments (other than the bouncing ball ones), hence I don't think we even need to say 
+%this.  Unless you guys have a specific example or examples?}. 
+Across 1,000 simulations the coverage of the 90\% confidence intervals was 86\% compared to 89\% 
+when simulating independent data (using the same seed). This suggests there is a potential for 
+slight over confidence in our estimates when dependence is present.  As some form of 
+dependence was observed in only XX\% of our series this is a small effect on a small portion of 
+our data.  Overall, despite
 these limitations, we believe that our approach produces statistics that are more representative of
 a benchmark's performance.
 

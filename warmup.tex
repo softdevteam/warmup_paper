@@ -1487,10 +1487,10 @@ system that is likely to introduce substantial noise into our readings.
 
 Current changepoint analysis software available typically make an assumption of independence 
 within and across changepoint segments.  The \texttt{cpt.meanvar} function we use also makes this 
-assumption of indedendence, which our in-process iteration timings are clearly not.
-safely use a changepoint approach that assumes independence by using a `larger'
+assumption of independence, which our in-process iteration timings are clearly not.
+We can safely use a changepoint approach that assumes independence by using a `larger'
 penalty value~\cite{antoch97effect}. As this suggests, penalties are as much an
-art as a science. A typical penalty is $4 \log n$ whereas we used $16 \log n$.
+art as a science. A typical penalty for our setup is $4 \log n$ whereas we used $16 \log n$.
 We manually inspected a large number of benchmarks and found that the
 changepoints identified were rarely much worse, and in the vast majority of
 cases better than, our initial manual attempts. Given the large number of
@@ -1500,20 +1500,23 @@ changepoint analysis does automatically.
 
 Although we only ever bootstrap within, and never across, segments (see
 Section~\ref{sec:timings}), we are forced to assume that data within segments
-are independent. In practise, the consequences of this are limited for two
+are independent. In practise, some form of dependence was observed in only 11.8\% of our series
+thus this affects a small portion of our data.  The consequences of this are limited 
+for two
 reasons. First, over 99\% of steady state segments have a variance under 0.001s
 (with the vast majority one or more orders of magnitude smaller than that),
 which means that the confidence intervals we produce will be small no matter
 what we do. Second, for our style of data the confidence intervals we
-produce when dependence is present tend to be small under-approximations. To understand this,
-we ran a simulation study with similar dependencies to those observed in our 
-segments (lag 1 autocorrelation of 0.134 and 0 at larger lags).
-Across 1,000 simulations the coverage of the 99\% confidence intervals was 97\%,
-wherews simulated independent data (using the same seed) had coverage of 98.4\%.
-As some form of dependence was observed in only \laurie{XXX\%} of our series
-this is a small effect on a small portion of our data.  Overall, despite
+produce when dependence is present tend to demonstrate (on average) a small over-approximation. 
+That is, if we want to be 99\% confident, we in fact are more than 99\% confident.  To understand 
+this,
+we ran a simulation study with the smallest (-0.968), largest (0.668) and mean (-0.215) 
+dependence we observed.
+For each value we created 1,000 simulations, the coverage of the 99\% confidence intervals were 
+92\%, 100\% and 99.9\% respectively.  As a comparison simulated independent data (using the 
+same seed) had coverage of 98.3\%.  Overall, despite
 these limitations, we believe that our approach produces statistics that are more representative of
-a benchmark's performance.
+a benchmark's performance than the current approach.
 
 
 \section{Related work}

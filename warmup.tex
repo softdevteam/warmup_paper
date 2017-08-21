@@ -836,10 +836,7 @@ JavaScript and current versions of LuaJIT do not support
 integers, and since PHP's maximum integer size varies across OS and PHP versions, we
 convert the 64-bit unsigned measurements to
 double-precision floating point values in those VMs, throwing an error if this leads to a
-loss of precision. \laurie{tomas points out that doing this during benchmarking
-could interfere with FP performance. i think we do it after timing has stopped,
-at which point it's probably not going to interfere in any way that we could
-ever expect to observe.}
+loss of precision.
 
 
 \section{Classifying Warmup}

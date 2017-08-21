@@ -479,7 +479,7 @@ They are small and widely
 used by VM authors as optimisation targets. In general they are more effectively
 optimised by VMs than average programs; when used as a proxy for other types
 of programs (e.g.~large programs), they tend to overstate the effectiveness of
-VM optimisations, e.g.~\cite{ratanaworabhan09jsmeter}. In our context, this weakness is in fact a strength:
+VM optimisations (see e.g.~\cite{ratanaworabhan09jsmeter}). In our context, this weakness is in fact a strength:
 small, deterministic, and widely examined programs are our most
 reliable means of testing Hypothesis \hypone. Put another way, if we were to run arbitrary programs
 and find unusual warmup behaviour, a VM author might reasonably counter that
@@ -655,7 +655,7 @@ met within 1 hour. In so doing, we aim to lessen the impact of ambient temperatu
 
 \krun fixes the heap and stack \texttt{ulimit} for all VM processes
 (in our case, 2GiB heap and a 8MiB stack).\footnote{Note that Linux allows users
-to inspect these values, but to allocate memory beyond them.} Benchmarks are run
+to inspect these values, but also to allocate memory that exceeds them.} Benchmarks are run
 as the `\texttt{krun}' user, whose account and home directory are created
 afresh before each process execution to prevent cached files affecting benchmarking.
 
@@ -712,7 +712,7 @@ once per second, minimising interruptions.
 
 \subsubsection{OpenBSD-specific Controls}
 
-Relative to Linux, OpenBSD exposes many fewer controls to user. Nevertheless,
+Relative to Linux, OpenBSD exposes fewer controls to user. Nevertheless,
 there are two OpenBSD specific features in \krun.
 First, \krun sets CPU performance to maximum by invoking \texttt{apm -H} prior
 to running benchmarks (equivalent to Linux's \texttt{performance} mode).
@@ -836,7 +836,10 @@ JavaScript and current versions of LuaJIT do not support
 integers, and since PHP's maximum integer size varies across OS and PHP versions, we
 convert the 64-bit unsigned measurements to
 double-precision floating point values in those VMs, throwing an error if this leads to a
-loss of precision.
+loss of precision. \laurie{tomas points out that doing this during benchmarking
+could interfere with FP performance. i think we do it after timing has stopped,
+at which point it's probably not going to interfere in any way that we could
+ever expect to observe.}
 
 
 \section{Classifying Warmup}

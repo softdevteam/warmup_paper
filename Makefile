@@ -54,7 +54,7 @@ all: ${LATEX_SIGPLAN}.pdf bib.bib
 	inkscape --export-pdf=$@ $<
 
 .PHONY: clean
-clean: clean-sigplan clean-arxiv
+clean: clean-sigplan clean-arxiv clean-acmart
 
 .PHONY: clean-sigplan
 clean-sigplan:
@@ -76,7 +76,8 @@ softdevbib:
 
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
-		${CODE} bib.bib ${TABLES} summary_macros.tex vm_versions.tex
+		${CODE} bib.bib ${TABLES} summary_macros.tex vm_versions.tex \
+		acmart.cls acmthm.sty
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
@@ -244,7 +245,7 @@ tables: bencher5.table bencher6.table bencher7.table startup.table dacapo.table 
 	bencher6_octane.table bencher7_octane.table
 
 # Package up the paper for arxiv.org.
-# Note that acmart.cls is included in tex live 2016.
+# Note that acmart.cls is included in tex live 2016, but it is too old.
 ARXIV_FILES=	${DIAGRAMS} \
 		${LATEX_SIGPLAN}.tex \
 		${TABLES} \
@@ -266,3 +267,19 @@ ${ARXIV_BASE}: ${LATEX_SIGPLAN}.pdf
 clean-arxiv:
 	rm -rf ${ARXIV_BASE}
 	rm -rf ${ARXIV_BASE}.zip
+
+# Stuff for dealing with external acmart.cls and acmthm.sty.
+acmart/acmthm.sty: acmart/acmart.cls
+acmart/acmart.cls: acmart/acmart.ins acmart/acmart.dtx
+	cd acmart && pdflatex acmart.ins acmart.dtx
+
+acmart.cls: acmart/acmart.cls
+	ln -sf acmart/acmart.cls $@
+
+acmthm.sty: acmart/acmthm.sty
+	ln -sf acmart/acmthm.sty $@
+
+.PHONY: clean-arxiv clean-acmart
+clean-acmart:
+	rm -f acmart.cls acmthm.sty
+	rm -f acmart/acmart.cls acmart/acmthm.sty

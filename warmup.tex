@@ -1,4 +1,5 @@
-\documentclass[acmsmall]{acmart}\settopmatter{printfolios=true}
+\documentclass[acmsmall,screen]{acmart}
+\citestyle{acmauthoryear}
 % Uncomment the line below to blind for reviewing (will rm acknowledgements):
 % \documentclass[acmlarge,review,anonymous]{acmart}\settopmatter{printfolios=true}
 
@@ -153,16 +154,27 @@ $\begin{array}{rr}
 
 \SDShowCommentTags{default}  %final
 
-% \acmConference[PL'17]{ACM SIGPLAN Conference on Programming Languages}{January 01--03, 2017}{New York, NY, USA}
-% \acmYear{2017}
-% \acmISBN{978-x-xxxx-xxxx-x/YY/MM}
-% \acmDOI{10.1145/nnnnnnn.nnnnnnn}
-% \startPage{1}
-\setcopyright{none}  %% Use 'none' for review submission
-%\setcopyright{acmcopyright}
-%\setcopyright{acmlicensed}
-%\setcopyright{rightsretained}
-%\copyrightyear{2017}  %% If different from \acmYear
+%%% XXX Update once the publishing rights are granted.
+%%%
+%%% If you see 'ACMUNKNOWN' in the 'setcopyright' statement below,
+%%% please first submit your publishing-rights agreement with ACM (follow link on submission page).
+%%% Then please update our instructions page and copy-and-paste the NEW commands into your article.
+%%% Please contact us in case of questions; allow up to 10 min for the system to propagate the information.
+%%%
+%%% The following is specific to OOPSLA'17 and the paper
+%%% 'Virtual Machine Warmup Blows Hot and Cold'
+%%% by Edd Barrett, Carl Friedrich Bolz-Tereick, Rebecca Killick, Sarah Mount, and Laurence Tratt.
+%%%
+%\setcopyright{ACMUNKNOWN}
+\acmPrice{}
+\acmDOI{10.1145/3133876}
+\acmYear{2017}
+\copyrightyear{2017}
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{OOPSLA}
+\acmArticle{52}
+\acmMonth{10}
 
 \bibliographystyle{ACM-Reference-Format}
 \citestyle{acmauthoryear}
@@ -225,8 +237,6 @@ found that at most \maxtwo\% of
 \vmbpair pairs consistently reach a steady state of peak performance.
 \end{abstract}
 
-\keywords{Virtual machine, JIT, benchmarking, performance}  %% \keywords is optional
-
 %% 2012 ACM Computing Classification System (CSS) concepts
 %% Generate at 'http://dl.acm.org/ccs/ccs.cfm'.
 \begin{CCSXML}
@@ -253,6 +263,10 @@ found that at most \maxtwo\% of
 \ccsdesc[500]{Software and its engineering~Just-in-time compilers}
 \ccsdesc[300]{Software and its engineering~Interpreters}
 \maketitle
+
+\renewcommand{\shortauthors}{E.~Barrett, C.~F.~Bolz-Tereick, R.~Killick, S.~Mount, L.~Tratt}
+
+\keywords{Virtual machine, JIT, benchmarking, performance}
 
 \section{Introduction}
 \label{sec:intro}

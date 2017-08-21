@@ -186,27 +186,27 @@ $\begin{array}{rr}
 \author{Edd Barrett}
 \orcid{0000-0001-7644-0748}
 \affiliation{
-  \institution{King's College London, UK}
+  \institution{King's College London, UK \url{http://eddbarrett.co.uk/}}
 }
 \author{Carl Friedrich Bolz-Tereick}
 \orcid{0000-0003-4562-1356}
 \affiliation{
-  \institution{King's College London, UK}
+  \institution{King's College London, UK \url{http://cfbolz.de/}}
 }
 \author{Rebecca Killick}
 \orcid{0000-0003-0583-3960}
 \affiliation{
-  \institution{Lancaster University, UK}
+  \institution{Lancaster University, UK \url{http://www.lancs.ac.uk/~killick/}}
 }
 \author{Sarah Mount}
 \orcid{0000-0001-7575-8420}
 \affiliation{
-  \institution{King's College London, UK}
+  \institution{King's College London, UK \url{http://snim2.org/}}
 }
 \author{Laurence Tratt}
 \orcid{0000-0002-5258-3805}
 \affiliation{
-  \institution{King's College London, UK}
+  \institution{King's College London, UK \url{http://tratt.net/laurie/}}
 }
 
 %%% These macros are used in the abstract and introduction.
@@ -1063,12 +1063,6 @@ steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 \label{sec:results}
 
 \begin{table}[t]
-\caption{Relative proportions of classifiers across benchmarking machines.
-Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
-\nosteadystate: no steady state, \goodinconsistent: good inconsistent,
-\badinconsistent: bad inconsistent. $^\dagger$Note that \bencherfive and
-\bencherseven run the same set of benchmarks, but \benchersix runs a subset
-(see Section~\ref{openbsd porting}).}
 \begin{center}
 \begin{tabular}{lccc}
 \toprule
@@ -1090,6 +1084,12 @@ Class.         & \bencherfive & \bencherseven & \benchersixdagger \\
 \bottomrule
 \end{tabular}
 \end{center}
+\caption{Relative proportions of classifiers across benchmarking machines.
+Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
+\nosteadystate: no steady state, \goodinconsistent: good inconsistent,
+\badinconsistent: bad inconsistent. $^\dagger$Note that \bencherfive and
+\bencherseven run the same set of benchmarks, but \benchersix runs a subset
+(see Section~\ref{openbsd porting}).}
 \label{tab:summarystats}
 \end{table}
 
@@ -1159,6 +1159,11 @@ steady state performance.
 
 \begin{landscape}
 \begin{table*}[p]
+\vspace{-.35cm}
+% If this table gets any wider, the caption falls off the edge of the page :(
+\begin{adjustbox}{scale=.85}
+\input{bencher7.table}
+\end{adjustbox}
 \caption{Results for \bencherseven. We
 report the classification of each process execution and, for inconsistent benchmarks,
 the constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
@@ -1171,11 +1176,6 @@ report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
 steady state performance across all process executions (reported with 99\%
 confidence intervals). Thumbnail histograms
 show the spread of values; the red bars indicates the median values.}
-\vspace{-.35cm}
-% If this table gets any wider, the caption falls off the edge of the page :(
-\begin{adjustbox}{scale=.85}
-\input{bencher7.table}
-\end{adjustbox}
 \label{tab:mainresults}
 \end{table*}
 \end{landscape}
@@ -1312,7 +1312,6 @@ document it accurately.
 \begin{minipage}[t]{0.485\textwidth}
 \vspace{0pt}
 \centering
-\captionof{table}{VM startup time (in seconds with 99\% confidence intervals).}
 \input{startup.table}
 \end{minipage}
 \\
@@ -1326,6 +1325,7 @@ document it accurately.
 \begin{minipage}[t]{0.485\textwidth}
 \vspace{0pt}
 \centering
+\captionof{table}{VM startup time (in seconds with 99\% confidence intervals).}
 \label{fig:startup}
 \end{minipage}
 \end{table}
@@ -1648,7 +1648,7 @@ common.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
-\caption{How the \bencherseven classifications would have looked if we had run fewer than
+\caption{\laurie{sarah: needs updating} How the \bencherseven classifications would have looked if we had run fewer than
 2000 in-process iterations. We truncated process
 executions (taking in-process iterations from $0 \ldots n$ where $10 \leq n \leq
 1990$) and compared their classifications to the original (with $n=2000$).
@@ -1699,6 +1699,7 @@ around this point. With that in mind, it was then necessary to
 run benchmarks significantly past 1000 in-process iterations so that we would
 be able to observe any long-term effects.
 
+\laurie{sarah: needs updating}
 To understand if we could have achieved similar quality results with fewer in-process
 iterations, we performed changepoint analysis on each process execution's first
 $n$ in-process iterations and compared the classifications to that of $n=2000$.

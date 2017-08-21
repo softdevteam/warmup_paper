@@ -1063,6 +1063,12 @@ steady state; we never sample values from $A$ into $B'$ or $B$ into $A'$).
 \label{sec:results}
 
 \begin{table}[t]
+\caption{Relative proportions of classifiers across benchmarking machines.
+Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
+\nosteadystate: no steady state, \goodinconsistent: good inconsistent,
+\badinconsistent: bad inconsistent. $^\dagger$Note that \bencherfive and
+\bencherseven run the same set of benchmarks, but \benchersix runs a subset
+(see Section~\ref{openbsd porting}).}
 \begin{center}
 \begin{tabular}{lccc}
 \toprule
@@ -1084,11 +1090,6 @@ Class.         & \bencherfive & \bencherseven & \benchersixdagger \\
 \bottomrule
 \end{tabular}
 \end{center}
-\caption{Relative proportions of classifiers across benchmarking machines.
-Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
-\nosteadystate: no steady state, \goodinconsistent: good inconsistent, \badinconsistent: bad inconsistent.
-$^\dagger$Note that \bencherfive and \bencherseven run the same set of benchmarks,
-but \benchersix runs a subset (see Section~\ref{openbsd porting}).}
 \label{tab:summarystats}
 \end{table}
 
@@ -1158,11 +1159,6 @@ steady state performance.
 
 \begin{landscape}
 \begin{table*}[p]
-\vspace{-.35cm}
-% If this table gets any wider, the caption falls off the edge of the page :(
-\begin{adjustbox}{scale=.85}
-\input{bencher7.table}
-\end{adjustbox}
 \caption{Benchmark results for \bencherseven. For all process executions, we
 report the classification of the benchmark and, for good/bad inconsistent benchmarks,
 their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
@@ -1177,6 +1173,11 @@ report with 99\% confidence intervals. The thumbnail histograms
 show the spread of values; the red bar shows the location of the median
 (for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
 \emph{Steady perf(s)}) value.}
+\vspace{-.35cm}
+% If this table gets any wider, the caption falls off the edge of the page :(
+\begin{adjustbox}{scale=.85}
+\input{bencher7.table}
+\end{adjustbox}
 \label{tab:mainresults}
 \end{table*}
 \end{landscape}
@@ -1313,6 +1314,7 @@ document it accurately.
 \begin{minipage}[t]{0.485\textwidth}
 \vspace{0pt}
 \centering
+\captionof{table}{VM startup time (in seconds with 99\% confidence intervals).}
 \input{startup.table}
 \end{minipage}
 \\
@@ -1326,7 +1328,6 @@ document it accurately.
 \begin{minipage}[t]{0.485\textwidth}
 \vspace{0pt}
 \centering
-\captionof{table}{VM startup time (in seconds with 99\% confidence intervals).}
 \label{fig:startup}
 \end{minipage}
 \end{table}
@@ -1865,11 +1866,11 @@ blips less noticeable.
 
 \begin{landscape}
 \begin{table*}[htp]
+\caption{DaCapo results for \bencherfive.}
 \centering
 \begin{adjustbox}{scale=.9}
 \input{dacapo.table}
 \end{adjustbox}
-\caption{DaCapo results for \bencherfive.}
 \label{tab:dacapo}
 \end{table*}
 \end{landscape}
@@ -1877,31 +1878,31 @@ blips less noticeable.
 
 \begin{landscape}
 \begin{table*}[htp]
+\caption{Octane results for \bencherfive.}
 \centering
 \begin{adjustbox}{scale=.9}
 \input{bencher5_octane.table}
 \end{adjustbox}
-\caption{Octane results for \bencherfive.}
 \label{tab:octaneb5}
 \end{table*}
 \end{landscape}
 
 \begin{table*}[htp]
 \centering
+\caption{Octane results for \benchersix.}
 \begin{adjustbox}{scale=.9}
 \input{bencher6_octane.table}
 \end{adjustbox}
-\caption{Octane results for \benchersix.}
 \label{tab:octaneb6}
 \end{table*}
 
 \begin{landscape}
 \begin{table*}[htp]
+\caption{Octane results for \bencherseven.}
 \centering
 \begin{adjustbox}{scale=.9}
 \input{bencher7_octane.table}
 \end{adjustbox}
-\caption{Octane results for \bencherseven.}
 \label{tab:octaneb7}
 \end{table*}
 \end{landscape}
@@ -1916,22 +1917,22 @@ seen in Tables~\ref{tab:bencher5results} and \ref{tab:bencher6results}.
 
 \begin{landscape}
 \begin{table*}[t]
+\caption{Benchmark results for \bencherfive.}
 \centering
 \begin{adjustbox}{scale=.85} % This table is BIG.
 \input{bencher5.table}
 \end{adjustbox}
-\caption{Benchmark results for \bencherfive.}
 \label{tab:bencher5results}
 \end{table*}
 \end{landscape}
 
 \begin{landscape}
 \begin{table*}[t]
+\captionof{table}{Benchmark results for \benchersix.}
 \centering
 \begin{adjustbox}{scale=.9}
 \input{bencher6.table}
 \end{adjustbox}
-\captionof{table}{Benchmark results for \benchersix.}
 \label{tab:bencher6results}
 \end{table*}
 \end{landscape}

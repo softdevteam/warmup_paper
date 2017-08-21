@@ -1159,20 +1159,18 @@ steady state performance.
 
 \begin{landscape}
 \begin{table*}[p]
-\caption{Benchmark results for \bencherseven. For all process executions, we
-report the classification of the benchmark and, for good/bad inconsistent benchmarks,
-their constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
-means 22 of the process executions were slowdown, and 8 warmup). For processes
-which reach a steady state we report three summary statistics. \emph{Steady iter
+\caption{Results for \bencherseven. We
+report the classification of each process execution and, for inconsistent benchmarks,
+the constituent classifications (e.g.~\badinconsistent(22\slowdown, 8\warmup)
+means 22 slowdowns and 8 warmups). If a
+steady state is achieved, we report three summary statistics. \emph{Steady iter
 (\#)} is the median in-process iteration number to reach the steady state,
 and \emph{Steady iter (s)} is the median wall-clock time (since the beginning of
 the process execution) to reach the steady state; for both measures we
 report 5\% and 95\% inter-quartile ranges. \emph{Steady perf (s)} is the mean
-performance of the steady state segment across all process executions, which we
-report with 99\% confidence intervals. The thumbnail histograms
-show the spread of values; the red bar shows the location of the median
-(for \emph{Steady iter (\#)} and \emph{Steady iter (s)}) or mean (for
-\emph{Steady perf(s)}) value.}
+steady state performance across all process executions (reported with 99\%
+confidence intervals). Thumbnail histograms
+show the spread of values; the red bars indicates the median values.}
 \vspace{-.35cm}
 % If this table gets any wider, the caption falls off the edge of the page :(
 \begin{adjustbox}{scale=.85}

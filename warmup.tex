@@ -908,8 +908,8 @@ iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
-of each changepoint segment. Whilst some dependence has been observed in the observations it is 
-well known that inflating the penalty as we have here allows us to use an independence 
+of each changepoint segment. Whilst some dependence has been observed in the observations it is
+well known that inflating the penalty as we have here allows us to use an independence
 assumption~\cite{antoch97effect}. Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
 
@@ -1494,8 +1494,8 @@ practise. However, our judgement is that this is a reasonable trade-off,
 given that the alternative of a
 system that is likely to introduce substantial noise into our readings.
 
-Current changepoint analysis software available typically make an assumption of independence 
-within and across changepoint segments.  The \texttt{cpt.meanvar} function we use also makes this 
+Current changepoint analysis software available typically make an assumption of independence
+within and across changepoint segments.  The \texttt{cpt.meanvar} function we use also makes this
 assumption of independence, which our in-process iteration timings are clearly not.
 We can safely use a changepoint approach that assumes independence by using a `larger'
 penalty value~\cite{antoch97effect}. As this suggests, penalties are as much an
@@ -1646,12 +1646,15 @@ common.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
-\caption{\laurie{sarah: needs updating} How the \bencherseven classifications would have looked if we had run fewer than
+\caption{\sarah{updated!}How the \bencherseven classifications would have looked if we had run fewer than
 2000 in-process iterations. We truncated process
 executions (taking in-process iterations from $0 \ldots n$ where $10 \leq n \leq
-1990$) and compared their classifications to the original (with $n=2000$).
+1990$) and compared their classifications, time to reach a steady state and steady state
+performance to the original ($n=2000$). The ``overall'' similarity of each truncated
+dataset is the number of \vmbpair pairs for which \emph{all} characteristics are statistically
+similar to the full experiment.
 In general, lower values of $n$ lead to fewer process executions
-being classified the same as $n=2000$. However, there is a very significant kink in the
+which are similar to $n=2000$. However, there is a very significant kink in the
 data (with the trough between $1000 \leq n \leq 1300$), almost entirely caused by JRuby+Truffle (see
 Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
@@ -1697,10 +1700,16 @@ around this point. With that in mind, it was then necessary to
 run benchmarks significantly past 1000 in-process iterations so that we would
 be able to observe any long-term effects.
 
-\laurie{sarah: needs updating}
-To understand if we could have achieved similar quality results with fewer in-process
+To understand whether we could have achieved similar quality results with fewer in-process
 iterations, we performed changepoint analysis on each process execution's first
-$n$ in-process iterations and compared the classifications to that of $n=2000$.
+$n$ in-process iterations. For each truncated data set, we generated summary statistics
+(of the sort seen in Table~\ref{tab:mainresults}) and compared the classifications, time
+to reach a steady state and steady state performance to that of $n=2000$, by checking for
+overlapping confidence intervals. We also compute the ``overall'' similarity of each
+truncated dataset to $n=2000$, which is the number of \vmbpair pairs for which \emph{all}
+characteristics (classifications, time to reach steady state and steady state performance)
+are statistically similar to the full experiment (see the black line on Figure~\ref{fig:sametruncated}).
+
 Advancing $n$ in increments of 10, we analysed values $10 \leq n \leq 1990$. We shrank the
 sliding window and last segment sizes proportionally (i.e.~at $n=1000$ the
 sliding window is 100 and last segment 250). Intuitively, one
@@ -1709,7 +1718,7 @@ one to pick a value of $n$ that has a good trade-off between accuracy and runnin
 
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $1000 \leq n \leq 1300$. This is almost entirely caused by
+notable kink is between $1000 \leq n \leq 1400$. This is almost entirely caused by
 JRuby+Truffle, many of whose process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
@@ -1722,11 +1731,11 @@ segment, it is often considered non-equivalent to the preceding segment,
 which then often leads to a classification of no steady state.
 Figure \ref{fig:truncated} shows an example of this phenomenon.
 
+\sarah{Will check these numbers again...}
 It is thus difficult to draw definitive conclusions from our data:
-at $n=650$ only 15\% of classifications would have changed,
-but 21\% would have changed at $n=1050$. It is also important to bear in mind
-that our comparison only considers classifications (and not e.g.~steady perf(s)).
-That said, it is clear that the quality of classifications
+at $n=650$ only 11\% of classifications would have changed,
+but 21\% would have changed at $n=1050$.
+It is clear that the quality of classifications
 is heavily dependent on the VM(s) in question: if one is confident that the VM(s) in question do not have
 semi-predictable performance spikes then it may be possible to run many fewer
 in-process iterations; if one is unsure then running more is the only safe

@@ -454,10 +454,12 @@ such identifications. More significantly, the time required
 to manually examine the time series data means that it is only practical to apply it to a small number
 of initial process executions: the cut-off point that is determined from those
 is then applied to all future process executions, even though there is no
-guarantee that they all reach a steady state by that point. Beyond the
-special treatment of `cyclic' data (when in-process iterations behave in a
-predictable pattern), there is also no attempt to classify the steady state
-performance relative to what comes before it. These three points mean that,
+guarantee that they all reach a steady state by that point. Although
+in-process iterations which have a predictable performance pattern are
+implicitly classified as `cyclic`, \kalibera do not otherwise classify
+steady state performance relative to what came before it, making
+it hard to understand if the steady state represents peak performance
+or not. These three points mean that,
 despite \kalibera's advances,
 ``determining when a system has warmed up, or even providing a
 rigorous definition of the term, is an open research problem''~\cite{seaton15phd}.
@@ -638,7 +640,8 @@ A typical problem with benchmarking is that earlier process executions can
 affect later ones (e.g.~a benchmark which forces memory to swap will make
 later benchmarks seem to run slower). Therefore, before each process execution
 (including before the first), \krun reboots the system, ensuring that each
-process execution runs with the machine in a (largely) known state. After each reboot, \krun is
+process execution runs with the machine in a state that
+is uninfluenced by previous process executions. After each reboot, \krun is
 executed by the init subsystem; \krun then pauses for 3
 minutes to allow the system to fully initialise; calls \texttt{sync} (to
 flush any remaining files to disk) followed by a 30 second wait; before finally running the
@@ -948,7 +951,9 @@ effect of many external events can add up: fortunately, a changepoint segment's 
 naturally captures this proportional notion of tolerance. We therefore combine these two notions,
 formally defining that a segment $s_i$
 is equivalent to the final segment $s_f$ if $\textrm{mean}(s_i)$
-is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$.
+is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$
+\laurie{tomas points out that the mean is $s$ but the variance is $s^2$... in a
+sense, it's a semi-arbitrary choice, so maybe we should just say that}.
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The
@@ -1518,7 +1523,7 @@ which means that the confidence intervals we produce will be small no matter
 what we do. Second, for our style of data the confidence intervals we
 produce when dependence is present tend to demonstrate a small over-approximation.
 To understand this, we ran a simulation study with the smallest (-0.968),
-largest (0.668), and mean (-0.215) dependence we observed. The coverage
+largest (0.668), and mean (-0.215) dependence we observed \laurie{tomas asks what the units are}. The coverage
 of the 99\% confidence intervals over 1,000 simulations was
 100\%, 92\%, and 99.9\% respectively (where values over 99\% represent
 negative correlation and values under 99\% represent positive correlation).

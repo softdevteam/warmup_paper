@@ -1646,13 +1646,13 @@ common.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
-\caption{\sarah{updated!}How the \bencherseven classifications would have looked if we had run fewer than
+\caption{How the \bencherseven classifications would have looked if we had run fewer than
 2000 in-process iterations. We truncated process
 executions (taking in-process iterations from $0 \ldots n$ where $10 \leq n \leq
-1990$) and compared their classifications, time to reach a steady state and steady state
-performance to the original ($n=2000$). The ``overall'' similarity of each truncated
+1990$) and compared their classifications, time to reach a steady state, and steady state
+performance to the original ($n=2000$). The `overall' similarity of each truncated
 dataset is the number of \vmbpair pairs for which \emph{all} characteristics are statistically
-similar to the full experiment.
+equivalent to the full experiment.
 In general, lower values of $n$ lead to fewer process executions
 which are similar to $n=2000$. However, there is a very significant kink in the
 data (with the trough between $1000 \leq n \leq 1300$), almost entirely caused by JRuby+Truffle (see
@@ -1701,21 +1701,20 @@ run benchmarks significantly past 1000 in-process iterations so that we would
 be able to observe any long-term effects.
 
 To understand whether we could have achieved similar quality results with fewer in-process
-iterations, we performed changepoint analysis on each process execution's first
-$n$ in-process iterations. For each truncated data set, we generated summary statistics
-(of the sort seen in Table~\ref{tab:mainresults}) and compared the classifications, time
-to reach a steady state and steady state performance to that of $n=2000$, by checking for
-overlapping confidence intervals. We also compute the ``overall'' similarity of each
-truncated dataset to $n=2000$, which is the number of \vmbpair pairs for which \emph{all}
+iterations, we truncated all of \bencherseven's process executions (taking
+in-process iterations from $0 \ldots n$ where $10 \leq n \leq 1990$ in
+increments of 10), reran changepoint analysis, and compared the resulting
+classifications, times to reach a steady state, and steady state performances to
+the original ($n=2000$). We shrank the sliding window and last segment sizes
+proportionally (i.e.~at $n=1000$ the sliding window is 100 and last segment
+250). In essence, for each $n$ we produced a new summary table which was
+compared to Table~\ref{tab:mainresults} for similarity. We also computed an
+`overall' similarity score which is the number of \vmbpair pairs for which all three
 characteristics (classifications, time to reach steady state and steady state performance)
-are statistically similar to the full experiment (see the black line on Figure~\ref{fig:sametruncated}).
+are statistically equivalent to the full experiment.
 
-Advancing $n$ in increments of 10, we analysed values $10 \leq n \leq 1990$. We shrank the
-sliding window and last segment sizes proportionally (i.e.~at $n=1000$ the
-sliding window is 100 and last segment 250). Intuitively, one
-would expect the classifications to gradually change more and more as $n$ reduces, allowing
+Intuitively, one would expect the similarity to decrease as $n$ reduces, allowing
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
-
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
 notable kink is between $1000 \leq n \leq 1400$. This is almost entirely caused by

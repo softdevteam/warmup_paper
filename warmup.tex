@@ -1652,9 +1652,9 @@ common.
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
 \caption{How the \bencherseven classifications would have looked if we had run fewer than
-2000 in-process iterations. We truncated process
-executions (taking in-process iterations from $0 \ldots n$ where $10 \leq n \leq
-1990$) and compared their classifications, time to reach a steady state, and steady state
+2000 in-process iterations. We truncated process executions (taking in-process
+iterations $0 \ldots n$ where $n \in \{1990, 1980, \ldots, 10\}$) and compared
+their classifications, time to reach a steady state, and steady state
 performance to the original ($n=2000$). The `overall' similarity of each truncated
 dataset is the number of \vmbpair pairs for which \emph{all} characteristics are statistically
 equivalent to the full experiment.

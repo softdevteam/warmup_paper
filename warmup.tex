@@ -947,13 +947,12 @@ small number of external events can add an absolute level of noise: in our
 experience readings often vary by a
 little under 0.001s. In long running benchmarks, an individual external
 event may add a relatively small amount of noise, but the cumulative
-effect of many external events can add up: fortunately, a changepoint segment's variance
-naturally captures this proportional notion of tolerance. We therefore combine these two notions,
+effect of many external events can add up: we use a changepoint segment's variance
+as a proxy for this proportional notion of tolerance (ignoring that
+the variance's units are $\textrm{s}^2$). We therefore combine these two notions,
 formally defining that a segment $s_i$
 is equivalent to the final segment $s_f$ if $\textrm{mean}(s_i)$
-is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001s)$
-\laurie{tomas points out that the mean is $s$ but the variance is $s^2$... in a
-sense, it's a semi-arbitrary choice, so maybe we should just say that}.
+is within $\textrm{mean}(s_f) \pm \textrm{max}(\textrm{variance}(s_f), 0.001\textrm{s})$.
 
 \begin{figure}[t]
 \begin{lstlisting}[label=lst:classification, xleftmargin=0cm, caption={The

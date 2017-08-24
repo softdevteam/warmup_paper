@@ -672,10 +672,10 @@ to inspect these values, but also to allocate memory that exceeds them.} Benchma
 as the `\texttt{krun}' user, whose account and home directory are created
 afresh before each process execution to prevent cached files affecting benchmarking.
 
-User-configurable commands can be run before and after benchmark execution. In
-our experiment, we switch off as many Unix daemons as possible (e.g.~smtpd,
-crond) to lessen the effects of context switching to other processes. We also
-turn off network interfaces entirely, to prevent outside sources causing unbounded
+User-configurable commands can be run before and after benchmark execution.
+We disabled as many Unix daemons as possible (e.g.~smtpd,
+crond) to lessen the effects of context switching. We also
+turned off network interfaces entirely, to prevent outside sources causing unbounded
 (potentially performance interfering) interrupts to be sent to the processor and kernel.
 
 In order to identify problems with the machine itself, \krun monitors the

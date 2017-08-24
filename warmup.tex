@@ -675,7 +675,7 @@ afresh before each process execution to prevent cached files affecting benchmark
 User-configurable commands can be run before and after benchmark execution.
 We disabled as many Unix daemons as possible (e.g.~smtpd,
 crond) to lessen the effects of context switching. We also
-turned off network interfaces entirely, to prevent outside sources causing unbounded
+turned off network interfaces entirely, to prevent outside sources causing
 (potentially performance interfering) interrupts to be sent to the processor and kernel.
 
 In order to identify problems with the machine itself, \krun monitors the

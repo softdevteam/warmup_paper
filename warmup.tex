@@ -226,7 +226,7 @@ WC2R 2LS, UK; Rebecca Killick, Lancaster University, Bailrigg, Lancaster, LA1
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: the initial warmup phase determines
 which parts of a program would most benefit from dynamic compilation, before JIT
-compiling them into machine code; subsequently
+compiling those parts into machine code; subsequently
 the program is said to be at a steady state of peak performance.
 Measurement methodologies almost always discard data collected during the warmup
 phase such that reported measurements focus entirely on peak performance.
@@ -382,8 +382,8 @@ unexpected performance patterns that previous methodologies cannot.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the
-effects of Garbage Collection (GC) and JIT compilation. This explains
-only some of the effects we see.
+time taken to perform Garbage Collection (GC) and JIT compilation. These
+two factors explain only some of the effects we see.
 
 
 \subsection{Summary}
@@ -391,9 +391,9 @@ only some of the effects we see.
 In summary, this paper's contributions are as follows:
 \begin{enumerate}
     \item We show that, even in a highly idealised setting, widely studied benchmarks
-often fail to hit a steady state of peak performance.
+often fail to reach a steady state of peak performance.
     \item We present the first automated approach to analysing time series
-data from VM benchmarking that can automatically determine if and when a steady
+data from VM benchmarking, which can automatically determine if and when a steady
 state has been reached.
     \item We present the first classification of different styles of
 steady state behaviour (warmup, slowdown, flat).
@@ -588,7 +588,7 @@ and builds fixed versions of each VM. All VMs were compiled with GCC/G++ \gccver
 (and GCC/G++ bootstraps itself, so that the version we use compiled itself)
 to remove the possibility of variance through the use of different compilers.
 
-\label{openbsd porting} We skip: Graal, HHVM, and JRuby+Truffle on OpenBSD, as
+\label{openbsd porting} We skipped: Graal, HHVM, and JRuby+Truffle on OpenBSD, as
 these VMs have not yet been ported to this platform; \fasta on JRuby+Truffle as
 it crashes; and \richards on HHVM since it takes as long as every other benchmark
 on every other VM put together.
@@ -894,7 +894,7 @@ any single process execution being \result\% of in-process iterations.
 Intuitively, in order to uncover if/when warmup has completed, we need to
 determine when in-process iteration timings have `shifted' in nature (i.e.~become
 faster or slower). For example, for traditional warmup, we would expect to see a
-number of in-process executions taking time $t$ to be followed by a number at
+number of in-process iterations taking time $t$ to be followed by a number at
 time $t'$ (where $t' < t$). Automating the detection of such `shifts' is
 tricky: simple heuristics suffer from both false positives and negatives~\cite{kalibera13rigorous}; and
 `I know it when I see it' manual detection is time-consuming and prone to human
@@ -921,7 +921,7 @@ iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
 of each changepoint segment. Whilst dependence is observed in some of
-our experiment's data the large penalty we use allows us to make an assumption
+our experiment's data, the large penalty we use allows us to make an assumption
 of independence~\cite{antoch97effect} (see Section~\ref{sec:threats} for details).
 Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
@@ -944,10 +944,10 @@ iterations all timed at 0.1001 seconds, followed by another long sequence timed
 at 0.1002 seconds. A changepoint will be detected in the transition between the
 two sequences, resulting in two changepoint segments. However, we know that in practice such a small absolute timing
 delta is as likely to be the result of non-determinism inherent in a real
-machine or OS as it is to be due to a benchmark or VM, and that it would be
+machine or OS as it is to be due to a benchmark or VM: it would thus be
 better to consider the two segments as being equivalent. Such segments
 are not always contiguous. Consider a
-benchmark which, after changepoint analysis has three segments: the first with a
+benchmark which, after changepoint analysis, has three segments: the first with a
 mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
 segments are best considered as being equivalent, even though they are separated by a
@@ -1016,7 +1016,7 @@ at least one preceding segment, leading to a classification of \emph{warmup} (\w
 Listing~\ref{lst:classification} shows an implementation of this algorithm.
 We consider benchmarks whose behaviour is either flat or warmup
 as `good' (flat benchmarks may be unobservably fast warmup), while
-benchmarks which are either slowdown or no steady state are `bad'.
+benchmarks which are either slowdown or no steady state as `bad'.
 
 Based on this, we can then classify a \vmbpair pair as follows:
 if its process executions all share the same classification (e.g.~warmup) then
@@ -1104,7 +1104,7 @@ Classifiers key: \flatc: flat, \warmup: warmup, \slowdown: slowdown,
 \end{table}
 
 % \bfiveresult, \bsixresult, \bsevenresult defined in preamble.
-Our results consist of data for \totalpexecs{} process executions and \totaliterations{} in-process
+Our results consist of data for \num{\totalpexecs} process executions and \num{\totaliterations} in-process
 iterations. Table~\ref{tab:summarystats} summarises the \vmbpair pairs
 and process executions for each benchmarking machine. Taking \bencherseven
 as a representative example,
@@ -1139,7 +1139,7 @@ comparable, with the relative proportions of all measures being only a few
 percent different. \benchersix (running a different OS to \bencherfive, but on similar hardware)
 is however fairly different, with \benchersixvmbenchpairsbadinconsistentpercentage\%
 of \vmbpair pairs being `bad' inconsistent. This is partly due to the absence of
-JRuby+Truffle which, on Linux, is the most consistent VM as well as Graal and HHVM
+JRuby+Truffle which, on Linux, is the most consistent
 (see Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
 roughly similarly (as can be seen indirectly from Table~\ref{tab:summarystats}), but
 there is a more even spread of process execution classifications across \vmbpair pairs.
@@ -1295,12 +1295,13 @@ record the time spent performing JIT compilation and GC. Since
 recording this additional data could potentially change the results we collect,
 it is only collected when \krun is explicitly set to `instrumentation mode'.
 This allows us to identify interesting correlations (though we make no claim
-that they prove causation). For
-example, in Figure~\ref{fig:examples:slowdown1}, there is a clear correlation
-between a JIT compilation and a slowdown. Similarly, Figure~\ref{fig:goodcomp} shows an
+that they prove causation). For example,
+Figure~\ref{fig:goodcomp} shows an
 example where slowdown is clearly correlated to garbage collection.
+Similarly, in Figure~\ref{fig:examples:slowdown1}, there is a clear correlation
+between a JIT compilation and a slowdown.
 However, in many cases such as Figure~\ref{fig:unexplained} neither JIT
-compilation, nor garbage collection, are sufficient in explaining odd
+compilation, nor garbage collection, are sufficient to explain odd
 behaviours.
 
 The relatively few results we have with GC and JIT compilation events, and the lack of a clear
@@ -1386,11 +1387,11 @@ compilers are to use different components (e.g.~different code generators).
 Put another way, an apples-to-apples comparison across very different
 hardware is often impossible, because the `same' software is itself different.
 
-We have not systematically tested whether rebuilding VMs effects warmup, an
+We have not systematically tested whether rebuilding VMs affects warmup, an
 effect noted by \kalibera, though which seems to have little effect on
 the performance of JIT compiled code~\cite{barrett15approaches}. However, since measuring warmup largely
 involves measuring code that was not created by a JIT compiler, it is possible
-that these effects may impact upon our experiment. To a limited extent, the
+that these effects may affect our experiment. To a limited extent, the
 rebuilding of VMs that occurred on each of our benchmarking machines gives
 some small evidence as to this effect, or lack thereof.
 
@@ -1446,7 +1447,7 @@ For the 4790 processor, the frequency values either side of its 3.6GHz base
 are 3.4GHz and 3.8GHz, which would lead to a 5\% difference in the APERF/MPERF
 ratio (for the 3.5GHz E3-1240 processor, the values either side are 3.3GHz and 3.9GHz i.e.~at
 least a 6\% difference in the APERF/MPERF ratio). Based on this, we define the
-safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that very small
+safe APERF / MPERF ratio to be $1\pm0.03$.\footnote{This means that small
 portions of an in-process iteration could be subject to frequency changes yet still fall within
 this tolerance. Given the error in reading the APERF and MPERF counters, this is an
 inevitable problem; by making our tolerance relatively tight, we minimise the
@@ -1539,7 +1540,7 @@ of the 99\% confidence intervals over 1,000 simulations was
 negative correlation and values under 99\% represent positive correlation).
 As a comparison, we also simulated independent data (using the
 same seed as used in the dependent simulations) which had coverage of 98.3\%, showing
-that even with independent data we will not always get precisely the coverage we might expect.
+that even with independent data one may not always get precisely the expected coverage.
 Overall, despite these limitations, we believe that our
 approach produces statistics that are more representative of
 a benchmark's performance than current approaches.
@@ -1559,7 +1560,7 @@ as significantly strengthening Gil et al.'s observations. Our work also adds an
 automated approach to identifying when warmup has occurred and classifying
 run-sequence plots.
 
-\cite{kalibera13rigorous} notes the existence of what we have called cyclic behaviour, which
+\cite{kalibera13rigorous} note the existence of what we have called cyclic behaviour, which
 causes them to classify a benchmark as not reaching an independent state and
 thus being unsuitable for bootstrapping as-is. In such instances, they require
 the user to manually pick one part of the cycle (i.e.~always pick iteration $n$
@@ -1619,7 +1620,8 @@ While such differences may be of little importance to some users,
 they are important to many others. We thus hope that future VM experiments will
 report: a benchmark's classification (warmup, flat, slowdown, no steady state);
 and, if it reaches a steady state, when the steady state was reached (using
-one or both of steady state iter (\#) or (s)) and peak performance.
+one or both of steady state iter (\#) or (s)) and the performance of the
+steady state (steady perf (s)).
 
 Third, it is important to make benchmarks run long enough that any measurements
 taken are substantially above the noise floor. It is not uncommon to see
@@ -1708,7 +1710,7 @@ We chose 2000 in-process iterations based on our experience of VMs' internals.
 VMs have many counters which, when they exceed a certain threshold, cause the VM
 to change behaviour (e.g.~(re)compile code, change garbage collection strategy
 etc.). Our experience is that these counters are often set at `common for human'
-values. Although many are typically set to small values, we knew that some
+values. Although many are likely to be set to small values, we knew that some
 counters would be set to around 1000 (e.g.~tracing in RPython VMs such
 as PyPy occurs at 1039 iterations of a loop) and that we might observe VM effects at in-process iterations
 around this point. With that in mind, it was then necessary to
@@ -1717,12 +1719,12 @@ be able to observe any long-term effects.
 
 To understand whether we could have achieved similar quality results with fewer in-process
 iterations, we truncated all of \bencherseven's process executions (taking
-in-process iterations from $0 \ldots n$ where $n \in \{10, 20, \ldots, 1990\}$),
+in-process iterations from $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$),
 repeated the changepoint analysis, and compared the resulting
 classifications, times to reach a steady state, and steady state performances to
 the original ($n=2000$). We shrank the sliding window and last segment sizes
 proportionally (i.e.~at $n=1000$ the sliding window is 100 and last segment
-250). In essence, for each $n$ we produced a new summary table which was
+250). Thus, roughly speaking, for each $n$ we produced a new summary table which was
 compared to Table~\ref{tab:mainresults} for similarity. We also computed an
 `overall' similarity score which is the number of \vmbpair pairs for which all three
 characteristics (classifications, time to reach steady state and steady state performance)
@@ -1732,7 +1734,7 @@ Intuitively, one would expect the similarity to decrease as $n$ reduces, allowin
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $1000 \leq n \leq 1400$. This is almost entirely caused by
+notable kink is between $1000 \leq n \leq 1300$. This is almost entirely caused by
 JRuby+Truffle, many of whose process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
@@ -1829,11 +1831,11 @@ produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: the DaCapo suite for Java~\cite{dacapo06} and the Octane
 suite for JavaScript~\cite{octane}. Octane was
 run on all three of our benchmarking machines, whereas (due to time
-constraints), Dacapo was run only on \bencherfive. For both suites we used
+constraints) \laurie{is this still true?}, Dacapo was run only on \bencherfive. For both suites we used
 \numpexecs process executions and \numiterations in-process iterations.
 
 We ran DaCapo (with its default benchmark size) on Graal and HotSpot. As it already has support for
-altering the number of in-process executions, we used it without modification.
+altering the number of in-process iterations, we used it without modification.
 However, we were unable to run 3 of its 14 benchmarks: \texttt{batik}
 crashes with a \texttt{Invocation\-Target\-Exception}; \texttt{eclipse},
 \texttt{tomcat} fail their own internal validation checks. We experienced

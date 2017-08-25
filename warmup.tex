@@ -1131,7 +1131,7 @@ on the same VM on the same machine has more than one performance characteristic.
 It is tempting to pick one of these performance characteristics -- VM
 benchmarking sometimes reports the fastest process execution, for example -- but
 it is important to note that \emph{all} of these performance characteristics are
-valid and will be experienced by real-world users.
+valid and may be experienced by real-world users.
 
 Table~\ref{tab:summarystats} clearly shows that the results from \bencherseven
 and \bencherfive (both running Linux but on quite different hardware) are
@@ -1140,7 +1140,7 @@ percent different. \benchersix (running a different OS to \bencherfive, but on s
 is however fairly different, with \benchersixvmbenchpairsbadinconsistentpercentage\%
 of \vmbpair pairs being `bad' inconsistent. This is partly due to the absence of
 JRuby+Truffle which, on Linux, is the most consistent
-(see Section~\ref{openbsd porting}). Of the benchmarks it can run, most behave
+(see Section~\ref{openbsd porting}). Of the benchmarks \benchersix can run, most behave
 roughly similarly (as can be seen indirectly from Table~\ref{tab:summarystats}), but
 there is a more even spread of process execution classifications across \vmbpair pairs.
 Tables~\ref{tab:bencher5results} and~\ref{tab:bencher6results} in the Appendix
@@ -1151,7 +1151,7 @@ Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
 enables us to make several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
 come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
-inconsistent cases). Second, \binarytrees and \fasta seem to be much more often
+inconsistent cases). Second, \binarytrees and \fasta \edd{and richards? that has as many bad inconsistent cases as fasta (4)} seem to be much more often
 bad inconsistent across most VMs. This raises the question as to whether some
 aspect of these benchmarks makes inconsistent performance more likely,
 though they share no particularly obvious characteristics.
@@ -1260,8 +1260,8 @@ regular GC spikes have only a small effect on wall-clock time.}
 
 \subsection{Warmup Plots}
 
-To understand why we see so many unexpected cases
-we created two additional types of plot. All plots have in-process iteration number on the
+To understand why we see so many unexpected cases we plotted our data. All
+plots have in-process iteration number on the
 $x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
 plots in Figure~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
@@ -1360,9 +1360,9 @@ executions (for startup, in-process iterations are irrelevant,
 as the user-level program completes as soon as it has printed out wall-clock
 time).
 
-Table~\ref{fig:startup} shows startup times from both \bencherfive and \benchersix. Since
+Table~\ref{fig:startup} summarises our startup results. Since
 \krun reboots before each process execution, these are measures of a `cold'
-start and thus partly reflect disk speed etc. (though both machines load VMs
+start and thus partly reflect disk speed etc. (though our machines load VMs
 from an SSD). As this data clearly shows, startup time varies significantly amongst VMs:
 taking C on Linux as a baseline, the fastest VM (LuaJIT) is $5\times$ slower, whilst the
 slowest VM (JRuby+Truffle) is around $3500\times$ slower, to startup.
@@ -1376,14 +1376,14 @@ pretend to have controlled every possibly confounding variable. It
 is inevitable that there are further confounding variables that
 we are not aware of, which may have coloured our results.
 
-We have tried to gain a partial understanding of the effects of different
+We have tried to gain an understanding of the effects of different
 hardware on benchmarks by using machines with the same OS but
-different hardware. However, while the hardware between the two is
-different, more distinct hardware (e.g.~a non-x86 architecture)
-is more likely to uncover hardware-related differences.
+different hardware.
+More distinct hardware (e.g.~a non-x86 architecture)
+is likely to uncover further hardware-related differences.
 However, hardware cannot be varied in isolation from software:
 the greater the differences in hardware, the more likely that JIT compilers
-compilers are to use different components (e.g.~different code generators).
+are to use different components (e.g.~different code generators).
 Put another way, an apples-to-apples comparison across very different
 hardware is often impossible, because the `same' software is itself different.
 
@@ -1395,14 +1395,14 @@ that these effects may affect our experiment. To a limited extent, the
 rebuilding of VMs that occurred on each of our benchmarking machines gives
 some small evidence as to this effect, or lack thereof.
 
-The checksums we added to benchmarks ensure that, at a user-visible level, each
+The checksums we added to benchmarks ensure that, at a user-visible level, each benchmark
 performs equivalent work in each language variant. However, it is impossible to
 say whether each performs equivalent work at the lowest level or not. For
 example, choosing to use a different data type in a language's core library may
 substantially impact performance. There is also the perennial problem as to the
 degree to which an implementation of a benchmark should respect other
 language's implementations or be idiomatic (the latter being likely to
-run faster). From our perspective, this possibility is somewhat less important,
+run faster). From our perspective, this is somewhat less important,
 since we are interested in the warmup patterns of reasonable programs,
 whether they are the fastest possible or not. It is however possible that by
 inserting checksums we have created unrepresentative benchmarks, though
@@ -1412,7 +1412,7 @@ Although we have minimised the number of system calls that our in-process
 iterations runners make, we cannot escape them entirely. For example,
 on both Linux and OpenBSD \texttt{clock\_gettime} (which we use to obtain
 monotonic wall-clock time) contains what is effectively a spin-lock,
-meaning that there is no guarantee that it returns within a fixed bound.
+meaning that there is no guarantee (that we could see) that it returns within a fixed bound.
 %\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the
 %OpenBSD source code and \texttt{getrawmonotonic} in
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
@@ -1524,7 +1524,8 @@ changepoint analysis does automatically.
 
 Although we only ever bootstrap within, and never across, segments (see
 Section~\ref{sec:timings}), we are forced to assume that data within segments
-are independent. Across all three of our benchmarking machines, 11.8\% of process executions
+are independent\edd{repetition, we just said that in the last para}. Across all
+three of our benchmarking machines, 11.8\% of process executions
 showed some form of dependence in one or more changepoint segments.
 The consequences of this are limited for two
 reasons. First, over 99\% of steady state segments have a variance under 0.001s
@@ -1543,7 +1544,9 @@ same seed as used in the dependent simulations) which had coverage of 98.3\%, sh
 that even with independent data one may not always get precisely the expected coverage.
 Overall, despite these limitations, we believe that our
 approach produces statistics that are more representative of
-a benchmark's performance than current approaches.
+a benchmark's performance than current approaches.\edd{I don't understand this
+final paragraph. If we have space (I think we do), I think we need to explain a
+little more clearly what all this means}.
 
 
 \section{Related work}

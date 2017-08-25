@@ -920,9 +920,10 @@ iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
 \texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
-of each changepoint segment. Whilst some dependence has been observed in the observations it is
-well known that inflating the penalty as we have here allows us to use an independence
-assumption~\cite{antoch97effect}. Figure~\ref{fig:changepoint} shows an example of changepoints and
+of each changepoint segment. Whilst dependence is observed in some of
+our experiment's data the large penalty we use allows us to make an assumption
+of independence~\cite{antoch97effect} (see Section~\ref{sec:threats} for details).
+Figure~\ref{fig:changepoint} shows an example of changepoints and
 changepoint segments in our context.
 
 

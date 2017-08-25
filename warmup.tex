@@ -296,7 +296,7 @@ widely studied microbenchmarks, and ran them in a heavily
 controlled environment, designed to minimise measurement noise. By doing so, we
 maximised the chances that our experiment would validate Hypothesis \hypone. Instead
 we encountered many benchmarks which slowdown, never hit a steady
-state, or which perform inconsistently when repeated.
+state, or have inconsistent performance from one run to the next.
 Only \mintwo--\maxtwo\% (depending on the machine and OS
 combination) of \vmbpair pairs consistently reach a steady state of peak
 performance. Of the seven VMs we studied, none consistently reached a steady
@@ -380,8 +380,8 @@ unexpected performance patterns that previous methodologies cannot.
 
 Finally, in an attempt to see if there are easy explanations for the odd
 effects we see, we take two VMs and separate out the
-effects of Garbage Collection (GC) and JIT compilation. While this explains
-some of the effects we see, in many cases it does not.
+effects of Garbage Collection (GC) and JIT compilation. This explains
+only some of the effects we see.
 
 
 \subsection{Summary}
@@ -436,8 +436,8 @@ The methodologies used are typically straightforward: benchmarks are run for a n
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
-that period. Often $n$ is a fixed number (typically around 5), with little or no indication
-as to whether warmup has completed or not. More advanced methods such as
+that period. Often $n$ is a fixed number (typically around 5), with few or no guarantees
+that warmup has completed by that point or not. More advanced methods such as
 that of~\citet{georges07statistically} try to find a steady state
 using simple statistical tests.
 
@@ -460,11 +460,10 @@ such identifications. More significantly, the time required
 to manually examine the time series data means that it is only practical to apply it to a small number
 of initial process executions: the cut-off point that is determined from those
 is then applied to all future process executions, even though there is no
-guarantee that they all reach a steady state by that point. Although
-in-process iterations which have a predictable performance pattern are
-\edd{something is missing here. `flat' is a predictable performance
-patternwhich is not cyclic}
-implicitly classified as `cyclic`, \kalibera do not otherwise classify
+guarantee that they all reach a steady state by that point. With
+the exception of in-process iterations which show dependence in their data (e.g.~a
+repeated `cyclic' pattern), which are dealt with specially,
+\kalibera do not otherwise classify
 steady state performance relative to what came before it, making
 it hard to understand if the steady state represents peak performance
 or not. These three points mean that,

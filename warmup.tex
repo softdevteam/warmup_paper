@@ -333,7 +333,7 @@ e.g.~\citet{georges07statistically}. \citet{kalibera13rigorous} convincingly sho
 presenting instead a manual approach to determining
 if and when a steady state has been reached. While this is a significant improvement on
 previous methods, it is time-consuming, prone to human inconsistency, and gives no
-indication as to whether the steady state represents peak performance of not.
+indication as to whether the steady state represents peak performance or not.
 
 \begin{figure}[t]
 \centering
@@ -436,8 +436,8 @@ The methodologies used are typically straightforward: benchmarks are run for a n
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
-that period. Often $n$ is a fixed number (typically around 5), with little or no confirmation
-that warmup has completed or not. More advanced methods such as
+that period. Often $n$ is a fixed number (typically around 5), with little or no indication
+as to whether warmup has completed or not. More advanced methods such as
 that of~\citet{georges07statistically} try to find a steady state
 using simple statistical tests.
 
@@ -462,6 +462,8 @@ of initial process executions: the cut-off point that is determined from those
 is then applied to all future process executions, even though there is no
 guarantee that they all reach a steady state by that point. Although
 in-process iterations which have a predictable performance pattern are
+\edd{something is missing here. `flat' is a predictable performance
+patternwhich is not cyclic}
 implicitly classified as `cyclic`, \kalibera do not otherwise classify
 steady state performance relative to what came before it, making
 it hard to understand if the steady state represents peak performance
@@ -678,7 +680,7 @@ to inspect these values, but also to allocate memory that exceeds them.} Benchma
 as the `\texttt{krun}' user, whose account and home directory are created
 afresh before each process execution to prevent cached files affecting benchmarking.
 
-User-configurable commands can be run before and after benchmark execution.
+User-configurable commands can be run before and after each process execution.
 We disabled as many Unix daemons as possible (e.g.~smtpd,
 crond) to lessen the effects of context switching. We also
 turned off network interfaces entirely, to prevent outside sources causing
@@ -1034,7 +1036,7 @@ For benchmarks whose process executions all reach a steady state (i.e.~are
 any combination of \flatc, \warmup, or \slowdown) we report the number of
 iterations (\emph{steady iter (\#)}) and the time in seconds (\emph{steady iter (s)}) to
 reach the steady state, as well as the performance within the steady
-state(\emph{steady perf (s)}).
+state (\emph{steady perf (s)}).
 
 \emph{Steady iter (\#)} and \emph{steady iter (s)} allow one to understand how long it takes
 a benchmark to reach a steady state, and are made possible by our use of changepoint

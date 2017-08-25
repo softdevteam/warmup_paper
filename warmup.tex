@@ -1151,8 +1151,8 @@ Looking at one machine's data brings out further detail. For
 example, Table~\ref{tab:mainresults} (with data from \bencherseven)
 enables us to make several observations. First, of the 6 benchmarks, only \nbody and \spectralnorm
 come close to `good' warmup behaviour on all VMs (though each has 1 or 2 bad
-inconsistent cases). Second, \binarytrees and \fasta \edd{and richards? that has as many bad inconsistent cases as fasta (4)} seem to be much more often
-bad inconsistent across most VMs. This raises the question as to whether some
+inconsistent cases). Second, \binarytrees seems generally to be bad inconsistent,
+and \fasta and \richards often bad inconsistent. This raises the question as to whether some
 aspect of these benchmarks makes inconsistent performance more likely,
 though they share no particularly obvious characteristics.
 Third, the overall spread of steady state iter (\#) values is uneven: VMs seem
@@ -1258,10 +1258,11 @@ regular GC spikes have only a small effect on wall-clock time.}
 \end{minipage}
 \end{figure}
 
+
 \subsection{Warmup Plots}
 
-To understand why we see so many unexpected cases we plotted our data. All
-plots have in-process iteration number on the
+We created several different types of plot to help us understand our data in detail.
+All plots have in-process iteration number on the
 $x$-axis. Run-sequence plots show wall-clock times on the $y$-axis. The
 plots in Figure~\ref{fig:changepoint} show run-sequence plots for warmup and
 slowdown behaviours. Figure~\ref{fig:examples:inconsistent} shows an example of bad inconsistency and
@@ -1412,7 +1413,7 @@ Although we have minimised the number of system calls that our in-process
 iterations runners make, we cannot escape them entirely. For example,
 on both Linux and OpenBSD \texttt{clock\_gettime} (which we use to obtain
 monotonic wall-clock time) contains what is effectively a spin-lock,
-meaning that there is no guarantee (that we could see) that it returns within a fixed bound.
+meaning that there is no guarantee that it returns within a fixed bound.
 %\footnote{See \texttt{binuptime} in \texttt{sys/kern/kern\_tc.c} in the
 %OpenBSD source code and \texttt{getrawmonotonic} in
 %\texttt{kernel/time/timekeeping.c} in the Linux source code.}
@@ -1524,7 +1525,7 @@ changepoint analysis does automatically.
 
 Although we only ever bootstrap within, and never across, segments (see
 Section~\ref{sec:timings}), we are forced to assume that data within segments
-are independent\edd{repetition, we just said that in the last para}. Across all
+are independent. Across all
 three of our benchmarking machines, 11.8\% of process executions
 showed some form of dependence in one or more changepoint segments.
 The consequences of this are limited for two
@@ -1544,9 +1545,7 @@ same seed as used in the dependent simulations) which had coverage of 98.3\%, sh
 that even with independent data one may not always get precisely the expected coverage.
 Overall, despite these limitations, we believe that our
 approach produces statistics that are more representative of
-a benchmark's performance than current approaches.\edd{I don't understand this
-final paragraph. If we have space (I think we do), I think we need to explain a
-little more clearly what all this means}.
+a benchmark's performance than current approaches.
 
 
 \section{Related work}

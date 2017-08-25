@@ -220,6 +220,8 @@ L.~Tratt$\}$, Software Development Team, King's College London, Strand, London,
 WC2R 2LS, UK; Rebecca Killick, Lancaster University, Bailrigg, Lancaster, LA1
 4YW, UK}
 
+\titlenote{Updates to this paper will be found at \url{https://arxiv.org/abs/1602.00602}}
+
 \begin{abstract}
 Virtual Machines (VMs) with Just-In-Time (JIT) compilers are traditionally thought
 to execute programs in two phases: the initial warmup phase determines
@@ -930,7 +932,7 @@ changepoint segments in our context.
 Building atop changepoint analysis, we can then define useful classifications
 for time series data from VM benchmarks.
 
-Before we can do so, we must
+However, we must first
 acknowledge the constraints that changepoint analysis works under: it has
 no way of knowing what constitutes the `noise floor' in our problem domain; nor can it
 guarantee to find identical means for very similar segments separated from
@@ -942,8 +944,8 @@ at 0.1002 seconds. A changepoint will be detected in the transition between the
 two sequences, resulting in two changepoint segments. However, we know that in practice such a small absolute timing
 delta is as likely to be the result of non-determinism inherent in a real
 machine or OS as it is to be due to a benchmark or VM, and that it would be
-better to consider the two segments as being equivalent. It is tempting to merge such segments
-together, but this fails to deal with separated segments. Consider a
+better to consider the two segments as being equivalent. Such segments
+are not always contiguous. Consider a
 benchmark which, after changepoint analysis has three segments: the first with a
 mean of 1.0001 seconds, the second 1.2 seconds (perhaps whilst a JIT compiler is
 in action), the third 1.0002 seconds. From our perspective, the first and final
@@ -1058,7 +1060,7 @@ segments (see Section~\ref{sec:classifications}). We report means and
 99\% confidence intervals
 calculated via bootstrapping (with 100,000 iterations). Although we
 assume that values within segments are
-independent (and thus can be safely bootstrapped; see Section~\ref{sec:threats}), the values across different segments are clearly not
+independent (see Section~\ref{sec:threats}), the values across different segments are clearly not
 independent. When bootstrapping, we therefore sample values within, but never
 across, segments (e.g.~if a
 steady state has two segments $A$ and $B$, we bootstrap $A$ to produce $A'$ and

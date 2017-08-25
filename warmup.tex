@@ -438,8 +438,8 @@ The methodologies used are typically straightforward: benchmarks are run for a n
 of in-process iterations within a single VM process execution.
 The first $n$ in-process iterations
 are then discarded, on the basis that warmup \emph{should} have completed in
-that period. Often $n$ is a fixed number (typically around 5), with few or no guarantees
-that warmup has completed by that point or not. More advanced methods such as
+that period. Often $n$ is a fixed number (typically around 5), with no guarantee
+that warmup has completed by that point. More advanced methods such as
 that of~\citet{georges07statistically} try to find a steady state
 using simple statistical tests.
 
@@ -919,7 +919,7 @@ for our data is to consider changes in both the mean and variance of in-process
 iterations. To automate this, we use the \texttt{cpt.meanvar} function in the R
 \texttt{changepoint} package~\cite{killick14changepoint}, passing $15\log{n}$ (where
 $n$ is the time series length minus the number of outliers) to the
-\texttt{penalty} argument, and receiving back changepoint locations and the mean and variance
+\texttt{penalty} argument, and receiving back changepoint locations along with the mean and variance
 of each changepoint segment. Whilst dependence is observed in some of
 our experiment's data, the large penalty we use allows us to make an assumption
 of independence~\cite{antoch97effect} (see Section~\ref{sec:threats} for details).
@@ -1833,7 +1833,7 @@ produced from Krun. To demonstrate this, we have applied it to two standard
 benchmark suites: the DaCapo suite for Java~\cite{dacapo06} and the Octane
 suite for JavaScript~\cite{octane}. Octane was
 run on all three of our benchmarking machines, whereas (due to time
-constraints) \laurie{is this still true?}, Dacapo was run only on \bencherfive. For both suites we used
+constraints), Dacapo was run only on \bencherfive. For both suites we used
 \numpexecs process executions and \numiterations in-process iterations.
 
 We ran DaCapo (with its default benchmark size) on Graal and HotSpot. As it already has support for

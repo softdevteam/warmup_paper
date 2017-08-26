@@ -1706,7 +1706,9 @@ clearly shows that, when a statistically robust analysis is desired, such short
 runs are insufficient. However, none of us wants to run benchmarks for any longer
 than necessary. Assuming that we ran
 experiments for `long enough', a reasonable question is whether we needed to run
-benchmarks for as long as we did.
+as many process executions and as many in-process iterations as we did. In this
+subsection we sample smaller quantities of both to see if doing so would change our
+overall results.
 
 We chose \numiterations in-process iterations based on our experience of VMs' internals.
 VMs have many counters which, when they exceed a certain threshold, cause the VM
@@ -1762,7 +1764,7 @@ use smaller numbers (e.g.~500) of in-process iterations most
 of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 
-\begin{figure}[!tbp]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_pexecs_plot.pdf}
 \caption{\sarah{Check 1000 trials before submission}How the \bencherseven
@@ -1778,26 +1780,24 @@ $n=30$.} \label{fig:pexecstruncated}
 \end{figure}
 
 \sarah{Check 1000 trials before submission.}
-To understand whether we could have achieved similar quality results with fewer process
-executions, we took the \bencherseven data set and created 1000 samples of $n$
-process executions, sampling with replacement, where $n \in \{2, 3, \ldots, 29, 30\}$.
+We had little intuition as to how many process executions we should run, so our
+eventual choice of \numpexecs was slightly arbitrary. To understand if we could
+have used fewer process executions, we have to use a slightly different method
+to the analysis of in-process iterations. We took the \bencherseven data set and
+for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000? 10000?}
+samples (using sampling with replacement) of size $n$. To enable us to compare
+classifications between sets, we constructed multinomial proportion confidence
+intervals (roughly speaking, the proportion of warmup, slowdown, flat and no
+steady state classifications) on the original set and each sampled set using the
+method of \cite{sison95simultaneous}.
 We then compared the resulting
-classifications, times to reach a steady state, and steady state performances to
-the original ($n=30$),
-by checking for
-overlapping confidence intervals (or IQRs in the case of times to reach a steady
-state). For classification data, we constructed multinomial proportion confidence
-intervals, using the method of \cite{sison95simultaneous}, to compare the proportion
-of warmup, slowdown, flat and no steady state classifications in each sample set
-with the original.
-As with the truncated in-processs iterations analysis,
-we effectively produced a new summary table which was compared to Table~\ref{tab:mainresults}
-for similarity. We also computed an `overall' similarity score which is the
-number of \vmbpair pairs for which all three characteristics (classifications,
-time to reach steady state and steady state performance) are statistically
-equivalent to the full experiment. Figure \ref{fig:pexecstruncated} shows the
+classification analysis, times to reach a steady state, and steady state
+performances to the original ($n=30$). As for the truncated in-process
+iterations we also computed an `overall' similarity score taking into account
+all three characteristics. Figure \ref{fig:pexecstruncated} shows the
 results of this analysis.
 
+\laurie{needs redoing}
 Our analysis suggests that 15 process executions is a reasonable, and realistic, figure for most
 cases, yielding similar quality data to the 30 that we ran. As with in-process
 iterations, occasionally running larger numbers of process executions will help

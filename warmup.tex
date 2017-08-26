@@ -1666,7 +1666,7 @@ common.
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
 \caption{How the \bencherseven classifications would have looked if we had run fewer than
-2000 in-process iterations. We truncated process executions (taking in-process
+\numiterations in-process iterations. We truncated process executions (taking in-process
 iterations $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$) and compared
 their classifications, time to reach a steady state, and steady state
 performance to the original ($n=2000$). The `overall' similarity of each truncated
@@ -1708,7 +1708,7 @@ than necessary. Assuming that we ran
 experiments for `long enough', a reasonable question is whether we needed to run
 benchmarks for as long as we did.
 
-We chose 2000 in-process iterations based on our experience of VMs' internals.
+We chose \numiterations in-process iterations based on our experience of VMs' internals.
 VMs have many counters which, when they exceed a certain threshold, cause the VM
 to change behaviour (e.g.~(re)compile code, change garbage collection strategy
 etc.). Our experience is that these counters are often set at `common for human'
@@ -1762,9 +1762,36 @@ use smaller numbers (e.g.~500) of in-process iterations most
 of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 
-The situation with the number of process executions that needs to be run
-is more complex. An informal analysis suggests that
-15 process executions is a reasonable, and realistic, figure for most
+\begin{figure}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{examples/truncated_pexecs_plot.pdf}
+\caption{\sarah{Check 1000 trials before submission}How the \bencherseven
+classifications would have looked if we had run fewer than \numpexecs process
+executions. From the original \bencherseven dataset, we created $1000$ samples
+of $n$ process executions with replacement (where $n \in {2, 3, \ldots, 29,
+30}$) and compared their classifications, time to reach a steady state, and
+steady state performance to the original ($n=30$). The `overall' similarity of
+each truncated dataset is the number of \vmbpair pairs for which \emph{all}
+characteristics are statistically equivalent to the full experiment. In general,
+lower values of $n$ lead to fewer process executions which are similar to
+$n=30$.} \label{fig:pexecstruncated}
+\end{figure}
+
+\sarah{Check 1000 trials before submission.}
+To understand whether we could have achieved similar quality results with fewer process
+executions, we took the \bencherseven data set and created 1000 samples of $n$
+process executions, sampling with replacement, where $n \in \{2, 3, \ldots, 29, 30\}$.
+We then repeated the changepoint analysis, and compared the resulting
+classifications, times to reach a steady state, and steady state performances to
+the original ($n=30$). As with the truncated in-processs iterations analysis,
+we effectively produced a new summary table which was compared to Table~\ref{tab:mainresults}
+for similarity. We also computed an `overall' similarity score which is the
+number of \vmbpair pairs for which all three characteristics (classifications,
+time to reach steady state and steady state performance) are statistically
+equivalent to the full experiment. Figure \ref{fig:pexecstruncated} shows the
+results of this analysis.
+
+Our analysis suggests that 15 process executions is a reasonable, and realistic, figure for most
 cases, yielding similar quality data to the 30 that we ran. As with in-process
 iterations, occasionally running larger numbers of process executions will help
 identify infrequent performance issues.

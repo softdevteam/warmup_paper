@@ -1783,7 +1783,14 @@ executions, we took the \bencherseven data set and created 1000 samples of $n$
 process executions, sampling with replacement, where $n \in \{2, 3, \ldots, 29, 30\}$.
 We then repeated the changepoint analysis, and compared the resulting
 classifications, times to reach a steady state, and steady state performances to
-the original ($n=30$). As with the truncated in-processs iterations analysis,
+the original ($n=30$). We compared each characteristic (classification, steady
+state performance, etc.) in the sampled set to the original by checking for
+overlapping confidence intervals (or IQRs in the case of times to reach a steady
+state). For classification data, we constructed multinomial proportion confidence
+intervals, using the method of \cite{sison95simultaneous}, to compare the proportion
+of warmup, slowdown, flat and no steady state classifications in each sample set
+with the original.
+As with the truncated in-processs iterations analysis,
 we effectively produced a new summary table which was compared to Table~\ref{tab:mainresults}
 for similarity. We also computed an `overall' similarity score which is the
 number of \vmbpair pairs for which all three characteristics (classifications,

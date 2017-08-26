@@ -1781,10 +1781,10 @@ $n=30$.} \label{fig:pexecstruncated}
 To understand whether we could have achieved similar quality results with fewer process
 executions, we took the \bencherseven data set and created 1000 samples of $n$
 process executions, sampling with replacement, where $n \in \{2, 3, \ldots, 29, 30\}$.
-We then repeated the changepoint analysis \laurie{why? i thought we'd just need to redo the IQRs and CIs of the steady state stuff}, and compared the resulting
+We then compared the resulting
 classifications, times to reach a steady state, and steady state performances to
-the original ($n=30$). We compared each characteristic (classification, steady
-state performance, etc.) in the sampled set to the original by checking for
+the original ($n=30$),
+by checking for
 overlapping confidence intervals (or IQRs in the case of times to reach a steady
 state). For classification data, we constructed multinomial proportion confidence
 intervals, using the method of \cite{sison95simultaneous}, to compare the proportion

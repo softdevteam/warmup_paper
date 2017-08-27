@@ -1662,15 +1662,54 @@ common.
 \subsection{How Long Should Experiments Be Run For?}
 \label{how long}
 
+Of all the techniques we have used in this paper, the most simple was the most
+important: we simply ran benchmarks for much longer than suggested by previous methodologies.
+Traditional VM experiments often run for 5 or 10 in-process iterations. Our data
+clearly show that, when a statistically robust analysis is desired, such short
+runs are insufficient. However, none of us wants to run benchmarks for any longer
+than necessary. Assuming that we ran
+experiments for `long enough', a reasonable question is whether we needed to run
+as many process executions and as many in-process iterations as we did.
+
+In this subsection we subset data from \bencherseven to see if using fewer
+process executions or in-process iterations give similar results to the full
+data. We have chosen to define `similar' as `what proportion of the subsetted
+gives the same results as Table~\ref{tab:mainresults}'. We report: individual
+comparisons of \vmbpair pair's classifications, steady iter (\#)\footnote{Note
+that since steady iter (\#) and steady iter (s) are the same measure, but with
+different units, we only need to compare one of them. We arbitrarily
+select steady iter (\#).}, and steady perf (s); and an `overall' comparison which
+is true if and only if the three individual comparisons are true.
+
+In most cases the comparisons involved are obvious. If, for example, the
+original \vmbpair has 30 warmup process executions, and the subsetted \vmbpair pair
+has 30 warmup process executions then the classifications comparison is true,
+and the steady iter (\#) and steady perf (s) comparisons depend on comparing the
+values from each set (taking into account confidence intervals). If the original
+\vmbpair pair has 30 warmup process executions, and the subsetted \vmbpair pair has 30
+slowdown process executions then the classifications comparison is false, but
+the steady iter (\#) and steady perf (s) comparisons comparisons are made as
+before. The main complication comes from no steady state executions. If the
+original and subsetted \vmbpair pair are consistently no steady state, then the
+classifications comparison is true, but we do not count the steady iter (\#) and
+steady perf (s) as either true or false (since no comparison can be made). If
+one \vmbpair pair has a no steady state process executions but the other does
+not, we define the classifications, steady iter (\#), and steady perf (s)
+comparisons to be false.
+
+
+\subsubsection{In-process iterations}
+
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
-\caption{How the \bencherseven classifications would have looked if we had run fewer than
+\caption{How similar \bencherseven's data (seen in Figure~\ref{tab:mainresults}) data
+would have been if we had run fewer than
 \numiterations in-process iterations. We truncated process executions (taking in-process
 iterations $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$) and compared
 their classifications, time to reach a steady state, and steady state
 performance to the original ($n=2000$). The `overall' similarity of each truncated
-dataset is the number of \vmbpair pairs for which \emph{all} characteristics are statistically
+dataset is the number of \vmbpair pairs for which all three characteristics are statistically
 equivalent to the full experiment.
 In general, lower values of $n$ lead to fewer process executions
 which are similar to $n=2000$. However, there is a very significant kink in the
@@ -1699,17 +1738,6 @@ that then causes a classification of no steady state.}
 \label{fig:truncated}
 \end{figure}
 
-Of all the techniques we have used in this paper, the most simple was the most
-important: we simply ran benchmarks for much longer than suggested by previous methodologies.
-Traditional VM experiments often run for 5 or 10 in-process iterations. Our data
-clearly shows that, when a statistically robust analysis is desired, such short
-runs are insufficient. However, none of us wants to run benchmarks for any longer
-than necessary. Assuming that we ran
-experiments for `long enough', a reasonable question is whether we needed to run
-as many process executions and as many in-process iterations as we did. In this
-subsection we sample smaller quantities of both to see if doing so would change our
-overall results.
-
 We chose \numiterations in-process iterations based on our experience of VMs' internals.
 VMs have many counters which, when they exceed a certain threshold, cause the VM
 to change behaviour (e.g.~(re)compile code, change garbage collection strategy
@@ -1728,11 +1756,7 @@ repeated the changepoint analysis, and compared the resulting
 classifications, times to reach a steady state, and steady state performances to
 the original ($n=2000$). We shrank the sliding window and last segment sizes
 proportionally (i.e.~at $n=1000$ the sliding window is 100 and last segment
-250). Thus, roughly speaking, for each $n$ we produced a new summary table which was
-compared to Table~\ref{tab:mainresults} for similarity. We also computed an
-`overall' similarity score which is the number of \vmbpair pairs for which all three
-characteristics (classifications, time to reach steady state and steady state performance)
-are statistically equivalent to the full experiment.
+250).
 
 Intuitively, one would expect the similarity to decrease as $n$ reduces, allowing
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
@@ -1764,16 +1788,19 @@ use smaller numbers (e.g.~500) of in-process iterations most
 of the time, while occasionally using larger numbers (e.g.~1500) to see if
 longer-term stability has been affected.
 
+
+\subsubsection{Process executions}
+
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_pexecs_plot.pdf}
-\caption{\sarah{Check 1000 trials before submission}How the \bencherseven
-classifications would have looked if we had run fewer than \numpexecs process
-executions. From the original \bencherseven dataset, we created $1000$ samples
+\caption{How similar \bencherseven's data (seen in Figure~\ref{tab:mainresults}) data
+would have been if we had run fewer than
+\numpexecs process executions. From the original \bencherseven dataset, we created \laurie{$1000$} samples
 of $n$ process executions with replacement (where $n \in {2, 3, \ldots, 29,
 30}$) and compared their classifications, time to reach a steady state, and
 steady state performance to the original ($n=30$). The `overall' similarity of
-each truncated dataset is the number of \vmbpair pairs for which \emph{all}
+each truncated dataset is the number of \vmbpair pairs for which all three
 characteristics are statistically equivalent to the full experiment. In general,
 lower values of $n$ lead to fewer process executions which are similar to
 $n=30$.} \label{fig:pexecstruncated}
@@ -1782,20 +1809,20 @@ $n=30$.} \label{fig:pexecstruncated}
 \sarah{Check 1000 trials before submission.}
 We had little intuition as to how many process executions we should run, so our
 eventual choice of \numpexecs was slightly arbitrary. To understand if we could
-have used fewer process executions, we have to use a slightly different method
+have used fewer process executions, we used a slightly different method
 to the analysis of in-process iterations. We took the \bencherseven data set and
 for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000? 10000?}
 samples (using sampling with replacement) of size $n$. To enable us to compare
-classifications between sets, we constructed multinomial proportion confidence
+inconsistent classifications between sets, we constructed multinomial proportion confidence
 intervals (i.e.~the proportion of warmup, slowdown, flat and no
 steady state classifications) on the original set and each sampled set using the
-method of \cite{sison95simultaneous}.
-We then compared the resulting
-classification analysis, times to reach a steady state, and steady state
-performances to the original ($n=30$). As for the truncated in-process
-iterations we also computed an `overall' similarity score taking into account
-all three characteristics. Figure \ref{fig:pexecstruncated} shows the
-results of this analysis.
+method of \cite{sison95simultaneous}. One unintuitive side effect of sampling is that
+the $n = 30$ sample does not lead to 100\% similarity. Consider a \vmbpair
+which has 29 warmup process executions and 1 no steady state process executions.
+If a sample of 30 warmup process executions is created, then all three
+comparisons (classification, steady iter (\#), and steady perf (s)) will fail,
+reducing each similarity rating below 100\%. Bearing that in mind, Figure
+\ref{fig:pexecstruncated} shows the results of this analysis.
 
 \laurie{needs redoing}
 Our analysis suggests that 15 process executions is a reasonable, and realistic, figure for most

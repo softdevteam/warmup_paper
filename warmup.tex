@@ -1674,38 +1674,37 @@ than necessary. Assuming that we ran
 experiments for `long enough', a reasonable question is whether we needed to run
 as many process executions and as many in-process iterations as we did.
 
-In this subsection we subset data from \bencherseven to see if using fewer
-process executions or in-process iterations give similar results to using the full
-data. We have chosen to define `similar' as `what proportion of the subsetted
-gives the same results as Table~\ref{tab:mainresults}'\edd{`subsetted' is jarring in the previous sentence}. We report: individual
-comparisons of \vmbpair pair's classifications, steady iter (\#)\footnote{Note
-that since steady iter (\#) and steady iter (s) are the same measure, but with
-different units, we only need to compare one of them. We arbitrarily
-select steady iter (\#).}, and steady perf (s); and an `overall' comparison which
-is true \edd{The `truth' of these metrics is confused a bit. Earlier you have
-said these readings are proportions, not booleans. I though I knew what you
-meant, but having read the next para, I don't think I do :(}
-if and only if the three individual comparisons are true.
+In this subsection we sample data from \bencherseven to see if fewer
+process executions or in-process iterations give similar results to the full
+data. We have chosen to define `similar' as `what proportion of the sampled
+\vmbpairs have the same results as Table~\ref{tab:mainresults}. We report
+individual proportions of \vmbpair pairs classifications, steady iter (\#,
+s)\footnote{Since steady iter (\#) and steady iter (s) both report the same
+underlying measurement, but in different units, we treat them as one.}, and
+steady perf (s). We also report an `overall' measure which is the proportion of
+\vmbpairs for which all three individual comparisons are true.
 
-In most cases the comparisons involved are obvious. If, for example, the
-original \vmbpair has 30 warmup process executions, and the subsetted \vmbpair pair
-has 30 warmup process executions then the classifications comparison is
-true\edd{now i'm confused, so true is 100\%?},
-and the steady iter (\#) and steady perf (s) comparisons depend on comparing the
-values from each set (taking into account confidence intervals). If the original
-\vmbpair pair has 30 warmup process executions, and the subsetted \vmbpair pair has 30
-slowdown process executions then the classifications comparison is false\edd{0\%?}, but
-the steady iter (\#) and steady perf (s) comparisons comparisons are made as
-before. The main complication comes from no steady state executions. If the
-original and subsetted \vmbpair pair are consistently no steady state, then the
-classifications comparison is true, but we do not count the steady iter (\#) and
-steady perf (s) as either true or false (since no comparison can be made). If
-one \vmbpair pair has a no steady state process executions but the other does
-not, we define the classifications, steady iter (\#), and steady perf (s)
-comparisons to be false.
+In most cases the comparisons involved are straightforward. Consider
+a \vmbpair pair $P$ from the original data and a \vmbpair pair $P_s$
+sampled from it. If both $P$ and $P_s$ consistently warm-up,
+then: the classifications comparison is true;
+and the steady iter (\#, s) and steady perf (s) comparisons depend on comparing the
+relevant values calculated from $P$ and $P_s$ (taking into account confidence intervals).
+If $P$ is consistently warm-up but $P_s$ is consistently slowdown then:
+the classifications comparison is false; but
+the steady iter (\#, s) and steady perf (s) comparisons comparisons are made as
+before. The main complication comes from no steady state process executions. If
+$P$ and $P_s$ are consistently no steady state then the
+classifications comparison is true, but we do not count the steady iter (\#, s) and
+steady perf (s) as either true or false (since no comparison can be made).
+If $P$ and $P_s$ both contain at least one no steady state process execution,
+but at least one of them is not consistently no steady state, then
+the classifications comparison is false, and we do not count the steady iter (\#, s) and
+steady perf (s) as either true or false. If one of $P$ or $P_s$ contains
+at least one no steady state process execution, but the other contains
+no steady state process executions, then the classification, steady
+iter (\#, s), and steady perf (s) comparisons are all false.
 
-\edd{I find the notions of true/false confusing. Since we don't use this
-terminology after this point, should we try to avoid it entirely?}
 
 \subsubsection{In-process iterations}
 

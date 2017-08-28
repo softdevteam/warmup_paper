@@ -1847,7 +1847,7 @@ identify infrequent performance issues.
 \label{sec:conclusions}
 
 Warmup has previously been an informally defined term~\cite{seaton15phd}. We
-captured a restricted version of this definition in Hypothesis H1 which
+captured a restricted version of this definition in Hypothesis H1, which
 a carefully designed experiment then invalidated. The analysis
 techniques we used are open-source and can be used by VM developers and users to investigate the
 warmup behaviour of any VM and benchmark.
@@ -1925,7 +1925,8 @@ microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
-adequately long in-process iteration. We recorded \numiterations
+adequately long in-process iteration\edd{note that our krun benchmarks are the
+same. Is it even worth mentioning?} . We recorded \numiterations
 in-process iterations of the outer benchmark; our runner
 fully resets the benchmark and the random number generator between each
 iteration. The \texttt{box2d}, \texttt{gameboy}, \texttt{mandreel} benchmarks do

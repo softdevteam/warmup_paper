@@ -1824,9 +1824,10 @@ $n=30$.} \label{fig:pexecstruncated}
 We had little intuition as to how many process executions we should run, so our
 eventual choice of \numpexecs was somewhat arbitrary. To understand if we could
 have used fewer process executions, we used a slightly different method
-to the analysis of in-process iterations. We took \bencherseven's results and
-for each $n \in \{2, 3, \ldots, 29, 30\}$ we created \laurie{1000?} bootstrapped
-samples (using sampling with replacement) of size $n$.  One unintuitive side effect of sampling is that
+to the analysis of in-process iterations. For each \vmbpair pair and each
+$n \in \{2, 3, \ldots, 29, 30\}$, we created 1000 bootstrapped samples (using sampling with replacement)
+of size $n$. We then report the proportion of sampled \vmbpair pairs against
+the original data. One unintuitive side effect of this sampling is that
 the $n=30$ sample does not lead to 100\% similarity. Consider a \vmbpair pair
 which has 29 warmup process executions and 1 no steady state process execution.
 If a sample of 30 warmup process executions is created (which is not unlikely), then all three

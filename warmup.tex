@@ -1626,7 +1626,9 @@ slower to warmup often has the worse steady
 state performance!  We thus hope that future VM experiments will
 report: a benchmark's classification (warmup, flat, slowdown, no steady state);
 and, if it reaches a steady state, when the steady state was reached (using
-one or both of steady state iter (\# or s)) and the performance of the
+one or both of steady state iter (\# or s)\footnote{Since steady iter (\#) and
+steady iter (s) report the same underlying measure in different
+units they can be treated as one.}) and the performance of the
 steady state (steady perf (s)).
 
 Third, it is important to make benchmarks run long enough that any measurements
@@ -1646,7 +1648,7 @@ in-process iteration is 0.1s,
 
 Fourth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning
-community's approach to this problem may apply equally well to VMs: this would involve
+community's approach to the problem of over-training may apply equally well to VMs: this would involve
 using a training set of benchmarks to devise heuristics, and then benchmarking
 the resulting system(s) on a separate validation set of benchmarks.
 
@@ -1682,8 +1684,7 @@ process executions or in-process iterations give similar results to the full
 data. We have chosen to define `similar' as `what proportion of the sampled
 \vmbpair pairs have the same results as Table~\ref{tab:mainresults}. We report
 individual proportions of \vmbpair pairs classifications, steady iter (\#,
-s)\footnote{Since steady iter (\#) and steady iter (s) both report the same
-underlying measurement, but in different units, we treat them as one.}, and
+s), and
 steady perf (s). We also report an `overall' measure which is the proportion of
 \vmbpair pairs for which all three individual comparisons are true.
 
@@ -1691,28 +1692,28 @@ In most cases the comparisons involved are straightforward. Consider
 a \vmbpair pair $P$ from the original data and a \vmbpair pair $P_s$
 sampled from it. If both $P$ and $P_s$ consistently warm-up,
 then: the classifications comparison is true;
-and the steady iter (\#, s) and steady perf (s) comparisons depend on comparing the
+and the steady iter (\# or s) and steady perf (s) comparisons depend on comparing the
 relevant values calculated from $P$ and $P_s$ (taking into
 account confidence intervals).\footnote{Note that there is an unavoidable
-source of error in the steady iter (\#, s) and steady perf (s) comparisons,
+source of error in the steady iter (\# or s) and steady perf (s) comparisons,
 because, even with 99\% confidence intervals, there is no guarantee that $P$
 covers the `correct' value. Thus sometimes when $P$ and $P_s$'s values
 differ $P_s$ will cover the `correct' value where $P$ doesn't. However, such a
 comparison this will still be counted against $P_s$.}
 If $P$ is consistently warm-up but $P_s$ is consistently slowdown then:
 the classifications comparison is false; but
-the steady iter (\#, s) and steady perf (s) comparisons are made as
+the steady iter (\# or s) and steady perf (s) comparisons are made as
 before. The main complication comes from no steady state process executions. If
 $P$ and $P_s$ are consistently no steady state then the
-classifications comparison is true, but we do not count the steady iter (\#, s) and
+classifications comparison is true, but we do not count the steady iter (\# or s) and
 steady perf (s) as either true or false (since no comparison can be made).
 If $P$ and $P_s$ both contain at least one no steady state process execution,
 but at least one of them is not consistently no steady state, then
-the classifications comparison is false, and we do not count the steady iter (\#, s) and
+the classifications comparison is false, and we do not count the steady iter (\# or s) and
 steady perf (s) as either true or false. If one of $P$ or $P_s$ contains
 at least one no steady state process execution, but the other contains
 no steady state process executions, then the classification, steady
-iter (\#, s), and steady perf (s) comparisons are all false.
+iter (\# or s), and steady perf (s) comparisons are all false.
 
 
 \subsubsection{In-process iterations}

@@ -1825,12 +1825,12 @@ We had little intuition as to how many process executions we should run, so our
 eventual choice of \numpexecs was somewhat arbitrary. To understand if we could
 have used fewer process executions, we used a slightly different method
 to the analysis of in-process iterations. We took \bencherseven's results and
-for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000?}
-samples (using sampling with replacement) of size $n$\edd{so you get $n$ new process execs I think? It's not totally clear}.  One unintuitive side effect of sampling is that
+for each $n \in \{2, 3, \ldots, 29, 30\}$ we created \laurie{1000?} bootstrapped
+samples (using sampling with replacement) of size $n$.  One unintuitive side effect of sampling is that
 the $n=30$ sample does not lead to 100\% similarity. Consider a \vmbpair pair
 which has 29 warmup process executions and 1 no steady state process execution.
 If a sample of 30 warmup process executions is created (which is not unlikely), then all three
-comparisons (classification, steady iter (\#), and steady perf (s)\edd{we are omitting steady iter(s) as it's the same as \#?}) will fail,
+comparisons (classification, steady iter (\# or s), and steady perf (s)) will fail,
 reducing each similarity rating below 100\%. Bearing that in mind, Figure
 \ref{fig:pexecstruncated} shows the results of this analysis.
 

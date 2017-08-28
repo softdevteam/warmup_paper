@@ -1675,22 +1675,26 @@ experiments for `long enough', a reasonable question is whether we needed to run
 as many process executions and as many in-process iterations as we did.
 
 In this subsection we subset data from \bencherseven to see if using fewer
-process executions or in-process iterations give similar results to the full
+process executions or in-process iterations give similar results to using the full
 data. We have chosen to define `similar' as `what proportion of the subsetted
-gives the same results as Table~\ref{tab:mainresults}'. We report: individual
+gives the same results as Table~\ref{tab:mainresults}'\edd{`subsetted' is jarring in the previous sentence}. We report: individual
 comparisons of \vmbpair pair's classifications, steady iter (\#)\footnote{Note
 that since steady iter (\#) and steady iter (s) are the same measure, but with
 different units, we only need to compare one of them. We arbitrarily
 select steady iter (\#).}, and steady perf (s); and an `overall' comparison which
-is true if and only if the three individual comparisons are true.
+is true \edd{The `truth' of these metrics is confused a bit. Earlier you have
+said these readings are proportions, not booleans. I though I knew what you
+meant, but having read the next para, I don't think I do :(}
+if and only if the three individual comparisons are true.
 
 In most cases the comparisons involved are obvious. If, for example, the
 original \vmbpair has 30 warmup process executions, and the subsetted \vmbpair pair
-has 30 warmup process executions then the classifications comparison is true,
+has 30 warmup process executions then the classifications comparison is
+true\edd{now i'm confused, so true is 100\%?},
 and the steady iter (\#) and steady perf (s) comparisons depend on comparing the
 values from each set (taking into account confidence intervals). If the original
 \vmbpair pair has 30 warmup process executions, and the subsetted \vmbpair pair has 30
-slowdown process executions then the classifications comparison is false, but
+slowdown process executions then the classifications comparison is false\edd{0\%?}, but
 the steady iter (\#) and steady perf (s) comparisons comparisons are made as
 before. The main complication comes from no steady state executions. If the
 original and subsetted \vmbpair pair are consistently no steady state, then the
@@ -1700,6 +1704,8 @@ one \vmbpair pair has a no steady state process executions but the other does
 not, we define the classifications, steady iter (\#), and steady perf (s)
 comparisons to be false.
 
+\edd{I find the notions of true/false confusing. Since we don't use this
+terminology after this point, should we try to avoid it entirely?}
 
 \subsubsection{In-process iterations}
 
@@ -1736,7 +1742,10 @@ truncated at $n = 1000$ (LHS) and $n = 1050$ (RHS). Many JRuby+Truffle process
 executions have a performance spike in between in-process iterations 1000 and
 1050. Since the performance spike is entirely truncated at $n=1000$,
 the resulting classification is the same as at $n=2000$. At $n=1050$,
-enough of the performance spike is present to result in a new changepoint segment,
+enough of the performance spike \edd{it's not really a spike, is it? I'd expect
+true spikes to be ignored as outliers. How about step? Rembember to update main
+body too} is present to result in a new changepoint
+segment,
 that then causes a classification of no steady state.}
 \label{fig:truncated}
 \end{figure}
@@ -1753,7 +1762,7 @@ run benchmarks significantly past 1000 in-process iterations so that we would
 be able to observe any long-term effects.
 
 To understand whether we could have achieved similar quality results with fewer in-process
-iterations, we truncated all of \bencherseven's process executions (taking
+iterations, we truncated all of \bencherseven's process executions (for each process execution, taking
 in-process iterations from $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$),
 repeated the changepoint analysis, and compared the resulting
 classifications, times to reach a steady state, and steady state performances to
@@ -1766,7 +1775,7 @@ one to pick a value of $n$ that has a good trade-off between accuracy and runnin
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
 notable kink is between $1000 \leq n \leq 1300$. This is almost entirely caused by
-JRuby+Truffle, many of whose process executions have a distinct performance spike
+JRuby+Truffle, many of whose \edd{reword ``many of whose''?} process executions have a distinct performance spike
 just after in-process iteration 1000, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
 segment to be equivalent to the final segment (generally leading to a classification
@@ -1821,7 +1830,7 @@ intervals (i.e.~the proportion of warmup, slowdown, flat and no
 steady state classifications) on the original set and each sampled set using the
 method of \cite{sison95simultaneous}. One unintuitive side effect of sampling is that
 the $n = 30$ sample does not lead to 100\% similarity. Consider a \vmbpair
-which has 29 warmup process executions and 1 no steady state process executions.
+which has 29 warmup process executions and 1 no steady state process execution.
 If a sample of 30 warmup process executions is created, then all three
 comparisons (classification, steady iter (\#), and steady perf (s)) will fail,
 reducing each similarity rating below 100\%. Bearing that in mind, Figure

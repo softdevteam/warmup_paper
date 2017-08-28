@@ -1681,26 +1681,31 @@ as many process executions and as many in-process iterations as we did.
 
 In this subsection we sample data from \bencherseven to see if fewer
 process executions or in-process iterations give similar results to the full
-results. We have chosen to define `similar' as ``what proportion of the sampled
-\vmbpair pairs have the same results as Table~\ref{tab:mainresults}?'' We report
-individual proportions of \vmbpair pairs' classifications, steady iter (\#,
-s), and
-steady perf (s). We also report an `overall' measure which is the proportion of
-\vmbpair pairs for which all three individual comparisons are true.
+results. We perform comparisons and report the percentage of \vmbpair pairs
+that are `similar' as shown in Table~\ref{tab:mainresults}. We report
+individual percentages for the classifications, steady iter (\#, s),
+and steady perf (s). We also report `overall similarity': the percentage of
+pairings for which all three metrics remain the same.
 
-In most cases the comparisons involved are straightforward. Consider
-a \vmbpair pair $P$ from the original results and a \vmbpair pair $P_s$
-sampled from it. If both $P$ and $P_s$ consistently warm-up,
-then the classifications comparison is true
-and the steady iter (\# or s) and steady perf (s) comparisons require
-checking the overlap between the respective means and confidence intervals.\footnote{Note
+All similarity comparisons involve checking if two confidence intervals overlap.
+Consider a \vmbpair pair $P$ from the original results and a \vmbpair pair $P_s$
+sampled from $P$. If the steady iter (s) confidence interval for $P$ overlaps
+with that of $P_s$, then the steady iter (s) is `similar'. The same applies for
+steady iter (\#) and steady perf (s).~\footnote{Note
 that there is an unavoidable
 source of error in the steady iter (\# or s) and steady perf (s) comparisons as,
 even with 99\% confidence intervals, there is no guarantee that $P$
 covers the `correct' value. Thus sometimes when $P$ and $P_s$'s values
 differ, $P_s$ will cover the `correct' value, while $P$ won't. However, since
 we can't tell when this happens, any such comparison will still be counted against $P_s$.}
-If $P$ is consistently warm-up but $P_s$ is consistently slowdown then
+To make comparisons of classifications we constructed multinomial proportion
+confidence intervals (i.e.~the proportion of warmup, slowdown, flat and no
+steady state classifications) on the original set and each sampled set using
+the method of \cite{sison95simultaneous}.
+
+There are a noteworthy corner-cases relating to the no steady state classifier.
+\edd{untouched chunk, would need to say about things being `considered similar', not `comparing true'}.
+ If $P$ is consistently warm-up but $P_s$ is consistently slowdown then
 the classifications comparison is false but
 the steady iter (\# or s) and steady perf (s) comparisons are made as
 before. The main complication comes from no steady state process executions. If
@@ -1829,11 +1834,7 @@ eventual choice of \numpexecs was somewhat arbitrary. To understand if we could
 have used fewer process executions, we used a slightly different method
 to the analysis of in-process iterations. We took \bencherseven's results and
 for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000?}
-samples (using sampling with replacement) of size $n$. To enable us to compare
-inconsistent classifications between sets, we constructed multinomial proportion confidence
-intervals (i.e.~the proportion of warmup, slowdown, flat and no
-steady state classifications) on the original set and each sampled set using the
-method of \cite{sison95simultaneous}. One unintuitive side effect of sampling is that
+samples (using sampling with replacement) of size $n$.  One unintuitive side effect of sampling is that
 the $n=30$ sample does not lead to 100\% similarity. Consider a \vmbpair
 which has 29 warmup process executions and 1 no steady state process execution.
 If a sample of 30 warmup process executions is created, then all three

@@ -1682,8 +1682,8 @@ as many process executions and as many in-process iterations as we did.
 In this subsection we sample data from \bencherseven to see if fewer
 process executions or in-process iterations give similar results to the full
 results. We have chosen to define `similar' as `what proportion of the sampled
-\vmbpair pairs have the same results as Table~\ref{tab:mainresults}. We report
-individual proportions of \vmbpair pairs classifications, steady iter (\#,
+\vmbpair pairs have the same results as Table~\ref{tab:mainresults}'. We report
+individual proportions of \vmbpair pairs' classifications, steady iter (\#,
 s), and
 steady perf (s). We also report an `overall' measure which is the proportion of
 \vmbpair pairs for which all three individual comparisons are true.
@@ -1691,26 +1691,26 @@ steady perf (s). We also report an `overall' measure which is the proportion of
 In most cases the comparisons involved are straightforward. Consider
 a \vmbpair pair $P$ from the original results and a \vmbpair pair $P_s$
 sampled from it. If both $P$ and $P_s$ consistently warm-up,
-then: the classifications comparison is true;
-and the steady iter (\# or s) and steady perf (s) comparisons depend on comparing the
-relevant values calculated from $P$ and $P_s$ (taking into
-account confidence intervals).\footnote{Note that there is an unavoidable
+then the classifications comparison is true
+and the steady iter (\# or s) and steady perf (s) comparisons require
+checking the overlap between the respective means and confidence intervals.\footnote{Note
+that there is an unavoidable
 source of error in the steady iter (\# or s) and steady perf (s) comparisons as,
 even with 99\% confidence intervals, there is no guarantee that $P$
 covers the `correct' value. Thus sometimes when $P$ and $P_s$'s values
 differ, $P_s$ will cover the `correct' value, while $P$ won't. However, since
 we can't tell when this happens, any such comparison will still be counted against $P_s$.}
-If $P$ is consistently warm-up but $P_s$ is consistently slowdown then:
-the classifications comparison is false; but
+If $P$ is consistently warm-up but $P_s$ is consistently slowdown then
+the classifications comparison is false but
 the steady iter (\# or s) and steady perf (s) comparisons are made as
 before. The main complication comes from no steady state process executions. If
 $P$ and $P_s$ are consistently no steady state then the
 classifications comparison is true, but we do not count the steady iter (\# or s) and
 steady perf (s) as either true or false (since no comparison can be made).
 If $P$ and $P_s$ both contain at least one no steady state process execution,
-but at least one of them is not consistently no steady state, then
-the classifications comparison is false, and we do not count the steady iter (\# or s) and
-steady perf (s) as either true or false. If one of $P$ or $P_s$ contains
+but at least one is not consistently no steady state, then
+the classifications comparison is false, and we again do not count the steady iter (\# or s) and
+steady perf (s) comparison. If one of $P$ or $P_s$ contains
 at least one no steady state process execution, but the other contains
 no steady state process executions, then the classification, steady
 iter (\# or s), and steady perf (s) comparisons are all false.
@@ -1795,7 +1795,7 @@ which then often leads to a classification of no steady state
 (see Figure \ref{fig:truncated} for an example).
 
 It is thus difficult to draw definitive conclusions from our results:
-at $n=650$ the overall similarity is 73\% but at $n=1050$ it is 56\%.
+for example, while the overall similarity at $n=650$ is 73\%, at $n=1050$ it is 56\%.
 It is clear that the quality of results from reducing the number
 of in-process executions
 is heavily dependent on the VM(s) in question: if one is confident that the VM(s) in question do not have
@@ -1842,7 +1842,8 @@ reducing each similarity rating below 100\%. Bearing that in mind, Figure
 \ref{fig:pexecstruncated} shows the results of this analysis.
 
 \laurie{needs redoing when the 1000 trials version is done}
-Our analysis suggests that 15 process executions is a reasonable, and realistic, figure for most
+Our analysis suggests that, on our results at least,
+15 process executions is a reasonable, and realistic, figure for most
 cases, yielding similar quality results to the 30 that we ran. As with in-process
 iterations, occasionally running larger numbers of process executions will help
 identify infrequent performance issues.

@@ -1601,22 +1601,19 @@ benchmarking, including those this paper's authors have been involved with in th
 section we make some tentative suggestions to the VM developer and user
 communities based on our experience.
 
-\edd{Consider putting the punchline of this para foremost, i.e. ``First, each
-pexec must be individually analysed''. Otherwise the para rambles a bit and only at the end does it become apparent what all this is leading to.}
 First, our results undermine the previous VM benchmarking orthodoxy of benchmarks
-quickly reaching a steady state after a fixed number of iterations. It is clear
+quickly and consistently reaching a steady state after a fixed number of iterations. It is clear
 that many benchmarks take considerable time to reach a
 steady state; that different process executions of the same benchmark reach a
 steady state at different points; and that some process executions do not ever
 reach a steady state. Even if one were to pick a very high number of initial in-process
 iterations to discard, there is no guarantee that the remainder
-would represent the steady state. As a corollary, our results also show that one cannot assume
-that one process execution of a \vmbpair pair is representative of others. Each
+would represent the steady state. Similarly, our results also show that one cannot assume
+that one process execution of a \vmbpair pair is representative of others: each
 process execution must be analysed individually to determine if, and when, a steady state is
-reached. The fully automated open-source changepoint analysis
-approach presented in this paper is one option for analysing each process execution individually.
-\edd{optionally say that manual inpsection is out of the window for all but the
-smallest experiments?}
+reached. We believe that, in all practical cases, this means that one must use
+an automated approach to analysing each process execution individually.
+The open-source changepoint analysis approach presented in this paper is one such option.
 
 Second, we believe that the traditional practise of presenting only steady state
 numbers is hard to defend in the face of wildly varying warmup times. There
@@ -1646,7 +1643,7 @@ in-process iteration is 0.1s,
 
 Fourth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning
-community's approach \edd{to what?} may apply equally well to VMs: this would involve
+community's approach to this problem may apply equally well to VMs: this would involve
 using a training set of benchmarks to devise heuristics, and then benchmarking
 the resulting system(s) on a separate validation set of benchmarks.
 
@@ -1655,14 +1652,14 @@ only small parts of VMs are being benchmarked effectively. We are increasingly
 of the opinion that benchmarking quality and quantity are tightly related, and
 that VMs need to be run on many more benchmarks than is typically the case.
 However, collecting benchmarks is surprisingly difficult as there are few
-guidelines as to what makes a good or bad benchmark. For example, programs with
-non-deterministic crashing bugs \edd{I think it's obvious that benchmarks that
-crash are bad. I'm not sure we need to mention this} are likely, at best, to
-frustrate those benchmarking and,
-at worst, to mislead them. However, non-determinism in and of itself is not
-necessarily a good reason to dismiss a program as a possible benchmark,
-especially in modern languages where semi-random hashing of data-structures is
-common.
+guidelines as to what makes a good or bad benchmark, and the more constraints
+one places on `acceptable' benchmarks, the harder the process becomes.
+For example, in this paper we ensured that our benchmarks were deterministic. In
+modern languages, where semi-random hashing of data-structures is common, many
+moderately sized candidate benchmarks will be non-deterministic. As benchmark
+suites grow in size, such trade-offs are likely to become more frequent: one
+pragmatic solution may simply be to note which benchmarks have such properties
+and to allow readers to take that into account when evaluating performance.
 
 
 \subsection{How Long Should Experiments Be Run For?}

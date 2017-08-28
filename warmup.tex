@@ -1689,7 +1689,13 @@ a \vmbpair pair $P$ from the original data and a \vmbpair pair $P_s$
 sampled from it. If both $P$ and $P_s$ consistently warm-up,
 then: the classifications comparison is true;
 and the steady iter (\#, s) and steady perf (s) comparisons depend on comparing the
-relevant values calculated from $P$ and $P_s$ (taking into account confidence intervals).
+relevant values calculated from $P$ and $P_s$ (taking into
+account confidence intervals).\footnote{Note that there is an unavoidable
+source of error in the steady iter (\#, s) and steady perf (s) comparisons,
+because, even with 99\% confidence intervals, there is no guarantee that $P$
+covers the `correct' value. Thus sometimes when $P$ and $P_s$'s values
+differ $P_s$ will cover the `correct' value where $P$ doesn't. However, such a
+comparison this will still be counted against $P_s$.}
 If $P$ is consistently warm-up but $P_s$ is consistently slowdown then:
 the classifications comparison is false; but
 the steady iter (\#, s) and steady perf (s) comparisons are made as
@@ -1781,8 +1787,8 @@ leading to the same classification as at $n=2000$. At $n=1050$, however, a
 segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
 segment, it is often considered non-equivalent to the preceding segment,
-which then often leads to a classification of no steady state.
-Figure \ref{fig:truncated} shows an example of this phenomenon.
+which then often leads to a classification of no steady state
+(see Figure \ref{fig:truncated} for an example).
 
 It is thus difficult to draw definitive conclusions from our data:
 at $n=650$ the overall similarity is 73\% but at $n=1050$ it is 56\%.
@@ -1814,25 +1820,24 @@ lower values of $n$ lead to fewer process executions which are similar to
 $n=30$.} \label{fig:pexecstruncated}
 \end{figure}
 
-\sarah{Check 1000 trials before submission.}
 We had little intuition as to how many process executions we should run, so our
 eventual choice of \numpexecs was somewhat arbitrary. To understand if we could
 have used fewer process executions, we used a slightly different method
 to the analysis of in-process iterations. We took the \bencherseven data set and
-for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000? 10000?}
+for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000?}
 samples (using sampling with replacement) of size $n$. To enable us to compare
 inconsistent classifications between sets, we constructed multinomial proportion confidence
 intervals (i.e.~the proportion of warmup, slowdown, flat and no
 steady state classifications) on the original set and each sampled set using the
 method of \cite{sison95simultaneous}. One unintuitive side effect of sampling is that
-the $n = 30$ sample does not lead to 100\% similarity. Consider a \vmbpair
+the $n=30$ sample does not lead to 100\% similarity. Consider a \vmbpair
 which has 29 warmup process executions and 1 no steady state process execution.
 If a sample of 30 warmup process executions is created, then all three
 comparisons (classification, steady iter (\#), and steady perf (s)) will fail,
 reducing each similarity rating below 100\%. Bearing that in mind, Figure
 \ref{fig:pexecstruncated} shows the results of this analysis.
 
-\laurie{needs redoing}
+\laurie{needs redoing when the 1000 trials version is done}
 Our analysis suggests that 15 process executions is a reasonable, and realistic, figure for most
 cases, yielding similar quality data to the 30 that we ran. As with in-process
 iterations, occasionally running larger numbers of process executions will help

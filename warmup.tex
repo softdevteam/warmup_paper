@@ -1926,8 +1926,7 @@ microsecond timer) with a simpler alternative (using a monotonic millisecond
 timer). We also had to decide on an acceptable notion of `iteration'. Many of Octane's
 benchmarks consist of a relatively quick `inner benchmark'; an `outer benchmark'
 specifies how many times the inner benchmark should be run in order to make an
-adequately long in-process iteration\edd{note that our krun benchmarks are the
-same. Is it even worth mentioning?} . We recorded \numiterations
+adequately long in-process iteration. We recorded \numiterations
 in-process iterations of the outer benchmark; our runner
 fully resets the benchmark and the random number generator between each
 iteration. The \texttt{box2d}, \texttt{gameboy}, \texttt{mandreel} benchmarks do

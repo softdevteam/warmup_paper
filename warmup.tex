@@ -1616,14 +1616,17 @@ an automated approach to analysing each process execution individually.
 The open-source changepoint analysis approach presented in this paper is one such option.
 
 Second, we believe that the traditional practise of presenting only steady state
-numbers is hard to defend in the face of wildly varying warmup times. There
-are several benchmarks where different VMs have steady state
-performance within 2x of each other, but whose warmup differs by 100-1000x.
-While such differences may be of little importance to some users,
-they are important to many others. We thus hope that future VM experiments will
+numbers is hard to defend. There
+are cases in our results where, for a given benchmark, two or more VMs have
+steady state performance within 2x of each other, but warmup differs
+by 100-1000x. While some users may wish to trade warm-up time for
+better steady state performance, others may not. Furthermore, there does not
+seem to be a clear relationship between the two: the VM which is
+slower to warmup often has the worse steady
+state performance!  We thus hope that future VM experiments will
 report: a benchmark's classification (warmup, flat, slowdown, no steady state);
 and, if it reaches a steady state, when the steady state was reached (using
-one or both of steady state iter (\#) or (s)) and the performance of the
+one or both of steady state iter (\# or s)) and the performance of the
 steady state (steady perf (s)).
 
 Third, it is important to make benchmarks run long enough that any measurements
@@ -1636,7 +1639,7 @@ apart are considered equivalent. However, running in-process iterations for long
 of time is also somewhat undesirable. When possible, we suggest that
 the fastest in-process iterations should run for around 0.5s. However, this can
 sometimes be impractical: when benchmarking a set of VMs, the slowest VM may be
-be an order of magnitude slower than another; even within a single VM,
+an order of magnitude slower than another; even within a single VM,
 in-process iterations before warmup can be one or two orders of magnitude slower
 than after warmup. In such cases we suggest the minimum acceptable time for an
 in-process iteration is 0.1s,

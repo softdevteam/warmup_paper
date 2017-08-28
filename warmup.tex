@@ -1695,11 +1695,11 @@ then: the classifications comparison is true;
 and the steady iter (\# or s) and steady perf (s) comparisons depend on comparing the
 relevant values calculated from $P$ and $P_s$ (taking into
 account confidence intervals).\footnote{Note that there is an unavoidable
-source of error in the steady iter (\# or s) and steady perf (s) comparisons,
-because, even with 99\% confidence intervals, there is no guarantee that $P$
+source of error in the steady iter (\# or s) and steady perf (s) comparisons as,
+even with 99\% confidence intervals, there is no guarantee that $P$
 covers the `correct' value. Thus sometimes when $P$ and $P_s$'s values
-differ $P_s$ will cover the `correct' value where $P$ doesn't. However, such a
-comparison this will still be counted against $P_s$.}
+differ, $P_s$ will cover the `correct' value, while $P$ won't. However, since
+we can't tell when this happens, any such comparison will still be counted against $P_s$.}
 If $P$ is consistently warm-up but $P_s$ is consistently slowdown then:
 the classifications comparison is false; but
 the steady iter (\# or s) and steady perf (s) comparisons are made as

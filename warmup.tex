@@ -1672,7 +1672,7 @@ and to allow readers to take that into account when evaluating performance.
 
 Of all the techniques we have used in this paper, the most simple was the most
 important: we simply ran benchmarks for much longer than suggested by previous methodologies.
-Traditional VM experiments often run for 5 or 10 in-process iterations. Our data
+Traditional VM experiments often run for 5 or 10 in-process iterations. Our results
 clearly show that, when a statistically robust analysis is desired, such short
 runs are insufficient. However, none of us wants to run benchmarks for any longer
 than necessary. Assuming that we ran
@@ -1681,7 +1681,7 @@ as many process executions and as many in-process iterations as we did.
 
 In this subsection we sample data from \bencherseven to see if fewer
 process executions or in-process iterations give similar results to the full
-data. We have chosen to define `similar' as `what proportion of the sampled
+results. We have chosen to define `similar' as `what proportion of the sampled
 \vmbpair pairs have the same results as Table~\ref{tab:mainresults}. We report
 individual proportions of \vmbpair pairs classifications, steady iter (\#,
 s), and
@@ -1689,7 +1689,7 @@ steady perf (s). We also report an `overall' measure which is the proportion of
 \vmbpair pairs for which all three individual comparisons are true.
 
 In most cases the comparisons involved are straightforward. Consider
-a \vmbpair pair $P$ from the original data and a \vmbpair pair $P_s$
+a \vmbpair pair $P$ from the original results and a \vmbpair pair $P_s$
 sampled from it. If both $P$ and $P_s$ consistently warm-up,
 then: the classifications comparison is true;
 and the steady iter (\# or s) and steady perf (s) comparisons depend on comparing the
@@ -1721,7 +1721,7 @@ iter (\# or s), and steady perf (s) comparisons are all false.
 \begin{figure}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_same_plot.pdf}
-\caption{How similar \bencherseven's data (seen in Figure~\ref{tab:mainresults}) data
+\caption{How similar \bencherseven's results (seen in Figure~\ref{tab:mainresults})
 would have been if we had run fewer than
 \numiterations in-process iterations. We truncated process executions (taking in-process
 iterations $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$) and compared
@@ -1794,7 +1794,7 @@ segment, it is often considered non-equivalent to the preceding segment,
 which then often leads to a classification of no steady state
 (see Figure \ref{fig:truncated} for an example).
 
-It is thus difficult to draw definitive conclusions from our data:
+It is thus difficult to draw definitive conclusions from our results:
 at $n=650$ the overall similarity is 73\% but at $n=1050$ it is 56\%.
 It is clear that the quality of results from reducing the number
 of in-process executions
@@ -1812,7 +1812,7 @@ longer-term stability has been affected.
 \begin{figure}[tbp]
 \centering
 \includegraphics[width=\textwidth]{examples/truncated_pexecs_plot.pdf}
-\caption{How similar \bencherseven's data (seen in Figure~\ref{tab:mainresults}) data
+\caption{How similar \bencherseven's results (seen in Figure~\ref{tab:mainresults})
 would have been if we had run fewer than
 \numpexecs process executions. From the original \bencherseven dataset, we created \laurie{$1000$} samples
 of $n$ process executions with replacement (where $n \in {2, 3, \ldots, 29,
@@ -1827,7 +1827,7 @@ $n=30$.} \label{fig:pexecstruncated}
 We had little intuition as to how many process executions we should run, so our
 eventual choice of \numpexecs was somewhat arbitrary. To understand if we could
 have used fewer process executions, we used a slightly different method
-to the analysis of in-process iterations. We took the \bencherseven data set and
+to the analysis of in-process iterations. We took \bencherseven's results and
 for each $n \in \{2, 3, \ldots, 29, 30\}$ we bootstrapped \laurie{1000?}
 samples (using sampling with replacement) of size $n$. To enable us to compare
 inconsistent classifications between sets, we constructed multinomial proportion confidence
@@ -1843,7 +1843,7 @@ reducing each similarity rating below 100\%. Bearing that in mind, Figure
 
 \laurie{needs redoing when the 1000 trials version is done}
 Our analysis suggests that 15 process executions is a reasonable, and realistic, figure for most
-cases, yielding similar quality data to the 30 that we ran. As with in-process
+cases, yielding similar quality results to the 30 that we ran. As with in-process
 iterations, occasionally running larger numbers of process executions will help
 identify infrequent performance issues.
 

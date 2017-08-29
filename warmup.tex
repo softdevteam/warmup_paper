@@ -1833,12 +1833,11 @@ We then report the proportion of sampled \vmbpair pairs which are statistically
 equivalent to the original. One unintuitive side effect of this sampling is that
 the $n=30$ sample does not lead to 100\% similarity. Consider a \vmbpair pair
 which has 29 warmup process executions and 1 no steady state process execution.
-If a sample of 30 warmup process executions is created (which is not unlikely), then all three
+Whenever a sample of 30 warmup process executions is created, then all three
 comparisons (classification, steady iter (\# or s), and steady perf (s)) will fail,
 reducing each similarity rating below 100\%. Bearing that in mind, Figure
 \ref{fig:pexecstruncated} shows the results of this analysis.
 
-\laurie{needs redoing when the 1000 trials version is done}
 Our analysis suggests that, on our results at least,
 15 process executions is a reasonable, and realistic, figure for most
 cases, yielding similar quality results to the 30 that we ran. As with in-process

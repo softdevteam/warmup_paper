@@ -1703,12 +1703,12 @@ While in most cases the comparisons involved are straightforward,
 no steady state process executions must be handled specially.
 Consider a \vmbpair pair $P$ from the original results and a \vmbpair pair $P_s$
 sampled from $P$. If $P$ and $P_s$ are consistently no steady state then the
-classifications comparison succeeds, but we do not count the steady iter (\# or s) and
-steady perf (s) as either succeeding or failing (since no meaningful comparison can be made).
+classifications comparison succeeds, and we count the steady iter (\# or s) and
+steady perf (s) as failing.
 If $P$ and $P_s$ both contain at least one no steady state process execution,
 but one of $P$ and $P_s$ is not consistently no steady state, then
-the classifications comparison succeeds, and we again do not count the steady iter (\# or s) and
-steady perf (s) comparison. If one of $P$ or $P_s$ contains
+the classifications comparison succeeds, and we count the steady iter (\# or s) and
+steady perf (s) as failing. If one of $P$ or $P_s$ contains
 at least one no steady state process execution, but the other contains
 no steady state process executions, then the classification, steady
 iter (\# or s), and steady perf (s) comparisons all fail.

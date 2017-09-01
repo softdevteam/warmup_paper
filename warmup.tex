@@ -1687,12 +1687,12 @@ the individual characteristics (classification,
 steady iter (\# or s), and steady perf (s)) and an `overall' comparison,
 which records the percentage of \vmbpair pairs where all three individual
 characteristics are statistically equivalent. Checking for equivalence amounts to
-checking whether confidence intervals overlap.~\footnote{Note that there is an unavoidable
+checking whether confidence intervals overlap.\footnote{Note that there is an unavoidable
 source of error in any comparison involving confidence intervals since there is no
 guarantee that the original confidence interval covers the `true' mean.
 Thus sometimes the sampled \vmbpair pair might cover the `true' mean
 while the original \vmbpair pair does not, and sometimes neither will
-cover the `true' mean. However, since we can't tell when
+cover the `true' mean. As we are unable to tell when
 this happens, any such comparison will still be counted against the sampled
 \vmbpair pair.}
 For classifications, we computed multinomial proportion confidence
@@ -1700,18 +1700,14 @@ intervals (i.e.~the proportion of warmup, slowdown, flat and no
 steady state classifications) using the method of \cite{sison95simultaneous}.
 
 While in most cases the comparisons involved are straightforward,
-no steady state process executions must be handled specially.
+no steady state process executions are trickier.
 Consider a \vmbpair pair $P$ from the original results and a \vmbpair pair $P_s$
-sampled from $P$. If $P$ and $P_s$ are consistently no steady state then the
-classifications comparison succeeds, but we do not count the steady iter (\# or s) and
-steady perf (s) as either succeeding or failing (since no meaningful comparison can be made).
-If $P$ and $P_s$ both contain at least one no steady state process execution,
-but one of $P$ and $P_s$ is not consistently no steady state, then
-the classifications comparison succeeds, and we again do not count the steady iter (\# or s) and
-steady perf (s) comparison. If one of $P$ or $P_s$ contains
-at least one no steady state process execution, but the other contains
-no steady state process executions, then the classification, steady
-iter (\# or s), and steady perf (s) comparisons all fail.
+sampled from $P$. What should we do if $P$ contains a no steady state process
+execution but $P_s$ does not (or vice versa)? In such cases,
+the classifications comparison is made as normal (using the
+confidence intervals) but we do not count the steady iter (\# or s) and
+steady perf (s) comparisons as either succeeding or failing, since no meaningful
+comparison can be made.
 
 
 \subsubsection{In-process iterations}
@@ -1728,9 +1724,9 @@ performance to the original ($n=2000$). The `overall' similarity of each truncat
 dataset is the number of \vmbpair pairs for which all three characteristics are statistically
 equivalent to the full experiment.
 In general, lower values of $n$ lead to fewer process executions
-which are similar to $n=2000$. However, there is a very significant kink in the
-data (with the trough between $1000 \leq n \leq 1300$), almost entirely caused by JRuby+Truffle (see
-Figure~\ref{fig:truncated}).}
+which are similar to $n=2000$. Note the very significant kink in the
+classifications data (with the trough between $1000 \leq n \leq 1300$), almost
+entirely caused by JRuby+Truffle (see Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
 
@@ -1772,15 +1768,16 @@ in-process iterations from $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 199
 repeated the changepoint analysis, and compared the resulting statistics
 (the classifications, times to reach a steady state, and steady state performances) to
 the original ($n=2000$). We shrank the sliding window and last segment sizes
-proportionally (i.e.~at $n=1000$ the sliding window is 100 and last segment
+in proportion to the number of iterations (i.e.~at $n=1000$ the sliding window is 100 and last segment
 250).
 
 Intuitively, one would expect the similarity to decrease as $n$ reduces, allowing
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $1000 \leq n \leq 1300$. This is almost entirely caused by
-JRuby+Truffle, many of whose process executions noticeably slowdown around in-process iteration $1050$ before
+notable kink is in the classifications similarity between $1000 \leq n \leq
+1300$. This is almost entirely caused by JRuby+Truffle, many of whose process
+executions noticeably slowdown around in-process iteration $1050$ before
 speeding back up later, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
 segment to be equivalent to the final segment (generally leading to a classification
@@ -1790,14 +1787,15 @@ segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
 segment, it is often considered non-equivalent to the preceding segment,
 which then often leads to a classification of no steady state
-(see Figure \ref{fig:truncated} for an example).
+(see Figure \ref{fig:truncated} for an example). This then has a noticeable
+effect on the `overall' similarity.
 
 It is thus difficult to draw definitive conclusions from our results:
-for example, while the overall similarity at $n=650$ is 73\%, at $n=1050$ it is 56\%.
+for example, while the overall similarity at $n=700$ is 85\%, at $n=900$ it is 78\%.
 It is clear that the quality of results from reducing the number
 of in-process executions
-is heavily dependent on the VM(s) in question: if one is confident that the VM(s) in question do not cause
-unpredictable performance changes then it may be possible to run many fewer
+is heavily dependent on the VM(s) involved: if one is confident that the VM(s) do not cause
+unpredictable performance changes, then it may be possible to run many fewer
 in-process iterations; if one is unsure then running more is the only safe
 course of action. We suggest that in many cases a reasonable compromise might be to
 use smaller numbers (e.g.~500) of in-process iterations most
@@ -1819,28 +1817,27 @@ and compared their classifications, time to reach a steady state, and
 steady state performance to the original ($n=30$). The `overall' similarity of
 each truncated dataset is the number of \vmbpair pairs for which all three
 characteristics are statistically equivalent to the full experiment. In general,
-lower values of $n$ lead to fewer process executions which are similar to
+lower values of $n$ lead to fewer \vmbpair pairs being similar to
 $n=30$.} \label{fig:pexecstruncated}
 \end{figure}
 
 We had little intuition as to how many process executions we should run, so our
 eventual choice of \numpexecs was somewhat arbitrary. To understand if we could
 have used fewer process executions, we used a slightly different method
-to the analysis of in-process iterations. For each \vmbpair pair and each
-$n \in \{2, 3, \ldots, 29, 30\}$ we created 1000 bootstrapped samples (using sampling with replacement)
-of size $n$ (i.e.~each set contains $n$ process executions).
-We then report the proportion of sampled \vmbpair pairs which are statistically
-equivalent to the original. One unintuitive side effect of this sampling is that
-the $n=30$ sample does not lead to 100\% similarity. Consider a \vmbpair pair
-which has 29 warmup process executions and 1 no steady state process execution.
-Whenever a sample of 30 warmup process executions is created, then all three
-comparisons (classification, steady iter (\# or s), and steady perf (s)) will fail,
-reducing each similarity rating below 100\%. Bearing that in mind, Figure
-\ref{fig:pexecstruncated} shows the results of this analysis.
+to the analysis of in-process iterations. For each \vmbpair pair we created
+1000 bootstrapped sample sets (using sampling with replacement) of size
+$n \in \{2, 3, \ldots, 29, 30\}$, from the original \bencherseven experiment results
+and compared the resulting statistics
+(the classifications, times to reach a steady state, and steady state performances) to
+the original. Figure \ref{fig:pexecstruncated} shows the results of this analysis.
 
-Our analysis suggests that, on our results at least,
-15 process executions is a reasonable, and realistic, figure for most
-cases, yielding similar quality results to the 30 that we ran. As with in-process
+Our analysis shows the importance of running multiple
+process executions: at $n=2$, for example, the quality of results is relatively
+poor, particularly for classifications; but at $n=6$ one can clearly observe the beginning of the point of
+diminishing returns. We would have got very similar results to our final
+experiment with just 10 process executions and all but identical results with 15 process
+executions. This suggests that many users may be able to get
+good results from 10 process executions though, as with in-process
 iterations, occasionally running larger numbers of process executions will help
 identify infrequent performance issues.
 

@@ -1621,8 +1621,8 @@ are cases in our results where, for a given benchmark, two or more VMs have
 steady state performance within 2x of each other, but warmup differs
 by 100-1000x. While some users may wish to trade warm-up time for
 better steady state performance, others may not. Furthermore, there does not
-seem to be a clear relationship between the two: the VM which is
-slower to warmup often has the worse steady
+seem to be a clear relationship between these two factors: VMs which are
+slower to warmup often have worse steady
 state performance!  We thus hope that future VM experiments will
 report: a benchmark's classification (warmup, flat, slowdown, no steady state);
 and, if it reaches a steady state, when the steady state was reached (using
@@ -1644,7 +1644,7 @@ sometimes be impractical: when benchmarking a set of VMs, the slowest VM may be
 an order of magnitude slower than another; even within a single VM,
 in-process iterations before warmup can be one or two orders of magnitude slower
 than after warmup. In such cases we suggest the minimum acceptable time for an
-in-process iteration is 0.1s,
+in-process iteration is 0.1s.
 
 Fourth, we suspect that some of the odd results we have seen result from
 over-training VM heuristics on small sets of benchmarks. The machine-learning
@@ -1695,7 +1695,7 @@ while the original \vmbpair pair does not, and sometimes neither will
 cover the `true' mean. As we are unable to tell when
 this happens, any such comparison will still be counted against the sampled
 \vmbpair pair.}
-For classifications, we computed multinomial proportion confidence
+For classifications, we compute multinomial proportion confidence
 intervals (i.e.~the proportion of warmup, slowdown, flat and no
 steady state classifications) using the method of \cite{sison95simultaneous}.
 
@@ -1791,7 +1791,8 @@ which then often leads to a classification of no steady state
 effect on the `overall' similarity.
 
 It is thus difficult to draw definitive conclusions from our results:
-for example, while the overall similarity at $n=700$ is 85\%, at $n=900$ it is 78\%.
+for example, the `overall' similarity is better at $n=700$ (85\%) than
+it is at $n=900$ (78\%).
 It is clear that the quality of results from reducing the number
 of in-process executions
 is heavily dependent on the VM(s) involved: if one is confident that the VM(s) do not cause

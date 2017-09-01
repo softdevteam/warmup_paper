@@ -1724,9 +1724,9 @@ performance to the original ($n=2000$). The `overall' similarity of each truncat
 dataset is the number of \vmbpair pairs for which all three characteristics are statistically
 equivalent to the full experiment.
 In general, lower values of $n$ lead to fewer process executions
-which are similar to $n=2000$. However, there is a very significant kink in the
-classifications data (with the trough between $1000 \leq n \leq 1300$), almost entirely caused by JRuby+Truffle (see
-Figure~\ref{fig:truncated}).}
+which are similar to $n=2000$. Note the very significant kink in the
+classifications data (with the trough between $1000 \leq n \leq 1300$), almost
+entirely caused by JRuby+Truffle (see Figure~\ref{fig:truncated}).}
 \label{fig:sametruncated}
 \end{figure}
 
@@ -1775,8 +1775,9 @@ Intuitively, one would expect the similarity to decrease as $n$ reduces, allowin
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $1000 \leq n \leq 1300$ \sarah{Classifications only now.}. This is almost entirely caused by
-JRuby+Truffle, many of whose process executions noticeably slowdown around in-process iteration $1050$ before
+notable kink is in the classifications similarity between $1000 \leq n \leq
+1300$. This is almost entirely caused by JRuby+Truffle, many of whose process
+executions noticeably slowdown around in-process iteration $1050$ before
 speeding back up later, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
 segment to be equivalent to the final segment (generally leading to a classification
@@ -1786,7 +1787,8 @@ segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
 segment, it is often considered non-equivalent to the preceding segment,
 which then often leads to a classification of no steady state
-(see Figure \ref{fig:truncated} for an example).
+(see Figure \ref{fig:truncated} for an example). This then has a noticeable
+effect on the `overall' similarity.
 
 It is thus difficult to draw definitive conclusions from our results:
 for example, while the overall similarity at $n=650$ is 82\%, at $n=1050$ it is 76\%.

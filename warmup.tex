@@ -1677,7 +1677,9 @@ clearly show that, when a statistically robust analysis is desired, such short
 runs are insufficient. However, none of us wants to run benchmarks for any longer
 than necessary. Assuming that we ran
 experiments for `long enough', a reasonable question is whether we needed to run
-as many process executions and as many in-process iterations as we did.
+as many process executions and as many in-process iterations as we did; and,
+perhaps, whether answering that question gives any pointers for people
+benchmarking other systems.
 
 In this subsection we sample data from \bencherseven to see if fewer
 process executions or in-process iterations give similar results to the full
@@ -1722,11 +1724,7 @@ iterations $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$) and compar
 their classifications, time to reach a steady state, and steady state
 performance to the original ($n=2000$). The `overall' similarity of each truncated
 dataset is the number of \vmbpair pairs for which all three characteristics are statistically
-equivalent to the full experiment.
-In general, lower values of $n$ lead to fewer process executions
-which are similar to $n=2000$. Note the very significant kink in the
-classifications data (with the trough between $1000 \leq n \leq 1300$), almost
-entirely caused by JRuby+Truffle (see Figure~\ref{fig:truncated}).}
+equivalent to the full experiment.}
 \label{fig:sametruncated}
 \end{figure}
 
@@ -1774,10 +1772,12 @@ in proportion to the number of iterations (i.e.~at $n=1000$ the sliding window i
 Intuitively, one would expect the similarity to decrease as $n$ reduces, allowing
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 As Figure \ref{fig:sametruncated} shows, there can be significant
-kinks in the data that make choosing such a value tricky. In this case, the most
+kinks, and lengthy plateaus, in the data that make choosing such a value tricky.
+For example, probably the most
 notable kink is in the classifications similarity between $1000 \leq n \leq
-1300$. This is almost entirely caused by JRuby+Truffle, many of whose process
-executions noticeably slowdown around in-process iteration $1050$ before
+1300$ (which then has a noticeable effect on the `overall' similarity). This is
+almost entirely caused by JRuby+Truffle, many of whose process
+executions noticeably slow down around in-process iteration $1050$ before
 speeding back up later, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower
 segment to be equivalent to the final segment (generally leading to a classification
@@ -1787,8 +1787,7 @@ segment is detected. Since it is the process execution's final segment,
 and since it typically has a smaller mean and variance than the `real' last
 segment, it is often considered non-equivalent to the preceding segment,
 which then often leads to a classification of no steady state
-(see Figure \ref{fig:truncated} for an example). This then has a noticeable
-effect on the `overall' similarity.
+(see Figure \ref{fig:truncated} for an example).
 
 It is thus difficult to draw definitive conclusions from our results:
 for example, the `overall' similarity is better at $n=700$ (85\%) than
@@ -1835,9 +1834,9 @@ the original. Figure \ref{fig:pexecstruncated} shows the results of this analysi
 Our analysis shows the importance of running multiple
 process executions: at $n=2$, for example, the quality of results is relatively
 poor, particularly for classifications; but at $n=6$ one can clearly observe the beginning of the point of
-diminishing returns. We would have got very similar results to our final
+diminishing returns. We would have had very similar results to our final
 experiment with just 10 process executions and all but identical results with 15 process
-executions. This suggests that many users may be able to get
+executions. This suggests that other benchmarking may be able to get
 good results from 10 process executions though, as with in-process
 iterations, occasionally running larger numbers of process executions will help
 identify infrequent performance issues.

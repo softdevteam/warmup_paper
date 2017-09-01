@@ -1775,7 +1775,7 @@ Intuitively, one would expect the similarity to decrease as $n$ reduces, allowin
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.
 As Figure \ref{fig:sametruncated} shows, there can be significant
 kinks in the data that make choosing such a value tricky. In this case, the most
-notable kink is between $1000 \leq n \leq 1300$. This is almost entirely caused by
+notable kink is between $1000 \leq n \leq 1300$ \sarah{Classifications only now.}. This is almost entirely caused by
 JRuby+Truffle, many of whose process executions noticeably slowdown around in-process iteration $1050$ before
 speeding back up later, often leading to a changepoint
 segment being identified. At $n=2000$, changepoint analysis considers this slower

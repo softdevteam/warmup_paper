@@ -1675,15 +1675,16 @@ important: we simply ran benchmarks for much longer than suggested by previous m
 Traditional VM experiments often run for 5 or 10 in-process iterations. Our results
 clearly show that, when a statistically robust analysis is desired, such short
 runs are insufficient. However, none of us wants to run benchmarks for any longer
-than necessary. Assuming that we ran
-experiments for `long enough', a reasonable question is whether we needed to run
-as many process executions and as many in-process iterations as we did; and,
-perhaps, whether answering that question gives any pointers for people
-benchmarking other systems.
+than necessary.
 
 In this subsection we sample data from \bencherseven to see if fewer
 process executions or in-process iterations give similar results to the full
-results. We have chosen to define `similar' as ``what percentage of the sampled
+results. Although the resulting analysis necessarily only applies
+to our experiment, we are able to give some tentative pointers to those
+benchmarking other systems, though we strongly caution against assuming these
+will hold in every circumstance.
+
+We define `similar' as ``what percentage of the sampled
 \vmbpair pairs are statistically equivalent to those in Table~\ref{tab:mainresults}?'' We report both
 the individual characteristics (classification,
 steady iter (\# or s), and steady perf (s)) and an `overall' comparison,
@@ -1765,9 +1766,9 @@ iterations, we truncated all of \bencherseven's process executions (taking
 in-process iterations from $0 \ldots n$ where $n \in \{10, 20, \ldots, 1980, 1990\}$),
 repeated the changepoint analysis, and compared the resulting statistics
 (the classifications, times to reach a steady state, and steady state performances) to
-the original ($n=2000$). We shrank the sliding window and last segment sizes
-in proportion to the number of iterations (i.e.~at $n=1000$ the sliding window is 100 and last segment
-250).
+the original ($n=2000$). We shrank the sliding window and steady state length
+in proportion to the number of iterations (i.e.~at $n=1000$ the sliding window is 100 and steady
+state length 250).
 
 Intuitively, one would expect the similarity to decrease as $n$ reduces, allowing
 one to pick a value of $n$ that has a good trade-off between accuracy and running time.

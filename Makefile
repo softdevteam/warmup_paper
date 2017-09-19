@@ -35,7 +35,8 @@ PLOTS =		examples/new_warmup_no_migrate.pdf \
 		examples/unexplained_weirdness.pdf \
 		examples/truncated_same_plot.pdf \
 		examples/truncated1.pdf \
-		examples/truncated2.pdf
+		examples/truncated2.pdf \
+		examples/truncated_pexecs_plot.pdf
 DIAGRAMS +=	${PLOTS}
 
 TABLES= dacapo.table startup.table \

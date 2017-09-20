@@ -262,9 +262,16 @@ ARXIV_FILES=	${DIAGRAMS} \
 		summary_macros.tex \
 		vm_versions.tex \
 		outlier_summaries.tex \
-		georges_macros.tex
+		georges_macros.tex \
+# Written permission to upload acmart acquired.
+# Inclusion of .dtx and .ins required by license.
+ARXIV_FILES +=	acmart.cls \
+		acmthm.sty \
+		acmart.dtx \
+		acmart.ins
+
 ARXIV_BASE=arxiv
-${ARXIV_BASE}: ${LATEX_SIGPLAN}.pdf
+${ARXIV_BASE}: acmart.dtx acmart.ins ${LATEX_SIGPLAN}.pdf
 	mkdir $@
 	rsync -Rav ${ARXIV_FILES} $@
 	zip -r $@.zip ${ARXIV_BASE}
@@ -273,6 +280,7 @@ ${ARXIV_BASE}: ${LATEX_SIGPLAN}.pdf
 clean-arxiv:
 	rm -rf ${ARXIV_BASE}
 	rm -rf ${ARXIV_BASE}.zip
+	rm -f acmart.ins acmart.dtx
 
 # Stuff for dealing with external acmart.cls and acmthm.sty.
 acmart/acmthm.sty: acmart/acmart.cls
@@ -280,12 +288,18 @@ acmart/acmart.cls: acmart/acmart.ins acmart/acmart.dtx
 	cd acmart && pdflatex acmart.ins acmart.dtx
 
 acmart.cls: acmart/acmart.cls
-	ln -sf acmart/acmart.cls $@
+	cp $? $@
 
 acmthm.sty: acmart/acmthm.sty
-	ln -sf acmart/acmthm.sty $@
+	cp $? $@
+
+acmart.dtx: acmart/acmart.dtx
+	cp $? $@
+
+acmart.ins: acmart/acmart.ins
+	cp $? $@
 
 .PHONY: clean-arxiv clean-acmart
 clean-acmart:
-	rm -f acmart.cls acmthm.sty
+	rm -f acmart.cls acmthm.sty acmart.dtx acmart.ins
 	rm -f acmart/acmart.cls acmart/acmthm.sty

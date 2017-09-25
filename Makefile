@@ -49,6 +49,8 @@ BASE_CLEANFILES =	aux bbl blg dvi log ps pdf toc out snm nav vrb \
 			vtc synctex.gz
 OTHER_CLEANFILES =	bib.bib texput.log warmup_paper.pdf warmup_appendix.pdf submitted.tex ${DIFF}.tex
 
+ACMART_VERSION =	79a8aecb4135f2f62a4163da2865dbe2598b0455
+
 all: ${LATEX_SIGPLAN}.pdf bib.bib
 
 .svg.pdf:
@@ -75,8 +77,12 @@ softdevbib/softdev.bib: softdevbib
 softdevbib:
 	git clone https://github.com/softdevteam/softdevbib.git
 
+acmart:
+	git clone https://github.com/borisveytsman/acmart
+	cd acmart && git checkout ${ACMART_VERSION}
+
 TEXMFHOME="../../share/texmf"
-${LATEX_SIGPLAN}.pdf: ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
+${LATEX_SIGPLAN}.pdf: acmart ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 		${CODE} bib.bib ${TABLES} summary_macros.tex vm_versions.tex \
 		acmart.cls acmthm.sty
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex

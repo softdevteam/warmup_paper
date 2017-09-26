@@ -84,7 +84,7 @@ acmart:
 TEXMFHOME="../../share/texmf"
 ${LATEX_SIGPLAN}.pdf: acmart ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 		${CODE} bib.bib ${TABLES} summary_macros.tex vm_versions.tex \
-		acmart.cls acmthm.sty
+		acmart.cls
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
@@ -267,7 +267,6 @@ ARXIV_FILES=	${DIAGRAMS} \
 # Written permission to upload acmart acquired.
 # Inclusion of .dtx and .ins required by license.
 ARXIV_FILES +=	acmart.cls \
-		acmthm.sty \
 		acmart.dtx \
 		acmart.ins
 
@@ -283,15 +282,11 @@ clean-arxiv:
 	rm -rf ${ARXIV_BASE}.zip
 	rm -f acmart.ins acmart.dtx
 
-# Stuff for dealing with external acmart.cls and acmthm.sty.
-acmart/acmthm.sty: acmart/acmart.cls
+# Stuff for dealing with external acmart.cls
 acmart/acmart.cls: acmart/acmart.ins acmart/acmart.dtx
 	cd acmart && pdflatex acmart.ins acmart.dtx
 
 acmart.cls: acmart/acmart.cls
-	cp $? $@
-
-acmthm.sty: acmart/acmthm.sty
 	cp $? $@
 
 acmart.dtx: acmart/acmart.dtx
@@ -302,5 +297,5 @@ acmart.ins: acmart/acmart.ins
 
 .PHONY: clean-arxiv clean-acmart
 clean-acmart:
-	rm -f acmart.cls acmthm.sty acmart.dtx acmart.ins
-	rm -f acmart/acmart.cls acmart/acmthm.sty
+	rm -f acmart.cls acmart.dtx acmart.ins
+	rm -rf acmart

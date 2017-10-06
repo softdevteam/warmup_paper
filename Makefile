@@ -286,14 +286,17 @@ clean-arxiv:
 acmart/acmart.cls: acmart/acmart.ins acmart/acmart.dtx
 	cd acmart && pdflatex acmart.ins acmart.dtx
 
+acmart.ins: acmart
+acmart.dtx: acmart
+
 acmart.cls: acmart/acmart.cls
-	cp $? $@
+	cp acmart/acmart.cls $@
 
 acmart.dtx: acmart/acmart.dtx
-	cp $? $@
+	cp acmart/acmart.dtx $@
 
 acmart.ins: acmart/acmart.ins
-	cp $? $@
+	cp  cmart/acmart.ins $@
 
 .PHONY: clean-arxiv clean-acmart
 clean-acmart:

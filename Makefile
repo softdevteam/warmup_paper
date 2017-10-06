@@ -296,7 +296,7 @@ acmart.dtx: acmart/acmart.dtx
 	cp acmart/acmart.dtx $@
 
 acmart.ins: acmart/acmart.ins
-	cp  cmart/acmart.ins $@
+	cp acmart/acmart.ins $@
 
 .PHONY: clean-arxiv clean-acmart
 clean-acmart:

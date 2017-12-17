@@ -86,6 +86,7 @@ ${LATEX_SIGPLAN}.pdf: acmart ${DIAGRAMS} ${LATEX_COMMON} ${LATEX_SIGPLAN}.tex \
 		${CODE} bib.bib ${TABLES} summary_macros.tex vm_versions.tex \
 		acmart.cls
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
+	cd softdevbib && git checkout 9a738b8c9c8d8bb8e1e7fbba3fa67b99ac97bf5b
 	bibtex ${LATEX_SIGPLAN}
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
 	TEXMFHOME=${TEXMFHOME} ${PDFLATEX} ${LATEX_SIGPLAN}.tex
